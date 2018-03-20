@@ -8,6 +8,7 @@
 
 import UIKit
 import SwifterSwift
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         }
         UIApplication.shared.statusBarStyle = .lightContent
+        IQKeyboardManager.sharedManager().enable = true
 
         return true
     }

@@ -9,6 +9,7 @@ target 'LumiWorld' do
   pod 'ESTabBarController-swift'
   pod 'pop'
   pod 'SwifterSwift'
+  pod 'IQKeyboardManagerSwift'
   # Pods for LumiWorld
 
 end

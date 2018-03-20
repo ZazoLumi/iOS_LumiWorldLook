@@ -16,15 +16,19 @@ class LogInVC: UIViewController {
 
     @IBOutlet weak var viewTblData: UIView!
     override func viewDidLoad() {
-        let dict: [Rule] = [RequiredRule(), EmailRule()]
-        let dict1: [Rule] = [RequiredRule(), EmailRule()]
+
         
-        let customview = CustomTableView(placeholders: [["Mobile Number","Password"]], texts: [["",""]], images:[["Artboard","Artboard"]], frame:CGRect(x: 0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        let dict: [Rule] = [RequiredRule(), EmailRule()]
+        let dict1: [Rule] = [RequiredRule(), PasswordRule()]
+        
+        let customview = CustomTableView(placeholders: [["Mobile Number","Password"]], texts: [["",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict1],["rule":dict]])
         
         viewTblData.addSubview(customview)
 
-        
     }
     @IBAction func onBtnSignInTapped(_ sender: Any) {
         UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)

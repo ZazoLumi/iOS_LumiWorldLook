@@ -51,24 +51,26 @@ open class PaddedTextField: MFTextField {
             return ""
         }
         set{
+            let image = UIImage(named:newValue)
             if !(self.leftView != nil) {
-                let viewPadding = UIView(frame: CGRect(x: 0, y: 0, width: 40 , height: 24))
-                let imageView = UIImageView (frame:CGRect(x: 0, y: 5, width: 24 , height: 24))
+                let viewPadding = UIView(frame: CGRect(x: 0, y: 0, width: 40 , height: 32))
+                let imageView = UIImageView (frame:CGRect(x: 0, y: 5, width: (image?.size.width)! , height: (image?.size.height)!))
                 imageView.tag = 100
-                imageView.image = UIImage(named: newValue)!
+                imageView.image = image!
+                imageView.contentMode = .scaleAspectFit
                 viewPadding .addSubview(imageView)
                 self.leftView = viewPadding
                 self.leftViewMode = .always
             }
             else {
-                let viewPadding = self.leftView as UIView!
-                let imgView = viewPadding?.viewWithTag(100) as! UIImageView!
-                if self.frame.size.height>60 {
-                    imgView?.frame = CGRect(x: 0, y: 0, width: 24 , height: 24)
-                }
-                else {
-                    imgView?.frame = CGRect(x: 0, y: 5, width: 24 , height: 24)
-                }
+//                let viewPadding = self.leftView as UIView!
+//                let imgView = viewPadding?.viewWithTag(100) as! UIImageView!
+//                if self.frame.size.height>60 {
+//                    imgView?.frame = CGRect(x: 0, y: 0, width: (image?.size.width)! , height: (image?.size.height)!)
+//                }
+//                else {
+//                    imgView?.frame = CGRect(x: 0, y: 5, width: (image?.size.width)! , height: (image?.size.height)!)
+//                }
             }
             print(self)
         }

@@ -43,6 +43,10 @@ public extension UIViewController {
 	public func removeNotificationsObserver() {
 		NotificationCenter.default.removeObserver(self)
 	}
+    public func backButtonTapped() {
+        self.navigationController?.popViewController(animated: true)
+    }
+
 	
     /// SwifterSwift: Helper method to display an alert on any UIViewController subclass. Uses UIAlertController to show an alert
     ///
