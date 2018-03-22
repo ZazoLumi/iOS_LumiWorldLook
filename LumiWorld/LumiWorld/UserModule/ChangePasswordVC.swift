@@ -9,6 +9,7 @@
 import UIKit
 
 class ChangePasswordVC: UIViewController {
+    var customview : CustomTableView!
 
     @IBOutlet weak var btnTermsAndCondition: UIButton!
     @IBOutlet weak var viewTblData: UIView!
@@ -20,8 +21,8 @@ class ChangePasswordVC: UIViewController {
         let dict1: [Rule] = [RequiredRule(), PasswordRule()]
         let dict2: [Rule] = [RequiredRule(), PasswordRule()]
 
-        let customview = CustomTableView(placeholders: [["Mobile Number","New Password","Repeat New Password"]], texts: [["","",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
-            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict1],["rule":dict],["rule":dict2]])
+         customview = CustomTableView(placeholders: [["Mobile Number","New Password","Repeat New Password"]], texts: [["","",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
+            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1],["rule":dict2]],fieldType:[[1,2,3]])
         
         viewTblData.addSubview(customview)
         

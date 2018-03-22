@@ -9,7 +9,7 @@
 import UIKit
 
 class TemporaryPasswordVC: UIViewController {
-
+    var customview : CustomTableView!
     @IBOutlet weak var viewTblData: UIView!
     override func viewDidLoad() {
         
@@ -19,8 +19,8 @@ class TemporaryPasswordVC: UIViewController {
         let dict: [Rule] = [RequiredRule(), PhoneNumberRule()]
         let dict1: [Rule] = [RequiredRule(), PasswordRule()]
         
-        let customview = CustomTableView(placeholders: [["Mobile Number","Code"]], texts: [["",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
-            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict1],["rule":dict]])
+         customview = CustomTableView(placeholders: [["Mobile Number","Code"]], texts: [["",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
+            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict1],["rule":dict]],fieldType:[[1,6]])
         
         viewTblData.addSubview(customview)
 

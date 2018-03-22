@@ -14,7 +14,10 @@ public class PhoneNumberRule: RegexRule {
 //    let PHONE_REGEX = "^\\d{3}-\\d{3}-\\d{4}$"
     
     /// Phone number regular express string to be used in validation.
-    static let regex = "^\\d{10}$"
+    //static let regex = "^\\d{10}$"
+    static let regex = "^((\\+)|(00))[0-9]{6,14}$"
+//    let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
+//    let result =  phoneTest.evaluate(with: value)
     
     /**
      Initializes a `PhoneNumberRule` object. Used to validate that a field has a valid phone number.
@@ -22,7 +25,7 @@ public class PhoneNumberRule: RegexRule {
     - parameter message: Error message that is displayed if validation fails.
     - returns: An initialized `PasswordRule` object, or nil if an object could not be created for some reason that would not result in an exception. 
     */
-    public convenience init(message : String = "Enter a valid 10 digit phone number") {
+    public convenience init(message : String = "Enter a valid phone number") {
         self.init(regex: PhoneNumberRule.regex, message : message)
     }
     

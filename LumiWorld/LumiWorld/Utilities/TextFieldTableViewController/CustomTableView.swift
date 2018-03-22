@@ -22,19 +22,22 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
     open var texts: [[String]]
     open var images: [[String]]
     open var rules: [[String: [Rule]]]
+    open var fieldType: [[NSNumber]]
 
     var tableView: UITableView!
+    var compareField : UITextField!
     let validator = Validator()
 
-    public init(placeholders: [[String]], texts: [[String]], images: [[String]], frame:CGRect, rrules: [[String: [Rule]]]) {
+    public init(placeholders: [[String]], texts: [[String]], images: [[String]], frame:CGRect, rrules: [[String: [Rule]]], fieldType:[[NSNumber]]) {
         self.placeholders = placeholders
         self.texts = texts
         self.images = images
         self.rules = rrules
-
+        self.fieldType = fieldType
+        
         tableView = UITableView(frame: frame)
         
-        tableView.rowHeight = 64
+        tableView.rowHeight = 68
         tableView.separatorStyle = .none
         tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: String(describing: TextFieldTableViewCell.self))
 
@@ -55,7 +58,7 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
             print("error")
             if let textField = validationError.field as? MFTextField {
                 var errortest: Error? = nil
-                errortest = self.errordata(withLocalizedDescription: "Maximum of 6 characters allowed.")
+                errortest = self.errordata(withLocalizedDescription: validationError.errorMessage)
                 textField.setError(errortest, animated: true)
                 textField.layer.borderColor = UIColor.red.cgColor
                 self.tableView.reloadData()
@@ -124,7 +127,20 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
         }
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
         let dicRules = self.rules[indexPath.row] as [String: [Rule]]
-        let arrRules = dicRules["rule"]
+        var arrRules = dicRules["rule"]
+        if fieldType[indexPath.section][indexPath.row] == 1 {
+            textField.keyboardType = UIKeyboardType.phonePad
+        }
+        else if fieldType[indexPath.section][indexPath.row] == 2 {
+            textField.isSecureTextEntry = true
+            compareField = textField
+        }
+        else if fieldType[indexPath.section][indexPath.row] == 3 {
+            textField.isSecureTextEntry = true
+            arrRules?.remove(at: 1)
+            arrRules?.append(ConfirmationRule(confirmField: compareField as! ValidatableField) as Rule)
+        }
+
         validator.registerField(textField , errorLabel: label , rules:arrRules!)
 
     }

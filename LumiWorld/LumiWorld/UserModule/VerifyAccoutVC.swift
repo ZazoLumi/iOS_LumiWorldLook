@@ -9,6 +9,7 @@
 import UIKit
 
 class VerifyAccoutVC: UIViewController {
+    var customview : CustomTableView!
 
     @IBOutlet weak var viewTblData: UIView!
     override func viewDidLoad() {
@@ -18,8 +19,8 @@ class VerifyAccoutVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         let dict: [Rule] = [RequiredRule(), PhoneNumberRule()]
         
-        let customview = CustomTableView(placeholders: [["Code"]], texts: [[""]], images:[["Artboard 72xxxhdpi"]], frame:CGRect(x: 0
-            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict]])
+         customview = CustomTableView(placeholders: [["Code"]], texts: [[""]], images:[["Artboard 72xxxhdpi"]], frame:CGRect(x: 0
+            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict]],fieldType:[[6]])
         
         viewTblData.addSubview(customview)
         

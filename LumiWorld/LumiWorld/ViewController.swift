@@ -12,13 +12,11 @@ import UIKit
 class ViewController: UIViewController {
     
     override func viewDidLoad() {
-        let dict: [Rule] = [RequiredRule(), EmailRule()]
-        let dict1: [Rule] = [RequiredRule(), EmailRule()]
-        
-        let customview = CustomTableView(placeholders: [["Email","test"]], texts: [["",""]], images:[["Artboard","Artboard"]], frame:CGRect(x: 0
-            , y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height),rrules:[["rule":dict1],["rule":dict]])
-
-        self.view.addSubview(customview)
+       
+//        let customview = CustomTableView(placeholders: [["Email","test"]], texts: [["",""]], images:[["Artboard","Artboard"]], frame:CGRect(x: 0
+//            , y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height),rrules:[["rule":dict1],["rule":dict]])
+//
+//        self.view.addSubview(customview)
         
         
     }
