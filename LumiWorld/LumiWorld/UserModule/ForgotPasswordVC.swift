@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ForgotPasswordVC: UIViewController {
+class ForgotPasswordVC: UIViewController,FormDataDelegate {
     var customview : CustomTableView!
     @IBOutlet weak var viewTblData: UIView!
     override func viewDidLoad() {
@@ -20,7 +20,7 @@ class ForgotPasswordVC: UIViewController {
         
          customview = CustomTableView(placeholders: [["Mobile Number"]], texts: [[""]], images:[["Artboard 71xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict]],fieldType:[[1]])
-        
+        customview.formDelegate = self
         viewTblData.addSubview(customview)
 
     }
@@ -29,6 +29,7 @@ class ForgotPasswordVC: UIViewController {
     }
     
     @IBAction func onBtnResetPasswordTapped(_ sender: Any) {
+        customview.doneAction()
     }
     @IBAction func onBtnSignUpTapped(_ sender: Any) {
     }
@@ -51,5 +52,8 @@ class ForgotPasswordVC: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    func processedFormData(formData: Dictionary<String, String>) {
+        
+    }
 
 }

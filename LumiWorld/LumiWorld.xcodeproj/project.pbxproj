@@ -61,6 +61,10 @@
 		0964E7362060F981001D6F47 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70B2060F981001D6F47 /* TextFieldTableViewCell.swift */; };
 		0964E7372060F981001D6F47 /* TextFieldTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70C2060F981001D6F47 /* TextFieldTableViewController.swift */; };
 		0964E7382060F981001D6F47 /* LumiCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */; };
+		096C2EF92064E28E0015C0A9 /* GlobalShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */; };
+		09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0B2065042B00C74E1F /* AFWrapper.swift */; };
+		09D98A0E206521D500C74E1F /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0D206521D500C74E1F /* UserData.swift */; };
+		09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0F20652D6F00C74E1F /* RealmManager.swift */; };
 		67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */; };
 /* End PBXBuildFile section */
 
@@ -121,6 +125,10 @@
 		0964E70B2060F981001D6F47 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		0964E70C2060F981001D6F47 /* TextFieldTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewController.swift; sourceTree = "<group>"; };
 		0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LumiCategoryVC.swift; sourceTree = "<group>"; };
+		096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShareData.swift; sourceTree = "<group>"; };
+		09D98A0B2065042B00C74E1F /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
+		09D98A0D206521D500C74E1F /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		09D98A0F20652D6F00C74E1F /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		1ED9069746B80D308CA990E5 /* Pods-LumiWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LumiWorld.release.xcconfig"; path = "Pods/Target Support Files/Pods-LumiWorld/Pods-LumiWorld.release.xcconfig"; sourceTree = "<group>"; };
 		6FEF0ECD00478AAAF31FB7D6 /* Pods-testSVG.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testSVG.debug.xcconfig"; path = "Pods/Target Support Files/Pods-testSVG/Pods-testSVG.debug.xcconfig"; sourceTree = "<group>"; };
 		9F02ED078EDE7A7BA7E9DE02 /* Pods-testSVG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testSVG.release.xcconfig"; path = "Pods/Target Support Files/Pods-testSVG/Pods-testSVG.release.xcconfig"; sourceTree = "<group>"; };
@@ -232,8 +240,12 @@
 		0964E6E82060F981001D6F47 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				09D98A0F20652D6F00C74E1F /* RealmManager.swift */,
+				09D98A0B2065042B00C74E1F /* AFWrapper.swift */,
+				096C2EF72064E1A60015C0A9 /* Models */,
 				0964E6E92060F981001D6F47 /* SwiftValidator */,
 				0964E7072060F981001D6F47 /* TextFieldTableViewController */,
+				096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -306,6 +318,14 @@
 				0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */,
 			);
 			path = LumiCategory;
+			sourceTree = "<group>";
+		};
+		096C2EF72064E1A60015C0A9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				09D98A0D206521D500C74E1F /* UserData.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		2856D921F31031F6DF78EF6E /* Pods */ = {
@@ -426,22 +446,28 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-LumiWorld/Pods-LumiWorld-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/ESTabBarController-swift/ESTabBarController_swift.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/L10n-swift/L10n_swift.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialTextField/MaterialTextField.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/pop/pop.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ESTabBarController_swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/L10n_swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialTextField.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/pop.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -484,7 +510,9 @@
 				0964E72E2060F981001D6F47 /* RegexRule.swift in Sources */,
 				0964E7142060F981001D6F47 /* ExampleBouncesContentView.swift in Sources */,
 				0964E7282060F981001D6F47 /* IPV4Rule.swift in Sources */,
+				09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */,
 				0964E72D2060F981001D6F47 /* PhoneNumberRule.swift in Sources */,
+				09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */,
 				0964E7272060F981001D6F47 /* HexColorRule.swift in Sources */,
 				0964E7182060F981001D6F47 /* tabbarcontroller.swift in Sources */,
 				0964E71F2060F981001D6F47 /* AlphaNumericRule.swift in Sources */,
@@ -500,6 +528,7 @@
 				0964E7312060F981001D6F47 /* ValidationRule.swift in Sources */,
 				0964E7262060F981001D6F47 /* FullNameRule.swift in Sources */,
 				0964E7292060F981001D6F47 /* ISBNRule.swift in Sources */,
+				09D98A0E206521D500C74E1F /* UserData.swift in Sources */,
 				0964E7382060F981001D6F47 /* LumiCategoryVC.swift in Sources */,
 				0964E70F2060F981001D6F47 /* MyLumiFeedVC.swift in Sources */,
 				0964E7112060F981001D6F47 /* ExampleAnimateTipsContentView.swift in Sources */,
@@ -510,6 +539,7 @@
 				0964E7212060F981001D6F47 /* CharacterSetRule.swift in Sources */,
 				0964E72B2060F981001D6F47 /* MinLengthRule.swift in Sources */,
 				0964E7352060F981001D6F47 /* NewCustomTableView.swift in Sources */,
+				096C2EF92064E28E0015C0A9 /* GlobalShareData.swift in Sources */,
 				0964E6D92060F8ED001D6F47 /* VerifyAccoutVC.swift in Sources */,
 				0964E72A2060F981001D6F47 /* MaxLengthRule.swift in Sources */,
 				0964E7102060F981001D6F47 /* MyLumiProfileVC.swift in Sources */,

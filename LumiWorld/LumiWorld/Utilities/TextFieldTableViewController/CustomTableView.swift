@@ -9,9 +9,20 @@
 import UIKit
 import MaterialTextField
 
+protocol FormDataDelegate {
+    func processedFormData(formData: Dictionary<String, String>)
+}
+
 class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,ValidationDelegate {
+    var formDelegate: FormDataDelegate?
+
     func validationSuccessful() {
-        
+        var dict =  Dictionary<String, String>()
+        for (index, element) in texts[0].enumerated() {
+            print("Item \(index): \(element)")
+            dict.updateValue("\(element)", forKey: "\(index)")
+        }
+        formDelegate?.processedFormData(formData: dict)
     }
     
     func validationFailed(_ errors: [(Validatable, ValidationError)]) {

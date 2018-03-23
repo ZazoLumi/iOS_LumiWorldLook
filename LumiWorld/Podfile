@@ -10,6 +10,9 @@ target 'LumiWorld' do
   pod 'pop'
   pod 'SwifterSwift'
   pod 'IQKeyboardManagerSwift'
+  pod 'Alamofire'
+  pod 'SwiftyJSON'
+  pod 'L10n-swift'
   # Pods for LumiWorld
 
 end

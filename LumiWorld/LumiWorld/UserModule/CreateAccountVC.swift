@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateAccountVC: UIViewController {
+class CreateAccountVC: UIViewController,FormDataDelegate {
     @IBOutlet weak var btnTermsAndCondition: UIButton!
     @IBOutlet weak var viewTblData: UIView!
     var customview : CustomTableView!
@@ -26,6 +26,7 @@ class CreateAccountVC: UIViewController {
         
         customview = CustomTableView(placeholders: [["Name","Surname","My Lumi Profile Name","Mobile Number","Password","Repeat New Password"]], texts: [["","","","","",""]], images:[["Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 71xxxhdpi","Artboard 72xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1],["rule":dict2],["rule":dict3],["rule":dict4],["rule":dict5]],fieldType:[[4,5,7,1,2,3]])
+        customview.formDelegate = self
         viewTblData.addSubview(customview)
         
     }
@@ -35,6 +36,7 @@ class CreateAccountVC: UIViewController {
         
     }
     @IBAction func onBtnChangePasswordTapped(_ sender: Any) {
+        customview.doneAction()
     }
     
     @IBAction func onBtnBackTapped(_ sender: Any) {
@@ -54,5 +56,8 @@ class CreateAccountVC: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
-    
+    func processedFormData(formData: Dictionary<String, String>) {
+        
+    }
+
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class VerifyAccoutVC: UIViewController {
+class VerifyAccoutVC: UIViewController,FormDataDelegate {
     var customview : CustomTableView!
 
     @IBOutlet weak var viewTblData: UIView!
@@ -21,7 +21,7 @@ class VerifyAccoutVC: UIViewController {
         
          customview = CustomTableView(placeholders: [["Code"]], texts: [[""]], images:[["Artboard 72xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict]],fieldType:[[6]])
-        
+        customview.formDelegate = self
         viewTblData.addSubview(customview)
         
     }
@@ -29,6 +29,7 @@ class VerifyAccoutVC: UIViewController {
     @IBAction func onBtnResentCodeTapped(_ sender: Any) {
     }
     @IBAction func onBtnVerifyMyAccountTapped(_ sender: Any) {
+        customview.doneAction()
     }
     
     @IBAction func onBtnBackTapped(_ sender: Any) {
@@ -49,5 +50,8 @@ class VerifyAccoutVC: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    func processedFormData(formData: Dictionary<String, String>) {
+        
+    }
 
 }

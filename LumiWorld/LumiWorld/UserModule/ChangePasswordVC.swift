@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChangePasswordVC: UIViewController {
+class ChangePasswordVC: UIViewController,FormDataDelegate {
     var customview : CustomTableView!
 
     @IBOutlet weak var btnTermsAndCondition: UIButton!
@@ -23,7 +23,7 @@ class ChangePasswordVC: UIViewController {
 
          customview = CustomTableView(placeholders: [["Mobile Number","New Password","Repeat New Password"]], texts: [["","",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1],["rule":dict2]],fieldType:[[1,2,3]])
-        
+        customview.formDelegate = self
         viewTblData.addSubview(customview)
         
     }
@@ -33,6 +33,7 @@ class ChangePasswordVC: UIViewController {
 
     }
     @IBAction func onBtnChangePasswordTapped(_ sender: Any) {
+        customview.doneAction()
     }
     
     @IBAction func onBtnBackTapped(_ sender: Any) {
@@ -52,5 +53,8 @@ class ChangePasswordVC: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    func processedFormData(formData: Dictionary<String, String>) {
+        
+    }
 
 }
