@@ -14,13 +14,11 @@ enum ExampleProvider {
 static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> ExampleNavigationController {
     let tabBarController = ESTabBarController()
     tabBarController.delegate = delegate
-    tabBarController.title = "Irregularity"
-    tabBarController.tabBar.shadowImage = UIImage(named: "transparent")
-    tabBarController.tabBar.backgroundImage = UIImage(named: "background_dark")
+    tabBarController.tabBar.backgroundImage = UIImage(named: "blackBG")
     tabBarController.shouldHijackHandler = {
         tabbarController, viewController, index in
         if index == 1 {
-            return true
+            //return true
         }
         return false
     }
@@ -28,29 +26,33 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
         [weak tabBarController] tabbarController, viewController, index in
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            let alertController = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
-            let takePhotoAction = UIAlertAction(title: "Take a photo", style: .default, handler: nil)
-            alertController.addAction(takePhotoAction)
-            let selectFromAlbumAction = UIAlertAction(title: "Select from album", style: .default, handler: nil)
-            alertController.addAction(selectFromAlbumAction)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alertController.addAction(cancelAction)
-            tabBarController?.present(alertController, animated: true, completion: nil)
+            //tabBarController?.selectedIndex = 1
+
+//            let alertController = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
+//            let takePhotoAction = UIAlertAction(title: "Take a photo", style: .default, handler: nil)
+//            alertController.addAction(takePhotoAction)
+//            let selectFromAlbumAction = UIAlertAction(title: "Select from album", style: .default, handler: nil)
+//            alertController.addAction(selectFromAlbumAction)
+//            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//            alertController.addAction(cancelAction)
+//            tabBarController?.present(alertController, animated: true, completion: nil)
         }
     }
     
-    let v1 = MyLumiFeedVC()
-    let v2 = LumiCategoryVC()
-    let v3 = MyLumiProfileVC()
+    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+    let v1 = storyBoard.instantiateViewController(withIdentifier: "MyLumiFeedVC") as! MyLumiFeedVC
+    let v2 = storyBoard.instantiateViewController(withIdentifier: "LumiCategoryVC") as! LumiCategoryVC
+    let v3 = storyBoard.instantiateViewController(withIdentifier: "MyLumiProfileVC") as! MyLumiProfileVC
+
     
-    v1.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "home"), selectedImage: UIImage(named: "home_1"))
-    v2.tabBarItem = ESTabBarItem.init(ExampleIrregularityContentView(), title: nil, image: UIImage(named: "photo_verybig"), selectedImage: UIImage(named: "photo_verybig"))
-    v3.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "find"), selectedImage: UIImage(named: "find_1"))
+    v1.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 76xxhdpi"), selectedImage: UIImage(named: "Artboard 76xxhdpi"))
+    v2.tabBarItem = ESTabBarItem.init(ExampleIrregularityContentView(), title: nil, image: UIImage(named: "Artboard 77xxhdpi"), selectedImage: UIImage(named: "Artboard 77xxhdpi"))
+    v3.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 78xxhdpi"), selectedImage: UIImage(named: "Artboard 78xxhdpi"))
     
     tabBarController.viewControllers = [v1, v2, v3]
-    
+    tabBarController.selectedIndex = 1
     let navigationController = ExampleNavigationController.init(rootViewController: tabBarController)
-    tabBarController.title = "Example"
+    navigationController.navigationItem.addSettingButtonOnRight()
     return navigationController
     }
 }
@@ -72,7 +74,16 @@ class ExampleNavigationController: UINavigationController {
             self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.init(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1.0), NSFontAttributeName: UIFont.systemFont(ofSize: 16.0)];
         #endif
         self.navigationBar.tintColor = UIColor.init(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1.0)
-        self.navigationItem.title = "Example"
+        
+        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+        if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
+            statusBar.backgroundColor = UIColor(red: 180, green: 219, blue: 212)
+            
+        }
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+
+
     }
     
 }

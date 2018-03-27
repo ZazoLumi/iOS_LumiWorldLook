@@ -37,6 +37,9 @@ class LogInVC: UIViewController,FormDataDelegate {
 
     }
     @IBAction func onBtnSignInTapped(_ sender: Any) {
+        UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
+        return
+
         customview.doneAction()
 //        UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
     }
@@ -57,6 +60,7 @@ class LogInVC: UIViewController,FormDataDelegate {
             AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
 //                let userObj = UserData(json:json)
                 let tempDict = json.dictionary
+                hud.hide(animated: true)
                 guard let code = tempDict!["responsCode"]?.intValue, code != 0 else {
                     let message = tempDict!["response"]?.string
                     self.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
@@ -75,7 +79,6 @@ class LogInVC: UIViewController,FormDataDelegate {
                 else {
                     self.realmManager.saveObjects(objs: newObj)
                 }
-                hud.hide(animated: true)
 
                 UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
                 print(json)

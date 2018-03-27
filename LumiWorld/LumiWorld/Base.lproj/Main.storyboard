@@ -6,7 +6,9 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -110,7 +112,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hI5-wk-XQ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1357.5" y="138.38028169014083"/>
+            <point key="canvasLocation" x="-165" y="138.38028169014083"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -125,7 +127,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2469" y="102"/>
+            <point key="canvasLocation" x="3660" y="101.40845070422536"/>
         </scene>
         <!--Forgot PasswordVC-->
         <scene sceneID="nqa-36-xae">
@@ -242,7 +244,120 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B02-gh-02Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-639.375" y="138.38028169014083"/>
+            <point key="canvasLocation" x="553.125" y="138.38028169014083"/>
+        </scene>
+        <!--My Lumi FeedVC-->
+        <scene sceneID="4pI-ah-S9q">
+            <objects>
+                <viewController storyboardIdentifier="MyLumiFeedVC" id="3A7-A4-jdy" customClass="MyLumiFeedVC" customModule="LumiWorld" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="b3m-5J-CbS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="i4W-l9-WNZ"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="vjp-Ps-887"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Md-et-rXw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3561" y="-474"/>
+        </scene>
+        <!--My Lumi ProfileVC-->
+        <scene sceneID="eBv-7T-eED">
+            <objects>
+                <viewController storyboardIdentifier="MyLumiProfileVC" id="X0O-Jw-A3m" customClass="MyLumiProfileVC" customModule="LumiWorld" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mS5-7v-xlc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="EYe-Bv-dW9"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="TZj-RK-mqz"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vaF-on-58D" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3563" y="191"/>
+        </scene>
+        <!--Lumi CategoryVC-->
+        <scene sceneID="X66-MB-OgO">
+            <objects>
+                <viewController storyboardIdentifier="LumiCategoryVC" id="63I-Hb-zTL" customClass="LumiCategoryVC" customModule="LumiWorld" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Iwg-mO-v6t">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J7x-hG-sjb">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="tableCell" rowHeight="74" id="yHg-QZ-gQg">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="74"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yHg-QZ-gQg" id="2Vv-oL-rZK">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="73.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="huH-II-KPe">
+                                                    <rect key="frame" x="10" y="10" width="54" height="54"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="54" id="G58-4J-qOg"/>
+                                                        <constraint firstAttribute="height" constant="54" id="wn9-U9-K9g"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AHf-f2-bOR">
+                                                    <rect key="frame" x="74" y="13" width="200" height="50"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zpu-ci-s0I">
+                                                    <rect key="frame" x="284" y="26" width="26" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" priority="750" constant="22" id="gE8-LQ-xDj"/>
+                                                        <constraint firstAttribute="width" secondItem="zpu-ci-s0I" secondAttribute="height" multiplier="13:11" id="s10-rJ-mtS"/>
+                                                        <constraint firstAttribute="width" priority="750" constant="26" id="zMk-gJ-yhr"/>
+                                                    </constraints>
+                                                    <state key="normal" image="Artboard 103xxhdpi"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="image" keyPath="imageForNormal" value="Artboard 103xxhdpi"/>
+                                                        <userDefinedRuntimeAttribute type="image" keyPath="imageForSelected" value="Artboard 104xxhdpi"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="huH-II-KPe" secondAttribute="bottom" constant="10" id="H8f-t5-ZtA"/>
+                                                <constraint firstItem="AHf-f2-bOR" firstAttribute="leading" secondItem="huH-II-KPe" secondAttribute="trailing" constant="10" id="N6i-Sr-pgp"/>
+                                                <constraint firstItem="AHf-f2-bOR" firstAttribute="firstBaseline" secondItem="zpu-ci-s0I" secondAttribute="firstBaseline" id="Njd-RR-ms5"/>
+                                                <constraint firstItem="AHf-f2-bOR" firstAttribute="bottom" secondItem="2Vv-oL-rZK" secondAttribute="bottomMargin" id="QAc-Qs-xjd"/>
+                                                <constraint firstItem="zpu-ci-s0I" firstAttribute="centerY" secondItem="2Vv-oL-rZK" secondAttribute="centerY" id="SiF-gn-7zE"/>
+                                                <constraint firstItem="huH-II-KPe" firstAttribute="leading" secondItem="2Vv-oL-rZK" secondAttribute="leading" constant="10" id="TOg-W2-X9f"/>
+                                                <constraint firstAttribute="trailing" secondItem="zpu-ci-s0I" secondAttribute="trailing" constant="10" id="Xi2-XT-7hp"/>
+                                                <constraint firstItem="zpu-ci-s0I" firstAttribute="leading" secondItem="AHf-f2-bOR" secondAttribute="trailing" constant="10" id="aBl-ts-hTT"/>
+                                                <constraint firstItem="AHf-f2-bOR" firstAttribute="top" secondItem="2Vv-oL-rZK" secondAttribute="topMargin" constant="2" id="fzD-Hr-ovp"/>
+                                                <constraint firstItem="huH-II-KPe" firstAttribute="top" secondItem="2Vv-oL-rZK" secondAttribute="top" constant="10" id="pHq-K7-lDC"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.41960784309999999" green="0.77647058820000003" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="63I-Hb-zTL" id="iJL-rS-0WP"/>
+                                    <outlet property="delegate" destination="63I-Hb-zTL" id="ACT-ZU-X96"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="0rK-HB-X46"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="cKJ-Ti-W4W"/>
+                    <connections>
+                        <outlet property="tableView" destination="J7x-hG-sjb" id="lT0-sy-OY9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yVV-r8-VLy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3564.375" y="873.59154929577471"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BSL-bn-JC0">
@@ -261,7 +376,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uFv-F9-khC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2128" y="138"/>
+            <point key="canvasLocation" x="-935.625" y="137.32394366197184"/>
         </scene>
         <!--Temporary PasswordVC-->
         <scene sceneID="oRj-aH-Pgu">
@@ -393,7 +508,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mIF-k6-pwI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="199" y="137"/>
+            <point key="canvasLocation" x="1391.25" y="136.26760563380282"/>
         </scene>
         <!--Change PasswordVC-->
         <scene sceneID="Fl0-yK-fMn">
@@ -507,7 +622,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Mp-3f-Des" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1089" y="134"/>
+            <point key="canvasLocation" x="2280" y="133.09859154929578"/>
         </scene>
         <!--Verify AccoutVC-->
         <scene sceneID="oaL-51-rIi">
@@ -616,7 +731,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cgI-CT-ZQe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1802" y="135"/>
+            <point key="canvasLocation" x="2994.375" y="134.1549295774648"/>
         </scene>
         <!--Create AccountVC-->
         <scene sceneID="Z34-Tc-Y03">
@@ -734,6 +849,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Artboard 103xxhdpi" width="26" height="16"/>
+        <image name="Artboard 104xxhdpi" width="26" height="16"/>
         <image name="Artboard 142xxxhdpi" width="25" height="25"/>
         <image name="Artboard 88xxxhdpi" width="22" height="22"/>
         <image name="Artboard 89xxxhdpi" width="22" height="22"/>

@@ -12,8 +12,11 @@ class MyLumiProfileVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.title = "Profile"
+
     }
 
     override func didReceiveMemoryWarning() {

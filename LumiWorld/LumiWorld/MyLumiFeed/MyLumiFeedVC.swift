@@ -12,8 +12,9 @@ import UIKit
 class MyLumiFeedVC: UIViewController {
     
     override func viewDidLoad() {
-        
-        
+        self.tabBarController?.title = "Feed"
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+    }
+
 }
