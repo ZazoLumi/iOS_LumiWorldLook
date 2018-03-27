@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import RealmSwift
 import Realm
+import MBProgressHUD
 
 class LogInVC: UIViewController,FormDataDelegate {
     
@@ -49,24 +50,40 @@ class LogInVC: UIViewController,FormDataDelegate {
         do {
             var strUser : String  = formData["0"]!
             strUser = strUser.replacingOccurrences(of: "+", with:"")
+            let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+            hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
+
             let param = ["cellNumber": strUser, "password":formData["1"],"deviceToken":"123456789"]
             AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
 //                let userObj = UserData(json:json)
+                let tempDict = json.dictionary
+                guard let code = tempDict!["responsCode"]?.intValue, code != 0 else {
+                    let message = tempDict!["response"]?.string
+                    self.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
+                    })
+                    return
+                }
                 let realm = try! Realm()
                 let id : Int = json["id"].intValue
                 let data  = realm.objects(UserData.self).filter("id == %d", id)
                 let newObj = UserData(id : id , gcmId : json["gcmId"].string,profilePic : json["profilePic"].string,token : json["token"].string,updateDate : json["updateDate"].string,lastName : json["lastName"].string,appVersion : json["appVersion"].string,cell : json["cell"].string,status : json["status"].string,password : json["password"].string,createDate : json["createDate"].string,displayName : json["displayName"].string,firstName : json["firstName"].string)
 
+                GlobalShareData.sharedGlobal.currentUserDetails = newObj
                 if data.count>0 {
                     self.realmManager.editObjects(objs: newObj)
                 }
                 else {
                     self.realmManager.saveObjects(objs: newObj)
                 }
+                hud.hide(animated: true)
+
+                UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
                 print(json)
-                
             }, failure: { (Error) in
-                print(Error.localizedDescription)
+                hud.hide(animated: true)
+                self.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
+                    print(Error.localizedDescription)
+                })
             })
         } catch let jsonError{
             print(jsonError)

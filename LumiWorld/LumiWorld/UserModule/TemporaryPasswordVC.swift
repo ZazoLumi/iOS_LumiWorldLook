@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class TemporaryPasswordVC: UIViewController,FormDataDelegate {
     var customview : CustomTableView!
@@ -17,10 +18,10 @@ class TemporaryPasswordVC: UIViewController,FormDataDelegate {
     }
     override func viewDidAppear(_ animated: Bool) {
         let dict: [Rule] = [RequiredRule(), PhoneNumberRule()]
-        let dict1: [Rule] = [RequiredRule(), PasswordRule()]
+        let dict1: [Rule] = [RequiredRule(), MinLengthRule()]
         
-         customview = CustomTableView(placeholders: [["Mobile Number","Code"]], texts: [["",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
-            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict1],["rule":dict]],fieldType:[[1,6]])
+         customview = CustomTableView(placeholders: [["Mobile Number","Code"]], texts: [[GlobalShareData.sharedGlobal.userCellNumber,""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
+            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1]],fieldType:[[1,6]])
         customview.formDelegate = self
         viewTblData.addSubview(customview)
 
@@ -30,6 +31,35 @@ class TemporaryPasswordVC: UIViewController,FormDataDelegate {
     }
     
     @IBAction func onBtnResendCodeTapped(_ sender: Any) {
+        let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIForgotPassword)"
+        do {
+            let strUser = GlobalShareData.sharedGlobal.userCellNumber.replacingOccurrences(of: "+", with:"")
+            let param = ["cellNumber": strUser]
+            let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+            hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
+            
+            AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
+                print(json)
+                hud.hide(animated: true)
+                let tempDict = json.dictionary
+                guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    let message = tempDict!["responseText"]?.string
+                    self.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
+                    })
+                    return
+                }
+                self.showCustomAlert(strTitle: "Success", strDetails:"Temporary password has been sent on your register device.")
+                
+            }, failure: { (Error) in
+                hud.hide(animated: true)
+                self.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
+                    print(Error.localizedDescription)
+                })
+            })
+        } catch let jsonError{
+            print(jsonError)
+            
+        }
     }
     @IBAction func onBtnSignUpTapped(_ sender: Any) {
     }
@@ -51,7 +81,39 @@ class TemporaryPasswordVC: UIViewController,FormDataDelegate {
     }
     */
     func processedFormData(formData: Dictionary<String, String>) {
-        
+        let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIValidateCode)"
+        do {
+            var strUser : String  = formData["0"]!
+            strUser = strUser.replacingOccurrences(of: "+", with:"")
+            let param = ["cellNumber": strUser,"password":formData["1"], "deviceToken":"123454234326789"]
+            let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+            hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
+
+            AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
+                print(json)
+                hud.hide(animated: true)
+                let tempDict = json.dictionary
+                guard let code = tempDict!["responsCode"]?.intValue, code != 0 else {
+                    let message = tempDict!["response"]?.string
+                    self.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
+                    })
+                    return
+                }
+                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let objChangePasswordVC = storyBoard.instantiateViewController(withIdentifier: "ChangePasswordVC") as! ChangePasswordVC
+                    self.navigationController?.pushViewController(objChangePasswordVC, animated: true)
+
+            }, failure: { (Error) in
+                hud.hide(animated: true)
+                self.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
+                    print(Error.localizedDescription)
+                })
+            })
+        } catch let jsonError{
+            print(jsonError)
+            
+        }
+
     }
 
 }

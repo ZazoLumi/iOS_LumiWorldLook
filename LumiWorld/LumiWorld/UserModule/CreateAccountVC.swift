@@ -7,17 +7,25 @@
 //
 
 import UIKit
+import RealmSwift
+import Realm
+import SCLAlertView
+import MBProgressHUD
+
+typealias AlertResponseBlock = (String?) -> Void
+var alertCompletionBlock: AlertResponseBlock?
 
 class CreateAccountVC: UIViewController,FormDataDelegate {
     @IBOutlet weak var btnTermsAndCondition: UIButton!
     @IBOutlet weak var viewTblData: UIView!
+    var realmManager : RealmManager!
     var customview : CustomTableView!
 
     override func viewDidLoad() {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        let dict: [Rule] = [RequiredRule(), FullNameRule()]
+        let dict: [Rule] = [RequiredRule(), MinLengthRule()]
         let dict1: [Rule] = [RequiredRule(), MinLengthRule()]
         let dict2: [Rule] = [RequiredRule(), MinLengthRule()]
         let dict3: [Rule] = [RequiredRule(), PhoneNumberRule()]
@@ -35,7 +43,7 @@ class CreateAccountVC: UIViewController,FormDataDelegate {
         btnTermsAndCondition.isSelected  ? (btnTermsAndCondition.isSelected = false) : (btnTermsAndCondition.isSelected = true)
         
     }
-    @IBAction func onBtnChangePasswordTapped(_ sender: Any) {
+    @IBAction func onBtnCreateAccountTapped(_ sender: Any) {
         customview.doneAction()
     }
     
@@ -57,7 +65,83 @@ class CreateAccountVC: UIViewController,FormDataDelegate {
      }
      */
     func processedFormData(formData: Dictionary<String, String>) {
+        let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APICreateAccount)"
+        do {
+            if !btnTermsAndCondition.isSelected {
+                showCustomAlert(strTitle: "", strDetails: "Please accept Terms and Conditions.", completion: { (str) in
+                    
+                })
+            }
+            else {
+                var strCellNumber : String  = formData["3"]!
+                strCellNumber = strCellNumber.replacingOccurrences(of: "+", with:"")
+                let newObj = UserData(id : 123456 , gcmId : nil,profilePic : nil,token : nil,updateDate : nil,lastName : formData["1"],appVersion : nil,cell : strCellNumber,status : nil,password : formData["4"],createDate : nil,displayName : formData["2"],firstName : formData["0"])
+
+                let param = ["cellNumber": strCellNumber,"firstName":formData["0"],"lastName":formData["1"],"displayName":formData["2"],"deviceToken":"123456789"]
+                let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
+
+                AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
+                    //                let userObj = UserData(json:json)
+                    GlobalShareData.sharedGlobal.currentUserDetails = newObj
+                    hud.hide(animated: true)
+                    let tempDict = json.dictionary
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        let message = tempDict!["responseText"]?.string
+                        self.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
+                        })
+                        return
+                    }
+
+                    self.showCustomAlert(strTitle: "Success", strDetails: "Your account is created successfully.", completion: { (str) in
+                        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                        let objVerifyAccoutVC = storyBoard.instantiateViewController(withIdentifier: "VerifyAccoutVC") as! VerifyAccoutVC
+                        self.navigationController?.pushViewController(objVerifyAccoutVC, animated: true)
+                    })
+                    print(json)
+                }, failure: { (Error) in
+                    hud.hide(animated: true)
+                    self.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
+                        print(Error.localizedDescription)
+                    })
+                })
+            }
+
+        } catch let jsonError{
+            print(jsonError)
+            
+        }
         
     }
 
 }
+
+extension UIViewController {
+    // new functionality to add to SomeType goes here
+    func showCustomAlert(strTitle : String, strDetails : String, completion: AlertResponseBlock? = nil) -> Void {
+        alertCompletionBlock = completion
+        let appearance = SCLAlertView.SCLAppearance(
+            kTitleFont: UIFont(name: "HelveticaNeue", size: 20)!,
+            kTextFont: UIFont(name: "HelveticaNeue", size: 14)!,
+            kButtonFont: UIFont(name: "HelveticaNeue-Bold", size: 14)!,
+            showCloseButton: false,
+            dynamicAnimatorActive: true,
+            buttonsLayout: .horizontal
+        )
+        let alert = SCLAlertView(appearance: appearance)
+        _ = alert.addButton("OK") {
+            alertCompletionBlock?("OK button tapped")
+            print("OK button tapped")
+        }
+        
+        let icon = UIImage(named:"Artboard 128xxhdpi")
+        let color = UIColor(red: 110, green: 187, blue: 171)
+        
+        _ = alert.showCustom(strTitle, subTitle: strDetails, color: color!, icon:icon!)
+        // ...
+        // optional closure callback
+
+    }
+    
+}
+

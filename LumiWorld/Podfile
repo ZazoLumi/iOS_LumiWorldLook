@@ -13,6 +13,8 @@ target 'LumiWorld' do
   pod 'Alamofire'
   pod 'SwiftyJSON'
   pod 'L10n-swift'
+  pod 'SCLAlertView'
+  pod 'MBProgressHUD'
   # Pods for LumiWorld
 
 end

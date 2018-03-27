@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class VerifyAccoutVC: UIViewController,FormDataDelegate {
     var customview : CustomTableView!
@@ -17,7 +18,7 @@ class VerifyAccoutVC: UIViewController,FormDataDelegate {
         
     }
     override func viewDidAppear(_ animated: Bool) {
-        let dict: [Rule] = [RequiredRule(), PhoneNumberRule()]
+        let dict: [Rule] = [RequiredRule(), MinLengthRule()]
         
          customview = CustomTableView(placeholders: [["Code"]], texts: [[""]], images:[["Artboard 72xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict]],fieldType:[[6]])
@@ -51,7 +52,39 @@ class VerifyAccoutVC: UIViewController,FormDataDelegate {
     }
     */
     func processedFormData(formData: Dictionary<String, String>) {
-        
+        let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIVerifyAccount)"
+        do {
+            
+            var strCellNumber : String  = GlobalShareData.sharedGlobal.currentUserDetails.cell!
+            strCellNumber = strCellNumber.replacingOccurrences(of: "+", with:"")
+            let param = ["tempPassword": formData["0"],"cellNumber":strCellNumber,"password":GlobalShareData.sharedGlobal.currentUserDetails.password]
+            let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+            hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
+
+            AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
+                print(json)
+                hud.hide(animated: true)
+                let tempDict = json.dictionary
+                guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    let message = tempDict!["responseText"]?.string
+                    self.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
+                    })
+                    return
+                }
+                self.showCustomAlert(strTitle: "Success", strDetails: "Your account is verified successfully.", completion: { (str) in
+                    self.navigationController?.popToRootViewController(animated: true)
+                })
+            }, failure: { (Error) in
+                hud.hide(animated: true)
+                self.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
+                    print(Error.localizedDescription)
+                })
+            })
+        } catch let jsonError{
+            print(jsonError)
+            
+        }
+
     }
 
 }

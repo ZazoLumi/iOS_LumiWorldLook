@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class ChangePasswordVC: UIViewController,FormDataDelegate {
     var customview : CustomTableView!
@@ -21,7 +22,7 @@ class ChangePasswordVC: UIViewController,FormDataDelegate {
         let dict1: [Rule] = [RequiredRule(), PasswordRule()]
         let dict2: [Rule] = [RequiredRule(), PasswordRule()]
 
-         customview = CustomTableView(placeholders: [["Mobile Number","New Password","Repeat New Password"]], texts: [["","",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
+         customview = CustomTableView(placeholders: [["Mobile Number","New Password","Repeat New Password"]], texts: [[GlobalShareData.sharedGlobal.userCellNumber,"",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1],["rule":dict2]],fieldType:[[1,2,3]])
         customview.formDelegate = self
         viewTblData.addSubview(customview)
@@ -54,7 +55,44 @@ class ChangePasswordVC: UIViewController,FormDataDelegate {
     }
     */
     func processedFormData(formData: Dictionary<String, String>) {
-        
+        let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIChangePassword)"
+        do {
+            if !btnTermsAndCondition.isSelected {
+                showCustomAlert(strTitle: "", strDetails: "Please accept Terms and Conditions.", completion: { (str) in
+                })
+            }
+            else {
+            var strUser : String  = formData["0"]!
+            strUser = strUser.replacingOccurrences(of: "+", with:"")
+            let param = ["cellNumber": strUser,"newPassword":formData["1"]]
+            let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+            hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
+            AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
+                print(json)
+                hud.hide(animated: true)
+                let tempDict = json.dictionary
+                guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    let message = tempDict!["responseText"]?.string
+                    self.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
+                    })
+                    return
+                }
+
+                self.showCustomAlert(strTitle: "Success", strDetails: "Your password is changed successfully.", completion: { (str) in
+                    self.navigationController?.popToRootViewController(animated: true)
+                })
+                
+            }, failure: { (Error) in
+                hud.hide(animated: true)
+                self.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
+                    print(Error.localizedDescription)
+                })
+            })}
+        } catch let jsonError{
+            print(jsonError)
+            
+        }
+
     }
 
 }

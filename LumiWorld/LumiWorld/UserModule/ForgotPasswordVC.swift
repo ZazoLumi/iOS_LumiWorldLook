@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class ForgotPasswordVC: UIViewController,FormDataDelegate {
     var customview : CustomTableView!
@@ -53,7 +54,41 @@ class ForgotPasswordVC: UIViewController,FormDataDelegate {
     }
     */
     func processedFormData(formData: Dictionary<String, String>) {
-        
+        let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIForgotPassword)"
+        do {
+            var strUser : String  = formData["0"]!
+            GlobalShareData.sharedGlobal.userCellNumber = strUser
+            strUser = strUser.replacingOccurrences(of: "+", with:"")
+            let param = ["cellNumber": strUser]
+            let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+            hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
+
+            AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
+                print(json)
+                hud.hide(animated: true)
+                let tempDict = json.dictionary
+                guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    let message = tempDict!["responseText"]?.string
+                    self.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
+                    })
+                    return
+                }
+
+                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let objTemporaryPasswordVC = storyBoard.instantiateViewController(withIdentifier: "TemporaryPasswordVC") as! TemporaryPasswordVC
+                self.navigationController?.pushViewController(objTemporaryPasswordVC, animated: true)
+
+                
+            }, failure: { (Error) in
+                hud.hide(animated: true)
+                self.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
+                    print(Error.localizedDescription)
+                })
+            })
+        } catch let jsonError{
+            print(jsonError)
+            
+        }
     }
 
 }
