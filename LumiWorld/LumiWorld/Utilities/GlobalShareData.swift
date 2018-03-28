@@ -14,6 +14,10 @@ struct Constants {
         static let APIValidateCode = ":13004/pushNotif/userLogin"
         static let APIChangePassword = ":13004/consumer/changePassword"
         static let APIVerifyAccount = ":13004/pushNotif/validateVerificationCode"
+        static let APIGetLumiCategory = ":13004/sectors/getAllSectors"
+        static let APIGetLumineerCompany = ":13004/enterprise/getAllActiveLumineerList"
+
+
     }
 }
 
@@ -47,7 +51,8 @@ class GlobalShareData {
     static let sharedGlobal = GlobalShareData()
     public var currentUserDetails = UserData()
     var userCellNumber: String! //for debugging
-    
+    var realmManager = RealmManager()
+
     //var member:[Info] = []
     func isDebug() -> Bool {
         #if DEBUG

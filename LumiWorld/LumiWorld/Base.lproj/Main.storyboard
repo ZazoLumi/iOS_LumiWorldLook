@@ -286,12 +286,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J7x-hG-sjb">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J7x-hG-sjb">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="tableCell" rowHeight="74" id="yHg-QZ-gQg">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LumineerCompanyCell" rowHeight="74" id="yHg-QZ-gQg" customClass="LumineerCompanyCell" customModule="LumiWorld" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="74"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yHg-QZ-gQg" id="2Vv-oL-rZK">
@@ -316,7 +315,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" priority="750" constant="22" id="gE8-LQ-xDj"/>
                                                         <constraint firstAttribute="width" secondItem="zpu-ci-s0I" secondAttribute="height" multiplier="13:11" id="s10-rJ-mtS"/>
-                                                        <constraint firstAttribute="width" priority="750" constant="26" id="zMk-gJ-yhr"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="26" id="zMk-gJ-yhr"/>
                                                     </constraints>
                                                     <state key="normal" image="Artboard 103xxhdpi"/>
                                                     <userDefinedRuntimeAttributes>
@@ -339,6 +338,11 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.41960784309999999" green="0.77647058820000003" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <outlet property="btnFollowUnfollow" destination="zpu-ci-s0I" id="gga-aK-hVx"/>
+                                            <outlet property="imgCompanyLogo" destination="huH-II-KPe" id="YJs-gj-HsR"/>
+                                            <outlet property="lblCompanyName" destination="AHf-f2-bOR" id="QLP-wM-jGl"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -348,6 +352,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="J7x-hG-sjb" secondAttribute="bottom" id="QkC-MN-JPQ"/>
+                            <constraint firstItem="J7x-hG-sjb" firstAttribute="trailing" secondItem="0rK-HB-X46" secondAttribute="trailing" id="ffI-X0-Yol"/>
+                            <constraint firstItem="J7x-hG-sjb" firstAttribute="leading" secondItem="0rK-HB-X46" secondAttribute="leading" id="qiw-aW-YVR"/>
+                            <constraint firstItem="J7x-hG-sjb" firstAttribute="top" secondItem="Iwg-mO-v6t" secondAttribute="top" id="w5u-10-YZQ"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="0rK-HB-X46"/>
                     </view>
                     <navigationItem key="navigationItem" id="cKJ-Ti-W4W"/>

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		093F445E206B715900BC9983 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445D206B715800BC9983 /* UserData.swift */; };
+		093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445F206B717F00BC9983 /* LumiCategory.swift */; };
+		093F4462206B7BC700BC9983 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F4461206B7BC700BC9983 /* Reachability.swift */; };
 		0964E591205FC811007E5924 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E557205FC811007E5924 /* AppDelegate.swift */; };
 		0964E592205FC811007E5924 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0964E558205FC811007E5924 /* Assets.xcassets */; };
 		0964E593205FC811007E5924 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0964E559205FC811007E5924 /* LaunchScreen.storyboard */; };
@@ -63,13 +66,16 @@
 		0964E7382060F981001D6F47 /* LumiCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */; };
 		096C2EF92064E28E0015C0A9 /* GlobalShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */; };
 		09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0B2065042B00C74E1F /* AFWrapper.swift */; };
-		09D98A0E206521D500C74E1F /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0D206521D500C74E1F /* UserData.swift */; };
 		09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0F20652D6F00C74E1F /* RealmManager.swift */; };
 		67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0900544620591EC700262084 /* LumiWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LumiWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		093F445D206B715800BC9983 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		093F445F206B717F00BC9983 /* LumiCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiCategory.swift; sourceTree = "<group>"; };
+		093F4461206B7BC700BC9983 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		093F4463206B7BE500BC9983 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0964E557205FC811007E5924 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0964E558205FC811007E5924 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0964E55A205FC811007E5924 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -127,7 +133,6 @@
 		0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LumiCategoryVC.swift; sourceTree = "<group>"; };
 		096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShareData.swift; sourceTree = "<group>"; };
 		09D98A0B2065042B00C74E1F /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
-		09D98A0D206521D500C74E1F /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		09D98A0F20652D6F00C74E1F /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		1ED9069746B80D308CA990E5 /* Pods-LumiWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LumiWorld.release.xcconfig"; path = "Pods/Target Support Files/Pods-LumiWorld/Pods-LumiWorld.release.xcconfig"; sourceTree = "<group>"; };
 		6FEF0ECD00478AAAF31FB7D6 /* Pods-testSVG.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testSVG.debug.xcconfig"; path = "Pods/Target Support Files/Pods-testSVG/Pods-testSVG.debug.xcconfig"; sourceTree = "<group>"; };
@@ -166,9 +171,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		093F445C206B715800BC9983 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				093F445D206B715800BC9983 /* UserData.swift */,
+				093F445F206B717F00BC9983 /* LumiCategory.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		0964E556205FC811007E5924 /* LumiWorld */ = {
 			isa = PBXGroup;
 			children = (
+				093F445C206B715800BC9983 /* Models */,
 				0964E70D2060F981001D6F47 /* LumiCategory */,
 				0964E6DA2060F981001D6F47 /* MyLumiFeed */,
 				0964E6DC2060F981001D6F47 /* MyLumiProfile */,
@@ -242,10 +257,10 @@
 			children = (
 				09D98A0F20652D6F00C74E1F /* RealmManager.swift */,
 				09D98A0B2065042B00C74E1F /* AFWrapper.swift */,
-				096C2EF72064E1A60015C0A9 /* Models */,
 				0964E6E92060F981001D6F47 /* SwiftValidator */,
 				0964E7072060F981001D6F47 /* TextFieldTableViewController */,
 				096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */,
+				093F4461206B7BC700BC9983 /* Reachability.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -320,14 +335,6 @@
 			path = LumiCategory;
 			sourceTree = "<group>";
 		};
-		096C2EF72064E1A60015C0A9 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				09D98A0D206521D500C74E1F /* UserData.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		2856D921F31031F6DF78EF6E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -342,6 +349,7 @@
 		B6393628CC4CD6B70DE3677E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				093F4463206B7BE500BC9983 /* SystemConfiguration.framework */,
 				B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */,
 			);
 			name = Frameworks;
@@ -447,6 +455,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-LumiWorld/Pods-LumiWorld-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/ESTabBarController-swift/ESTabBarController_swift.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/L10n-swift/L10n_swift.framework",
@@ -462,6 +471,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ESTabBarController_swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/L10n_swift.framework",
@@ -527,12 +537,14 @@
 				0964E6D42060F8ED001D6F47 /* ChangePasswordVC.swift in Sources */,
 				0964E6D72060F8ED001D6F47 /* LogInVC.swift in Sources */,
 				0964E7362060F981001D6F47 /* TextFieldTableViewCell.swift in Sources */,
+				093F445E206B715900BC9983 /* UserData.swift in Sources */,
 				0964E5C2205FC811007E5924 /* ViewController.swift in Sources */,
 				0964E7372060F981001D6F47 /* TextFieldTableViewController.swift in Sources */,
 				0964E7312060F981001D6F47 /* ValidationRule.swift in Sources */,
+				093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */,
 				0964E7262060F981001D6F47 /* FullNameRule.swift in Sources */,
+				093F4462206B7BC700BC9983 /* Reachability.swift in Sources */,
 				0964E7292060F981001D6F47 /* ISBNRule.swift in Sources */,
-				09D98A0E206521D500C74E1F /* UserData.swift in Sources */,
 				0964E7382060F981001D6F47 /* LumiCategoryVC.swift in Sources */,
 				0964E70F2060F981001D6F47 /* MyLumiFeedVC.swift in Sources */,
 				0964E7112060F981001D6F47 /* ExampleAnimateTipsContentView.swift in Sources */,

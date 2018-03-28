@@ -15,6 +15,7 @@ target 'LumiWorld' do
   pod 'L10n-swift'
   pod 'SCLAlertView'
   pod 'MBProgressHUD'
+  pod 'AlamofireImage'
   # Pods for LumiWorld
 
 end

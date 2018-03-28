@@ -15,14 +15,12 @@ import MBProgressHUD
 class LogInVC: UIViewController,FormDataDelegate {
     
     var customview : CustomTableView!
-    var realmManager : RealmManager!
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
     @IBOutlet weak var viewTblData: UIView!
     override func viewDidLoad() {
-        realmManager = RealmManager()
 
     }
     
@@ -74,10 +72,10 @@ class LogInVC: UIViewController,FormDataDelegate {
 
                 GlobalShareData.sharedGlobal.currentUserDetails = newObj
                 if data.count>0 {
-                    self.realmManager.editObjects(objs: newObj)
+                    GlobalShareData.sharedGlobal.realmManager.editObjects(objs: newObj)
                 }
                 else {
-                    self.realmManager.saveObjects(objs: newObj)
+                    GlobalShareData.sharedGlobal.realmManager.saveObjects(objs: newObj)
                 }
 
                 UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
