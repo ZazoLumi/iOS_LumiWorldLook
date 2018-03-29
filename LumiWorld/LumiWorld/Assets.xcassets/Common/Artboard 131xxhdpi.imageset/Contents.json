@@ -6,12 +6,24 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "Artboard 131xhdpi.png",
+      "filename" : "Artboard 131xxhdpi.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Artboard 131xxhdpi.png",
+      "filename" : "Artboard 131xxxhdpi.png",
+      "scale" : "3x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "Icon (8)@2x.png",
+      "unassigned" : true,
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "Icon (8)@3x.png",
+      "unassigned" : true,
       "scale" : "3x"
     }
   ],

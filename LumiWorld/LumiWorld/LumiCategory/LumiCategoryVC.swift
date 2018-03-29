@@ -277,6 +277,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             self.tableView!.beginUpdates()
             self.tableView!.deleteRows(at: indexesPath, with: UITableViewRowAnimation.fade)
             self.tableView!.endUpdates()
+            
         }
     }
     
@@ -318,15 +319,17 @@ extension UINavigationItem {
         let img = UIImage(named: "Artboard 131xxhdpi")
         btn1.setImage(img, for: .normal)
         btn1.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        btn1.addTarget(self, action: #selector(gotSettingPage), for: UIControlEvents.touchUpInside)
+        btn1.addTarget(self, action:#selector(gotoSettingPage(_:)), for: .touchUpInside)
         let barButton = UIBarButtonItem(customView: btn1)
         self.rightBarButtonItem = barButton
     }
-    
-    @objc func gotSettingPage(){
-        
+        @objc func gotoSettingPage(_ sender: UIButton){
+            
+        }
     }
-}
+    
+    
+
 extension UIImage {
     
     /*
@@ -339,4 +342,19 @@ extension UIImage {
         }
         return UIImage()
     }
+}
+extension UIView {
+    var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while parentResponder != nil {
+            parentResponder = parentResponder!.next
+            if let viewController = parentResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
+    }
+}
+func appDelInstance() -> AppDelegate{
+    return UIApplication.shared.delegate as! AppDelegate
 }

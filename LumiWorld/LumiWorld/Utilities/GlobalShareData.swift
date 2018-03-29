@@ -63,7 +63,11 @@ class GlobalShareData {
         return true
     }
     
+    
+    
 }
+
+
 //// Use the singleton like this
 //let singleton = Global.sharedGlobal
 //
