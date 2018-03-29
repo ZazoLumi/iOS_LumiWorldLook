@@ -14,11 +14,8 @@ import MBProgressHUD
 class LumineerList : Object{
     @objc private(set) dynamic var id = 0
     @objc dynamic var name: String? = nil
-    @objc dynamic var sectorID: String? = nil
-
     @objc dynamic var sectorName: String? = nil
     @objc dynamic var shortDescription: String? = nil
-    @objc dynamic var status: String? = nil
     @objc dynamic var contactNumber: String? = nil
     @objc dynamic var emailAddress : String? = nil
     @objc dynamic var companyRegistrationNumber : String? = nil
@@ -28,9 +25,15 @@ class LumineerList : Object{
     @objc dynamic var enterpriseCoverPage : String? = nil
     @objc dynamic var displayName : String? = nil
     @objc dynamic var logoURL : String? = nil
-    @objc dynamic var parentid : String? = nil
+    @objc private(set) dynamic var parentid = 0
+    @objc private(set) dynamic var sectorID = 0
+    @objc private(set) dynamic var status = 0
     
-    public func getLumineerCompany(completionHandler: @escaping (_ objData: List<LumiCategory>) -> Void) {
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+
+    public func getLumineerCompany(completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerCompany)"
@@ -42,15 +45,15 @@ class LumineerList : Object{
                         let aObject = tempArray[index]
                         let realm = try! Realm()
                         let id : Int = aObject["id"].intValue
-                        let objCategory  = realm.objects(LumiCategory.self).filter("id == %d", id)
+                        let objCategory  = realm.objects(LumiCategory.self).filter("id == %d", aObject["parentid"].intValue)
                         
                         let newLumineerObj = LumineerList()
                         newLumineerObj.id = id
                         newLumineerObj.name = aObject["name"].string
-                        newLumineerObj.sectorID = aObject["sectorID"].string
+                        newLumineerObj.sectorID = aObject["sectorID"].intValue
                         newLumineerObj.sectorName = aObject["sectorName"].string
                         newLumineerObj.shortDescription = aObject["shortDescription"].string
-                        newLumineerObj.status = aObject["status"].string
+                        newLumineerObj.status = aObject["status"].intValue
                         newLumineerObj.contactNumber = aObject["contactNumber"].string
                         newLumineerObj.emailAddress = aObject["emailAddress"].string
                         newLumineerObj.companyRegistrationNumber = aObject["companyRegistrationNumber"].string
@@ -60,19 +63,23 @@ class LumineerList : Object{
                         newLumineerObj.enterpriseCoverPage = aObject["enterpriseCoverPage"].string
                         newLumineerObj.displayName = aObject["displayName"].string
                         newLumineerObj.logoURL = aObject["logoURL"].string
-                        newLumineerObj.parentid = aObject["parentid"].string
+                        newLumineerObj.parentid = aObject["parentid"].intValue
                         
                         
-                        let lumineerList = objCategory[0].lumineerList
-                        lumineerList.append(newLumineerObj)
-                        objCategory[0].lumineerList = lumineerList
                         if objCategory.count>0 {
+                            let lumineerList = objCategory[0].lumineerList
+                            try! realm.write {
+                                realm.add(newLumineerObj, update: true)
+                                lumineerList.append(newLumineerObj)
+                            }
+                            objCategory[0].lumineerList = lumineerList
                             GlobalShareData.sharedGlobal.realmManager.editObjects(objs: objCategory[0])
                         }
                         
                     }
-//                    let objCategory  = realm?.objects(LumiCategory.self)
-//                    completionHandler(objCategory)
+                    
+                    let objCategory  = GlobalShareData.sharedGlobal.realmManager.getObjects(type: LumiCategory.self)
+                    completionHandler(objCategory!)
                     print(json)
                 }, failure: { (Error) in
                 })
@@ -122,12 +129,8 @@ class LumiCategory : Object{
         print("Internet Connection Available!")
         let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumiCategory)"
         do {
-            let hud = MBProgressHUD.showAdded(to: (viewCtrl.view)!, animated: true)
-            hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
-            
             AFWrapper.requestGETURL(urlString, success: { (json) in
                 let tempArray = json.arrayValue
-                hud.hide(animated: true)
                 for index in 0...tempArray.count-1 {
                     let aObject = tempArray[index]
                     let realm = try! Realm()
@@ -145,7 +148,6 @@ class LumiCategory : Object{
                 completionHandler(aryCategory)
                 print(json)
             }, failure: { (Error) in
-                hud.hide(animated: true)
                 viewCtrl.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
                     print(Error.localizedDescription)
                 })

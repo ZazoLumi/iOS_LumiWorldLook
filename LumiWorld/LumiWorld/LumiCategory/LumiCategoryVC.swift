@@ -9,12 +9,21 @@
 import UIKit
 import AlamofireImage
 import Alamofire
-
 class LumineerCompanyCell: UITableViewCell {
     
     @IBOutlet weak var btnFollowUnfollow: UIButton!
     @IBOutlet weak var lblCompanyName: UILabel!
     @IBOutlet weak var imgCompanyLogo: UIImageView!
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.imgCompanyLogo.layer.cornerRadius = self.imgCompanyLogo.bounds.size.height * 0.50
+        self.imgCompanyLogo.layer.borderWidth = 0.5;
+        self.imgCompanyLogo.layer.borderColor = UIColor.black.cgColor;
+
+    }
+
+
 }
 
 class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSource {
@@ -26,9 +35,8 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     
     var expandedSectionHeaderNumber: Int = -1
     var expandedSectionHeader: UITableViewHeaderFooterView!
-    var sectionItems: Array<Any> = []
     var aryCategory: [LumiCategory] = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.navigationItem.addSettingButtonOnRight()
@@ -37,21 +45,53 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         self.tabBarController?.navigationController?.navigationBar.titleTextAttributes = attributes
 
 
-        sectionItems = [ ["iPhone 5", "iPhone 5s", "iPhone 6", "iPhone 6 Plus", "iPhone 7", "iPhone 7 Plus"],
-                         ["iPad Mini", "iPad Air 2", "iPad Pro", "iPad Pro 9.7"],
-                         ["Apple Watch", "Apple Watch 2", "Apple Watch 2 (Nike)"]
-        ];
         self.tableView!.tableFooterView = UIView()
-        let objLumiCate = LumiCategory()
-        objLumiCate.getLumiCategory(viewCtrl: self) { (aryCategory) in
-               self.aryCategory = aryCategory
-               self.tableView.reloadData()
-        }
+//        let objLumiCate = LumiCategory()
+//        objLumiCate.getLumiCategory(viewCtrl: self) { (aryCategory) in
+//               self.aryCategory = aryCategory
+//               self.tableView.reloadData()
+//            DispatchQueue.global(qos: .userInitiated).async {
+//                let objLumineerList = LumineerList()
+//                objLumineerList.getLumineerCompany(completionHandler: { (List) in
+//                    self.aryCategory = [LumiCategory]()
+//                        for element in List {
+//                            if let category = element as? LumiCategory {
+//                                self.aryCategory.append(category)
+//                            }
+//                    }
+//                    DispatchQueue.main.async {
+//                        self.tableView.reloadData()
+//                    }
+//                })
+//            }
+//
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.title = "LUMINEER CATEGORIES"
+        
+        let objLumiCate = LumiCategory()
+        DispatchQueue.global(qos: .userInitiated).async {
+        objLumiCate.getLumiCategory(viewCtrl: self) { (aryCategory) in
+            self.aryCategory = aryCategory
+            //self.tableView.reloadData()
+                let objLumineerList = LumineerList()
+                objLumineerList.getLumineerCompany(completionHandler: { (List) in
+                    self.aryCategory = [LumiCategory]()
+                    for element in List {
+                        if let category = element as? LumiCategory {
+                            self.aryCategory.append(category)
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                })
+            }
+            
+        }
 
     }
     
@@ -68,10 +108,11 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             return aryCategory.count
         } else {
             let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
-            messageLabel.text = "Retrieving data.\nPlease wait."
+            messageLabel.text = "Retrieving data.\nPlease wait.."
             messageLabel.numberOfLines = 0;
             messageLabel.textAlignment = .center;
-            messageLabel.font = UIFont(name: "HelveticaNeue", size: 20.0)!
+            messageLabel.textColor = UIColor.init(hexString: "757576")
+            messageLabel.font = UIFont(name: "HelveticaNeue", size: 20)
             messageLabel.sizeToFit()
             self.tableView.backgroundView = messageLabel;
         }
@@ -80,7 +121,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (self.expandedSectionHeaderNumber == section) {
-            let arrayOfItems = self.sectionItems[section] as! NSArray
+            let arrayOfItems = self.aryCategory[section].lumineerList
             return arrayOfItems.count;
         } else {
             return 0;
@@ -94,7 +135,10 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 44.0;
     }
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 64
+    }
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat{
         return 0;
     }
@@ -164,11 +208,15 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LumineerCompanyCell", for: indexPath) as! LumineerCompanyCell
+        let arrayOfItems = self.aryCategory[indexPath.section].lumineerList
         
-        let section = self.sectionItems[indexPath.section] as! NSArray
-        cell.textLabel?.textColor = UIColor.black
-        cell.textLabel?.text = section[indexPath.row] as? String
+        let objLumineer = arrayOfItems[indexPath.row] as LumineerList
         
+        cell.lblCompanyName.text = objLumineer.name
+        let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
+        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgCompanyLogo.frame.size.width, height: cell.imgCompanyLogo.frame.size.height))
+
+        cell.imgCompanyLogo.image = scalImg
         return cell
     }
     
@@ -188,7 +236,10 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         if (self.expandedSectionHeaderNumber == -1) {
             self.expandedSectionHeaderNumber = section!
             tableViewExpandSection(section!, imageView: eImageView!)
-            eBtnView?.isSelected = true
+            let sectionData = self.aryCategory[section!].lumineerList
+            if sectionData.count>0{
+                eBtnView?.isSelected = true
+            }
         } else {
             if (self.expandedSectionHeaderNumber == section) {
                 tableViewCollapeSection(section!, imageView: eImageView!)
@@ -200,14 +251,17 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView!)
                 tableViewExpandSection(section!, imageView: eImageView!)
                 cBtnView?.isSelected = false
-                eBtnView?.isSelected = true
+                let sectionData = self.aryCategory[section!].lumineerList
+                if sectionData.count>0{
+                    eBtnView?.isSelected = true
+                }
             }
         }
     }
     
     func tableViewCollapeSection(_ section: Int, imageView: UIImageView) {
-        let sectionData = self.sectionItems[section] as! NSArray
-        
+        let sectionData = self.aryCategory[section].lumineerList
+
         self.expandedSectionHeaderNumber = -1;
         if (sectionData.count == 0) {
             return;
@@ -227,8 +281,8 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     }
     
     func tableViewExpandSection(_ section: Int, imageView: UIImageView) {
-        let sectionData = self.sectionItems[section] as! NSArray
-        
+        let sectionData = self.aryCategory[section].lumineerList
+
         if (sectionData.count == 0) {
             self.expandedSectionHeaderNumber = -1;
             return;
@@ -271,5 +325,18 @@ extension UINavigationItem {
     
     @objc func gotSettingPage(){
         
+    }
+}
+extension UIImage {
+    
+    /*
+     @brief decode image base64
+     */
+    static func decodeBase64(strEncodeData: String!) -> UIImage {
+      var newEncodeData = strEncodeData.replacingOccurrences(of: "data:image/png;base64,", with: "")
+        if let decData = Data(base64Encoded: newEncodeData, options: .ignoreUnknownCharacters), newEncodeData.characters.count > 0 {
+            return UIImage(data: decData)!
+        }
+        return UIImage()
     }
 }
