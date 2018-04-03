@@ -211,7 +211,12 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         let arrayOfItems = self.aryCategory[indexPath.section].lumineerList
         
         let objLumineer = arrayOfItems[indexPath.row] as LumineerList
-        
+        if objLumineer.status==1 {
+            cell.btnFollowUnfollow.isSelected = true
+        }
+        else {
+            cell.btnFollowUnfollow.isSelected = false
+        }
         cell.lblCompanyName.text = objLumineer.name
         let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgCompanyLogo.frame.size.width, height: cell.imgCompanyLogo.frame.size.height))
@@ -231,7 +236,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         let section    = headerView?.tag
         let eImageView = headerView?.viewWithTag(kHeaderSectionTag + section!) as? UIImageView
         let eBtnView = headerView?.viewWithTag(kHeaderDataTag + section!) as? UIButton
-
         
         if (self.expandedSectionHeaderNumber == -1) {
             self.expandedSectionHeaderNumber = section!
@@ -323,13 +327,82 @@ extension UINavigationItem {
         let barButton = UIBarButtonItem(customView: btn1)
         self.rightBarButtonItem = barButton
     }
+
         @objc func gotoSettingPage(_ sender: UIButton){
+            let actionSheet = UIAlertController(title: "\n\n\n\n\n\n", message: nil, preferredStyle: .actionSheet)
+            let firstSubview = actionSheet.view.subviews.first
+            let alertContentView: UIView? = firstSubview?.subviews.first
+
+            let view = UIView(frame: CGRect(x: 5, y: 2, width: actionSheet.view.bounds.size.width - 7 * 4.5, height:125))
+            view.backgroundColor = UIColor.init(red: 240, green: 240, blue: 237)
+            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
+            actionSheet.view.addSubview(view)
             
+            let btnProfile = UIButton.init(type: .custom)
+            btnProfile.frame = CGRect.init(x: 0, y: 10, width: Int(view.frame.size.width), height:115)
+            btnProfile.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 18)
+            btnProfile.setTitle("Test User Data", for: .normal)
+            btnProfile.setImage(UIImage(named: "nazish_passport_size"), for: .normal)
+            btnProfile.backgroundColor = UIColor.clear
+            btnProfile.contentHorizontalAlignment = .left
+            btnProfile.setTitleColor(UIColor.init(hexString: "757576"), for: .normal)
+            btnProfile.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+            btnProfile.addTarget(self, action:#selector(actionProfileTapped(_:)), for: .touchUpInside)
+            view.addSubview(btnProfile)
+            
+            
+            let view1 = UIView(frame: CGRect(x: 5, y: 130, width: actionSheet.view.bounds.size.width - 7 * 4.5, height: 330))
+            view1.backgroundColor = UIColor.clear
+            actionSheet.view.addSubview(view1)
+            
+            var yPos = 0
+            let arrSheetData  = [["title":"Support","img":""],["title":"Terms & Conditions","img":""],["title":"Lumi World Messages","img":""],["title":"About","img":""],["title":"How To Use","img":""],["title":"Logout","img":""]]
+            for  i in 0...5 {
+                let btnAction = UIButton.init(type: .custom)
+                btnAction.frame = CGRect.init(x: 0, y: yPos, width: Int(view1.frame.size.width), height:55)
+                btnAction.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 18)
+                btnAction.tag = 200+i
+                btnAction.setTitle(arrSheetData[i]["title"], for: .normal)
+                btnAction.setImage(UIImage(named: arrSheetData[i]["img"]!), for: .normal)
+                btnAction.backgroundColor = UIColor.clear
+                btnAction.contentHorizontalAlignment = .left
+                btnAction.setTitleColor(UIColor(red: 110, green: 187, blue: 171), for: .normal)
+                btnAction.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+                btnAction.addTarget(self, action:#selector(actionItemTapped(_:)), for: .touchUpInside)
+                view1.addSubview(btnAction)
+                yPos+=57
+                if i == 3 {
+                   yPos -= 3
+                }
+            }
+            
+            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
+            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
+            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
+            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
+            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
+            let cancelAction = UIAlertAction(title:"Cancel", style:.destructive)
+            cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+            actionSheet.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+            sender.superview?.parentViewController?.present(actionSheet, animated: true, completion: nil)
+            for subSubView: UIView in (alertContentView?.subviews)! {
+                //This is main catch
+                subSubView.backgroundColor = UIColor.init(red: 240, green: 240, blue: 237)
+                //Here you change background
+            }
+
         }
+    @objc func actionItemTapped(_ sender: UIButton) {
+        let btnAction :UIButton = sender
+        print(btnAction.tag)
+    }
+    @objc func actionProfileTapped(_ sender: UIButton) {
+        let btnAction :UIButton = sender
+    }
     }
     
-    
-
 extension UIImage {
     
     /*

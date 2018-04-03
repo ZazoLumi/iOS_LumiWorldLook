@@ -39,50 +39,75 @@ class LumineerList : Object{
             let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerCompany)"
             do {
                 
-                AFWrapper.requestGETURL(urlString, success: { (json) in
-                    let tempArray = json.arrayValue
-                    for index in 0...tempArray.count-1 {
-                        let aObject = tempArray[index]
-                        let realm = try! Realm()
-                        let id : Int = aObject["id"].intValue
-                        let objCategory  = realm.objects(LumiCategory.self).filter("id == %d", aObject["parentid"].intValue)
-                        
-                        let newLumineerObj = LumineerList()
-                        newLumineerObj.id = id
-                        newLumineerObj.name = aObject["name"].string
-                        newLumineerObj.sectorID = aObject["sectorID"].intValue
-                        newLumineerObj.sectorName = aObject["sectorName"].string
-                        newLumineerObj.shortDescription = aObject["shortDescription"].string
-                        newLumineerObj.status = aObject["status"].intValue
-                        newLumineerObj.contactNumber = aObject["contactNumber"].string
-                        newLumineerObj.emailAddress = aObject["emailAddress"].string
-                        newLumineerObj.companyRegistrationNumber = aObject["companyRegistrationNumber"].string
-                        newLumineerObj.firstName = aObject["firstName"].string
-                        newLumineerObj.surname = aObject["surname"].string
-                        newLumineerObj.enterpriseLogo = aObject["enterpriseLogo"].string
-                        newLumineerObj.enterpriseCoverPage = aObject["enterpriseCoverPage"].string
-                        newLumineerObj.displayName = aObject["displayName"].string
-                        newLumineerObj.logoURL = aObject["logoURL"].string
-                        newLumineerObj.parentid = aObject["parentid"].intValue
-                        
-                        
-                        if objCategory.count>0 {
-                            let lumineerList = objCategory[0].lumineerList
-                            try! realm.write {
-                                realm.add(newLumineerObj, update: true)
-                                lumineerList.append(newLumineerObj)
+                self.getLumineerCompanyFollowingData(completionHandler: { (aryFollowdata) in
+                    AFWrapper.requestGETURL(urlString, success: { (json) in
+                        let tempArray = json.arrayValue
+                        for index in 0...tempArray.count-1 {
+                            let aObject = tempArray[index]
+                            let realm = try! Realm()
+                            let id : Int = aObject["id"].intValue
+                            let objCategory  = realm.objects(LumiCategory.self).filter("id == %d", aObject["parentid"].intValue)
+                            
+                            let newLumineerObj = LumineerList()
+                            newLumineerObj.id = id
+                            newLumineerObj.name = aObject["name"].string
+                            newLumineerObj.sectorID = aObject["sectorID"].intValue
+                            newLumineerObj.sectorName = aObject["sectorName"].string
+                            newLumineerObj.shortDescription = aObject["shortDescription"].string
+                            
+                            let filteredData = aryFollowdata.filter{
+                                let string = $0["ID"] as! String
+                                return string.contains(aObject["companyRegistrationNumber"].string!)
                             }
-                            objCategory[0].lumineerList = lumineerList
-                            GlobalShareData.sharedGlobal.realmManager.editObjects(objs: objCategory[0])
+                            
+                            
+                            if filteredData.count>0 {
+                                if let stringvalue = filteredData[0]["status"] as? String {
+                                    if let myInteger = Int(stringvalue) {
+                                        newLumineerObj.status = Int(truncating: NSNumber(value:myInteger))
+                                    }
+                                }
+                                else if let numberValue = filteredData[0]["status"] as? NSNumber {
+                                    newLumineerObj.status = numberValue as! Int
+                                }
+                                
+
+                            }
+                            else {
+                                newLumineerObj.status = aObject["status"].intValue
+                            }
+                            newLumineerObj.contactNumber = aObject["contactNumber"].string
+                            newLumineerObj.emailAddress = aObject["emailAddress"].string
+                            newLumineerObj.companyRegistrationNumber = aObject["companyRegistrationNumber"].string
+                            newLumineerObj.firstName = aObject["firstName"].string
+                            newLumineerObj.surname = aObject["surname"].string
+                            newLumineerObj.enterpriseLogo = aObject["enterpriseLogo"].string
+                            newLumineerObj.enterpriseCoverPage = aObject["enterpriseCoverPage"].string
+                            newLumineerObj.displayName = aObject["displayName"].string
+                            newLumineerObj.logoURL = aObject["logoURL"].string
+                            newLumineerObj.parentid = aObject["parentid"].intValue
+                            
+                            
+                            if objCategory.count>0 {
+                                let lumineerList = objCategory[0].lumineerList
+                                try! realm.write {
+                                    realm.add(newLumineerObj, update: true)
+                                    lumineerList.append(newLumineerObj)
+                                }
+                                objCategory[0].lumineerList = lumineerList
+                                GlobalShareData.sharedGlobal.realmManager.editObjects(objs: objCategory[0])
+                            }
+                            
                         }
                         
-                    }
-                    
-                    let objCategory  = GlobalShareData.sharedGlobal.realmManager.getObjects(type: LumiCategory.self)
-                    completionHandler(objCategory!)
-                    print(json)
-                }, failure: { (Error) in
+                        let objCategory  = GlobalShareData.sharedGlobal.realmManager.getObjects(type: LumiCategory.self)
+                        completionHandler(objCategory!)
+                        print(json)
+                    }, failure: { (Error) in
+                    })
                 })
+                
+                
                 
             } catch let jsonError{
                 print(jsonError)
@@ -94,6 +119,37 @@ class LumineerList : Object{
         }
         
     }
+    func getLumineerCompanyFollowingData(completionHandler: @escaping (_ objData: [[String:Any]]) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerFollowingCompany)"
+            do {
+                //todo
+               // var strCellNumber : String  = GlobalShareData.sharedGlobal.currentUserDetails.cell!
+                let dictionary = ["cell": "27735526844"]
+                let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: [])
+                let jsonString = String(data: jsonData!, encoding: .utf8)
+
+                let param = ["params": jsonString]
+                
+                AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
+                    print(json)
+                    let tempDict = json.arrayObject
+                    completionHandler(tempDict as! [[String : Any]])
+                }, failure: { (Error) in
+                })
+            } catch let jsonError{
+                print(jsonError)
+                
+            }
+            
+
+        }else{
+            print("Internet Connection not Available!")
+        }
+        
+    }
+
 
 }
 
