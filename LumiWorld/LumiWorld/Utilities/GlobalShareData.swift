@@ -17,6 +17,7 @@ struct Constants {
         static let APIGetLumiCategory = ":13004/sectors/getAllSectors"
         static let APIGetLumineerCompany = ":13004/enterprise/getAllActiveLumineerList"
         static let APIGetLumineerFollowingCompany = ":11014/getnodebyrelationship"
+        static let APISetLumineerFollowUnFollowCompany = ":11108/addrelationshippropertiesbyid"
 
 
     }

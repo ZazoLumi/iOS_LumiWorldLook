@@ -126,7 +126,7 @@ class LumineerList : Object{
             do {
                 //todo
                // var strCellNumber : String  = GlobalShareData.sharedGlobal.currentUserDetails.cell!
-                let dictionary = ["cell": "27735526844"]
+                let dictionary = ["cell": "27655547209"]
                 let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: [])
                 let jsonString = String(data: jsonData!, encoding: .utf8)
 
@@ -149,6 +149,38 @@ class LumineerList : Object{
         }
         
     }
+    
+    func setLumineerCompanyFollowUnFollowData(uniqueID:String,status:String,completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISetLumineerFollowUnFollowCompany)"
+            do {
+                let currentDate = Date.getLocalFormatedCurrentData
+                let dictionary = ["date": currentDate,"status":status,"ID":uniqueID] as [String : Any]
+                let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: [])
+                let jsonString = String(data: jsonData!, encoding: .utf8)
+                
+                let param = ["uniqueKey": "ID","uniqueKeyValue":uniqueID,"relationshipType":"Connected","properties": jsonString]
+                
+                AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
+                    print(json)
+                    let tempDict = json.arrayObject
+                    let objCategory  = GlobalShareData.sharedGlobal.realmManager.getObjects(type: LumiCategory.self)
+                    completionHandler(objCategory!)
+                }, failure: { (Error) in
+                })
+            } catch let jsonError{
+                print(jsonError)
+                
+            }
+            
+            
+        }else{
+            print("Internet Connection not Available!")
+        }
+        
+    }
+
 
 
 }
@@ -205,6 +237,7 @@ class LumiCategory : Object{
                 print(json)
             }, failure: { (Error) in
                 viewCtrl.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
+                    completionHandler([])
                     print(Error.localizedDescription)
                 })
             })
@@ -220,3 +253,23 @@ class LumiCategory : Object{
 
     }
 }
+
+extension Date
+{
+    func getLocalFormatedCurrentData() -> String
+    {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let myString = formatter.string(from: date)
+        let yourDate: Date? = formatter.date(from: myString)
+        formatter.dateFormat = "EE MMM dd y HH:mm:ss 'GMT'Z (zz)"
+        let timeZone = TimeZone(identifier: "Africa/Johannesburg")
+        formatter.timeZone = timeZone
+        let updatedString = formatter.string(from: yourDate!)
+        return updatedString
+    }
+    
+}
+
+

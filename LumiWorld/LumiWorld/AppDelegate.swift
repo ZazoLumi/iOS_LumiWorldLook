@@ -20,10 +20,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
         if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
-            statusBar.backgroundColor = UIColor(red: 110, green: 187, blue: 171)
+            statusBar.backgroundColor = .lumiGreen
             
         }
         UIApplication.shared.statusBarStyle = .lightContent
+        UISearchBar.appearance().tintColor = .lumiGreen
         IQKeyboardManager.sharedManager().enable = true
 
         return true

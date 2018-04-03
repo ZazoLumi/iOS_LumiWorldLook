@@ -14,7 +14,7 @@ class LumineerCompanyCell: UITableViewCell {
     @IBOutlet weak var btnFollowUnfollow: UIButton!
     @IBOutlet weak var lblCompanyName: UILabel!
     @IBOutlet weak var imgCompanyLogo: UIImageView!
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         self.imgCompanyLogo.layer.cornerRadius = self.imgCompanyLogo.bounds.size.height * 0.50
@@ -30,13 +30,16 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     
     let kHeaderSectionTag: Int = 6900;
     let kHeaderDataTag: Int = 100;
+    let kFollowDataTag: Int = 20000;
+    let searchController = UISearchController(searchResultsController: nil)
 
     @IBOutlet weak var tableView: UITableView!
     
     var expandedSectionHeaderNumber: Int = -1
     var expandedSectionHeader: UITableViewHeaderFooterView!
     var aryCategory: [LumiCategory] = []
-
+    var dataMsgLabel : UILabel!
+    var imgBg : UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.navigationItem.addSettingButtonOnRight()
@@ -46,37 +49,29 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
 
 
         self.tableView!.tableFooterView = UIView()
-//        let objLumiCate = LumiCategory()
-//        objLumiCate.getLumiCategory(viewCtrl: self) { (aryCategory) in
-//               self.aryCategory = aryCategory
-//               self.tableView.reloadData()
-//            DispatchQueue.global(qos: .userInitiated).async {
-//                let objLumineerList = LumineerList()
-//                objLumineerList.getLumineerCompany(completionHandler: { (List) in
-//                    self.aryCategory = [LumiCategory]()
-//                        for element in List {
-//                            if let category = element as? LumiCategory {
-//                                self.aryCategory.append(category)
-//                            }
-//                    }
-//                    DispatchQueue.main.async {
-//                        self.tableView.reloadData()
-//                    }
-//                })
-//            }
-//
-//        }
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Lumineer"
+        self.tabBarController?.navigationItem.searchController = searchController
+        definesPresentationContext = true
+        
+        // Setup the Scope Bar
+        searchController.searchBar.scopeButtonTitles = []
+        searchController.searchBar.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.title = "LUMINEER CATEGORIES"
-        
+        self.tableView.backgroundView = self.dataMsgLabel;
         let objLumiCate = LumiCategory()
         DispatchQueue.global(qos: .userInitiated).async {
         objLumiCate.getLumiCategory(viewCtrl: self) { (aryCategory) in
             self.aryCategory = aryCategory
-            //self.tableView.reloadData()
+            guard self.aryCategory.count != 0 else {
+                self.tableView.backgroundView = self.imgBg;
+                return
+            }
                 let objLumineerList = LumineerList()
                 objLumineerList.getLumineerCompany(completionHandler: { (List) in
                     self.aryCategory = [LumiCategory]()
@@ -86,7 +81,12 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                         }
                     }
                     DispatchQueue.main.async {
-                        self.tableView.reloadData()
+                        if self.aryCategory.count > 0 {
+                            self.tableView.reloadData()
+                        }
+                        else {
+                            self.tableView.backgroundView = self.imgBg;
+                        }
                     }
                 })
             }
@@ -107,14 +107,20 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             tableView.backgroundView = nil
             return aryCategory.count
         } else {
-            let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
-            messageLabel.text = "Retrieving data.\nPlease wait.."
-            messageLabel.numberOfLines = 0;
-            messageLabel.textAlignment = .center;
-            messageLabel.textColor = UIColor.init(hexString: "757576")
-            messageLabel.font = UIFont(name: "HelveticaNeue", size: 20)
-            messageLabel.sizeToFit()
-            self.tableView.backgroundView = messageLabel;
+            let viewBg = UIView .init(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
+            viewBg.backgroundColor = UIColor.clear
+            dataMsgLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
+            dataMsgLabel.text = "Retrieving data.\nPlease wait.."
+            dataMsgLabel.numberOfLines = 0;
+            dataMsgLabel.textAlignment = .center;
+            dataMsgLabel.textColor = UIColor.init(hexString: "757576")
+            dataMsgLabel.font = UIFont(name: "HelveticaNeue", size: 20)
+            dataMsgLabel.sizeToFit()
+            viewBg.addSubview(dataMsgLabel)
+            imgBg = UIImageView.init(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
+            imgBg.image = UIImage.init(named: "Asset 335")
+            imgBg.contentMode = .scaleAspectFit
+            self.tableView.backgroundView = dataMsgLabel;
         }
         return 0
     }
@@ -217,6 +223,8 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         else {
             cell.btnFollowUnfollow.isSelected = false
         }
+        cell.btnFollowUnfollow.addTarget(self, action: #selector(onBtnFollowUnfollowTapped(_:)), for: .touchUpInside)
+        cell.btnFollowUnfollow.tag = kFollowDataTag + indexPath.row
         cell.lblCompanyName.text = objLumineer.name
         let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgCompanyLogo.frame.size.width, height: cell.imgCompanyLogo.frame.size.height))
@@ -229,6 +237,47 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    @objc func onBtnFollowUnfollowTapped(_ sender: UIButton) {
+        let objLumiList = LumineerList()
+        DispatchQueue.global(qos: .userInitiated).async {
+            objLumiList.setLumineerCompanyFollowUnFollowData(uniqueID: "", status: "", completionHandler: { (List) in
+                    self.aryCategory = [LumiCategory]()
+                    for element in List {
+                        if let category = element as? LumiCategory {
+                            self.aryCategory.append(category)
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                })
+            }
+
+    }
+    
+    // MARK: - Private instance methods
+    
+    func filterContentForSearchText(_ searchText: String) {
+//        filteredCandies = candies.filter({( candy : Candy) -> Bool in
+//
+//            if searchBarIsEmpty() {
+//                return doesCategoryMatch
+//            } else {
+//                return candy.name.lowercased().contains(searchText.lowercased())
+//            }
+//        })
+        tableView.reloadData()
+    }
+
+    func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+
+    func isFiltering() -> Bool {
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+    }
+
     // MARK: - Expand / Collapse Methods
     
     @objc func sectionHeaderWasTouched(_ sender: UITapGestureRecognizer) {
@@ -338,15 +387,27 @@ extension UINavigationItem {
             actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
             actionSheet.view.addSubview(view)
             
+            let imgProfile =  UIImageView.init(frame: CGRect.init(x: 10, y: 25, width: 80, height:80))
+            imgProfile.image = UIImage(named: "Asset 2187")
+            imgProfile.backgroundColor = UIColor.clear
+            imgProfile.layer.cornerRadius = imgProfile.bounds.size.height * 0.50
+            imgProfile.contentMode = .scaleAspectFit
+            imgProfile.layer.borderWidth = 0.5;
+            imgProfile.layer.borderColor = UIColor.black.cgColor;
+
+            view.addSubview(imgProfile)
+
+            
             let btnProfile = UIButton.init(type: .custom)
-            btnProfile.frame = CGRect.init(x: 0, y: 10, width: Int(view.frame.size.width), height:115)
+            btnProfile.frame = CGRect.init(x: 10, y: 10, width: Int(view.frame.size.width), height:115)
             btnProfile.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 18)
-            btnProfile.setTitle("Test User Data", for: .normal)
-            btnProfile.setImage(UIImage(named: "nazish_passport_size"), for: .normal)
+            btnProfile.setTitle("Test User Data for multiple line support with some other stuff", for: .normal)
             btnProfile.backgroundColor = UIColor.clear
             btnProfile.contentHorizontalAlignment = .left
+            btnProfile.titleLabel?.lineBreakMode = .byWordWrapping
+            btnProfile.titleLabel?.numberOfLines = 0
             btnProfile.setTitleColor(UIColor.init(hexString: "757576"), for: .normal)
-            btnProfile.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+            btnProfile.titleEdgeInsets = UIEdgeInsets(top: 0, left: 90, bottom: 0, right: 0)
             btnProfile.addTarget(self, action:#selector(actionProfileTapped(_:)), for: .touchUpInside)
             view.addSubview(btnProfile)
             
@@ -356,19 +417,23 @@ extension UINavigationItem {
             actionSheet.view.addSubview(view1)
             
             var yPos = 0
-            let arrSheetData  = [["title":"Support","img":""],["title":"Terms & Conditions","img":""],["title":"Lumi World Messages","img":""],["title":"About","img":""],["title":"How To Use","img":""],["title":"Logout","img":""]]
+            let arrSheetData  = [["title":"Support","img":"Asset 2186"],["title":"Terms & Conditions","img":"Asset 2185"],["title":"Lumi World Messages","img":"Asset 2181"],["title":"About","img":"Asset 2184"],["title":"How To Use","img":"Asset 2182"],["title":"Logout","img":"Asset 2183"]]
             for  i in 0...5 {
                 let btnAction = UIButton.init(type: .custom)
                 btnAction.frame = CGRect.init(x: 0, y: yPos, width: Int(view1.frame.size.width), height:55)
                 btnAction.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 18)
                 btnAction.tag = 200+i
                 btnAction.setTitle(arrSheetData[i]["title"], for: .normal)
-                btnAction.setImage(UIImage(named: arrSheetData[i]["img"]!), for: .normal)
+                let btnImg = UIImage(named: arrSheetData[i]["img"]!)
+                btnAction.setImage(btnImg, for: .normal)
                 btnAction.backgroundColor = UIColor.clear
                 btnAction.contentHorizontalAlignment = .left
-                btnAction.setTitleColor(UIColor(red: 110, green: 187, blue: 171), for: .normal)
+                btnAction.setTitleColor(.lumiGreen, for: .normal)
                 btnAction.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
                 btnAction.addTarget(self, action:#selector(actionItemTapped(_:)), for: .touchUpInside)
+                btnAction.imageEdgeInsets = UIEdgeInsets(top: 0, left: CGFloat(Int(view1.frame.size.width) - Int((btnImg?.size.width)!) - 30), bottom: 0, right:0)
+                btnAction.semanticContentAttribute = .forceRightToLeft
+        
                 view1.addSubview(btnAction)
                 yPos+=57
                 if i == 3 {
@@ -399,7 +464,7 @@ extension UINavigationItem {
         print(btnAction.tag)
     }
     @objc func actionProfileTapped(_ sender: UIButton) {
-        let btnAction :UIButton = sender
+        let _ :UIButton = sender
     }
     }
     
@@ -428,6 +493,24 @@ extension UIView {
         return nil
     }
 }
+extension LumiCategoryVC: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchBar.text!)
+    }
+}
+
+extension LumiCategoryVC: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+}
+
 func appDelInstance() -> AppDelegate{
     return UIApplication.shared.delegate as! AppDelegate
 }
+extension UIColor {
+    static let lumiGreen = UIColor(red: 110, green: 187, blue: 171)
+}
+
