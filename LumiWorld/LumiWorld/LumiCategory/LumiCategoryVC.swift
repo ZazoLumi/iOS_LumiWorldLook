@@ -9,6 +9,9 @@
 import UIKit
 import AlamofireImage
 import Alamofire
+import Realm
+import RealmSwift
+
 class LumineerCompanyCell: UITableViewCell {
     
     @IBOutlet weak var btnFollowUnfollow: UIButton!
@@ -28,6 +31,7 @@ class LumineerCompanyCell: UITableViewCell {
 
 class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSource {
     
+    let kHeaderSectionViewTag: Int = 7900;
     let kHeaderSectionTag: Int = 6900;
     let kHeaderDataTag: Int = 100;
     let kFollowDataTag: Int = 20000;
@@ -38,6 +42,8 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     var expandedSectionHeaderNumber: Int = -1
     var expandedSectionHeader: UITableViewHeaderFooterView!
     var aryCategory: [LumiCategory] = []
+    var arySearchLumineer: [LumineerList] = []
+
     var dataMsgLabel : UILabel!
     var imgBg : UIImageView!
     override func viewDidLoad() {
@@ -46,8 +52,8 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
 
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.yellow]
         self.tabBarController?.navigationController?.navigationBar.titleTextAttributes = attributes
-
-
+        //todo
+        GlobalShareData.sharedGlobal.userCellNumber = "27735526844"
         self.tableView!.tableFooterView = UIView()
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -56,7 +62,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         definesPresentationContext = true
         
         // Setup the Scope Bar
-        searchController.searchBar.scopeButtonTitles = []
+        searchController.searchBar.scopeButtonTitles = ["All", "My"]
         searchController.searchBar.delegate = self
     }
     
@@ -103,6 +109,9 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     // MARK: - Tableview Methods
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        if isFiltering() {
+            return 1
+        }
         if aryCategory.count > 0 {
             tableView.backgroundView = nil
             return aryCategory.count
@@ -126,6 +135,10 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering() {
+            return arySearchLumineer.count
+        }
+
         if (self.expandedSectionHeaderNumber == section) {
             let arrayOfItems = self.aryCategory[section].lumineerList
             return arrayOfItems.count;
@@ -149,6 +162,10 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         return 0;
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if isFiltering() {
+            return nil
+        }
+
         let header = UIView.init(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 44))
         header.backgroundColor = UIColor.init(hexString: "FFFFFE")
 //        header.textLabel?.textColor = UIColor.init(red: 109, green: 107, blue: 105)
@@ -215,8 +232,12 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LumineerCompanyCell", for: indexPath) as! LumineerCompanyCell
         let arrayOfItems = self.aryCategory[indexPath.section].lumineerList
-        
-        let objLumineer = arrayOfItems[indexPath.row] as LumineerList
+        var objLumineer = arrayOfItems[indexPath.row] as LumineerList
+
+        if isFiltering() {
+            objLumineer = arySearchLumineer[indexPath.row] as LumineerList
+        }
+
         if objLumineer.status==1 {
             cell.btnFollowUnfollow.isSelected = true
         }
@@ -238,9 +259,25 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     }
     
     @objc func onBtnFollowUnfollowTapped(_ sender: UIButton) {
-        let objLumiList = LumineerList()
-        DispatchQueue.global(qos: .userInitiated).async {
-            objLumiList.setLumineerCompanyFollowUnFollowData(uniqueID: "", status: "", completionHandler: { (List) in
+        sender.isSelected = !sender.isSelected
+
+        if let cell = sender.superview?.superview as? LumineerCompanyCell {
+            let indexPath = tableView.indexPath(for: cell)
+            let arrayOfItems = self.aryCategory[(indexPath?.section)!].lumineerList
+            var objLumineer = arrayOfItems[(indexPath?.row)!] as LumineerList
+            
+            if isFiltering() {
+                objLumineer = arySearchLumineer[(indexPath?.row)!] as LumineerList
+            }
+
+            let companyRegistrationNumber = objLumineer.companyRegistrationNumber!
+            var strUniqueID: String = GlobalShareData.sharedGlobal.userCellNumber!
+            strUniqueID += "_"
+            strUniqueID += companyRegistrationNumber
+            let strStatus : String = sender.isSelected ? "1":"0"
+            let objLumiList = LumineerList()
+            DispatchQueue.global(qos: .userInitiated).async {
+                objLumiList.setLumineerCompanyFollowUnFollowData(id:GlobalShareData.sharedGlobal.userCellNumber,companyregistrationnumber:companyRegistrationNumber,uniqueID: strUniqueID, status:strStatus , completionHandler: { (List) in
                     self.aryCategory = [LumiCategory]()
                     for element in List {
                         if let category = element as? LumiCategory {
@@ -253,26 +290,50 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 })
             }
 
+        }
+
+
     }
     
     // MARK: - Private instance methods
     
-    func filterContentForSearchText(_ searchText: String) {
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        arySearchLumineer = []
+        if searchBarIsEmpty() {
+            
+        }
+        else {
+        let realm = try! Realm()
+        let realmObjects = realm.objects(LumiCategory.self)
+        let result = realmObjects.filter("ANY lumineerList.name CONTAINS[cd] '\(searchText)'")
+        if result.count > 0 {
+            let objCategory = result[0] as LumiCategory
+            for lumineer in objCategory.lumineerList.filter("name CONTAINS[cd] '\(searchText)'") {
+                try! realm.write {
+                    let  objLumineer = lumineer as LumineerList
+                    arySearchLumineer.append(objLumineer)
+                }
+                // do something with your vegan meal
+            }
+            
+        }
+        }
 //        filteredCandies = candies.filter({( candy : Candy) -> Bool in
-//
+//            let doesCategoryMatch = (scope == "All") || (candy.category == scope)
+//            
 //            if searchBarIsEmpty() {
 //                return doesCategoryMatch
 //            } else {
-//                return candy.name.lowercased().contains(searchText.lowercased())
+//                return doesCategoryMatch && candy.name.lowercased().contains(searchText.lowercased())
 //            }
 //        })
         tableView.reloadData()
     }
-
+    
     func searchBarIsEmpty() -> Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
-
+    
     func isFiltering() -> Bool {
         let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
         return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
@@ -281,79 +342,99 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     // MARK: - Expand / Collapse Methods
     
     @objc func sectionHeaderWasTouched(_ sender: UITapGestureRecognizer) {
-        let headerView = sender.view 
-        let section    = headerView?.tag
-        let eImageView = headerView?.viewWithTag(kHeaderSectionTag + section!) as? UIImageView
-        let eBtnView = headerView?.viewWithTag(kHeaderDataTag + section!) as? UIButton
-        
-        if (self.expandedSectionHeaderNumber == -1) {
-            self.expandedSectionHeaderNumber = section!
-            tableViewExpandSection(section!, imageView: eImageView!)
-            let sectionData = self.aryCategory[section!].lumineerList
-            if sectionData.count>0{
-                eBtnView?.isSelected = true
-            }
-        } else {
-            if (self.expandedSectionHeaderNumber == section) {
-                tableViewCollapeSection(section!, imageView: eImageView!)
-                eBtnView?.isSelected = false
-            } else {
-                let cImageView = self.view.viewWithTag(kHeaderSectionTag + self.expandedSectionHeaderNumber) as? UIImageView
-                let cBtnView = self.view.viewWithTag(kHeaderDataTag + self.expandedSectionHeaderNumber) as? UIButton
-
-                tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView!)
+        do {
+            let headerView = sender.view
+            let section    = headerView?.tag
+            let eImageView = headerView?.viewWithTag(kHeaderSectionTag + section!) as? UIImageView
+            let eBtnView = headerView?.viewWithTag(kHeaderDataTag + section!) as? UIButton
+            
+            if (self.expandedSectionHeaderNumber == -1) {
+                self.expandedSectionHeaderNumber = section!
                 tableViewExpandSection(section!, imageView: eImageView!)
-                cBtnView?.isSelected = false
                 let sectionData = self.aryCategory[section!].lumineerList
                 if sectionData.count>0{
                     eBtnView?.isSelected = true
                 }
+            } else {
+                if (self.expandedSectionHeaderNumber == section) {
+                    tableViewCollapeSection(section!, imageView: eImageView)
+                    eBtnView?.isSelected = false
+                } else {
+                    let cImageView = self.tableView.viewWithTag(kHeaderSectionTag + self.expandedSectionHeaderNumber) as? UIImageView
+                    let cBtnView = self.tableView.viewWithTag(kHeaderDataTag + self.expandedSectionHeaderNumber) as? UIButton
+                    tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView)
+                    tableViewExpandSection(section!, imageView: eImageView!)
+                    cBtnView?.isSelected = false
+                    let sectionData = self.aryCategory[section!].lumineerList
+                    if sectionData.count>0{
+                        eBtnView?.isSelected = true
+                    }
+                    
+                }
             }
+        } catch {
+            print(error.localizedDescription)
         }
+
     }
     
-    func tableViewCollapeSection(_ section: Int, imageView: UIImageView) {
-        let sectionData = self.aryCategory[section].lumineerList
-
-        self.expandedSectionHeaderNumber = -1;
-        if (sectionData.count == 0) {
-            return;
-        } else {
-            UIView.animate(withDuration: 0.4, animations: {
-                imageView.transform = CGAffineTransform(rotationAngle: (0.0 * CGFloat(Double.pi)) / 180.0)
-            })
-            var indexesPath = [IndexPath]()
-            for i in 0 ..< sectionData.count {
-                let index = IndexPath(row: i, section: section)
-                indexesPath.append(index)
+    func tableViewCollapeSection(_ section: Int, imageView: UIImageView?) {
+        do {
+            guard section != -1 else {
+                return
             }
-            self.tableView!.beginUpdates()
-            self.tableView!.deleteRows(at: indexesPath, with: UITableViewRowAnimation.fade)
-            self.tableView!.endUpdates()
-            
+
+            let sectionData = self.aryCategory[section].lumineerList
+            self.expandedSectionHeaderNumber = -1;
+            if (sectionData.count == 0) {
+                return;
+            } else {
+                if imageView != nil {
+                UIView.animate(withDuration: 0.4, animations: {
+                    imageView?.transform = CGAffineTransform(rotationAngle: (0.0 * CGFloat(Double.pi)) / 180.0)
+                })
+                }
+                var indexesPath = [IndexPath]()
+                for i in 0 ..< sectionData.count {
+                    let index = IndexPath(row: i, section: section)
+                    indexesPath.append(index)
+                }
+                self.tableView!.beginUpdates()
+                self.tableView!.deleteRows(at: indexesPath, with: UITableViewRowAnimation.fade)
+                self.tableView!.endUpdates()
+                
+            }
+        } catch {
+            print(error.localizedDescription)
         }
+
     }
     
     func tableViewExpandSection(_ section: Int, imageView: UIImageView) {
-        let sectionData = self.aryCategory[section].lumineerList
-
-        if (sectionData.count == 0) {
-            self.expandedSectionHeaderNumber = -1;
-            return;
-        } else {
-            UIView.animate(withDuration: 0.4, animations: {
-                imageView.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(Double.pi)) / 180.0)
-            })
-            var indexesPath = [IndexPath]()
-            for i in 0 ..< sectionData.count {
-                let index = IndexPath(row: i, section: section)
-                indexesPath.append(index)
+        do {
+            let sectionData = self.aryCategory[section].lumineerList
+            
+            if (sectionData.count == 0) {
+                self.expandedSectionHeaderNumber = -1;
+                return;
+            } else {
+                UIView.animate(withDuration: 0.4, animations: {
+                    imageView.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(Double.pi)) / 180.0)
+                })
+                var indexesPath = [IndexPath]()
+                for i in 0 ..< sectionData.count {
+                    let index = IndexPath(row: i, section: section)
+                    indexesPath.append(index)
+                }
+                self.expandedSectionHeaderNumber = section
+                self.tableView!.beginUpdates()
+                self.tableView!.insertRows(at: indexesPath, with: UITableViewRowAnimation.fade)
+                self.tableView!.endUpdates()
             }
-            self.expandedSectionHeaderNumber = section
-            self.tableView!.beginUpdates()
-            self.tableView!.insertRows(at: indexesPath, with: UITableViewRowAnimation.fade)
-            self.tableView!.endUpdates()
+        } catch {
+            print(error.localizedDescription)
         }
+
     }
     /*
     // MARK: - Navigation
@@ -496,14 +577,16 @@ extension UIView {
 extension LumiCategoryVC: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        filterContentForSearchText(searchBar.text!)
+        filterContentForSearchText(searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
     }
 }
 
 extension LumiCategoryVC: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
+        let searchBar = searchController.searchBar
+        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        filterContentForSearchText(searchController.searchBar.text!, scope: scope)
     }
 }
 

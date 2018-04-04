@@ -125,8 +125,8 @@ class LumineerList : Object{
             let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerFollowingCompany)"
             do {
                 //todo
-               // var strCellNumber : String  = GlobalShareData.sharedGlobal.currentUserDetails.cell!
-                let dictionary = ["cell": "27655547209"]
+                let strCellNumber : String  =  GlobalShareData.sharedGlobal.userCellNumber!
+                let dictionary = ["cell": strCellNumber]
                 let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: [])
                 let jsonString = String(data: jsonData!, encoding: .utf8)
 
@@ -150,24 +150,53 @@ class LumineerList : Object{
         
     }
     
-    func setLumineerCompanyFollowUnFollowData(uniqueID:String,status:String,completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
+    func setLumineerCompanyFollowUnFollowData(id:String,companyregistrationnumber: String,uniqueID:String,status:String,completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISetLumineerFollowUnFollowCompany)"
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISetLumineerCreateRelationship)"
             do {
-                let currentDate = Date.getLocalFormatedCurrentData
-                let dictionary = ["date": currentDate,"status":status,"ID":uniqueID] as [String : Any]
+                let currentDate = getLocalFormatedCurrentData()
+                let dictionary = ["date": currentDate,"status":status,"ID":uniqueID] as [String : String]
                 let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: [])
                 let jsonString = String(data: jsonData!, encoding: .utf8)
+                let paramCreateRelationship = ["uniqueKey": "ID","uniqueKeyValue":uniqueID,"fromNodeLabel":"Consumer","fromNodeKey":"cell","toNodeLabel":"Enterprise","toNodeKey":"companyregistrationnumber","toNodeKeyValue":companyregistrationnumber,"fromNodeKeyValue":id,"relationshipType":"Connected","properties": jsonString!]
+
+                let paramAddRelationship = ["uniqueKey": "ID","uniqueKeyValue":uniqueID,"relationshipType":"Connected","properties": dictionary] as [String : Any]
                 
-                let param = ["uniqueKey": "ID","uniqueKeyValue":uniqueID,"relationshipType":"Connected","properties": jsonString]
-                
-                AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
+                AFWrapper.requestPOSTURL(urlString, params: paramCreateRelationship as [String : AnyObject], headers: nil, success: { (json) in
                     print(json)
-                    let tempDict = json.arrayObject
-                    let objCategory  = GlobalShareData.sharedGlobal.realmManager.getObjects(type: LumiCategory.self)
-                    completionHandler(objCategory!)
+                    let urlString1: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISetLumineerAddRelationship)"
+                    
+                    let jsonData = try? JSONSerialization.data(withJSONObject: paramAddRelationship, options: [])
+                    let jsonString = String(data: jsonData!, encoding: .utf8)
+                    let param = ["params": jsonString]
+
+                    AFWrapper.requestPOSTURL(urlString1, params: param as [String : AnyObject], headers: nil, success: { (json) in
+                        print(json)
+                        
+//                        let tempDict = json.arrayObject
+//                        let objCategory  = GlobalShareData.sharedGlobal.realmManager.getObjects(type: LumiCategory.self)
+                        
+                        let realm = try! Realm()
+                        let realmObjects = realm.objects(LumiCategory.self)
+                        let result = realmObjects.filter("ANY lumineerList.companyRegistrationNumber = '\(companyregistrationnumber)'")
+                        if result.count > 0 {
+                        let objCategory = result[0] as LumiCategory
+                            for lumineer in objCategory.lumineerList.filter("companyRegistrationNumber = '\(companyregistrationnumber)'") {
+                                    try! realm.write {
+                                        let  objLumineer = lumineer as LumineerList
+                                        objLumineer.status = Int(status)!
+                                    }
+                                // do something with your vegan meal
+                            }
+
+                        }
+                       // completionHandler(result)
+                    }, failure: { (Error) in
+                        print(Error.localizedDescription)
+                    })
                 }, failure: { (Error) in
+                    print(Error.localizedDescription)
                 })
             } catch let jsonError{
                 print(jsonError)
@@ -254,22 +283,18 @@ class LumiCategory : Object{
     }
 }
 
-extension Date
+func getLocalFormatedCurrentData() -> String
 {
-    func getLocalFormatedCurrentData() -> String
-    {
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let myString = formatter.string(from: date)
-        let yourDate: Date? = formatter.date(from: myString)
-        formatter.dateFormat = "EE MMM dd y HH:mm:ss 'GMT'Z (zz)"
-        let timeZone = TimeZone(identifier: "Africa/Johannesburg")
-        formatter.timeZone = timeZone
-        let updatedString = formatter.string(from: yourDate!)
-        return updatedString
-    }
-    
+    let date = Date()
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    let myString = formatter.string(from: date)
+    let yourDate: Date? = formatter.date(from: myString)
+    formatter.dateFormat = "EE MMM dd y HH:mm:ss 'GMT'Z (zz)"
+    let timeZone = TimeZone(identifier: "Africa/Johannesburg")
+    formatter.timeZone = timeZone
+    let updatedString = formatter.string(from: yourDate!)
+    return updatedString
 }
 
 
