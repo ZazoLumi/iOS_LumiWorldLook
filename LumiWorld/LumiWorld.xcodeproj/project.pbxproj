@@ -65,6 +65,9 @@
 		0964E7372060F981001D6F47 /* TextFieldTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70C2060F981001D6F47 /* TextFieldTableViewController.swift */; };
 		0964E7382060F981001D6F47 /* LumiCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */; };
 		096C2EF92064E28E0015C0A9 /* GlobalShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */; };
+		096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */; };
+		096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */; };
+		096ED9E320766D3B003CA8F1 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */; };
 		09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0B2065042B00C74E1F /* AFWrapper.swift */; };
 		09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0F20652D6F00C74E1F /* RealmManager.swift */; };
 		67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */; };
@@ -132,6 +135,9 @@
 		0964E70C2060F981001D6F47 /* TextFieldTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewController.swift; sourceTree = "<group>"; };
 		0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LumiCategoryVC.swift; sourceTree = "<group>"; };
 		096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShareData.swift; sourceTree = "<group>"; };
+		096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerProfileVC.swift; sourceTree = "<group>"; };
+		096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
+		096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 		09D98A0B2065042B00C74E1F /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
 		09D98A0F20652D6F00C74E1F /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		1ED9069746B80D308CA990E5 /* Pods-LumiWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LumiWorld.release.xcconfig"; path = "Pods/Target Support Files/Pods-LumiWorld/Pods-LumiWorld.release.xcconfig"; sourceTree = "<group>"; };
@@ -255,6 +261,8 @@
 		0964E6E82060F981001D6F47 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */,
+				096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */,
 				09D98A0F20652D6F00C74E1F /* RealmManager.swift */,
 				09D98A0B2065042B00C74E1F /* AFWrapper.swift */,
 				0964E6E92060F981001D6F47 /* SwiftValidator */,
@@ -331,6 +339,7 @@
 			isa = PBXGroup;
 			children = (
 				0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */,
+				096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */,
 			);
 			path = LumiCategory;
 			sourceTree = "<group>";
@@ -539,6 +548,7 @@
 				0964E7362060F981001D6F47 /* TextFieldTableViewCell.swift in Sources */,
 				093F445E206B715900BC9983 /* UserData.swift in Sources */,
 				0964E5C2205FC811007E5924 /* ViewController.swift in Sources */,
+				096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */,
 				0964E7372060F981001D6F47 /* TextFieldTableViewController.swift in Sources */,
 				0964E7312060F981001D6F47 /* ValidationRule.swift in Sources */,
 				093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */,
@@ -549,8 +559,10 @@
 				0964E70F2060F981001D6F47 /* MyLumiFeedVC.swift in Sources */,
 				0964E7112060F981001D6F47 /* ExampleAnimateTipsContentView.swift in Sources */,
 				0964E6D82060F8ED001D6F47 /* TemporaryPasswordVC.swift in Sources */,
+				096ED9E320766D3B003CA8F1 /* FloatRatingView.swift in Sources */,
 				0964E7332060F981001D6F47 /* CustomTableView.swift in Sources */,
 				0964E71C2060F981001D6F47 /* Validator.swift in Sources */,
+				096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */,
 				0964E7252060F981001D6F47 /* FloatRule.swift in Sources */,
 				0964E7212060F981001D6F47 /* CharacterSetRule.swift in Sources */,
 				0964E72B2060F981001D6F47 /* MinLengthRule.swift in Sources */,

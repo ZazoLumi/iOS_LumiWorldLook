@@ -232,10 +232,12 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LumineerCompanyCell", for: indexPath) as! LumineerCompanyCell
         let arrayOfItems = self.aryCategory[indexPath.section].lumineerList
-        var objLumineer = arrayOfItems[indexPath.row] as LumineerList
-
+        var objLumineer : LumineerList!
         if isFiltering() {
             objLumineer = arySearchLumineer[indexPath.row] as LumineerList
+        }
+        else {
+            objLumineer = arrayOfItems[indexPath.row] as LumineerList
         }
 
         if objLumineer.status==1 {
@@ -264,11 +266,15 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         if let cell = sender.superview?.superview as? LumineerCompanyCell {
             let indexPath = tableView.indexPath(for: cell)
             let arrayOfItems = self.aryCategory[(indexPath?.section)!].lumineerList
-            var objLumineer = arrayOfItems[(indexPath?.row)!] as LumineerList
             
+            var objLumineer : LumineerList!
             if isFiltering() {
                 objLumineer = arySearchLumineer[(indexPath?.row)!] as LumineerList
             }
+            else {
+                objLumineer = arrayOfItems[(indexPath?.row)!] as LumineerList
+            }
+
 
             let companyRegistrationNumber = objLumineer.companyRegistrationNumber!
             var strUniqueID: String = GlobalShareData.sharedGlobal.userCellNumber!
@@ -299,8 +305,24 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         arySearchLumineer = []
-        if searchBarIsEmpty() {
-            
+        if searchBarIsEmpty() && scope == "All" {
+            tableView.reloadData()
+            return
+        }
+        else if searchBarIsEmpty() && scope == "My" {
+            let realm = try! Realm()
+            let realmObjects = realm.objects(LumiCategory.self)
+            let result = realmObjects.filter("ANY lumineerList.status == 1")
+            if result.count > 0 {
+                for objCategory in result{
+                for lumineer in objCategory.lumineerList.filter("status == 1") {
+                        let  objLumineer = lumineer as LumineerList
+                        arySearchLumineer.append(objLumineer)
+                    // do something with your vegan meal
+                    }
+                    
+                }
+            }
         }
         else {
         let realm = try! Realm()
@@ -309,24 +331,11 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         if result.count > 0 {
             let objCategory = result[0] as LumiCategory
             for lumineer in objCategory.lumineerList.filter("name CONTAINS[cd] '\(searchText)'") {
-                try! realm.write {
                     let  objLumineer = lumineer as LumineerList
                     arySearchLumineer.append(objLumineer)
-                }
-                // do something with your vegan meal
             }
-            
         }
         }
-//        filteredCandies = candies.filter({( candy : Candy) -> Bool in
-//            let doesCategoryMatch = (scope == "All") || (candy.category == scope)
-//            
-//            if searchBarIsEmpty() {
-//                return doesCategoryMatch
-//            } else {
-//                return doesCategoryMatch && candy.name.lowercased().contains(searchText.lowercased())
-//            }
-//        })
         tableView.reloadData()
     }
     
@@ -527,10 +536,9 @@ extension UINavigationItem {
             actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
             actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
             actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
-            let cancelAction = UIAlertAction(title:"Cancel", style:.destructive)
+            let cancelAction = UIAlertAction(title:"Cancel", style:.cancel)
             cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
-            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
+            actionSheet.addAction(cancelAction)
             actionSheet.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
             sender.superview?.parentViewController?.present(actionSheet, animated: true, completion: nil)
             for subSubView: UIView in (alertContentView?.subviews)! {
