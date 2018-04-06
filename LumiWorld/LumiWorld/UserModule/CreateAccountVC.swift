@@ -116,7 +116,7 @@ class CreateAccountVC: UIViewController,FormDataDelegate {
 
 }
 
-extension UIViewController {
+extension UIViewController:FloatRatingViewDelegate {
     // new functionality to add to SomeType goes here
     func showCustomAlert(strTitle : String, strDetails : String, completion: AlertResponseBlock? = nil) -> Void {
         alertCompletionBlock = completion
@@ -142,6 +142,43 @@ extension UIViewController {
         // optional closure callback
 
     }
-    
-}
+    func showRatingAlert(completion: AlertResponseBlock? = nil) {
+        
+        let alert = UIAlertController(title: "PLEASE RATE US", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        
+        let floatRatingView = FloatRatingView(frame: CGRect(x: 15, y: 60, width: alert.view.bounds.size.width - 30 , height:40))
+        floatRatingView.backgroundColor = UIColor.clear
+        alert.addAction(UIAlertAction(title: "", style: .default, handler: nil))
+        alert.view.addSubview(floatRatingView)
+        floatRatingView.backgroundColor = UIColor.clear
+        
+        /** Note: With the exception of contentMode, type and delegate,
+         all properties can be set directly in Interface Builder **/
+        floatRatingView.delegate = self
+        floatRatingView.contentMode = UIViewContentMode.scaleAspectFit
+        floatRatingView.type = .wholeRatings
+        floatRatingView.rating = 0
+        floatRatingView.minRating = 0
+        floatRatingView.maxRating = 5
+        floatRatingView.emptyImage = UIImage.init(named: "StarEmpty")
+        floatRatingView.fullImage = UIImage.init(named: "StarFull")
+
+            // The order in which we add the buttons matters.
+            // Add the Cancel button first to match the iOS 7 default style,
+            // where the cancel button is at index 0.
+            alert.addAction(UIAlertAction(title: "Not Now", style: .default, handler: { (action: UIAlertAction!) in
+
+            }))
+        alert.setValue(NSAttributedString(string: "PLEASE, RATE US", attributes: [NSAttributedStringKey.font : UIFont(name: "Helvetica", size: 16),NSAttributedStringKey.foregroundColor :UIColor.green]), forKey: "attributedTitle")
+
+            alert.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action: UIAlertAction!) in
+            }))
+        self.present(alert, animated: true, completion: nil)
+        }
+    public func floatRatingView(_ ratingView: FloatRatingView, didUpdate rating: Double) {
+
+    }
+
+        
+    }
 
