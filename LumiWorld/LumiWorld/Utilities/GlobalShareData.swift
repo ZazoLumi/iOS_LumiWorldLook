@@ -19,33 +19,14 @@ struct Constants {
         static let APIGetLumineerFollowingCompany = ":11014/getnodebyrelationship"
         static let APISetLumineerCreateRelationship = ":11103/createRelationship"
         static let APISetLumineerAddRelationship = ":11108/addrelationshippropertiesbyid"
-
-
+        static let APISetLumineerRating = ":13004/enterprise/saveEnterpriseRating"
+        static let APIGetLumineerSocialMediaDetails = ":13004/enterprise/getSocialMediaDtlsOfEnterprise"
+        static let APIGetLumineerFollowingCounts = ":13004/pushNotif/getNoOfFollowers"
+        static let APIGetLumineerUnReadMessageCounts = ":13004/instantMsg/getUnreadMsgCountLumineerWise"
+        static let APIGetLumineerAllRatings = ":13004/enterprise/getOverAllRatingOfEnterprise"
     }
 }
 
-//public func createURLFromParameters() -> URLComponents {
-//    
-//    var components = URLComponents()
-//    components.scheme = Constants.APIDetails.APIScheme
-//    components.host   = Constants.APIDetails.APIHost
-//    //    components.path   = Constants.APIDetails.apiPath
-//    //    if let paramPath = pathparam {
-//    //        components.path = Constants.APIDetails.APIPath + "\(paramPath)"
-//    //    }
-//    //    if !parameters.isEmpty {
-//    //        components.queryItems = [URLQueryItem]()
-//    //        for (key, value) in parameters {
-//    //            let queryItem = URLQueryItem(name: key, value: "\(value)")
-//    //            components.queryItems!.append(queryItem)
-//    //        }
-//    //    }
-//    
-//    return components
-//}
-
-
-//Result url= https://restcountries.eu/rest/v1/alpha/IN?fullText=true
 
 import Foundation
 class GlobalShareData {

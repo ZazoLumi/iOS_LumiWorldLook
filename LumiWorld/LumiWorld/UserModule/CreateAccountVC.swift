@@ -143,13 +143,11 @@ extension UIViewController:FloatRatingViewDelegate {
 
     }
     func showRatingAlert(completion: AlertResponseBlock? = nil) {
-        
         let alert = UIAlertController(title: "PLEASE RATE US", message: "", preferredStyle: UIAlertControllerStyle.alert)
-        
-        let floatRatingView = FloatRatingView(frame: CGRect(x: 15, y: 60, width: alert.view.bounds.size.width - 30 , height:40))
+        alert.setValue(NSAttributedString(string: "PLEASE RATE US \n \n ", attributes: [NSAttributedStringKey.font : UIFont.init(name: "Helvetica", size: 16) as Any,NSAttributedStringKey.foregroundColor:UIColor(red: 110, green: 187, blue: 171)!]), forKey: "attributedTitle")
+        let floatRatingView = FloatRatingView(frame: CGRect(x: 60, y: 55, width: alert.view.bounds.size.width - 40 * 4.5,height:40))
         floatRatingView.backgroundColor = UIColor.clear
-        alert.addAction(UIAlertAction(title: "", style: .default, handler: nil))
-        alert.view.addSubview(floatRatingView)
+         alert.view.addSubview(floatRatingView)
         floatRatingView.backgroundColor = UIColor.clear
         
         /** Note: With the exception of contentMode, type and delegate,
@@ -163,21 +161,20 @@ extension UIViewController:FloatRatingViewDelegate {
         floatRatingView.emptyImage = UIImage.init(named: "StarEmpty")
         floatRatingView.fullImage = UIImage.init(named: "StarFull")
 
-            // The order in which we add the buttons matters.
-            // Add the Cancel button first to match the iOS 7 default style,
-            // where the cancel button is at index 0.
-            alert.addAction(UIAlertAction(title: "Not Now", style: .default, handler: { (action: UIAlertAction!) in
 
-            }))
-        alert.setValue(NSAttributedString(string: "PLEASE, RATE US", attributes: [NSAttributedStringKey.font : UIFont(name: "Helvetica", size: 16),NSAttributedStringKey.foregroundColor :UIColor.green]), forKey: "attributedTitle")
+        let notNowAction = UIAlertAction(title: "Not Now", style: .default)
+        notNowAction.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+        alert.addAction(notNowAction)
 
-            alert.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action: UIAlertAction!) in
-            }))
-        self.present(alert, animated: true, completion: nil)
+        let submitAction = UIAlertAction(title:"Submit", style:.default ) { (action) in
+            completion!(String(format: "%.2f", floatRatingView.rating))
         }
-    public func floatRatingView(_ ratingView: FloatRatingView, didUpdate rating: Double) {
+        submitAction.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+        alert.addAction(submitAction)
 
-    }
+        self.present(alert, animated: true, completion: nil)
+
+        }
 
         
     }

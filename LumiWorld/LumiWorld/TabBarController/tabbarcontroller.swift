@@ -41,7 +41,10 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     
     let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
     let v1 = storyBoard.instantiateViewController(withIdentifier: "MyLumiFeedVC") as! MyLumiFeedVC
-    let v2 = storyBoard.instantiateViewController(withIdentifier: "LumiCategoryVC") as! LumiCategoryVC
+    //let v2 = storyBoard.instantiateViewController(withIdentifier: "LumiCategoryVC") as! LumiCategoryVC
+    
+    let v2 = storyBoard.instantiateViewController(withIdentifier: "LumineerProfileVC") as! LumineerProfileVC
+    
     let v3 = storyBoard.instantiateViewController(withIdentifier: "MyLumiProfileVC") as! MyLumiProfileVC
 
     

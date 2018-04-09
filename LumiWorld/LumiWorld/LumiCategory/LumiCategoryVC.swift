@@ -31,7 +31,6 @@ class LumineerCompanyCell: UITableViewCell {
 
 class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSource {
     
-    let kHeaderSectionViewTag: Int = 7900;
     let kHeaderSectionTag: Int = 6900;
     let kHeaderDataTag: Int = 100;
     let kFollowDataTag: Int = 20000;
@@ -603,5 +602,7 @@ func appDelInstance() -> AppDelegate{
 }
 extension UIColor {
     static let lumiGreen = UIColor(red: 110, green: 187, blue: 171)
+    static let lumiGray = UIColor.init(hexString: "757576")
+
 }
 
