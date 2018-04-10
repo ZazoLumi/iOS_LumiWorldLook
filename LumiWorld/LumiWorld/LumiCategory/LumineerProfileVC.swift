@@ -48,8 +48,12 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     let section2 = SectionData(title: "ACCOUNTS",text:"Test message",date:"12:00", data: [["subject":"Test subject","text":"Test message from","date":"12:00","imgName":""],["subject":"NewTest subject","text":"Test message from","date":"12:00","imgName":""],["subject":"Other subject","text":"Test message from","date":"12:00","imgName":""]],imgName:"Artboard 92xxhdpi")
         return [section1, section2]
     }()
-
+    var objLumineer : LumineerList!
     
+    @IBOutlet weak var lblActivity: UIView!
+    @IBOutlet weak var viewActivityHeights: NSLayoutConstraint!
+    @IBOutlet weak var btnFollowLumineer: UIButton!
+    @IBOutlet weak var mainViewHeights: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
         lblExpandableDescription.delegate = self
@@ -59,18 +63,74 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         lblExpandableDescription.textReplacementType = .word
         lblExpandableDescription.numberOfLines = 2
         lblExpandableDescription.text = "On third line our text need be collapsed because we have ordinary text, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-        btnProduct.setTitle("PRODUCTS", for: .normal)
-        btnProduct.setTitle("PRODUCTS", for: .selected)
-        
-        btnAccount.setTitle("ACCOUNTS", for: .normal)
-        btnAccount.setTitle("ACCOUNTS", for: .normal)
-        
-        btnSupport.setTitle("SUPPORT", for: .normal)
-        btnSupport.setTitle("SUPPORT", for: .normal)
         // Do any additional setup after loading the view.
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleRatingTapFrom(recognizer:)))
         self.ratingVC.addGestureRecognizer(tapGestureRecognizer)
         self.ratingVC.isUserInteractionEnabled = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setupLumineerData()
+    }
+    
+    @IBAction func onBtnInboxCountTapped(_ sender: UIButton) {
+        btnInboxCount.isSelected = !sender.isSelected
+        if btnInboxCount.isSelected {
+            UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                self.viewActivityHeights.constant = 180
+                self.lblActivity.isHidden = false
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }else {
+            UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                self.viewActivityHeights.constant = 0
+                self.view.layoutIfNeeded()
+            },  completion: { (finished: Bool) in
+                self.lblActivity.isHidden = true
+                })
+        }
+    }
+    @IBAction func onBtnFollowTapped(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+            let companyRegistrationNumber = objLumineer.companyRegistrationNumber!
+            var strUniqueID: String = GlobalShareData.sharedGlobal.userCellNumber!
+            strUniqueID += "_"
+            strUniqueID += companyRegistrationNumber
+            let strStatus : String = sender.isSelected ? "1":"0"
+            let objLumiList = LumineerList()
+            DispatchQueue.global(qos: .userInitiated).async {
+                objLumiList.setLumineerCompanyFollowUnFollowData(id:GlobalShareData.sharedGlobal.userCellNumber,companyregistrationnumber:companyRegistrationNumber,uniqueID: strUniqueID, status:strStatus , completionHandler: { (List) in
+                })
+            }
+
+    }
+    func setupLumineerData() {
+        btnProduct.setTitle("PRODUCTS", for: .normal)
+//        btnProduct.setTitle("PRODUCTS", for: .selected)
+//        btnAccount.setTitle("ACCOUNTS", for: .normal)
+//        btnAccount.setTitle("ACCOUNTS", for: .normal)
+//        btnSupport.setTitle("SUPPORT", for: .normal)
+//        btnSupport.setTitle("SUPPORT", for: .normal)
+
+        let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
+        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
+        self.imgProfilePic.image = scalImg
+        self.lblCompanyName.text = objLumineer.name
+        self.lblExpandableDescription.text = objLumineer.shortDescription
+        
+        if objLumineer.status == 1 {
+            btnFollowLumineer.isSelected = true
+        }
+        else {
+            btnFollowLumineer.isSelected = false
+        }
+        self.navigationItem.title = objLumineer.name
+        self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "Artboard 142xxxhdpi")
+        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "Artboard 142xxxhdpi")
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style:.plain, target: nil, action: nil)
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -80.0), for: .default)
+        self.navigationController?.navigationBar.topItem?.title = ""
+        self.navigationItem.backBarButtonItem?.imageInsets = UIEdgeInsetsMake(0, 15, 0, 0)
     }
     
     @objc func handleRatingTapFrom(recognizer : UITapGestureRecognizer)

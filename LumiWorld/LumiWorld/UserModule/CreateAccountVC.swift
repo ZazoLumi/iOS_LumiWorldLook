@@ -145,7 +145,7 @@ extension UIViewController:FloatRatingViewDelegate {
     func showRatingAlert(completion: AlertResponseBlock? = nil) {
         let alert = UIAlertController(title: "PLEASE RATE US", message: "", preferredStyle: UIAlertControllerStyle.alert)
         alert.setValue(NSAttributedString(string: "PLEASE RATE US \n \n ", attributes: [NSAttributedStringKey.font : UIFont.init(name: "Helvetica", size: 16) as Any,NSAttributedStringKey.foregroundColor:UIColor(red: 110, green: 187, blue: 171)!]), forKey: "attributedTitle")
-        let floatRatingView = FloatRatingView(frame: CGRect(x: 60, y: 55, width: alert.view.bounds.size.width - 40 * 4.5,height:40))
+        let floatRatingView = FloatRatingView(frame: CGRect(x: 60, y: 55, width: 160,height:40))
         floatRatingView.backgroundColor = UIColor.clear
          alert.view.addSubview(floatRatingView)
         floatRatingView.backgroundColor = UIColor.clear

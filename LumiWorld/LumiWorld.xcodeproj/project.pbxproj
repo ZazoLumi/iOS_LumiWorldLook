@@ -68,6 +68,7 @@
 		096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */; };
 		096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */; };
 		096ED9E320766D3B003CA8F1 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */; };
+		09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */; };
 		09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0B2065042B00C74E1F /* AFWrapper.swift */; };
 		09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0F20652D6F00C74E1F /* RealmManager.swift */; };
 		67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */; };
@@ -138,6 +139,7 @@
 		096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerProfileVC.swift; sourceTree = "<group>"; };
 		096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
 		096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
+		09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupSendMessage.swift; sourceTree = "<group>"; };
 		09D98A0B2065042B00C74E1F /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
 		09D98A0F20652D6F00C74E1F /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		1ED9069746B80D308CA990E5 /* Pods-LumiWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LumiWorld.release.xcconfig"; path = "Pods/Target Support Files/Pods-LumiWorld/Pods-LumiWorld.release.xcconfig"; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 			children = (
 				0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */,
 				096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */,
+				09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */,
 			);
 			path = LumiCategory;
 			sourceTree = "<group>";
@@ -399,7 +402,7 @@
 				TargetAttributes = {
 					0900544520591EC700262084 = {
 						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -569,6 +572,7 @@
 				0964E7352060F981001D6F47 /* NewCustomTableView.swift in Sources */,
 				096C2EF92064E28E0015C0A9 /* GlobalShareData.swift in Sources */,
 				0964E6D92060F8ED001D6F47 /* VerifyAccoutVC.swift in Sources */,
+				09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */,
 				0964E72A2060F981001D6F47 /* MaxLengthRule.swift in Sources */,
 				0964E7102060F981001D6F47 /* MyLumiProfileVC.swift in Sources */,
 				0964E7302060F981001D6F47 /* Rule.swift in Sources */,
@@ -714,11 +718,14 @@
 			baseConfigurationReference = ECF5E08DEA1C518477F9554A /* Pods-LumiWorld.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = J323ZHWH83;
 				INFOPLIST_FILE = LumiWorld/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = tes.tes.LumiWorld;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworld.zazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7725497a-c41e-4628-bb3c-d1ae4e5426bc";
+				PROVISIONING_PROFILE_SPECIFIER = 10April_DevLumi;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -729,11 +736,14 @@
 			baseConfigurationReference = 1ED9069746B80D308CA990E5 /* Pods-LumiWorld.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = J323ZHWH83;
 				INFOPLIST_FILE = LumiWorld/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = tes.tes.LumiWorld;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworld.zazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7725497a-c41e-4628-bb3c-d1ae4e5426bc";
+				PROVISIONING_PROFILE_SPECIFIER = 10April_DevLumi;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

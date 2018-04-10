@@ -257,7 +257,27 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let indexPath = tableView.indexPathForSelectedRow{
+            if segue.identifier == "LumineerProfileSelected" {
+                let objLumineerProfileVC = segue.destination as! LumineerProfileVC
+                let arrayOfItems = self.aryCategory[(indexPath.section)].lumineerList
+                
+                var objLumineer : LumineerList!
+                if isFiltering() {
+                    objLumineer = arySearchLumineer[(indexPath.row)] as LumineerList
+                }
+                else {
+                    objLumineer = arrayOfItems[(indexPath.row)] as LumineerList
+                }
+                objLumineerProfileVC.objLumineer = objLumineer
+            }
+        }
+    }
+
+    
     
     @objc func onBtnFollowUnfollowTapped(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected

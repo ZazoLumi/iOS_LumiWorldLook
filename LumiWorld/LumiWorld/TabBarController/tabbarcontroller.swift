@@ -41,15 +41,12 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     
     let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
     let v1 = storyBoard.instantiateViewController(withIdentifier: "MyLumiFeedVC") as! MyLumiFeedVC
-    //let v2 = storyBoard.instantiateViewController(withIdentifier: "LumiCategoryVC") as! LumiCategoryVC
-    
-    let v2 = storyBoard.instantiateViewController(withIdentifier: "LumineerProfileVC") as! LumineerProfileVC
-    
+    let v2 = storyBoard.instantiateViewController(withIdentifier: "LumiCategoryVC") as! LumiCategoryVC
     let v3 = storyBoard.instantiateViewController(withIdentifier: "MyLumiProfileVC") as! MyLumiProfileVC
 
     
     v1.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 76xxhdpi"), selectedImage: UIImage(named: "Artboard 76xxhdpi"))
-    v2.tabBarItem = ESTabBarItem.init(ExampleIrregularityContentView(), title: nil, image: UIImage(named: "Artboard 77xxhdpi"), selectedImage: UIImage(named: "Artboard 77xxhdpi"))
+    v2.tabBarItem = ESTabBarItem.init(ExampleIrregularityContentView(), title: nil, image: UIImage(named: "Artboard77"), selectedImage: UIImage(named: "Artboard77"))
     v3.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 78xxhdpi"), selectedImage: UIImage(named: "Artboard 78xxhdpi"))
     
     tabBarController.viewControllers = [v1, v2, v3]
@@ -83,6 +80,7 @@ class ExampleNavigationController: UINavigationController {
             statusBar.backgroundColor = UIColor(red: 180, green: 219, blue: 212)
             
         }
+
         UIApplication.shared.statusBarStyle = .lightContent
         
 
