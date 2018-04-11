@@ -36,10 +36,10 @@ class ExampleIrregularityContentView: ESTabBarItemContentView {
         self.imageView.backgroundColor = UIColor.red
         self.imageView.layer.borderWidth = 1.0
         self.imageView.layer.borderColor = UIColor.black.cgColor
-        self.imageView.layer.cornerRadius = 35
+        self.imageView.layer.cornerRadius = (UIImage(named:"Artboard 77xxhdpi")?.size.height)!/2
         self.insets = UIEdgeInsetsMake(-32, 0, 0, 0)
         let transform = CGAffineTransform.identity
-        self.imageView.transform = transform
+        //self.imageView.transform = transform
         self.superview?.bringSubview(toFront: self)
 
         textColor = UIColor.init(white: 255.0 / 255.0, alpha: 1.0)

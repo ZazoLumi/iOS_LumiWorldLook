@@ -54,8 +54,15 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     @IBOutlet weak var viewActivityHeights: NSLayoutConstraint!
     @IBOutlet weak var btnFollowLumineer: UIButton!
     @IBOutlet weak var mainViewHeights: NSLayoutConstraint!
+    var objPopupSendMessage : PopupSendMessage! = nil
+    //
+    // MARK: Lifecycle methods
+    //
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.addSettingButtonOnRight()
+
         lblExpandableDescription.delegate = self
         lblExpandableDescription.setLessLinkWith(lessLink: "Close", attributes: [.foregroundColor:UIColor.red], position: .left)
         
@@ -72,46 +79,12 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     override func viewWillAppear(_ animated: Bool) {
         setupLumineerData()
     }
-    
-    @IBAction func onBtnInboxCountTapped(_ sender: UIButton) {
-        btnInboxCount.isSelected = !sender.isSelected
-        if btnInboxCount.isSelected {
-            UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                self.viewActivityHeights.constant = 180
-                self.lblActivity.isHidden = false
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        }else {
-            UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                self.viewActivityHeights.constant = 0
-                self.view.layoutIfNeeded()
-            },  completion: { (finished: Bool) in
-                self.lblActivity.isHidden = true
-                })
-        }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
-    @IBAction func onBtnFollowTapped(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-            let companyRegistrationNumber = objLumineer.companyRegistrationNumber!
-            var strUniqueID: String = GlobalShareData.sharedGlobal.userCellNumber!
-            strUniqueID += "_"
-            strUniqueID += companyRegistrationNumber
-            let strStatus : String = sender.isSelected ? "1":"0"
-            let objLumiList = LumineerList()
-            DispatchQueue.global(qos: .userInitiated).async {
-                objLumiList.setLumineerCompanyFollowUnFollowData(id:GlobalShareData.sharedGlobal.userCellNumber,companyregistrationnumber:companyRegistrationNumber,uniqueID: strUniqueID, status:strStatus , completionHandler: { (List) in
-                })
-            }
 
-    }
     func setupLumineerData() {
-        btnProduct.setTitle("PRODUCTS", for: .normal)
-//        btnProduct.setTitle("PRODUCTS", for: .selected)
-//        btnAccount.setTitle("ACCOUNTS", for: .normal)
-//        btnAccount.setTitle("ACCOUNTS", for: .normal)
-//        btnSupport.setTitle("SUPPORT", for: .normal)
-//        btnSupport.setTitle("SUPPORT", for: .normal)
-
         let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
         self.imgProfilePic.image = scalImg
@@ -133,18 +106,6 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         self.navigationItem.backBarButtonItem?.imageInsets = UIEdgeInsetsMake(0, 15, 0, 0)
     }
     
-    @objc func handleRatingTapFrom(recognizer : UITapGestureRecognizer)
-    {
-        showRatingAlert { (rating) in
-            let objLumiList = LumineerList()
-
-            let param = ["rating": "","ratingDesc":"","enterpriseId":"","cellNumber":"","userName":""]
-            objLumiList.setLumineerCompanyRatings(param: param, completionHandler: { (response) in
-                
-            })
-
-        }
-    }
 
     //
     // MARK: ExpandableLabel Delegate
@@ -170,11 +131,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     }
 
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
+    //
+    // MARK: Social media methods
+    //
+
     @IBAction func onBtnFacebookTapped(_ sender: Any) {
     }
     
@@ -186,23 +147,103 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     }
     @IBAction func onBtnPhoneCallTapped(_ sender: Any) {
     }
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    @IBAction func onBtnProductTapped(_ sender: Any) {
+    //
+    // MARK: Custom methods
+    //
+    
+    func addMessgePopup() {
+        self.view.addBlurEffect()
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objPopupSendMessage = storyBoard.instantiateViewController(withIdentifier: "PopupSendMessage") as! PopupSendMessage
+        self.objPopupSendMessage.view.cornerRadius = 10
+        self.addChildViewController(self.objPopupSendMessage)
+        self.objPopupSendMessage.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-340)/2, width:self.view.frame.size.width , height:340);                             self.view.addSubview(self.objPopupSendMessage.view)
+        self.objPopupSendMessage.didMove(toParentViewController: self)
+
     }
     
-    @IBAction func onBtnSupportTapped(_ sender: Any) {
+    func removeMessgePopup() {
+        objPopupSendMessage.view.removeFromSuperview()
     }
-    @IBAction func onBtnAccountsTapped(_ sender: Any) {
+    @objc func handleRatingTapFrom(recognizer : UITapGestureRecognizer)
+    {
+        showRatingAlert { (rating) in
+            let objLumiList = LumineerList()
+            
+            let param = ["rating": "","ratingDesc":"","enterpriseId":"","cellNumber":"","userName":""]
+            objLumiList.setLumineerCompanyRatings(param: param, completionHandler: { (response) in
+                
+            })
+            
+        }
     }
+
+    @IBAction func onBtnProductTapped(_ sender: UIButton) {
+        btnProduct.isSelected = !sender.isSelected
+        if btnProduct.isSelected {
+            addMessgePopup()
+        }else {
+            removeMessgePopup()
+        }
+        btnProduct.isSelected = false
+    }
+    
+    @IBAction func onBtnSupportTapped(_ sender: UIButton) {
+        btnSupport.isSelected = !sender.isSelected
+        if btnSupport.isSelected {
+            addMessgePopup()
+        }else {
+            removeMessgePopup()
+        }
+        btnSupport.isSelected = false
+    }
+    @IBAction func onBtnAccountsTapped(_ sender: UIButton) {
+        btnAccount.isSelected = !sender.isSelected
+        if btnAccount.isSelected {
+            addMessgePopup()
+        }else {
+            removeMessgePopup()
+        }
+        btnAccount.isSelected = false
+    }
+    @IBAction func onBtnInboxCountTapped(_ sender: UIButton) {
+        btnInboxCount.isSelected = !sender.isSelected
+        if btnInboxCount.isSelected {
+            UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                self.viewActivityHeights.constant = 180
+                self.lblActivity.isHidden = false
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }else {
+            UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                self.viewActivityHeights.constant = 0
+                self.view.layoutIfNeeded()
+            },  completion: { (finished: Bool) in
+                self.lblActivity.isHidden = true
+            })
+        }
+    }
+    @IBAction func onBtnFollowTapped(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        let companyRegistrationNumber = objLumineer.companyRegistrationNumber!
+        var strUniqueID: String = GlobalShareData.sharedGlobal.userCellNumber!
+        strUniqueID += "_"
+        strUniqueID += companyRegistrationNumber
+        let strStatus : String = sender.isSelected ? "1":"0"
+        let objLumiList = LumineerList()
+        DispatchQueue.global(qos: .userInitiated).async {
+            objLumiList.setLumineerCompanyFollowUnFollowData(id:GlobalShareData.sharedGlobal.userCellNumber,companyregistrationnumber:companyRegistrationNumber,uniqueID: strUniqueID, status:strStatus , completionHandler: { (List) in
+            })
+        }
+        
+    }
+
 }
+
+//
+// MARK: Tableview Delegate & DataSource
+//
 
 extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -361,6 +402,19 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let chat = botChat
+        var chatVC: UIViewController?
+            chatVC = TGChatViewController(chat: chat)
+
+        if let vc = chatVC {
+            navigationController?.pushViewController(vc, animated: true)
+        }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+
+    }
+    
     func tableViewExpandSection(_ section: Int, imageView: UIImageView) {
         do {
             let sectionData = self.aryActivityData[section].data
@@ -391,6 +445,15 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
     
 }
 
+let botChat: Chat = {
+    let chat = Chat()
+    chat.type = "bot"
+    chat.targetId = "89757"
+    chat.chatId = chat.type + "_" + chat.targetId
+    chat.title = "Gothons From Planet Percal #25"
+    chat.detail = "bot"
+    return chat
+}()
 
 struct SectionData {
     let title: String
@@ -425,6 +488,22 @@ struct SectionData {
 //    }
     
     
+}
+extension UIView {
+    func addBlurEffect()  {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.addSubview(blurEffectView)
+    }
+    /// Remove UIBlurEffect from UIView
+    func removeBlurEffect() {
+        let blurredEffectViews = self.subviews.filter{$0 is UIVisualEffectView}
+        blurredEffectViews.forEach{ blurView in
+            blurView.removeFromSuperview()
+        }
+    }
 }
 
 

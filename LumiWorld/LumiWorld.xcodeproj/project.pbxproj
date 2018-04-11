@@ -68,6 +68,31 @@
 		096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */; };
 		096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */; };
 		096ED9E320766D3B003CA8F1 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */; };
+		097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BF9D9207DF865001F935C /* NoCopyPasteUITextField.swift */; };
+		097BF9DC207E052E001F935C /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BF9DB207E052D001F935C /* CameraHandler.swift */; };
+		097BFA40207E3647001F935C /* TGChatInputTextPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA32207E363F001F935C /* TGChatInputTextPanel.swift */; };
+		097BFA41207E3647001F935C /* TGTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA33207E363F001F935C /* TGTitleView.swift */; };
+		097BFA42207E3647001F935C /* TGTextMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA34207E3640001F935C /* TGTextMessageCell.swift */; };
+		097BFA43207E3647001F935C /* TGAvatarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA35207E3641001F935C /* TGAvatarButton.swift */; };
+		097BFA44207E3647001F935C /* TGBaseMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA36207E3641001F935C /* TGBaseMessageCell.swift */; };
+		097BFA45207E3647001F935C /* TGDateMessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA37207E3642001F935C /* TGDateMessageCellLayout.swift */; };
+		097BFA46207E3647001F935C /* TGDeliveryStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA38207E3642001F935C /* TGDeliveryStatusView.swift */; };
+		097BFA47207E3647001F935C /* TGSystemMessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA39207E3643001F935C /* TGSystemMessageCellLayout.swift */; };
+		097BFA48207E3647001F935C /* TGBaseMessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA3A207E3643001F935C /* TGBaseMessageCellLayout.swift */; };
+		097BFA49207E3647001F935C /* TGTextMessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA3B207E3644001F935C /* TGTextMessageCellLayout.swift */; };
+		097BFA4A207E3647001F935C /* TGDateMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA3C207E3644001F935C /* TGDateMessageCell.swift */; };
+		097BFA4B207E3647001F935C /* TGClockProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA3D207E3645001F935C /* TGClockProgressView.swift */; };
+		097BFA4C207E3647001F935C /* TGSystemMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA3E207E3646001F935C /* TGSystemMessageCell.swift */; };
+		097BFA4D207E3647001F935C /* TGChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA3F207E3646001F935C /* TGChatViewController.swift */; };
+		097BFA51207E3651001F935C /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA4E207E364F001F935C /* Chat.swift */; };
+		097BFA52207E3651001F935C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA4F207E3650001F935C /* Message.swift */; };
+		097BFA53207E3651001F935C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA50207E3651001F935C /* User.swift */; };
+		097BFA56207E365A001F935C /* MessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA54207E3659001F935C /* MessageManager.swift */; };
+		097BFA57207E365A001F935C /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA55207E365A001F935C /* SoundManager.swift */; };
+		097BFA5A207E37EF001F935C /* UIFont+NoChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA58207E37EE001F935C /* UIFont+NoChat.swift */; };
+		097BFA5B207E37EF001F935C /* NSAttributedString+NoChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA59207E37EF001F935C /* NSAttributedString+NoChat.swift */; };
+		097BFA5E207E3BE0001F935C /* notification.caf in Resources */ = {isa = PBXBuildFile; fileRef = 097BFA5C207E3BDE001F935C /* notification.caf */; };
+		097BFA5F207E3BE0001F935C /* sent.caf in Resources */ = {isa = PBXBuildFile; fileRef = 097BFA5D207E3BDF001F935C /* sent.caf */; };
 		09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */; };
 		09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0B2065042B00C74E1F /* AFWrapper.swift */; };
 		09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0F20652D6F00C74E1F /* RealmManager.swift */; };
@@ -139,6 +164,31 @@
 		096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerProfileVC.swift; sourceTree = "<group>"; };
 		096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
 		096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
+		097BF9D9207DF865001F935C /* NoCopyPasteUITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCopyPasteUITextField.swift; sourceTree = "<group>"; };
+		097BF9DB207E052D001F935C /* CameraHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
+		097BFA32207E363F001F935C /* TGChatInputTextPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGChatInputTextPanel.swift; sourceTree = "<group>"; };
+		097BFA33207E363F001F935C /* TGTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGTitleView.swift; sourceTree = "<group>"; };
+		097BFA34207E3640001F935C /* TGTextMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGTextMessageCell.swift; sourceTree = "<group>"; };
+		097BFA35207E3641001F935C /* TGAvatarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGAvatarButton.swift; sourceTree = "<group>"; };
+		097BFA36207E3641001F935C /* TGBaseMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGBaseMessageCell.swift; sourceTree = "<group>"; };
+		097BFA37207E3642001F935C /* TGDateMessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGDateMessageCellLayout.swift; sourceTree = "<group>"; };
+		097BFA38207E3642001F935C /* TGDeliveryStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGDeliveryStatusView.swift; sourceTree = "<group>"; };
+		097BFA39207E3643001F935C /* TGSystemMessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGSystemMessageCellLayout.swift; sourceTree = "<group>"; };
+		097BFA3A207E3643001F935C /* TGBaseMessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGBaseMessageCellLayout.swift; sourceTree = "<group>"; };
+		097BFA3B207E3644001F935C /* TGTextMessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGTextMessageCellLayout.swift; sourceTree = "<group>"; };
+		097BFA3C207E3644001F935C /* TGDateMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGDateMessageCell.swift; sourceTree = "<group>"; };
+		097BFA3D207E3645001F935C /* TGClockProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGClockProgressView.swift; sourceTree = "<group>"; };
+		097BFA3E207E3646001F935C /* TGSystemMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGSystemMessageCell.swift; sourceTree = "<group>"; };
+		097BFA3F207E3646001F935C /* TGChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGChatViewController.swift; sourceTree = "<group>"; };
+		097BFA4E207E364F001F935C /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		097BFA4F207E3650001F935C /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		097BFA50207E3651001F935C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		097BFA54207E3659001F935C /* MessageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageManager.swift; sourceTree = "<group>"; };
+		097BFA55207E365A001F935C /* SoundManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		097BFA58207E37EE001F935C /* UIFont+NoChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+NoChat.swift"; sourceTree = "<group>"; };
+		097BFA59207E37EF001F935C /* NSAttributedString+NoChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+NoChat.swift"; sourceTree = "<group>"; };
+		097BFA5C207E3BDE001F935C /* notification.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = notification.caf; sourceTree = "<group>"; };
+		097BFA5D207E3BDF001F935C /* sent.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sent.caf; sourceTree = "<group>"; };
 		09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupSendMessage.swift; sourceTree = "<group>"; };
 		09D98A0B2065042B00C74E1F /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
 		09D98A0F20652D6F00C74E1F /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
@@ -191,6 +241,7 @@
 		0964E556205FC811007E5924 /* LumiWorld */ = {
 			isa = PBXGroup;
 			children = (
+				097BF9DE207E35D2001F935C /* Message */,
 				093F445C206B715800BC9983 /* Models */,
 				0964E70D2060F981001D6F47 /* LumiCategory */,
 				0964E6DA2060F981001D6F47 /* MyLumiFeed */,
@@ -200,6 +251,8 @@
 				0964E6CD2060F8ED001D6F47 /* UserModule */,
 				0964E557205FC811007E5924 /* AppDelegate.swift */,
 				0964E558205FC811007E5924 /* Assets.xcassets */,
+				097BFA5C207E3BDE001F935C /* notification.caf */,
+				097BFA5D207E3BDF001F935C /* sent.caf */,
 				0964E559205FC811007E5924 /* LaunchScreen.storyboard */,
 				0964E55B205FC811007E5924 /* Main.storyboard */,
 				0964E565205FC811007E5924 /* Info.plist */,
@@ -263,6 +316,8 @@
 		0964E6E82060F981001D6F47 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				097BF9DB207E052D001F935C /* CameraHandler.swift */,
+				097BF9D9207DF865001F935C /* NoCopyPasteUITextField.swift */,
 				096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */,
 				096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */,
 				09D98A0F20652D6F00C74E1F /* RealmManager.swift */,
@@ -345,6 +400,34 @@
 				09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */,
 			);
 			path = LumiCategory;
+			sourceTree = "<group>";
+		};
+		097BF9DE207E35D2001F935C /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				097BFA3F207E3646001F935C /* TGChatViewController.swift */,
+				097BFA59207E37EF001F935C /* NSAttributedString+NoChat.swift */,
+				097BFA58207E37EE001F935C /* UIFont+NoChat.swift */,
+				097BFA54207E3659001F935C /* MessageManager.swift */,
+				097BFA55207E365A001F935C /* SoundManager.swift */,
+				097BFA4E207E364F001F935C /* Chat.swift */,
+				097BFA4F207E3650001F935C /* Message.swift */,
+				097BFA50207E3651001F935C /* User.swift */,
+				097BFA35207E3641001F935C /* TGAvatarButton.swift */,
+				097BFA36207E3641001F935C /* TGBaseMessageCell.swift */,
+				097BFA3A207E3643001F935C /* TGBaseMessageCellLayout.swift */,
+				097BFA32207E363F001F935C /* TGChatInputTextPanel.swift */,
+				097BFA3D207E3645001F935C /* TGClockProgressView.swift */,
+				097BFA3C207E3644001F935C /* TGDateMessageCell.swift */,
+				097BFA37207E3642001F935C /* TGDateMessageCellLayout.swift */,
+				097BFA38207E3642001F935C /* TGDeliveryStatusView.swift */,
+				097BFA3E207E3646001F935C /* TGSystemMessageCell.swift */,
+				097BFA39207E3643001F935C /* TGSystemMessageCellLayout.swift */,
+				097BFA34207E3640001F935C /* TGTextMessageCell.swift */,
+				097BFA3B207E3644001F935C /* TGTextMessageCellLayout.swift */,
+				097BFA33207E363F001F935C /* TGTitleView.swift */,
+			);
+			path = Message;
 			sourceTree = "<group>";
 		};
 		2856D921F31031F6DF78EF6E /* Pods */ = {
@@ -431,7 +514,9 @@
 			files = (
 				0964E59C205FC811007E5924 /* Info.plist in Resources */,
 				0964E594205FC811007E5924 /* Main.storyboard in Resources */,
+				097BFA5F207E3BE0001F935C /* sent.caf in Resources */,
 				0964E7342060F981001D6F47 /* Info.plist in Resources */,
+				097BFA5E207E3BE0001F935C /* notification.caf in Resources */,
 				0964E592205FC811007E5924 /* Assets.xcassets in Resources */,
 				0964E71E2060F981001D6F47 /* Info.plist in Resources */,
 				0964E593205FC811007E5924 /* LaunchScreen.storyboard in Resources */,
@@ -469,15 +554,18 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/ESTabBarController-swift/ESTabBarController_swift.framework",
+				"${BUILT_PRODUCTS_DIR}/HPGrowingTextView/HPGrowingTextView.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/L10n-swift/L10n_swift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialTextField/MaterialTextField.framework",
+				"${BUILT_PRODUCTS_DIR}/NoChat/NoChat.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SCLAlertView/SCLAlertView.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/YYText/YYText.framework",
 				"${BUILT_PRODUCTS_DIR}/pop/pop.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -485,15 +573,18 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ESTabBarController_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPGrowingTextView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/L10n_swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialTextField.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NoChat.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCLAlertView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYText.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/pop.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,6 +614,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */,
 				0964E7192060F981001D6F47 /* Validatable.swift in Sources */,
 				0964E71D2060F981001D6F47 /* ValidatorDictionary.swift in Sources */,
 				0964E6D52060F8ED001D6F47 /* CreateAccountVC.swift in Sources */,
@@ -533,9 +625,12 @@
 				0964E7172060F981001D6F47 /* ExampleTipsContentView.swift in Sources */,
 				0964E6D62060F8ED001D6F47 /* ForgotPasswordVC.swift in Sources */,
 				0964E71A2060F981001D6F47 /* ValidationDelegate.swift in Sources */,
+				097BFA5A207E37EF001F935C /* UIFont+NoChat.swift in Sources */,
 				0964E72E2060F981001D6F47 /* RegexRule.swift in Sources */,
 				0964E7142060F981001D6F47 /* ExampleBouncesContentView.swift in Sources */,
+				097BFA4D207E3647001F935C /* TGChatViewController.swift in Sources */,
 				0964E7282060F981001D6F47 /* IPV4Rule.swift in Sources */,
+				097BFA45207E3647001F935C /* TGDateMessageCellLayout.swift in Sources */,
 				09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */,
 				0964E72D2060F981001D6F47 /* PhoneNumberRule.swift in Sources */,
 				09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */,
@@ -543,26 +638,38 @@
 				0964E7182060F981001D6F47 /* tabbarcontroller.swift in Sources */,
 				0964E71F2060F981001D6F47 /* AlphaNumericRule.swift in Sources */,
 				0964E7202060F981001D6F47 /* AlphaRule.swift in Sources */,
+				097BF9DC207E052E001F935C /* CameraHandler.swift in Sources */,
 				0964E7242060F981001D6F47 /* ExactLengthRule.swift in Sources */,
 				0964E7222060F981001D6F47 /* ConfirmRule.swift in Sources */,
+				097BFA48207E3647001F935C /* TGBaseMessageCellLayout.swift in Sources */,
 				0964E7162060F981001D6F47 /* ExampleIrregularityContentView.swift in Sources */,
+				097BFA51207E3651001F935C /* Chat.swift in Sources */,
 				0964E6D42060F8ED001D6F47 /* ChangePasswordVC.swift in Sources */,
 				0964E6D72060F8ED001D6F47 /* LogInVC.swift in Sources */,
 				0964E7362060F981001D6F47 /* TextFieldTableViewCell.swift in Sources */,
 				093F445E206B715900BC9983 /* UserData.swift in Sources */,
+				097BFA4A207E3647001F935C /* TGDateMessageCell.swift in Sources */,
 				0964E5C2205FC811007E5924 /* ViewController.swift in Sources */,
 				096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */,
 				0964E7372060F981001D6F47 /* TextFieldTableViewController.swift in Sources */,
 				0964E7312060F981001D6F47 /* ValidationRule.swift in Sources */,
+				097BFA49207E3647001F935C /* TGTextMessageCellLayout.swift in Sources */,
 				093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */,
 				0964E7262060F981001D6F47 /* FullNameRule.swift in Sources */,
 				093F4462206B7BC700BC9983 /* Reachability.swift in Sources */,
 				0964E7292060F981001D6F47 /* ISBNRule.swift in Sources */,
+				097BFA43207E3647001F935C /* TGAvatarButton.swift in Sources */,
+				097BFA57207E365A001F935C /* SoundManager.swift in Sources */,
 				0964E7382060F981001D6F47 /* LumiCategoryVC.swift in Sources */,
+				097BFA56207E365A001F935C /* MessageManager.swift in Sources */,
+				097BFA52207E3651001F935C /* Message.swift in Sources */,
 				0964E70F2060F981001D6F47 /* MyLumiFeedVC.swift in Sources */,
 				0964E7112060F981001D6F47 /* ExampleAnimateTipsContentView.swift in Sources */,
+				097BFA4C207E3647001F935C /* TGSystemMessageCell.swift in Sources */,
 				0964E6D82060F8ED001D6F47 /* TemporaryPasswordVC.swift in Sources */,
 				096ED9E320766D3B003CA8F1 /* FloatRatingView.swift in Sources */,
+				097BFA46207E3647001F935C /* TGDeliveryStatusView.swift in Sources */,
+				097BFA41207E3647001F935C /* TGTitleView.swift in Sources */,
 				0964E7332060F981001D6F47 /* CustomTableView.swift in Sources */,
 				0964E71C2060F981001D6F47 /* Validator.swift in Sources */,
 				096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */,
@@ -571,16 +678,23 @@
 				0964E72B2060F981001D6F47 /* MinLengthRule.swift in Sources */,
 				0964E7352060F981001D6F47 /* NewCustomTableView.swift in Sources */,
 				096C2EF92064E28E0015C0A9 /* GlobalShareData.swift in Sources */,
+				097BFA44207E3647001F935C /* TGBaseMessageCell.swift in Sources */,
 				0964E6D92060F8ED001D6F47 /* VerifyAccoutVC.swift in Sources */,
+				097BFA4B207E3647001F935C /* TGClockProgressView.swift in Sources */,
+				097BFA40207E3647001F935C /* TGChatInputTextPanel.swift in Sources */,
+				097BFA47207E3647001F935C /* TGSystemMessageCellLayout.swift in Sources */,
 				09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */,
 				0964E72A2060F981001D6F47 /* MaxLengthRule.swift in Sources */,
 				0964E7102060F981001D6F47 /* MyLumiProfileVC.swift in Sources */,
 				0964E7302060F981001D6F47 /* Rule.swift in Sources */,
 				0964E7322060F981001D6F47 /* ZipCodeRule.swift in Sources */,
 				0964E7132060F981001D6F47 /* ExampleBasicContentView.swift in Sources */,
+				097BFA5B207E37EF001F935C /* NSAttributedString+NoChat.swift in Sources */,
 				0964E7122060F981001D6F47 /* ExampleBackgroundContentView.swift in Sources */,
 				0964E7232060F981001D6F47 /* EmailRule.swift in Sources */,
 				0964E7152060F981001D6F47 /* ExampleHighlightableContentView.swift in Sources */,
+				097BFA42207E3647001F935C /* TGTextMessageCell.swift in Sources */,
+				097BFA53207E3651001F935C /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
