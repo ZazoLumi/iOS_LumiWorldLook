@@ -242,21 +242,21 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RCh-tP-Q1t">
-                                                        <rect key="frame" x="237.5" y="54" width="64" height="34"/>
+                                                        <rect key="frame" x="250.5" y="54" width="51" height="34"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="34" id="ieJ-SQ-Atn"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
                                                         <inset key="titleEdgeInsets" minX="-15" minY="20" maxX="0.0" maxY="0.0"/>
                                                         <inset key="imageEdgeInsets" minX="20" minY="-10" maxX="0.0" maxY="0.0"/>
-                                                        <state key="normal" title="144 Inbox" image="Artboard 93xxhdpi">
+                                                        <state key="normal" title="0 Inbox" image="Artboard 93xxhdpi">
                                                             <color key="titleColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
                                                         <connections>
                                                             <action selector="onBtnInboxCountTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="j8h-Jr-TWe"/>
                                                         </connections>
                                                     </button>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123 Followers" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="voc-XI-V39">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 Followers" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="voc-XI-V39">
                                                         <rect key="frame" x="20.5" y="54" width="61" height="34"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="34" id="NQ3-lO-YFL"/>

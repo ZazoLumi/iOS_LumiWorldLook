@@ -36,6 +36,7 @@ class GlobalShareData {
     public var currentUserDetails = UserData()
     var userCellNumber: String! //for debugging
     var realmManager = RealmManager()
+    var objCurrentLumineer : LumineerList!
 
     //var member:[Info] = []
     func isDebug() -> Bool {

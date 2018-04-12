@@ -180,7 +180,7 @@
 
 #pragma mark - NOCChatInputPanelDelgate
 
-- (void)inputPanel:(NOCChatInputPanel *)inputPanel willChangeHeight:(CGFloat)height duration:(NSTimeInterval)duration animationCurve:(int)animationCurve
+- (void)inputPanel:(NOCChatInputPanel *)inputPanel g:(CGFloat)height duration:(NSTimeInterval)duration animationCurve:(int)animationCurve
 {
     [self adjustCollectionViewForSize:self.containerView.bounds.size keyboardHeight:self.keyboardHeight inputContainerHeight:height scrollToBottom:NO duration:duration animationCurve:0];
 }

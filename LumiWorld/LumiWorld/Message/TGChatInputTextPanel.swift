@@ -85,7 +85,8 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         inputField.internalTextView.isOpaque = false
         inputField.internalTextView.contentMode = .left
         inputField.internalTextView.scrollIndicatorInsets = UIEdgeInsets(top: -inputFiledInternalEdgeInsets.top, left: 0, bottom: 5 - TGRetinaPixel, right: 0)
-        
+        //inputField.internalTextView.autocorrectionType = .no
+
         sendButton = UIButton(type: .system)
         sendButton.isExclusiveTouch = true
         sendButton.setTitle(NSLocalizedString("Send", comment: ""), for: .normal)
@@ -214,6 +215,7 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
     }
     
     func clearInputField() {
+        self.frame = CGRect(x:self.frame.origin.x,y:(superview?.frame.size.height)!-53,width:self.frame.size.width,height:53)
         inputField.internalTextView.text = nil
         inputField.refreshHeight()
         
@@ -222,14 +224,13 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
     
     func growingTextView(_ growingTextView: HPGrowingTextView!, willChangeHeight height: Float) {
         let inputContainerHeight = heightForInputFiledHeight(CGFloat(height))
-        let newInputContainerFrame = CGRect(x: 0, y: messageAreaSize.height - keyboardHeight - inputContainerHeight, width: messageAreaSize.width, height: inputContainerHeight)
-        
+        let newInput = CGRect(x:self.frame.origin.x,y:CGFloat(self.frame.origin.y)-(CGFloat(height)-CGFloat(self.frame.size.height)),width:self.frame.size.width,height:inputContainerHeight-5)
         UIView.animate(withDuration: 0.3) { 
-            self.frame = newInputContainerFrame
+            self.frame = newInput
             self.layoutSubviews()
         }
-        
-        delegate?.inputPanel(self, willChangeHeight: inputContainerHeight, duration: 0.3, animationCurve: 0)
+
+        //delegate?.inputPanel(self, willChangeHeight: inputContainerHeight, duration: 0.3, animationCurve: 0)
     }
     
     func growingTextViewDidChange(_ growingTextView: HPGrowingTextView!) {

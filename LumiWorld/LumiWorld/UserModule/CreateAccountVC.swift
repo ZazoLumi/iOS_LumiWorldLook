@@ -142,7 +142,7 @@ extension UIViewController:FloatRatingViewDelegate {
         // optional closure callback
 
     }
-    func showRatingAlert(completion: AlertResponseBlock? = nil) {
+    func showRatingAlert(currntRating:Double, completion: AlertResponseBlock? = nil) {
         let alert = UIAlertController(title: "PLEASE RATE US", message: "", preferredStyle: UIAlertControllerStyle.alert)
         alert.setValue(NSAttributedString(string: "PLEASE RATE US \n \n ", attributes: [NSAttributedStringKey.font : UIFont.init(name: "Helvetica", size: 16) as Any,NSAttributedStringKey.foregroundColor:UIColor(red: 110, green: 187, blue: 171)!]), forKey: "attributedTitle")
         let floatRatingView = FloatRatingView(frame: CGRect(x: 60, y: 55, width: 160,height:40))
@@ -160,7 +160,7 @@ extension UIViewController:FloatRatingViewDelegate {
         floatRatingView.maxRating = 5
         floatRatingView.emptyImage = UIImage.init(named: "StarEmpty")
         floatRatingView.fullImage = UIImage.init(named: "StarFull")
-
+        floatRatingView.rating = currntRating
 
         let notNowAction = UIAlertAction(title: "Not Now", style: .default)
         notNowAction.setValue(UIColor.lumiGreen, forKey: "titleTextColor")

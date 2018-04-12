@@ -28,7 +28,10 @@ class LumineerList : Object{
     @objc private(set) dynamic var parentid = 0
     @objc private(set) dynamic var sectorID = 0
     @objc private(set) dynamic var status = 0
-    
+    @objc  dynamic var followersCount = 0
+    @objc  dynamic var ratings = 0
+    @objc  dynamic var unreadCount = 0
+
     override static func primaryKey() -> String? {
         return "id"
     }
@@ -206,7 +209,7 @@ class LumineerList : Object{
         
     }
     
-    func setLumineerCompanyRatings(param:[String:String],completionHandler: @escaping (_ objData: [[String:Any]]) -> Void) {
+    func setLumineerCompanyRatings(param:[String:AnyObject],completionHandler: @escaping (_ objData: [String:JSON]) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISetLumineerRating)"
@@ -214,91 +217,106 @@ class LumineerList : Object{
                 AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
                     print(json)
                     let tempDict = json.dictionary
-                    completionHandler(tempDict as! [[String : Any]])
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        return
+                    }
+                    completionHandler(tempDict!)
                 }, failure: { (Error) in
                     print(Error.localizedDescription)
                 })
 
             } catch let jsonError{
                 print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+    
+    func getLumineerCompanyFollowingCounts(completionHandler: @escaping (_ objData: [String:JSON]) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerFollowingCounts)"+"?regnNumber=\(self.id)"
+
+            do {
+                AFWrapper.requestGETURL(urlString, success: { (json) in
+                    let tempDict = json.dictionary
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        return
+                    }
+                    completionHandler(tempDict!)
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+            } catch let jsonError{
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+    
+    func getLumineerCompanyUnReadMessageCounts(param:[String:String],completionHandler: @escaping (_ objData: [String:JSON]) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let cellNumber = param["cellNumber"]!
+            let userName = param["lumineerName"]!
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerUnReadMessageCounts)" + "?cellNumber=\(cellNumber)" + "&lumineerName=\(userName)"
+            do {
+                AFWrapper.requestGETURL(urlString, success: { (json) in
+                    let tempDict = json.dictionary
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        return
+                    }
+                    completionHandler(tempDict!)
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+            } catch let jsonError{
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+    
+    func getLumineerSocialMediaDetails(completionHandler: @escaping (_ oobjData: [JSON]) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerSocialMediaDetails)"+"?enterpriseId=\(self.id)"
+
+            do {
+                AFWrapper.requestGETURL(urlString, success: { (json) in
+                    let aryData = json.arrayValue
+                    guard aryData.count > 0 else {
+                        return
+                    }
+                    completionHandler(aryData)
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+            } catch let jsonError{
+                print(jsonError)
                 
             }
         }else{
             print("Internet Connection not Available!")
         }
     }
-    
-    func getLumineerCompanyFollowingCounts(param:[String:String],completionHandler: @escaping (_ objData: [[String:Any]]) -> Void) {
+    func getLumineerAllRatings(completionHandler: @escaping (_ objData: [String:JSON]) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerFollowingCounts)"
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerAllRatings)"+"?enterpriseId=\(self.id)"
             do {
                 //todo
-                let param = ["regnNumber": ""]
-                AFWrapper.requestGETAuthURL(urlString, headers: param as [String : String], success: { (json) in
+                AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempDict = json.dictionary
-                    completionHandler(tempDict as! [[String : Any]])
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        return
+                    }
+                   completionHandler(tempDict!)
                 }, failure: { (Error) in
-                })
-            } catch let jsonError{
-                print(jsonError)
-            }
-        }else{
-            print("Internet Connection not Available!")
-        }
-    }
-    
-    func getLumineerCompanyUnReadMessageCounts(param:[String:String],completionHandler: @escaping (_ objData: [[String:Any]]) -> Void) {
-        if Reachability.isConnectedToNetwork(){
-            print("Internet Connection Available!")
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerUnReadMessageCounts)"
-            do {
-                //todo
-                let param = ["cellNumber": "","lumineerName":""]
-                AFWrapper.requestGETAuthURL(urlString, headers: param as [String : String], success: { (json) in
-                    let tempDict = json.dictionary
-                    completionHandler(tempDict as! [[String : Any]])
-                }, failure: { (Error) in
-                })
-            } catch let jsonError{
-                print(jsonError)
-            }
-        }else{
-            print("Internet Connection not Available!")
-        }
-    }
-    
-    func getLumineerSocialMediaDetails(param:[String:String],completionHandler: @escaping (_ objData: [[String:Any]]) -> Void) {
-        if Reachability.isConnectedToNetwork(){
-            print("Internet Connection Available!")
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerSocialMediaDetails)"
-            do {
-                //todo
-                let param = ["enterpriseId": ""]
-                AFWrapper.requestGETAuthURL(urlString, headers: param as [String : String], success: { (json) in
-                    let tempDict = json.dictionary
-                    completionHandler(tempDict as! [[String : Any]])
-                }, failure: { (Error) in
-                })
-            } catch let jsonError{
-                print(jsonError)
-                
-            }
-        }else{
-            print("Internet Connection not Available!")
-        }
-    }
-    func getLumineerAllRatings(param:[String:String],completionHandler: @escaping (_ objData: [[String:Any]]) -> Void) {
-        if Reachability.isConnectedToNetwork(){
-            print("Internet Connection Available!")
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerAllRatings)"
-            do {
-                //todo
-                let param = ["enterpriseId": ""]
-                AFWrapper.requestGETAuthURL(urlString, headers: param as [String : String], success: { (json) in
-                    let tempDict = json.dictionary
-                    completionHandler(tempDict as! [[String : Any]])
-                }, failure: { (Error) in
+                    print(Error.localizedDescription)
                 })
             } catch let jsonError{
                 print(jsonError)

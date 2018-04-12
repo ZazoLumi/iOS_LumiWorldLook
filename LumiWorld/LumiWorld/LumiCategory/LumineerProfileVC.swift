@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Realm
+import RealmSwift
 
 class SubjectCell: UITableViewCell {
     
@@ -31,7 +33,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     let kHeaderSectionTag: Int = 6900;
     var expandedSectionHeaderNumber: Int = -1
     var expandedSectionHeader: UITableViewHeaderFooterView!
-
+    var currentTotalHeights: Int = 0
     @IBOutlet weak var btnSupport: UIButton!
     @IBOutlet weak var lblLumiProfileTxt: UILabel!
     @IBOutlet weak var btnAccount: UIButton!
@@ -83,14 +85,21 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    func calculateCurrentHeight() {
+//        let descHegiht = lblExpandableDescription.text?.height(withConstrainedWidth: lblExpandableDescription.frame.size.width, font: lblExpandableDescription.font)
+        mainViewHeights.constant
+            =  (appDelegate.window?.bounds.size.height)! + viewActivityHeights.constant + lblExpandableDescription.frame.size.height
+    }
+    
     func setupLumineerData() {
+        objLumineer = GlobalShareData.sharedGlobal.objCurrentLumineer
         let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
         self.imgProfilePic.image = scalImg
         self.lblCompanyName.text = objLumineer.name
         self.lblExpandableDescription.text = objLumineer.shortDescription
-        
+        viewActivityHeights.constant = 0
         if objLumineer.status == 1 {
             btnFollowLumineer.isSelected = true
         }
@@ -104,6 +113,29 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -80.0), for: .default)
         self.navigationController?.navigationBar.topItem?.title = ""
         self.navigationItem.backBarButtonItem?.imageInsets = UIEdgeInsetsMake(0, 15, 0, 0)
+        let realm = try! Realm()
+        objLumineer.getLumineerAllRatings() { (json) in
+            self.ratingVC.rating = Double((json["finalRating"]?.intValue)!)
+            try! realm.write({
+                self.objLumineer.ratings = (json["finalRating"]?.intValue)!})
+        }
+        
+//todo \(String(describing: GlobalShareData.sharedGlobal.currentUserDetails.displayName))
+        objLumineer.getLumineerCompanyUnReadMessageCounts(param:["cellNumber":GlobalShareData.sharedGlobal.userCellNumber ,"lumineerName":""]) { (json) in
+            let strCount = json["unreadCount"]!
+            self.btnInboxCount.setTitle("\(strCount) Count", for: .normal)
+            try! realm.write({
+                self.objLumineer.unreadCount = (json["unreadCount"]?.intValue)!})
+        }
+        objLumineer.getLumineerCompanyFollowingCounts(){ (json) in
+            let strCount = json["noOfFollowers"]!
+            self.lblFollowers.text = "\(strCount) Followers"
+            try! realm.write({
+                self.objLumineer.followersCount = (json["noOfFollowers"]?.intValue)!})
+        }
+        objLumineer.getLumineerSocialMediaDetails(){ (json) in
+        }
+        self.calculateCurrentHeight()
     }
     
 
@@ -116,13 +148,14 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     
     func didExpandLabel(_ label: ExpandableLabel) {
         lblExpandableDescription.shouldCollapse = true
+        calculateCurrentHeight()
     }
     
     func willCollapseLabel(_ label: ExpandableLabel) {
         lblExpandableDescription.shouldCollapse = false
         lblExpandableDescription.numberOfLines = 2
-
-    }
+        calculateCurrentHeight()
+   }
     
     func didCollapseLabel(_ label: ExpandableLabel) {
         lblExpandableDescription.shouldCollapse = true
@@ -168,12 +201,13 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     }
     @objc func handleRatingTapFrom(recognizer : UITapGestureRecognizer)
     {
-        showRatingAlert { (rating) in
-            let objLumiList = LumineerList()
-            
-            let param = ["rating": "","ratingDesc":"","enterpriseId":"","cellNumber":"","userName":""]
-            objLumiList.setLumineerCompanyRatings(param: param, completionHandler: { (response) in
-                
+        showRatingAlert(currntRating:ratingVC.rating) { (rating) in
+            let param = ["rating": rating as Any,"ratingDesc":"","enterpriseId":self.objLumineer.id,"cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"userName":""] as [String : Any]
+            //todo \(String(describing: GlobalShareData.sharedGlobal.currentUserDetails.displayName))
+            self.objLumineer.setLumineerCompanyRatings(param: param as [String : AnyObject], completionHandler: { (response) in
+                self.objLumineer.getLumineerAllRatings() { (json) in
+                    self.ratingVC.rating = Double((json["finalRating"]?.intValue)!)
+                }
             })
             
         }
@@ -209,17 +243,21 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     }
     @IBAction func onBtnInboxCountTapped(_ sender: UIButton) {
         btnInboxCount.isSelected = !sender.isSelected
+        
         if btnInboxCount.isSelected {
             UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 self.viewActivityHeights.constant = 180
                 self.lblActivity.isHidden = false
                 self.view.layoutIfNeeded()
-            }, completion: nil)
+            }, completion: { (finished: Bool) in
+                self.calculateCurrentHeight()
+            })
         }else {
             UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 self.viewActivityHeights.constant = 0
                 self.view.layoutIfNeeded()
             },  completion: { (finished: Bool) in
+                self.calculateCurrentHeight()
                 self.lblActivity.isHidden = true
             })
         }
@@ -503,6 +541,28 @@ extension UIView {
         blurredEffectViews.forEach{ blurView in
             blurView.removeFromSuperview()
         }
+    }
+}
+
+extension UIViewController {
+    var appDelegate:AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+}
+
+extension String {
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil)
+        
+        return ceil(boundingBox.height)
+    }
+    
+    func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil)
+        
+        return ceil(boundingBox.width)
     }
 }
 

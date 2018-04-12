@@ -272,7 +272,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 else {
                     objLumineer = arrayOfItems[(indexPath.row)] as LumineerList
                 }
-                objLumineerProfileVC.objLumineer = objLumineer
+                GlobalShareData.sharedGlobal.objCurrentLumineer = objLumineer
             }
         }
     }
