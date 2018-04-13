@@ -135,6 +135,19 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         }
         objLumineer.getLumineerSocialMediaDetails(){ (json) in
         }
+        let objLumiMessage = LumiMessage()
+        objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"1","endIndex":"1000","lastViewDate":""]) { (objLumineer) in
+            let realm = try! Realm()
+            let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageCategory") as! [String]))
+            for objUniqueItem in distinctTypes {
+                let aryLumiMessage = objLumineer.lumiMessages.filter("messageCategory = %@ AND ")
+
+//                let canteens = realm.objects(LumiMessage.self).filter("messageCategory = %@ AND ANY lines.meals.vegan = true", objUniqueItem)
+
+                let section1 = SectionData(title: objUniqueItem,text:"Test message",date:"12:00", data: [["subject":"Test subject","text":"Test message from","date":"12:00","imgName":""],["subject":"NewTest subject","text":"Test message from","date":"12:00","imgName":""]],imgName:"Artboard 91xxhdpi")
+
+            }
+        }
         self.calculateCurrentHeight()
     }
     
@@ -479,8 +492,6 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         }
         
     }
-
-    
 }
 
 let botChat: Chat = {

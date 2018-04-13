@@ -24,6 +24,8 @@ struct Constants {
         static let APIGetLumineerFollowingCounts = ":13004/pushNotif/getNoOfFollowers"
         static let APIGetLumineerUnReadMessageCounts = ":13004/instantMsg/getUnreadMsgCountLumineerWise"
         static let APIGetLumineerAllRatings = ":13004/enterprise/getOverAllRatingOfEnterprise"
+        static let APIGetLumineerMessages = ":13004/instantMsg/getAllNewsFeedsOfLumi"
+
     }
 }
 

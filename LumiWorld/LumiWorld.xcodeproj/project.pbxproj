@@ -68,6 +68,7 @@
 		096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */; };
 		096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */; };
 		096ED9E320766D3B003CA8F1 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */; };
+		097A69AF20809569001D273E /* LumiMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097A69AE20809569001D273E /* LumiMessage.swift */; };
 		097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BF9D9207DF865001F935C /* NoCopyPasteUITextField.swift */; };
 		097BF9DC207E052E001F935C /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BF9DB207E052D001F935C /* CameraHandler.swift */; };
 		097BFA40207E3647001F935C /* TGChatInputTextPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA32207E363F001F935C /* TGChatInputTextPanel.swift */; };
@@ -164,6 +165,7 @@
 		096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerProfileVC.swift; sourceTree = "<group>"; };
 		096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
 		096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
+		097A69AE20809569001D273E /* LumiMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiMessage.swift; sourceTree = "<group>"; };
 		097BF9D9207DF865001F935C /* NoCopyPasteUITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCopyPasteUITextField.swift; sourceTree = "<group>"; };
 		097BF9DB207E052D001F935C /* CameraHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
 		097BFA32207E363F001F935C /* TGChatInputTextPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGChatInputTextPanel.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 			children = (
 				093F445D206B715800BC9983 /* UserData.swift */,
 				093F445F206B717F00BC9983 /* LumiCategory.swift */,
+				097A69AE20809569001D273E /* LumiMessage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				097BFA45207E3647001F935C /* TGDateMessageCellLayout.swift in Sources */,
 				09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */,
 				0964E72D2060F981001D6F47 /* PhoneNumberRule.swift in Sources */,
+				097A69AF20809569001D273E /* LumiMessage.swift in Sources */,
 				09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */,
 				0964E7272060F981001D6F47 /* HexColorRule.swift in Sources */,
 				0964E7182060F981001D6F47 /* tabbarcontroller.swift in Sources */,

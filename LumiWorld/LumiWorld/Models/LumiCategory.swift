@@ -11,7 +11,7 @@ import SwiftyJSON
 import RealmSwift
 import MBProgressHUD
 
-class LumineerList : Object{
+class LumineerList : Object {
     @objc private(set) dynamic var id = 0
     @objc dynamic var name: String? = nil
     @objc dynamic var sectorName: String? = nil
@@ -31,6 +31,7 @@ class LumineerList : Object{
     @objc  dynamic var followersCount = 0
     @objc  dynamic var ratings = 0
     @objc  dynamic var unreadCount = 0
+    var lumiMessages = List<LumiMessage>()
 
     override static func primaryKey() -> String? {
         return "id"
@@ -41,7 +42,6 @@ class LumineerList : Object{
             print("Internet Connection Available!")
             let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerCompany)"
             do {
-                
                 self.getLumineerCompanyFollowingData(completionHandler: { (aryFollowdata) in
                     AFWrapper.requestGETURL(urlString, success: { (json) in
                         let tempArray = json.arrayValue
@@ -73,7 +73,6 @@ class LumineerList : Object{
                                 else if let numberValue = filteredData[0]["status"] as? NSNumber {
                                     newLumineerObj.status = numberValue as! Int
                                 }
-                                
 
                             }
                             else {
@@ -100,18 +99,13 @@ class LumineerList : Object{
                                 objCategory[0].lumineerList = lumineerList
                                 GlobalShareData.sharedGlobal.realmManager.editObjects(objs: objCategory[0])
                             }
-                            
                         }
-                        
                         let objCategory  = GlobalShareData.sharedGlobal.realmManager.getObjects(type: LumiCategory.self)
                         completionHandler(objCategory!)
                         print(json)
                     }, failure: { (Error) in
                     })
                 })
-                
-                
-                
             } catch let jsonError{
                 print(jsonError)
                 
