@@ -25,6 +25,8 @@ struct Constants {
         static let APIGetLumineerUnReadMessageCounts = ":13004/instantMsg/getUnreadMsgCountLumineerWise"
         static let APIGetLumineerAllRatings = ":13004/enterprise/getOverAllRatingOfEnterprise"
         static let APIGetLumineerMessages = ":13004/instantMsg/getAllNewsFeedsOfLumi"
+        static let APISendLumineerTextMessages = ":13004/instantMsg/instantMessagingByLumi"
+        static let APISendLumineerAttachmentMessages = ":13004/instantMsg/replyToIMByLumiWithMedia"
 
     }
 }

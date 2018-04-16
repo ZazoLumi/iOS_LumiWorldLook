@@ -64,11 +64,14 @@ class LumiMessage : Object {
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempArray = json.arrayValue
+                    guard tempArray.count != 0 else {
+                        return
+                    }
                     for index in 0...tempArray.count-1 {
                         let aObject = tempArray[index]
                         let realm = try! Realm()
                         let id : Int = aObject["id"].intValue
-                        let result  = realm.objects(LumiCategory.self).filter("id == %d", aObject["categoryId"].intValue)
+                        let result  = realm.objects(LumiCategory.self).filter("id == %d", GlobalShareData.sharedGlobal.objCurrentLumineer.parentid)
                         if result.count > 0 {
                             let objCategory = result[0] as LumiCategory
                             let objLumineer = objCategory.lumineerList.filter("id == %d", aObject["enterpriseID"].intValue)
@@ -110,8 +113,9 @@ class LumiMessage : Object {
                                     realm.add(newLumiMessage, update: true)
                                     objLumineerMessageList.append(newLumiMessage)
                                 }
-//                                objLumineer[0].lumiMessages = newLumiMessage
-//                                GlobalShareData.sharedGlobal.realmManager.editObjects(objs: objCategory[0])
+                            objLumineer[0].lumiMessages = objLumineerMessageList
+                            GlobalShareData.sharedGlobal.realmManager.editObjects(objs: objCategory)
+
                             }
                         }
                     }
@@ -139,4 +143,75 @@ class LumiMessage : Object {
         }
         
     }
+    func sendLumiTextMessage(param:[String:String],completionHandler: @escaping (_ objData: LumineerList) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
+            let jsonString = String(data: jsonData!, encoding: .utf8)
+            let paramCreateRelationship = ["newsFeed":jsonString!]
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISendLumineerTextMessages)"
+            do {
+                AFWrapper.requestPOSTURL(urlString, params: paramCreateRelationship as [String : AnyObject], headers: nil, success: { (json) in
+                    let tempArray = json.arrayValue
+                    guard tempArray.count != 0 else {
+                        return
+                    }
+                    let realm = try! Realm()
+                    let parentId : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.parentid
+                    let result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
+                    if result.count > 0 {
+                        let objCategory = result[0] as LumiCategory
+                        let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
+                        let objLumineer = objCategory.lumineerList.filter("id == %d", id)
+                        completionHandler(objLumineer[0])
+                    }
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+            } catch let jsonError {
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+    
+    func sendLumiAttachmentMessage(param:[String:String],completionHandler: @escaping (_ objData: LumineerList) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
+            let jsonString = String(data: jsonData!, encoding: .utf8)
+            let paramCreateRelationship = ["newsFeed":jsonString!]
+            
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISendLumineerAttachmentMessages)"
+            do {
+                AFWrapper.requestPOSTURLWITHIMAGEAUTHWITHPARAM(urlString, params: param as [String : AnyObject]
+                    , headers: nil, image: UIImage(), success:{ (json) in
+                    let tempArray = json.arrayValue
+                    guard tempArray.count != 0 else {
+                        return
+                    }
+                    
+                    let realm = try! Realm()
+                    let parentId : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.parentid
+                    let result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
+                    if result.count > 0 {
+                        let objCategory = result[0] as LumiCategory
+                        let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
+                        let objLumineer = objCategory.lumineerList.filter("id == %d", id)
+                        completionHandler(objLumineer[0])
+                    }
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+            } catch let jsonError{
+                print(jsonError)
+                
+            }
+            
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+
 }

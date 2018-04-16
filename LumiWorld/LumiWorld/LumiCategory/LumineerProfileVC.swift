@@ -45,11 +45,10 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     @IBOutlet weak var imgProfilePic: UIImageView!
     @IBOutlet weak var btnInboxCount: UIButton!
     @IBOutlet weak var lblFollowers: UILabel!
-    lazy var aryActivityData: [SectionData] = {
-        let section1 = SectionData(title: "PRODUCTS",text:"Test message",date:"12:00", data: [["subject":"Test subject","text":"Test message from","date":"12:00","imgName":""],["subject":"NewTest subject","text":"Test message from","date":"12:00","imgName":""]],imgName:"Artboard 91xxhdpi")
-    let section2 = SectionData(title: "ACCOUNTS",text:"Test message",date:"12:00", data: [["subject":"Test subject","text":"Test message from","date":"12:00","imgName":""],["subject":"NewTest subject","text":"Test message from","date":"12:00","imgName":""],["subject":"Other subject","text":"Test message from","date":"12:00","imgName":""]],imgName:"Artboard 92xxhdpi")
-        return [section1, section2]
-    }()
+    var aryActivityData: [[String:AnyObject]]!
+    // = {let section1 = SectionData(title: "PRODUCTS",text:"Test message",date:"12:00", data: [["subject":"Test subject","text":"Test message from","date":"12:00","imgName":""],["subject":"NewTest subject","text":"Test message from","date":"12:00","imgName":""]],imgName:"Artboard 91xxhdpi")let section2 = SectionData(title: "ACCOUNTS",text:"Test message",date:"12:00", data: [["subject":"Test subject","text":"Test message from","date":"12:00","imgName":""],["subject":"NewTest subject","text":"Test message from","date":"12:00","imgName":""],["subject":"Other subject","text":"Test message from","date":"12:00","imgName":""]],imgName:"Artboard 92xxhdpi")
+//        return [section1, section2]
+//    }()
     var objLumineer : LumineerList!
     
     @IBOutlet weak var lblActivity: UIView!
@@ -71,7 +70,6 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         lblExpandableDescription.shouldCollapse = true
         lblExpandableDescription.textReplacementType = .word
         lblExpandableDescription.numberOfLines = 2
-        lblExpandableDescription.text = "On third line our text need be collapsed because we have ordinary text, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
         // Do any additional setup after loading the view.
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleRatingTapFrom(recognizer:)))
         self.ratingVC.addGestureRecognizer(tapGestureRecognizer)
@@ -139,14 +137,23 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"1","endIndex":"1000","lastViewDate":""]) { (objLumineer) in
             let realm = try! Realm()
             let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageCategory") as! [String]))
+            var aryLumiMessage = objLumineer.lumiMessages
+           // aryLumiMessage = aryLumiMessage.sorted(byKeyPath: {$0.createdTime < $1.createdTime}) // < for Ascending order, use > for descending order
+            var seenType:[Int:Bool] = [:]
+
             for objUniqueItem in distinctTypes {
-                let aryLumiMessage = objLumineer.lumiMessages.filter("messageCategory = %@ AND ")
-
-//                let canteens = realm.objects(LumiMessage.self).filter("messageCategory = %@ AND ANY lines.meals.vegan = true", objUniqueItem)
-
-                let section1 = SectionData(title: objUniqueItem,text:"Test message",date:"12:00", data: [["subject":"Test subject","text":"Test message from","date":"12:00","imgName":""],["subject":"NewTest subject","text":"Test message from","date":"12:00","imgName":""]],imgName:"Artboard 91xxhdpi")
+//                for objMessage in aryLumiMessage {
+//                    if (objMessage.messageCategory == objUniqueItem) {
+//                        //do something
+//                    }
+//                }
+                let aryLumiMessage = objLumineer.lumiMessages.filter("messageCategory = %@",objUniqueItem)
+                
+                let section = ["title":objUniqueItem, "text":"Test","date":"12:00","data":aryLumiMessage,"imgName":"Artboard 91xxhdpi"] as [String : Any]
+                self.aryActivityData.append(section as [String : AnyObject])
 
             }
+            self.tblActivityData.reloadData()
         }
         self.calculateCurrentHeight()
     }
@@ -320,7 +327,7 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         lblTitle.font  = UIFont.init(name: "Helvetica", size: 14)
         lblTitle.textColor = UIColor.black
         lblTitle.backgroundColor = UIColor.clear
-        lblTitle.text = aryActivityData[section].title
+        lblTitle.text = aryActivityData[section]["title"] as! String
         innerView.addSubview(lblTitle)
         
         let lblTime = UILabel(frame: CGRect(x: lblTitle.frame.size.width+5, y: 5, width: 60, height: 12))
@@ -328,12 +335,12 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         lblTime.textColor = UIColor.black
         lblTime.backgroundColor = UIColor.clear
         lblTime.textAlignment = .center
-        lblTime.text = aryActivityData[section].date
+        lblTime.text = aryActivityData[section]["date"] as! String
         innerView.addSubview(lblTime)
 
         
         let imgIcon = UIImageView(frame: CGRect(x: 10, y: 21, width: 16, height: 16));
-        imgIcon.image = UIImage(named: aryActivityData[section].imgName)
+        imgIcon.image = UIImage(named: aryActivityData[section]["imgName"] as! String)
         imgIcon.contentMode = .scaleAspectFit
         innerView.addSubview(imgIcon)
         
@@ -341,7 +348,7 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         lblDesc.font  = UIFont.init(name: "Helvetica", size: 12)
         lblDesc.textColor = UIColor.lumiGray
         lblDesc.backgroundColor = UIColor.clear
-        lblDesc.text = aryActivityData[section].text
+        lblDesc.text = aryActivityData[section]["text"] as! String
         innerView.addSubview(lblDesc)
 
         
@@ -363,12 +370,15 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
 
 
     func numberOfSections(in tableView: UITableView) -> Int {
+        guard aryActivityData != nil else {
+            return 0
+        }
         return aryActivityData.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (self.expandedSectionHeaderNumber == section) {
-            return self.aryActivityData[section].data.count;
+            return self.aryActivityData[section]["data"]!.count;
         } else {
             return 0;
         }
@@ -377,19 +387,20 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SubjectCell", for: indexPath) as! SubjectCell
-        let objSubject = aryActivityData[indexPath.section].data[indexPath.row]
+        let objLumiMessage = aryActivityData[indexPath.section]["data"] as! LumiMessage
         
-        cell.lblSubject.text = objSubject["subject"]
-        cell.lblDate.text = objSubject["date"]
+        cell.lblSubject.text = objLumiMessage.messageSubject
+        cell.lblDate.text = objLumiMessage.newsfeedPostedTime
+        
 
-        let imgName = objSubject["imgName"] as! String
-        if imgName.count == 0 {
+        let imgName = "Artboard 91xxhdpi"
+        if objLumiMessage.status == 0 {
             cell.constImgWidth.constant = 0
         }
         else {
             cell.imgMessage.image = UIImage(named:imgName)
         }
-        cell.lblMessage.text = objSubject["text"]
+       // cell.lblMessage.text = objSubject["text"]
 
         return cell
     }
@@ -427,9 +438,9 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
                 return
             }
             
-            let sectionData = self.aryActivityData[section].data
+            let sectionData = self.aryActivityData[section]["data"]
             self.expandedSectionHeaderNumber = -1;
-            if (sectionData.count == 0) {
+            if (sectionData?.count == 0) {
                 return;
             } else {
                 if imageView != nil {
@@ -438,10 +449,10 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
                     })
                 }
                 var indexesPath = [IndexPath]()
-                for i in 0 ..< sectionData.count {
-                    let index = IndexPath(row: i, section: section)
-                    indexesPath.append(index)
-                }
+//                for i in 0 ..< sectionData?.count {
+//                    let index = IndexPath(row: i, section: section)
+//                    indexesPath.append(index)
+//                }
                 self.tblActivityData!.beginUpdates()
                 self.tblActivityData!.deleteRows(at: indexesPath, with: UITableViewRowAnimation.fade)
                 self.tblActivityData!.endUpdates()
@@ -468,9 +479,9 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
     
     func tableViewExpandSection(_ section: Int, imageView: UIImageView) {
         do {
-            let sectionData = self.aryActivityData[section].data
+            let sectionData = self.aryActivityData[section]["data"]
             
-            if (sectionData.count == 0) {
+            if (sectionData?.count == 0) {
                 self.expandedSectionHeaderNumber = -1;
                 return;
             } else {
@@ -478,10 +489,10 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
                     imageView.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(Double.pi)) / 180.0)
                 })
                 var indexesPath = [IndexPath]()
-                for i in 0 ..< sectionData.count {
-                    let index = IndexPath(row: i, section: section)
-                    indexesPath.append(index)
-                }
+//                for i in 0 ..< sectionData?.count {
+//                    let index = IndexPath(row: i, section: section)
+//                    indexesPath.append(index)
+//                }
                 self.expandedSectionHeaderNumber = section
                 self.tblActivityData!.beginUpdates()
                 self.tblActivityData!.insertRows(at: indexesPath, with: UITableViewRowAnimation.fade)
@@ -509,9 +520,9 @@ struct SectionData {
     let text: String
     let date: String
     let imgName: String
-    let data : [[String:String]]
+    let data : Results<LumiMessage>
     
-    init(title: String,text: String,date: String, data: [[String:String]],imgName:String) {
+    init(title: String,text: String,date: String, data: Results<LumiMessage>,imgName:String) {
         self.title = title
         self.text = text
         self.date = date
@@ -522,12 +533,12 @@ struct SectionData {
         return data.count
     }
 
-    subscript(index: Int, key:String) -> String {
-        guard let coordinate = data[index][key] else {
-            return ""
-        }
-        return coordinate
-    }
+//    subscript(index: Int, key:Results<LumiMessage>) -> String {
+//        guard let coordinate = data[index][LumiMessage] else {
+//            return ""
+//        }
+//        return coordinate
+//    }
 
 //    subscript(index: Int) -> [String:String]? {
 //        guard let coordinate = self.data[index] as! [String: String] else {
