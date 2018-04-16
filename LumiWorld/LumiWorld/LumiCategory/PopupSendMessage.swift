@@ -9,7 +9,7 @@
 import UIKit
 
 class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
-
+    var activityType : String!
     @IBOutlet weak var btnSend: UIButton!
     @IBOutlet weak var imgAttach: UIImageView!
     @IBOutlet weak var btnAttachment: UIButton!
@@ -85,6 +85,20 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     //
 
     @IBAction func onBtnSendTapped(_ sender: Any) {
+        if imgAttach.image != nil {
+            
+        }
+        else {
+            //newsFeed:{"newsFeedBody":"Test","enterpriseName":"Lumineer 14042018","enterpriseRegnNmbr":"14042018","messageCategory":"Products","messageType":"1","sentBy":"27735526844-Christian Nhlabano","imageURL":"","longitude":"","latitude":"","messageSubject":"Test123"}
+            
+            let name = GlobalShareData.sharedGlobal.objCurrentLumineer.name! + " \(GlobalShareData.sharedGlobal.objCurrentLumineer.surname as! String)"
+            let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
+
+            let objMessage = LumiMessage()
+            objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!], completionHandler: { (json) in
+                
+            })
+        }
     }
     @IBAction func onBtnAttachmentTapped(_ sender: Any) {
         CameraHandler.shared.showActionSheet(vc: self)
