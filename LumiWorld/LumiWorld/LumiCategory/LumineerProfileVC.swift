@@ -61,6 +61,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
+        NotificationCenter.default.addObserver(self, selector: #selector(getLatestLumiMessages), name: Notification.Name("popupRemoved"), object: nil)
 
         lblExpandableDescription.delegate = self
         lblExpandableDescription.setLessLinkWith(lessLink: "Close", attributes: [.foregroundColor:UIColor.red], position: .left)
@@ -75,7 +76,10 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         setupLumineerData()
+        self.navigationItem.title = GlobalShareData.sharedGlobal.objCurrentLumineer.name
+
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -83,9 +87,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     }
     
     func calculateCurrentHeight() {
-//        let descHegiht = lblExpandableDescription.text?.height(withConstrainedWidth: lblExpandableDescription.frame.size.width, font: lblExpandableDescription.font)
         var tableHeight = 0
-        if self.aryActivityData != nil, self.expandedSectionHeaderNumber == -1 ,(self.aryActivityData.count)>0{
+        if !btnInboxCount.isSelected {
+            tableHeight = 0
+        }
+        else if self.aryActivityData != nil, self.expandedSectionHeaderNumber == -1 ,(self.aryActivityData.count)>0{
             tableHeight = self.aryActivityData.count * 46
         }
         else if self.aryActivityData != nil, (self.aryActivityData.count)>0 {
@@ -93,7 +99,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
 
         }
         mainViewHeights.constant
-            =  (appDelegate.window?.bounds.size.height)! + viewActivityHeights.constant + lblExpandableDescription.frame.size.height + CGFloat(tableHeight)
+            =  (appDelegate.window?.bounds.size.height)! + lblExpandableDescription.frame.size.height + CGFloat(tableHeight)
     }
     
     func setupLumineerData() {
@@ -102,21 +108,26 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
         self.imgProfilePic.image = scalImg
         self.lblCompanyName.text = objLumineer.name
-        self.lblExpandableDescription.text = objLumineer.shortDescription
+        if let data = objLumineer.detailedDescription?.count {
+            self.lblExpandableDescription.text = objLumineer.detailedDescription
+        }
+        else {
+            self.lblExpandableDescription.text = objLumineer.shortDescription
+        }
         viewActivityHeights.constant = 0
+        lblActivity.isHidden = true
         if objLumineer.status == 1 {
             btnFollowLumineer.isSelected = true
         }
         else {
             btnFollowLumineer.isSelected = false
         }
-        self.navigationItem.title = objLumineer.name
-        self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "Artboard 142xxxhdpi")
-        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "Artboard 142xxxhdpi")
+
+        let insets: UIEdgeInsets = UIEdgeInsetsMake(10, 0, 0, 0)
+        let alignedImage = UIImage(named: "Artboard 142xxxhdpi")?.withAlignmentRectInsets(insets)
+        self.navigationController?.navigationBar.backIndicatorImage = alignedImage
+        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = alignedImage
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style:.plain, target: nil, action: nil)
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -80.0), for: .default)
-        self.navigationController?.navigationBar.topItem?.title = ""
-        self.navigationItem.backBarButtonItem?.imageInsets = UIEdgeInsetsMake(0, 15, 0, 0)
         let realm = try! Realm()
         objLumineer.getLumineerAllRatings() { (json) in
             self.ratingVC.rating = Double((json["finalRating"]?.intValue)!)
@@ -139,13 +150,20 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         }
         objLumineer.getLumineerSocialMediaDetails(){ (json) in
         }
+       getLatestLumiMessages()
+        self.calculateCurrentHeight()
+    }
+    
+    @objc func getLatestLumiMessages() {
         let objLumiMessage = LumiMessage()
-        objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"1","endIndex":"1000","lastViewDate":""]) { (objLumineer) in
+        let originalString = self.getFormattedTimestamp()
+        let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"1","endIndex":"1000","lastViewDate":escapedString!]) { (objLumineer) in
             let realm = try! Realm()
             let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageCategory") as! [String]))
             self.aryActivityData = []
             for objUniqueItem in distinctTypes {
-                var aryLumiMessage = objLumineer.lumiMessages.filter("messageCategory = %@",objUniqueItem)
+                let aryLumiMessage = objLumineer.lumiMessages.filter("messageCategory = %@",objUniqueItem)
                 
                 var uniqueObjects : [LumiMessage] = [LumiMessage]()
                 for obj in aryLumiMessage {
@@ -164,22 +182,22 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
                 }
                 
                 var strImageName : String!
-                
-                if uniqueObjects[0].status == 1 {
-                    strImageName = "Artboard 92xxhdpi"
+                if uniqueObjects.count > 0 {
+                    if uniqueObjects[0].isReadByLumi  {
+                        strImageName = "Artboard 92xxhdpi"
+                    }
+                    else {
+                        strImageName = "Artboard 91xxhdpi"
+                    }
+                    
+                    let section = ["title":objUniqueItem, "text":uniqueObjects[uniqueObjects.count-1].messageSubject,"date":self.getFormattedDate(string: uniqueObjects[uniqueObjects.count-1].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
+                    self.aryActivityData.append(section as [String : AnyObject])
+                    
                 }
-                else {
-                    strImageName = "Artboard 91xxhdpi"
-                }
-                
-                let section = ["title":objUniqueItem, "text":uniqueObjects[uniqueObjects.count-1].messageSubject,"date":self.getFormattedDate(string: uniqueObjects[uniqueObjects.count-1].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
-                self.aryActivityData.append(section as [String : AnyObject])
             }
             self.tblActivityData.reloadData()
         }
-        self.calculateCurrentHeight()
     }
-    
 
     //
     // MARK: ExpandableLabel Delegate
@@ -259,7 +277,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     @IBAction func onBtnProductTapped(_ sender: UIButton) {
         btnProduct.isSelected = !sender.isSelected
         if btnProduct.isSelected {
-            addMessgePopup(activityType:"Product")
+            addMessgePopup(activityType:"Products")
         }else {
             removeMessgePopup()
         }
@@ -289,7 +307,12 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         
         if btnInboxCount.isSelected {
             UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                self.viewActivityHeights.constant = 180
+                if self.aryActivityData != nil, (self.aryActivityData.count)>0{
+                    self.viewActivityHeights.constant = CGFloat(self.aryActivityData.count * 46) + 30
+                }
+                else {
+                    self.viewActivityHeights.constant = 0
+                }
                 self.lblActivity.isHidden = false
                 self.view.layoutIfNeeded()
             }, completion: { (finished: Bool) in
@@ -425,7 +448,7 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
         }
         var strImageName : String!
         
-        if objLumiMessage.status == 1 {
+        if objLumiMessage.isReadByLumi {
             strImageName = "Artboard 92xxhdpi"
         }
         else {
@@ -483,6 +506,8 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
                     let index = IndexPath(row: i, section: section)
                     indexesPath.append(index)
                 }
+                self.viewActivityHeights.constant = CGFloat(self.aryActivityData.count * 46) + 30
+
                 self.tblActivityData!.beginUpdates()
                 self.tblActivityData!.deleteRows(at: indexesPath, with: UITableViewRowAnimation.fade)
                 self.tblActivityData!.endUpdates()
@@ -524,6 +549,8 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
                     let index = IndexPath(row: i, section: section)
                     indexesPath.append(index)
                 }
+                self.viewActivityHeights.constant = CGFloat(self.aryActivityData.count * 46) + 100
+
                 self.expandedSectionHeaderNumber = section
                 self.tblActivityData!.beginUpdates()
                 self.tblActivityData!.insertRows(at: indexesPath, with: UITableViewRowAnimation.fade)
@@ -622,6 +649,17 @@ extension String {
 
 
 extension UIViewController {
+    func getFormattedTimestamp() -> String{
+        var timeStamp : String!
+        let olderTimestamp = UserDefaults.standard.getTimestamp() as String
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        let myString = formatter.string(from: Date())
+        UserDefaults.standard.setTimestamp(value: myString)
+        timeStamp = olderTimestamp
+        return timeStamp
+    }
+
      func getFormattedDate(string: String , formatter:String) -> String{
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm"
@@ -632,5 +670,38 @@ extension UIViewController {
         print(dateFormatter.string(from: date)) // Jan 20,2018
         return dateFormatter.string(from: date);
     }
+}
+
+
+extension UserDefaults{
+    
+    //MARK: Check Login
+    func setTimestamp(value: String) {
+        set(value, forKey: UserDefaultsKeys.messageTimeStamp.rawValue)
+        //synchronize()
+    }
+    
+    //MARK: Retrieve User Data
+    func getTimestamp() -> String{
+        guard ((UserDefaults.standard.value(forKey: UserDefaultsKeys.messageTimeStamp.rawValue) as? String) != nil) else {
+           return ""
+        }
+        return string(forKey: UserDefaultsKeys.messageTimeStamp.rawValue)!
+    }
+
+    
+//    func isLoggedIn()-> Bool {
+//        return bool(forKey: UserDefaultsKeys.isLoggedIn.rawValue)
+//    }
+//
+//    //MARK: Save User Data
+//    func setUserID(value: Int){
+//        set(value, forKey: UserDefaultsKeys.userID.rawValue)
+//        //synchronize()
+//    }
+    
+}
+enum UserDefaultsKeys : String {
+    case messageTimeStamp
 }
 

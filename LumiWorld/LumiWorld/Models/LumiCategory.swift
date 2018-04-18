@@ -16,6 +16,7 @@ class LumineerList : Object {
     @objc dynamic var name: String? = nil
     @objc dynamic var sectorName: String? = nil
     @objc dynamic var shortDescription: String? = nil
+    @objc dynamic var detailedDescription: String? = nil
     @objc dynamic var contactNumber: String? = nil
     @objc dynamic var emailAddress : String? = nil
     @objc dynamic var companyRegistrationNumber : String? = nil
@@ -45,11 +46,11 @@ class LumineerList : Object {
                 self.getLumineerCompanyFollowingData(completionHandler: { (aryFollowdata) in
                     AFWrapper.requestGETURL(urlString, success: { (json) in
                         let tempArray = json.arrayValue
+                        let realm = try! Realm()
                         for index in 0...tempArray.count-1 {
                             let aObject = tempArray[index]
-                            let realm = try! Realm()
                             let id : Int = aObject["id"].intValue
-                            let objCategory  = realm.objects(LumiCategory.self).filter("id == %d", aObject["parentid"].intValue)
+                            let objCategory = realm.objects(LumiCategory.self).filter("id == %d", aObject["parentid"].intValue)
                             
                             let newLumineerObj = LumineerList()
                             newLumineerObj.id = id
@@ -57,7 +58,8 @@ class LumineerList : Object {
                             newLumineerObj.sectorID = aObject["sectorID"].intValue
                             newLumineerObj.sectorName = aObject["sectorName"].string
                             newLumineerObj.shortDescription = aObject["shortDescription"].string
-                            
+                            newLumineerObj.detailedDescription = aObject["detailedDescription"].string
+
                             let filteredData = aryFollowdata.filter{
                                 let string = $0["ID"] as! String
                                 return string.contains(aObject["companyRegistrationNumber"].string!)
@@ -89,6 +91,13 @@ class LumineerList : Object {
                             newLumineerObj.logoURL = aObject["logoURL"].string
                             newLumineerObj.parentid = aObject["parentid"].intValue
                             
+                            let aryMessages = realm.objects(LumiMessage.self).filter("enterpriseID == %d", id)
+                            if aryMessages.count > 0 {
+                                for index in 0...aryMessages.count-1 {
+                                    let objMessages = aryMessages[index] as LumiMessage
+                                    newLumineerObj.lumiMessages.append(objMessages)
+                                }
+                            }
                             
                             if objCategory.count>0 {
                                 let lumineerList = objCategory[0].lumineerList

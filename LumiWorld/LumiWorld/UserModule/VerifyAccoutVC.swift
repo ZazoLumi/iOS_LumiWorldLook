@@ -55,9 +55,9 @@ class VerifyAccoutVC: UIViewController,FormDataDelegate {
         let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIVerifyAccount)"
         do {
             
-            var strCellNumber : String  = GlobalShareData.sharedGlobal.currentUserDetails.cell!
+            var strCellNumber : String  = GlobalShareData.sharedGlobal.objCurrentUserDetails.cell!
             strCellNumber = strCellNumber.replacingOccurrences(of: "+", with:"")
-            let param = ["tempPassword": formData["0"],"cellNumber":strCellNumber,"password":GlobalShareData.sharedGlobal.currentUserDetails.password]
+            let param = ["tempPassword": formData["0"],"cellNumber":strCellNumber,"password":GlobalShareData.sharedGlobal.objCurrentUserDetails.password]
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
 

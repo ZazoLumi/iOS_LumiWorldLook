@@ -638,9 +638,12 @@
                                 <color key="textColor" red="0.41960784309999999" green="0.77647058820000003" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjH-Wr-snu">
-                                <rect key="frame" x="264" y="263" width="36" height="30"/>
-                                <state key="normal" title="Send">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjH-Wr-snu">
+                                <rect key="frame" x="278" y="263" width="22" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="fjH-Wr-snu" secondAttribute="height" multiplier="1:1" id="aVk-21-e5U"/>
+                                </constraints>
+                                <state key="normal" image="Artboard 134xxhdpi">
                                     <color key="titleColor" red="0.41960784309999999" green="0.77647058820000003" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -1465,6 +1468,7 @@
     </scenes>
     <resources>
         <image name="Artboard 103xxhdpi" width="48" height="42"/>
+        <image name="Artboard 134xxhdpi" width="22" height="18"/>
         <image name="Artboard 136xxhdpi" width="304" height="36"/>
         <image name="Artboard 142xxxhdpi" width="25" height="25"/>
         <image name="Artboard 88xxxhdpi" width="22" height="22"/>

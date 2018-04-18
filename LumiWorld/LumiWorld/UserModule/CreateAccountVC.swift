@@ -83,7 +83,7 @@ class CreateAccountVC: UIViewController,FormDataDelegate {
 
                 AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
                     //                let userObj = UserData(json:json)
-                    GlobalShareData.sharedGlobal.currentUserDetails = newObj
+                    GlobalShareData.sharedGlobal.objCurrentUserDetails = newObj
                     hud.hide(animated: true)
                     let tempDict = json.dictionary
                     guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {

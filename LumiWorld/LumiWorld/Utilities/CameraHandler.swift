@@ -15,7 +15,7 @@ class CameraHandler: NSObject{
     fileprivate var currentVC: UIViewController!
     
     //MARK: Internal Properties
-    var imagePickedBlock: ((UIImage) -> Void)?
+    var imagePickedBlock: ((UIImage,String) -> Void)?
     
     func camera()
     {
@@ -67,7 +67,8 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            self.imagePickedBlock?(image)
+            var localUrl = info[UIImagePickerControllerReferenceURL] as? URL
+            self.imagePickedBlock?(image, (localUrl?.absoluteString)!)
         }else{
             print("Something went wrong")
         }

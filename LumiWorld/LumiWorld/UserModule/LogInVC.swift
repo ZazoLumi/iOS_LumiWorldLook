@@ -70,7 +70,7 @@ class LogInVC: UIViewController,FormDataDelegate {
                 let data  = realm.objects(UserData.self).filter("id == %d", id)
                 let newObj = UserData(id : id , gcmId : json["gcmId"].string,profilePic : json["profilePic"].string,token : json["token"].string,updateDate : json["updateDate"].string,lastName : json["lastName"].string,appVersion : json["appVersion"].string,cell : json["cell"].string,status : json["status"].string,password : json["password"].string,createDate : json["createDate"].string,displayName : json["displayName"].string,firstName : json["firstName"].string)
 
-                GlobalShareData.sharedGlobal.currentUserDetails = newObj
+                GlobalShareData.sharedGlobal.objCurrentUserDetails = newObj
                 if data.count>0 {
                     GlobalShareData.sharedGlobal.realmManager.editObjects(objs: newObj)
                 }

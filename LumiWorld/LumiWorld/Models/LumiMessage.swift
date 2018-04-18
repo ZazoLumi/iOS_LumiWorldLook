@@ -21,10 +21,13 @@ class LumiMessage : Object {
     var longitude: Double? = 0
 
     @objc dynamic var guid: String? = nil
-    var isArchived: Bool?
-    var isReadByLumineer: Bool?
-    var isSentByLumi: Bool?
-    var isSentByLumineer: Bool?
+    @objc dynamic var isArchived = false
+    @objc dynamic var isReadByLumineer = false
+    @objc dynamic var isSentByLumi = false
+    @objc dynamic var isSentByLumineer = false
+    @objc dynamic var isReadByLumi = false
+    @objc dynamic var isDeletedByLumi = false
+
     @objc dynamic var reachedConsumers: String? = nil
     @objc dynamic var sentBy: String? = nil
     @objc dynamic var newsfeedPostedTime: String? = nil
@@ -36,10 +39,6 @@ class LumiMessage : Object {
     @objc dynamic var newsFeedHeader: String? = nil
     @objc dynamic var tags: String? = nil
     
-    var isReadByLumi: Bool?
-    var isDeletedByLumi: Bool?
-
-
     @objc  dynamic var searchID = 0
     @objc  dynamic var status = 0
     @objc  dynamic var enterpriseID = 0
@@ -47,7 +46,7 @@ class LumiMessage : Object {
     @objc  dynamic var messageType = 0
     @objc  dynamic var messageTypeId = 0
 
-        override static func primaryKey() -> String? {
+    override static func primaryKey() -> String? {
             return "id"
     }
     
@@ -65,6 +64,15 @@ class LumiMessage : Object {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempArray = json.arrayValue
                     guard tempArray.count != 0 else {
+                        let realm = try! Realm()
+                        let parentId : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.parentid
+                        let result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
+                        if result.count > 0 {
+                            let objCategory = result[0] as LumiCategory
+                            let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
+                            let objLumineer = objCategory.lumineerList.filter("id == %d", id)
+                            completionHandler(objLumineer[0])
+                        }
                         return
                     }
                     for index in 0...tempArray.count-1 {
@@ -143,30 +151,22 @@ class LumiMessage : Object {
         }
         
     }
-    func sendLumiTextMessage(param:[String:String],completionHandler: @escaping (_ objData: LumineerList) -> Void) {
+    func sendLumiTextMessage(param:[String:String],completionHandler: @escaping () -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
             let jsonString = String(data: jsonData!, encoding: .utf8)
-            let paramCreateRelationship = ["newsFeed":jsonString!]
             let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISendLumineerTextMessages)"
+
+            let paramCreateRelationship = ["newsFeed":jsonString!, "url":urlString,"filePath":"","fileName":""]
             do {
-                AFWrapper.requestPOSTURL(urlString, params: paramCreateRelationship as [String : AnyObject], headers: nil, success: { (json) in
-                    let tempArray = json.arrayValue
-                    guard tempArray.count != 0 else {
+                let multiAPI : multipartAPI = multipartAPI()
+                multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
+                    let strResponseCode = dict!["responseCode"] as! Int
+                    guard strResponseCode != 0 else {
                         return
                     }
-                    let realm = try! Realm()
-                    let parentId : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.parentid
-                    let result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
-                    if result.count > 0 {
-                        let objCategory = result[0] as LumiCategory
-                        let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
-                        let objLumineer = objCategory.lumineerList.filter("id == %d", id)
-                        completionHandler(objLumineer[0])
-                    }
-                }, failure: { (Error) in
-                    print(Error.localizedDescription)
+                    completionHandler()
                 })
             } catch let jsonError {
                 print(jsonError)
@@ -176,42 +176,28 @@ class LumiMessage : Object {
         }
     }
     
-    func sendLumiAttachmentMessage(param:[String:String],completionHandler: @escaping (_ objData: LumineerList) -> Void) {
+    func sendLumiAttachmentMessage(param:[String:String],filePath:String,completionHandler: @escaping () -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
             let jsonString = String(data: jsonData!, encoding: .utf8)
-            let paramCreateRelationship = ["newsFeed":jsonString!]
-            
             let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISendLumineerAttachmentMessages)"
+            
+            let paramCreateRelationship = ["newsFeed":jsonString!, "url":urlString,"filePath":filePath]
             do {
-                AFWrapper.requestPOSTURLWITHIMAGEAUTHWITHPARAM(urlString, params: param as [String : AnyObject]
-                    , headers: nil, image: UIImage(), success:{ (json) in
-                    let tempArray = json.arrayValue
-                    guard tempArray.count != 0 else {
+                let multiAPI : multipartAPI = multipartAPI()
+                multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
+                    let strResponseCode = dict!["responseCode"] as! Int
+                    guard strResponseCode != 0 else {
                         return
                     }
-                    
-                    let realm = try! Realm()
-                    let parentId : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.parentid
-                    let result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
-                    if result.count > 0 {
-                        let objCategory = result[0] as LumiCategory
-                        let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
-                        let objLumineer = objCategory.lumineerList.filter("id == %d", id)
-                        completionHandler(objLumineer[0])
-                    }
-                }, failure: { (Error) in
-                    print(Error.localizedDescription)
+                    completionHandler()
                 })
-            } catch let jsonError{
+            } catch let jsonError {
                 print(jsonError)
-                
             }
-            
         }else{
             print("Internet Connection not Available!")
         }
     }
-
 }

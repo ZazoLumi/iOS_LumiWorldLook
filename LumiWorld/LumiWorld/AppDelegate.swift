@@ -25,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.statusBarStyle = .lightContent
         UISearchBar.appearance().tintColor = .lumiGreen
         IQKeyboardManager.sharedManager().enable = true
-
         return true
     }
 

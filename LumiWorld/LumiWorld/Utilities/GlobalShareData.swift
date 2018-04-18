@@ -33,15 +33,18 @@ struct Constants {
 
 
 import Foundation
+import RealmSwift
+import Realm
+
 class GlobalShareData {
     
     // Now Global.sharedGlobal is your singleton, no need to use nested or other classes
     static let sharedGlobal = GlobalShareData()
-    public var currentUserDetails = UserData()
+    
     var userCellNumber: String! //for debugging
     var realmManager = RealmManager()
     var objCurrentLumineer : LumineerList!
-
+    var objCurrentUserDetails = UserData()
     //var member:[Info] = []
     func isDebug() -> Bool {
         #if DEBUG
@@ -52,6 +55,11 @@ class GlobalShareData {
         return true
     }
     
+    init() {
+//        let realm = try! Realm()
+//        let realmObjects = realm.objects(UserData.self)
+//        objCurrentUserDetails = realmObjects[0]
+    }
     
     
 }

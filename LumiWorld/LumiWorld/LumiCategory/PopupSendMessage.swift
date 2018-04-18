@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Realm
+import RealmSwift
 
 class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     var activityType : String!
@@ -18,7 +20,8 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var textField: NoCopyPasteUITextField!
     @IBOutlet weak var tableView: UITableView!
-    var values = ["123 Main Street", "789 King Street", "456 Queen Street", "99 Apple Street"]
+    var currentSubject : [String]!
+    var strImgUrl : String!
 
     //
     // MARK: View lifcycle methods
@@ -35,6 +38,9 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         tableView.cornerRadius = 5
         // Manage tableView visibility via TouchDown in textField
         textField.addTarget(self, action: #selector(textFieldActive), for: UIControlEvents.touchDown)
+        let realm = try! Realm()
+        currentSubject = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageSubject") as! [String]))
+
         // Do any additional setup after loading the view.
     }
     override func viewDidLayoutSubviews()
@@ -42,7 +48,11 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         // Assumption is we're supporting a small maximum number of entries
         // so will set height constraint to content size
         // Alternatively can set to another size, such as using row heights and setting frame
-        heightConstraint.constant = tableView.contentSize.height
+        var height = CGFloat((currentSubject.count * 34) + 10)
+        if height > self.view.frame.size.height-120 {
+            height = self.view.frame.size.height-120
+        }
+        heightConstraint.constant = height
     }
 
     
@@ -85,28 +95,42 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     //
 
     @IBAction func onBtnSendTapped(_ sender: Any) {
-        if imgAttach.image != nil {
-            
-        }
-        else {
-            //newsFeed:{"newsFeedBody":"Test","enterpriseName":"Lumineer 14042018","enterpriseRegnNmbr":"14042018","messageCategory":"Products","messageType":"1","sentBy":"27735526844-Christian Nhlabano","imageURL":"","longitude":"","latitude":"","messageSubject":"Test123"}
-            
-            let name = GlobalShareData.sharedGlobal.objCurrentLumineer.name! + " \(GlobalShareData.sharedGlobal.objCurrentLumineer.surname as! String)"
-            let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
+        let firstName = "Christian" // todo GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName
+        let lastName = "Nhlabano" // todo GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName
+        
+        let name = firstName + " \(lastName as! String)"
+        let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
+        
+        let objMessage = LumiMessage()
 
-            let objMessage = LumiMessage()
-            objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!], completionHandler: { (json) in
+        if imgAttach.image != nil {
+            objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!],filePath:strImgUrl, completionHandler: {
                 
             })
         }
+        else {
+            //newsFeed:{"newsFeedBody":"Test","enterpriseName":"Lumineer 14042018","enterpriseRegnNmbr":"14042018","messageCategory":"Products","messageType":"1","sentBy":"27735526844-Christian Nhlabano","imageURL":"","longitude":"","latitude":"","messageSubject":"Test123"}
+            objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!], completionHandler: { () in
+                DispatchQueue.main.async {
+                    self.view.superview?.removeBlurEffect()
+                    NotificationCenter.default.post(name: Notification.Name("popupRemoved"), object: nil)
+                    self.removeAnimate()
+                }
+            })
+            
+            
+
+
+        }
     }
+
     @IBAction func onBtnAttachmentTapped(_ sender: Any) {
         CameraHandler.shared.showActionSheet(vc: self)
-        CameraHandler.shared.imagePickedBlock = { (image) in
+        CameraHandler.shared.imagePickedBlock = { (image, strUrl) in
             /* get your image here */
             self.imgAttach.image = image
+            self.strImgUrl = strUrl
         }
-
     }
     
     @IBAction func textFieldChanged(_ sender: AnyObject) {
@@ -194,13 +218,13 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return values.count;
+        return currentSubject.count;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell!
         // Set text from the data model
-        cell.textLabel?.text = values[indexPath.row]
+        cell.textLabel?.text = currentSubject[indexPath.row]
         cell.textLabel?.font = textField.font
         return cell
     }
@@ -209,7 +233,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Row selected, so set textField to relevant value, hide tableView
         // endEditing can trigger some other action according to requirements
-        textField.text = values[indexPath.row]
+        textField.text = currentSubject[indexPath.row]
         tableView.isHidden = true
         textField.endEditing(true)
     }
@@ -219,7 +243,4 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.0
     }
-
-
-
 }

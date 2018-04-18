@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0916065420871FA400F8E8EC /* multipartAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0916065320871FA400F8E8EC /* multipartAPI.m */; };
 		093F445E206B715900BC9983 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445D206B715800BC9983 /* UserData.swift */; };
 		093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445F206B717F00BC9983 /* LumiCategory.swift */; };
 		093F4462206B7BC700BC9983 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F4461206B7BC700BC9983 /* Reachability.swift */; };
@@ -102,6 +103,9 @@
 
 /* Begin PBXFileReference section */
 		0900544620591EC700262084 /* LumiWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LumiWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0916065120871FA300F8E8EC /* LumiWorld-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LumiWorld-Bridging-Header.h"; sourceTree = "<group>"; };
+		0916065220871FA400F8E8EC /* multipartAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multipartAPI.h; sourceTree = "<group>"; };
+		0916065320871FA400F8E8EC /* multipartAPI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = multipartAPI.m; sourceTree = "<group>"; };
 		093F445D206B715800BC9983 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		093F445F206B717F00BC9983 /* LumiCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiCategory.swift; sourceTree = "<group>"; };
 		093F4461206B7BC700BC9983 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -329,6 +333,9 @@
 				0964E7072060F981001D6F47 /* TextFieldTableViewController */,
 				096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */,
 				093F4461206B7BC700BC9983 /* Reachability.swift */,
+				0916065220871FA400F8E8EC /* multipartAPI.h */,
+				0916065320871FA400F8E8EC /* multipartAPI.m */,
+				0916065120871FA300F8E8EC /* LumiWorld-Bridging-Header.h */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -488,6 +495,7 @@
 				TargetAttributes = {
 					0900544520591EC700262084 = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -620,6 +628,7 @@
 				097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */,
 				0964E7192060F981001D6F47 /* Validatable.swift in Sources */,
 				0964E71D2060F981001D6F47 /* ValidatorDictionary.swift in Sources */,
+				0916065420871FA400F8E8EC /* multipartAPI.m in Sources */,
 				0964E6D52060F8ED001D6F47 /* CreateAccountVC.swift in Sources */,
 				0964E72C2060F981001D6F47 /* PasswordRule.swift in Sources */,
 				0964E71B2060F981001D6F47 /* ValidationError.swift in Sources */,
@@ -836,6 +845,7 @@
 			baseConfigurationReference = ECF5E08DEA1C518477F9554A /* Pods-LumiWorld.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = J323ZHWH83;
 				INFOPLIST_FILE = LumiWorld/Info.plist;
@@ -844,6 +854,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "7725497a-c41e-4628-bb3c-d1ae4e5426bc";
 				PROVISIONING_PROFILE_SPECIFIER = 10April_DevLumi;
+				SWIFT_OBJC_BRIDGING_HEADER = "LumiWorld/Utilities/LumiWorld-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -854,6 +866,7 @@
 			baseConfigurationReference = 1ED9069746B80D308CA990E5 /* Pods-LumiWorld.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = J323ZHWH83;
 				INFOPLIST_FILE = LumiWorld/Info.plist;
@@ -862,6 +875,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "7725497a-c41e-4628-bb3c-d1ae4e5426bc";
 				PROVISIONING_PROFILE_SPECIFIER = 10April_DevLumi;
+				SWIFT_OBJC_BRIDGING_HEADER = "LumiWorld/Utilities/LumiWorld-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

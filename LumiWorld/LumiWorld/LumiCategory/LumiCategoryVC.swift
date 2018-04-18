@@ -161,7 +161,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         return 0;
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if isFiltering() {
+        if isFiltering(), self.aryCategory.count == 0 {
             return nil
         }
 
@@ -475,7 +475,24 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     */
 
 }
+
+extension UINavigationBar {
+//    override open func layoutSubviews() {
+//        super.layoutSubviews();
+//        if #available(iOS 11, *){
+//            self.layoutMargins = UIEdgeInsets()
+//            for subview in self.subviews {
+//                if String(describing: subview.classForCoder).contains("ContentView") {
+//                    let oldEdges = subview.layoutMargins
+//                    subview.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+//                }
+//            }
+//        }
+//    }
+
+}
 extension UINavigationItem {
+    
     func addSettingButtonOnRight(){
         let btn1 = UIButton(type: .custom)
         let img = UIImage(named: "Artboard 131xxhdpi")
