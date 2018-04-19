@@ -79,10 +79,12 @@ class LumiMessage : Object {
                         let aObject = tempArray[index]
                         let realm = try! Realm()
                         let id : Int = aObject["id"].intValue
-                        let result  = realm.objects(LumiCategory.self).filter("id == %d", GlobalShareData.sharedGlobal.objCurrentLumineer.parentid)
+//                        let result  = realm.objects(LumiCategory.self).filter("id == %d", aObject["categoryId"].intValue)
+//                        let realmObjects = realm.objects(LumiCategory.self)
+                        let result = realm.objects(LumineerList.self).filter("id = \(aObject["enterpriseID"].intValue)")
+
                         if result.count > 0 {
-                            let objCategory = result[0] as LumiCategory
-                            let objLumineer = objCategory.lumineerList.filter("id == %d", aObject["enterpriseID"].intValue)
+                            let objLumineer = result[0] as LumineerList
                             
                             let newLumiMessage = LumiMessage()
                             newLumiMessage.id = id
@@ -115,16 +117,14 @@ class LumiMessage : Object {
                             newLumiMessage.newsFeedHeader = aObject["newsFeedHeader"].string
                             newLumiMessage.tags = aObject["tags"].string
                             
-                            if objLumineer.count > 0 {
-                                let objLumineerMessageList = objLumineer[0].lumiMessages
+                                let objLumineerMessageList = objLumineer.lumiMessages
                                 try! realm.write {
                                     realm.add(newLumiMessage, update: true)
                                     objLumineerMessageList.append(newLumiMessage)
                                 }
-                            objLumineer[0].lumiMessages = objLumineerMessageList
-                            GlobalShareData.sharedGlobal.realmManager.editObjects(objs: objCategory)
+                            objLumineer.lumiMessages = objLumineerMessageList
+                            GlobalShareData.sharedGlobal.realmManager.editObjects(objs: objLumineer)
 
-                            }
                         }
                     }
                     let realm = try! Realm()
@@ -164,6 +164,8 @@ class LumiMessage : Object {
                 multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
                     let strResponseCode = dict!["responseCode"] as! Int
                     guard strResponseCode != 0 else {
+                        DispatchQueue.main.async {
+                            MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
                         return
                     }
                     completionHandler()
@@ -176,7 +178,7 @@ class LumiMessage : Object {
         }
     }
     
-    func sendLumiAttachmentMessage(param:[String:String],filePath:String,completionHandler: @escaping () -> Void) {
+    func sendLumiAttachmentMessage(param:[String:String],filePath:String,completionHandler: @escaping (_ error: Error?) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
@@ -187,11 +189,17 @@ class LumiMessage : Object {
             do {
                 let multiAPI : multipartAPI = multipartAPI()
                 multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
-                    let strResponseCode = dict!["responseCode"] as! Int
-                    guard strResponseCode != 0 else {
+                    if error != nil {
+                        completionHandler(error!)
                         return
                     }
-                    completionHandler()
+                    let strResponseCode = dict!["responseCode"] as! Int
+                    guard strResponseCode != 0 else {
+                        DispatchQueue.main.async {
+                            MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
+                        return
+                    }
+                    completionHandler(error)
                 })
             } catch let jsonError {
                 print(jsonError)
@@ -201,3 +209,5 @@ class LumiMessage : Object {
         }
     }
 }
+
+

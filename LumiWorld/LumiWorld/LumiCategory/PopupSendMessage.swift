@@ -9,6 +9,7 @@
 import UIKit
 import Realm
 import RealmSwift
+import MBProgressHUD
 
 class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     var activityType : String!
@@ -21,7 +22,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     @IBOutlet weak var textField: NoCopyPasteUITextField!
     @IBOutlet weak var tableView: UITableView!
     var currentSubject : [String]!
-    var strImgUrl : String!
+    var strImgName : String!
 
     //
     // MARK: View lifcycle methods
@@ -39,7 +40,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         // Manage tableView visibility via TouchDown in textField
         textField.addTarget(self, action: #selector(textFieldActive), for: UIControlEvents.touchDown)
         let realm = try! Realm()
-        currentSubject = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageSubject") as! [String]))
+        currentSubject = Array(Set(realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).value(forKey: "messageSubject") as! [String]))
 
         // Do any additional setup after loading the view.
     }
@@ -95,32 +96,47 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     //
 
     @IBAction func onBtnSendTapped(_ sender: Any) {
-        let firstName = "Christian" // todo GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName
-        let lastName = "Nhlabano" // todo GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName
+        let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName  //Static "Christian"
+        let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName  //Static "Nhlabano"
         
-        let name = firstName + " \(lastName as! String)"
+        let name = firstName! + " \(lastName as! String)"
         let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
         
         let objMessage = LumiMessage()
 
         if imgAttach.image != nil {
-            objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!],filePath:strImgUrl, completionHandler: {
-                
-            })
+            if let data = UIImageJPEGRepresentation(imgAttach.image!, 0.8) {
+                let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: strImgName)
+                let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
+                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!],filePath:strFilePath, completionHandler: {(error) in
+                    DispatchQueue.main.async {
+                        hud.hide(animated: true)}
+                    if error != nil  {
+                        self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
+                        })
+                    }
+
+                    DispatchQueue.main.async {
+                        self.view.superview?.removeBlurEffect()
+                        NotificationCenter.default.post(name: Notification.Name("popupRemoved"), object: nil)
+                        self.removeAnimate()
+                    }
+                })
+            }
+
         }
         else {
-            //newsFeed:{"newsFeedBody":"Test","enterpriseName":"Lumineer 14042018","enterpriseRegnNmbr":"14042018","messageCategory":"Products","messageType":"1","sentBy":"27735526844-Christian Nhlabano","imageURL":"","longitude":"","latitude":"","messageSubject":"Test123"}
+            let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+            hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
             objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!], completionHandler: { () in
                 DispatchQueue.main.async {
+                    hud.hide(animated: true)
                     self.view.superview?.removeBlurEffect()
                     NotificationCenter.default.post(name: Notification.Name("popupRemoved"), object: nil)
                     self.removeAnimate()
                 }
             })
-            
-            
-
-
         }
     }
 
@@ -129,7 +145,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         CameraHandler.shared.imagePickedBlock = { (image, strUrl) in
             /* get your image here */
             self.imgAttach.image = image
-            self.strImgUrl = strUrl
+            self.strImgName = strUrl
         }
     }
     

@@ -36,7 +36,7 @@
     
     // create body
     
-    NSData *httpBody = [self createBodyWithBoundary:boundary parameters:newParams paths:@[strPath] fieldName:strName];
+    NSData *httpBody = [self createBodyWithBoundary:boundary parameters:newParams paths:@[strPath] fieldName:@"file"];
 
     NSURLSession *session = [NSURLSession sharedSession];  // use sharedSession or create your own
     
@@ -76,7 +76,7 @@
             continue;
         }
         NSString *filename  = [path lastPathComponent];
-        NSData   *data      = [NSData dataWithContentsOfFile:path];
+        NSData   *data      = [NSData dataWithContentsOfURL:[NSURL URLWithString:path]];
         NSString *mimetype  = [self mimeTypeForPath:path];
         
         [httpBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];

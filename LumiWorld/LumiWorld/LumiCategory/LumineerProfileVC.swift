@@ -9,6 +9,7 @@
 import UIKit
 import Realm
 import RealmSwift
+import Alamofire
 
 class SubjectCell: UITableViewCell {
     @IBOutlet weak var imgStatus: UIImageView!
@@ -158,7 +159,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         let objLumiMessage = LumiMessage()
         let originalString = self.getFormattedTimestamp()
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"1","endIndex":"1000","lastViewDate":escapedString!]) { (objLumineer) in
+        objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!]) { (objLumineer) in
             let realm = try! Realm()
             let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageCategory") as! [String]))
             self.aryActivityData = []
@@ -189,8 +190,9 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
                     else {
                         strImageName = "Artboard 91xxhdpi"
                     }
+                  uniqueObjects = uniqueObjects.sorted(by: { $0.id > $1.id })
                     
-                    let section = ["title":objUniqueItem, "text":uniqueObjects[uniqueObjects.count-1].messageSubject,"date":self.getFormattedDate(string: uniqueObjects[uniqueObjects.count-1].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
+                    let section = ["title":objUniqueItem, "text":uniqueObjects[0].messageSubject,"date":self.getFormattedDate(string: uniqueObjects[0].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
                     self.aryActivityData.append(section as [String : AnyObject])
                     
                 }
@@ -439,12 +441,20 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
         cell.lblDate.text = self.getFormattedDate(string: objLumiMessage.newsfeedPostedTime!, formatter: "")
         cell.lblMessage.text = objLumiMessage.newsFeedBody
 
-        let imgName = ""
-        if objLumiMessage.imageURL == nil {
+        if objLumiMessage.fileName == nil {
             cell.constImgWidth.constant = 0
         }
         else {
-            cell.imgMessage.image = UIImage(named:imgName)
+            cell.constImgWidth.constant = 25
+            let urlOriginalImage = URL.init(string: objLumiMessage.fileName!)
+            Alamofire.request(urlOriginalImage!).responseImage { response in
+                debugPrint(response)
+                
+                if let image = response.result.value {
+                    let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+                    cell.imgMessage.image = scalImg
+                }
+            }
         }
         var strImageName : String!
         

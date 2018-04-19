@@ -35,11 +35,11 @@ class LogInVC: UIViewController,FormDataDelegate {
 
     }
     @IBAction func onBtnSignInTapped(_ sender: Any) {
-        UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
-        return
+//Static        UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
+//        return
 
         customview.doneAction()
-//        UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
+      //  UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
     }
 
     @IBAction func onBtnForgotPasswordTapped(_ sender: Any) {
@@ -71,6 +71,7 @@ class LogInVC: UIViewController,FormDataDelegate {
                 let newObj = UserData(id : id , gcmId : json["gcmId"].string,profilePic : json["profilePic"].string,token : json["token"].string,updateDate : json["updateDate"].string,lastName : json["lastName"].string,appVersion : json["appVersion"].string,cell : json["cell"].string,status : json["status"].string,password : json["password"].string,createDate : json["createDate"].string,displayName : json["displayName"].string,firstName : json["firstName"].string)
 
                 GlobalShareData.sharedGlobal.objCurrentUserDetails = newObj
+                GlobalShareData.sharedGlobal.userCellNumber = newObj.cell
                 if data.count>0 {
                     GlobalShareData.sharedGlobal.realmManager.editObjects(objs: newObj)
                 }

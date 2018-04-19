@@ -45,7 +45,22 @@ class GlobalShareData {
     var realmManager = RealmManager()
     var objCurrentLumineer : LumineerList!
     var objCurrentUserDetails = UserData()
-    //var member:[Info] = []
+    lazy var applicationDocumentsDirectory: URL = {
+        
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentDirectoryURL = urls[urls.count - 1] as URL
+        let dbDirectoryURL = documentDirectoryURL.appendingPathComponent("Docs")
+        
+        if FileManager.default.fileExists(atPath: dbDirectoryURL.path) == false{
+            do{
+                try FileManager.default.createDirectory(at: dbDirectoryURL, withIntermediateDirectories: false, attributes: nil)
+            }catch{
+            }
+        }
+        return dbDirectoryURL
+    }()
+
+    
     func isDebug() -> Bool {
         #if DEBUG
             return true
@@ -61,6 +76,51 @@ class GlobalShareData {
 //        objCurrentUserDetails = realmObjects[0]
     }
     
+    func getDocumentDirectorypath()->String {
+        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                                           .userDomainMask, true)
+        return  dirPaths[0]
+
+    }
+    
+
+    func extractAllFile(atPath path: String, withExtension fileExtension:String) -> [String] {
+        var allFiles: [String] = []
+        let url = applicationDocumentsDirectory
+        
+        let fileManager = FileManager.default
+        let enumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(atPath: url.path)!
+        while let element = enumerator.nextObject() as? String {
+            // do something
+            allFiles.append(element)
+            
+        }
+        return allFiles
+    }
+    
+    func storeGenericfileinDocumentDirectory(fileContent:NSData,fileName:String) -> String{
+        let docDirectory = applicationDocumentsDirectory.appendingPathComponent(fileName)
+        try? fileContent.write(to: docDirectory)
+        return docDirectory.absoluteString
+    }
+    
+    func removeFilefromDocumentDirectory(fileName:String) {
+        let docDirectory = applicationDocumentsDirectory.appendingPathComponent(fileName)
+        try? FileManager.default.removeItem(at:docDirectory)
+    }
+    
+    func clearDiskCache() {
+        let fileManager = FileManager.default
+        let myDocuments = applicationDocumentsDirectory
+        guard let filePaths = try? fileManager.contentsOfDirectory(at: myDocuments, includingPropertiesForKeys: nil, options: []) else { return }
+        for filePath in filePaths {
+            try? fileManager.removeItem(at: filePath)
+        }
+    }
+
+
+    
+
     
 }
 

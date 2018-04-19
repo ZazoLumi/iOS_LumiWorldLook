@@ -7,7 +7,7 @@
 //
 import Foundation
 import UIKit
-
+import Photos
 
 class CameraHandler: NSObject{
     static let shared = CameraHandler()
@@ -67,8 +67,14 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            var localUrl = info[UIImagePickerControllerReferenceURL] as? URL
-            self.imagePickedBlock?(image, (localUrl?.absoluteString)!)
+            if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
+                 let imgName = imgUrl.lastPathComponent
+                    print(imgName)
+                    self.imagePickedBlock?(image, imgName)
+            }
+            else {
+                self.imagePickedBlock?(image, "test.png")
+            }
         }else{
             print("Something went wrong")
         }

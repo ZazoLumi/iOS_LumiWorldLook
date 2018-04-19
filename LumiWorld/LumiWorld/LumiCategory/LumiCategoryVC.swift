@@ -51,8 +51,8 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
 
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.yellow]
         self.tabBarController?.navigationController?.navigationBar.titleTextAttributes = attributes
-        //todo
-        GlobalShareData.sharedGlobal.userCellNumber = "27735526844"
+        //Static
+       //Static GlobalShareData.sharedGlobal.userCellNumber = "27735526844"
         self.tableView!.tableFooterView = UIView()
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
