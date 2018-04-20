@@ -91,6 +91,8 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     override func viewWillDisappear(_ animated: Bool) {
         IQKeyboardManager.sharedManager().enableAutoToolbar = true
     }
+    
+
     // MARK: TGChatInputTextPanelDelegate
     
     func inputTextPanel(_ inputTextPanel: TGChatInputTextPanel, requestSendText text: String) {

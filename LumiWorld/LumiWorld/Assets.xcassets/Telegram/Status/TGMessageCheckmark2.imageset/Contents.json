@@ -2,12 +2,10 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ModernMessageCheckmark2.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ModernMessageCheckmark2@2x.png",
       "scale" : "2x"
     },
     {

@@ -24,7 +24,8 @@
 //
 
 import Foundation
-//import NOCProtoKit
+import Realm
+import RealmSwift
 
 protocol MessageManagerDelegate: class {
     func didReceiveMessages(messages: [Message], chatId: String)
@@ -51,26 +52,50 @@ class MessageManager: NSObject{//, NOCClientDelegate {
         //client.open()
     }
     
-    func fetchMessages(withChatId chatId: String, handler: ([Message]) -> Void) {
-        if let msgs = messages[chatId] {
-            handler(msgs)
-        } else {
-            var arr = [Message]()
-            
+    func getLatestLumiMessages() {
+    }
+
+    
+    func fetchMessages(withChatId chatId: String, handler: @escaping ([Message]) -> Void) {
+        messages.removeAll()
+        var arr = [Message]()
+        
+        let msg = Message()
+        msg.msgType = "Date"
+        arr.append(msg)
+        
+        if chatId == "bot_89757" {
             let msg = Message()
-            msg.msgType = "Date"
+            msg.msgType = "System"
+            msg.text = "Welcome to \(String(describing: GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName)) Please input `/start` to play!"
             arr.append(msg)
-            
-            if chatId == "bot_89757" {
+        }
+        
+
+        let objLumiMessage = LumiMessage()
+        let originalString = Date().getFormattedTimestamp()
+        let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!]) { (objLumineer) in
+            let aryLumiMessage = objLumineer.lumiMessages.filter("messageSubjectId = %ld",GlobalShareData.sharedGlobal.messageSubjectId)
+            for obj in aryLumiMessage {
                 let msg = Message()
-                msg.msgType = "System"
-                msg.text = "Welcome to Gothons From Planet Percal #25! Please input `/start` to play!"
-                arr.append(msg)
+                if obj.value(forKeyPath:"contentType") as! String == "Text" {
+                    msg.msgType = obj.contentType!
+                    msg.text = obj.newsFeedBody!
+                    msg.deliveryStatus = .Delivered
+                    msg.date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "")
+                    if obj.isSentByLumi == true {
+                        msg.isOutgoing = true
+                    }
+                    else {
+                        msg.isOutgoing = false
+                    }
+                    arr.append(msg)
+                }
             }
-            
-            saveMessages(arr, chatId: chatId)
-            
+            self.saveMessages(arr, chatId: chatId)
             handler(arr)
+
         }
     }
     

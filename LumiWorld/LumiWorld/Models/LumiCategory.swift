@@ -156,9 +156,8 @@ class LumineerList : Object {
     func setLumineerCompanyFollowUnFollowData(id:String,companyregistrationnumber: String,uniqueID:String,status:String,completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISetLumineerCreateRelationship)"
             do {
-                let currentDate = getLocalFormatedCurrentData()
+                /*let currentDate = getLocalFormatedCurrentData()
                 let dictionary = ["date": currentDate,"status":status,"ID":uniqueID] as [String : String]
                 let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: [])
                 let jsonString = String(data: jsonData!, encoding: .utf8)
@@ -200,7 +199,32 @@ class LumineerList : Object {
                     })
                 }, failure: { (Error) in
                     print(Error.localizedDescription)
+                })*/
+                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISetLumineerCreateEnterpriseRelationship)"
+
+                AFWrapper.requestPOSTURL(urlString, params:["cellNumber":id as AnyObject,"regnNumber":companyregistrationnumber as AnyObject,"status":status as AnyObject], headers: nil, success: { (json) in
+                    print(json)
+                    let tempDict = json.dictionary
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        return
+                    }
+                    let realm = try! Realm()
+                    let realmObjects = realm.objects(LumiCategory.self)
+                    let result = realmObjects.filter("ANY lumineerList.companyRegistrationNumber = '\(companyregistrationnumber)'")
+                    if result.count > 0 {
+                        let objCategory = result[0] as LumiCategory
+                        for lumineer in objCategory.lumineerList.filter("companyRegistrationNumber = '\(companyregistrationnumber)'") {
+                            try! realm.write {
+                                let  objLumineer = lumineer as LumineerList
+                                objLumineer.status = Int(status)!
+                            }
+                            // do something with your vegan meal
+                        }
+                    }
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
                 })
+
             } catch let jsonError{
                 print(jsonError)
             }

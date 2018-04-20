@@ -23,7 +23,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     @IBOutlet weak var tableView: UITableView!
     var currentSubject : [String]!
     var strImgName : String!
-
+    var isSubjectPicked = false
     //
     // MARK: View lifcycle methods
     //
@@ -41,7 +41,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         textField.addTarget(self, action: #selector(textFieldActive), for: UIControlEvents.touchDown)
         let realm = try! Realm()
         currentSubject = Array(Set(realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).value(forKey: "messageSubject") as! [String]))
-
+        
         // Do any additional setup after loading the view.
     }
     override func viewDidLayoutSubviews()
@@ -98,7 +98,13 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     @IBAction func onBtnSendTapped(_ sender: Any) {
         let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName  //Static "Christian"
         let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName  //Static "Nhlabano"
-        
+        var subjectID : String = ""
+        if isSubjectPicked == true {
+            let realm = try! Realm()
+            subjectID = realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).filter("messageSubject = %@",textField.text!).value(forKey: "messageSubjectId") as! String
+
+        }
+
         let name = firstName! + " \(lastName as! String)"
         let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
         
@@ -109,7 +115,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: strImgName)
                 let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                 hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
-                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!],filePath:strFilePath, completionHandler: {(error) in
+                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!,"messageSubjectId":subjectID],filePath:strFilePath, completionHandler: {(error) in
                     DispatchQueue.main.async {
                         hud.hide(animated: true)}
                     if error != nil  {
@@ -129,7 +135,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         else {
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
-            objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!], completionHandler: { () in
+            objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!,"messageSubjectId":subjectID], completionHandler: { () in
                 DispatchQueue.main.async {
                     hud.hide(animated: true)
                     self.view.superview?.removeBlurEffect()
@@ -181,7 +187,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         let updatedText = (currentText as NSString).replacingCharacters(in: range, with: text)
         
         if updatedText.isEmpty {
-            
+            isSubjectPicked = true
             textView.text = "Enter Message"
             textView.textColor = .lumiGray
             
@@ -250,6 +256,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         // Row selected, so set textField to relevant value, hide tableView
         // endEditing can trigger some other action according to requirements
         textField.text = currentSubject[indexPath.row]
+        isSubjectPicked = true
         tableView.isHidden = true
         textField.endEditing(true)
     }

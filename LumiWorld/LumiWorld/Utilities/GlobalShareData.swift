@@ -18,6 +18,8 @@ struct Constants {
         static let APIGetLumineerCompany = ":13004/enterprise/getAllActiveLumineerList"
         static let APIGetLumineerFollowingCompany = ":11014/getnodebyrelationship"
         static let APISetLumineerCreateRelationship = ":11103/createRelationship"
+        static let APISetLumineerCreateEnterpriseRelationship = ":13004/instantMsg/createEnterpriseRelation"
+
         static let APISetLumineerAddRelationship = ":11108/addrelationshippropertiesbyid"
         static let APISetLumineerRating = ":13004/enterprise/saveEnterpriseRating"
         static let APIGetLumineerSocialMediaDetails = ":13004/enterprise/getSocialMediaDtlsOfEnterprise"
@@ -45,6 +47,7 @@ class GlobalShareData {
     var realmManager = RealmManager()
     var objCurrentLumineer : LumineerList!
     var objCurrentUserDetails = UserData()
+    var messageSubjectId :Double!
     lazy var applicationDocumentsDirectory: URL = {
         
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)

@@ -19,6 +19,7 @@ class LumiMessage : Object {
     var publishedTime: Double? = 0
     var latitude: Double? = 0
     var longitude: Double? = 0
+    var messageSubjectId: Double? = 0
 
     @objc dynamic var guid: String? = nil
     @objc dynamic var isArchived = false
@@ -38,7 +39,8 @@ class LumiMessage : Object {
     @objc dynamic var newsFeedBody: String? = nil
     @objc dynamic var newsFeedHeader: String? = nil
     @objc dynamic var tags: String? = nil
-    
+    @objc dynamic var contentType: String? = nil
+
     @objc  dynamic var searchID = 0
     @objc  dynamic var status = 0
     @objc  dynamic var enterpriseID = 0
@@ -116,7 +118,8 @@ class LumiMessage : Object {
                             newLumiMessage.newsFeedBody = aObject["newsFeedBody"].string
                             newLumiMessage.newsFeedHeader = aObject["newsFeedHeader"].string
                             newLumiMessage.tags = aObject["tags"].string
-                            
+                            newLumiMessage.contentType = aObject["contentType"].string
+                            newLumiMessage.messageSubjectId = aObject["messageSubjectId"].doubleValue
                                 let objLumineerMessageList = objLumineer.lumiMessages
                                 try! realm.write {
                                     realm.add(newLumiMessage, update: true)

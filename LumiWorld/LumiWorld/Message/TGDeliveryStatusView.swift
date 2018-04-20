@@ -81,7 +81,7 @@ class TGDeliveryStatusView: UIView {
     
     struct Constant {
         static let checkmark1Image = UIImage(named: "TGMessageCheckmark1")!
-        static let checkmark2Image = UIImage(named: "TGMessageCheckmark2")!
+        static let checkmark2Image = UIImage()
     }
     
 }

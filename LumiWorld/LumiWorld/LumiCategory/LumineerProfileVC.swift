@@ -79,7 +79,14 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupLumineerData()
-        self.navigationItem.title = GlobalShareData.sharedGlobal.objCurrentLumineer.name
+        self.view.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
+        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
+        titleLabel.text = GlobalShareData.sharedGlobal.objCurrentLumineer.name
+        titleLabel.textColor = UIColor.black
+        titleLabel.textAlignment = .center
+        titleLabel.font = UIFont.systemFont(ofSize: 20)
+        navigationItem.titleView = titleLabel
+
 
     }
     override func didReceiveMemoryWarning() {
@@ -157,7 +164,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     
     @objc func getLatestLumiMessages() {
         let objLumiMessage = LumiMessage()
-        let originalString = self.getFormattedTimestamp()
+        let originalString = Date().getFormattedTimestamp()
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!]) { (objLumineer) in
             let realm = try! Realm()
@@ -192,7 +199,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
                     }
                   uniqueObjects = uniqueObjects.sorted(by: { $0.id > $1.id })
                     
-                    let section = ["title":objUniqueItem, "text":uniqueObjects[0].messageSubject,"date":self.getFormattedDate(string: uniqueObjects[0].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
+                    let section = ["title":objUniqueItem, "text":uniqueObjects[0].messageSubject,"date":Date().getFormattedDate(string: uniqueObjects[0].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
                     self.aryActivityData.append(section as [String : AnyObject])
                     
                 }
@@ -438,7 +445,7 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
 let objLumiMessage = sectionData[indexPath.row] as LumiMessage
         cell.lblSubject.text = objLumiMessage.messageSubject
-        cell.lblDate.text = self.getFormattedDate(string: objLumiMessage.newsfeedPostedTime!, formatter: "")
+        cell.lblDate.text = Date().getFormattedDate(string: objLumiMessage.newsfeedPostedTime!, formatter: "")
         cell.lblMessage.text = objLumiMessage.newsFeedBody
 
         if objLumiMessage.fileName == nil {
@@ -534,6 +541,10 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
         let chat = botChat
         var chatVC: UIViewController?
             chatVC = TGChatViewController(chat: chat)
+            let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
+            let objLumiMessage = sectionData[indexPath.row] as LumiMessage
+            GlobalShareData.sharedGlobal.messageSubjectId = objLumiMessage.messageSubjectId
+            //chatVC.
 
         if let vc = chatVC {
             navigationController?.pushViewController(vc, animated: true)
@@ -658,7 +669,7 @@ extension String {
 
 
 
-extension UIViewController {
+extension Date {
     func getFormattedTimestamp() -> String{
         var timeStamp : String!
         let olderTimestamp = UserDefaults.standard.getTimestamp() as String
@@ -679,6 +690,13 @@ extension UIViewController {
         let date = dateFormatterGet.date(from:string)!
         print(dateFormatter.string(from: date)) // Jan 20,2018
         return dateFormatter.string(from: date);
+    }
+    
+    func getDateFromString(string: String , formatter:String) -> Date {
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm"
+        let date = dateFormatterGet.date(from:string)!
+        return date
     }
 }
 
