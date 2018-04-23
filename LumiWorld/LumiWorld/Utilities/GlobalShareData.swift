@@ -15,7 +15,9 @@ struct Constants {
         static let APIChangePassword = ":13004/consumer/changePassword"
         static let APIVerifyAccount = ":13004/pushNotif/validateVerificationCode"
         static let APIGetLumiCategory = ":13004/sectors/getAllSectors"
-        static let APIGetLumineerCompany = ":13004/enterprise/getAllActiveLumineerList"
+        //static let APIGetLumineerCompany = ":13004/enterprise/getAllActiveLumineerList"
+        static let APIGetLumineerCompany = ":13004/enterprise/getActiveLumineerListByLastViewedDate"
+        
         static let APIGetLumineerFollowingCompany = ":11014/getnodebyrelationship"
         static let APISetLumineerCreateRelationship = ":11103/createRelationship"
         static let APISetLumineerCreateEnterpriseRelationship = ":13004/instantMsg/createEnterpriseRelation"
@@ -29,8 +31,7 @@ struct Constants {
         static let APIGetLumineerMessages = ":13004/instantMsg/getAllNewsFeedsOfLumi"
         static let APISendLumineerTextMessages = ":13004/instantMsg/instantMessagingByLumi"
         static let APISendLumineerAttachmentMessages = ":13004/instantMsg/replyToIMByLumiWithMedia"
-
-    }
+   }
 }
 
 

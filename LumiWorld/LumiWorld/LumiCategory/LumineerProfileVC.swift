@@ -164,15 +164,16 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     
     @objc func getLatestLumiMessages() {
         let objLumiMessage = LumiMessage()
-        let originalString = Date().getFormattedTimestamp()
+        let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.messageTimeStamp)
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!]) { (objLumineer) in
             let realm = try! Realm()
             let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageCategory") as! [String]))
             self.aryActivityData = []
             for objUniqueItem in distinctTypes {
-                let aryLumiMessage = objLumineer.lumiMessages.filter("messageCategory = %@",objUniqueItem)
-                
+                var aryLumiMessage = objLumineer.lumiMessages.filter("messageCategory = %@",objUniqueItem)
+                aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "id", ascending: false)
+
                 var uniqueObjects : [LumiMessage] = [LumiMessage]()
                 for obj in aryLumiMessage {
                     if obj.value(forKeyPath:"messageSubject") != nil {
@@ -492,7 +493,6 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
                 } else {
                     tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView)
                     tableViewExpandSection(section!, imageView: eImageView!)
-                    
                 }
             }
         } catch {
@@ -548,9 +548,18 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
         if let vc = chatVC {
             navigationController?.pushViewController(vc, animated: true)
         }
-        
-        tableView.deselectRow(at: indexPath, animated: true)
+        let sectionHeaderView = tableView.headerView(forSection: indexPath.section)
+        let eImageView = sectionHeaderView?.viewWithTag(kHeaderSectionTag + indexPath.section) as? UIImageView
+        let cImageView = tblActivityData.viewWithTag(kHeaderSectionTag + self.expandedSectionHeaderNumber) as? UIImageView
+        if (self.expandedSectionHeaderNumber == indexPath.section) {
+            tableViewCollapeSection(indexPath.section, imageView: eImageView)
+        } else {
+            tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView)
+            tableViewExpandSection(indexPath.section, imageView: eImageView!)
+        }
 
+
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableViewExpandSection(_ section: Int, imageView: UIImageView) {
@@ -669,13 +678,13 @@ extension String {
 
 
 extension Date {
-    func getFormattedTimestamp() -> String{
+    func getFormattedTimestamp(key: UserDefaultsKeys) -> String{
         var timeStamp : String!
-        let olderTimestamp = UserDefaults.standard.getTimestamp() as String
+        let olderTimestamp = UserDefaults.standard.getTimestamp(key: key) as String
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
         let myString = formatter.string(from: Date())
-        UserDefaults.standard.setTimestamp(value: myString)
+        UserDefaults.standard.setTimestamp(value: myString, key: key)
         timeStamp = olderTimestamp
         return timeStamp
     }
@@ -687,6 +696,20 @@ extension Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM dd,yyyy HH:mm"
         let date = dateFormatterGet.date(from:string)!
+        
+        let calendar = Calendar.current
+        
+        if calendar.isDateInYesterday(date) {
+            dateFormatter.dateFormat = "HH:mm a"
+            let dateString = dateFormatter.string(from: date)
+            return "Yesterday, \(dateString)"
+        }
+        else if calendar.isDateInToday(date) {
+            dateFormatter.dateFormat = "HH:mm a"
+            let dateString = dateFormatter.string(from: date)
+            return "Today, \(dateString)"
+
+        }
         print(dateFormatter.string(from: date)) // Jan 20,2018
         return dateFormatter.string(from: date);
     }
@@ -703,17 +726,17 @@ extension Date {
 extension UserDefaults{
     
     //MARK: Check Login
-    func setTimestamp(value: String) {
-        set(value, forKey: UserDefaultsKeys.messageTimeStamp.rawValue)
+    func setTimestamp(value: String, key: UserDefaultsKeys) {
+        set(value, forKey: key.rawValue)
         //synchronize()
     }
     
     //MARK: Retrieve User Data
-    func getTimestamp() -> String{
-        guard ((UserDefaults.standard.value(forKey: UserDefaultsKeys.messageTimeStamp.rawValue) as? String) != nil) else {
+    func getTimestamp(key: UserDefaultsKeys) -> String{
+        guard ((UserDefaults.standard.value(forKey: key.rawValue) as? String) != nil) else {
            return ""
         }
-        return string(forKey: UserDefaultsKeys.messageTimeStamp.rawValue)!
+        return string(forKey: key.rawValue)!
     }
 
     
@@ -730,5 +753,6 @@ extension UserDefaults{
 }
 enum UserDefaultsKeys : String {
     case messageTimeStamp
+    case lumineerTimeStamp
 }
 

@@ -78,7 +78,9 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 return
             }
                 let objLumineerList = LumineerList()
-                objLumineerList.getLumineerCompany(completionHandler: { (List) in
+            let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.lumineerTimeStamp)
+            let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+            objLumineerList.getLumineerCompany(lastViewDate:escapedString!,completionHandler: { (List) in
                     self.aryCategory = [LumiCategory]()
                     for element in List {
                         if let category = element as? LumiCategory {
@@ -271,7 +273,18 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 }
                 else {
                     objLumineer = arrayOfItems[(indexPath.row)] as LumineerList
+                    let sectionHeaderView = tableView.headerView(forSection: indexPath.section)
+                    let eImageView = sectionHeaderView?.viewWithTag(kHeaderSectionTag + indexPath.section) as? UIImageView
+                    let cImageView = tableView.viewWithTag(kHeaderSectionTag + self.expandedSectionHeaderNumber) as? UIImageView
+                    if (self.expandedSectionHeaderNumber == indexPath.section) {
+                        tableViewCollapeSection(indexPath.section, imageView: eImageView)
+                    } else {
+                        tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView)
+                        tableViewExpandSection(indexPath.section, imageView: eImageView!)
+                    }
+
                 }
+
                 GlobalShareData.sharedGlobal.objCurrentLumineer = objLumineer
             }
         }

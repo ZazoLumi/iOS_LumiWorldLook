@@ -31,6 +31,14 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         showAnimate()
+        let arrow = UIImageView(image: UIImage(named: "Asset 3352"))
+        if let size = arrow.image?.size {
+            arrow.frame = CGRect(x: 0.0, y: 0.0, width: size.width + 10.0, height: size.height)
+        }
+        arrow.contentMode = UIViewContentMode.center
+        self.textField.leftView = arrow
+        self.textField.leftViewMode = UITextFieldViewMode.always
+
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         tableView.delegate = self
         tableView.dataSource = self
@@ -41,7 +49,6 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         textField.addTarget(self, action: #selector(textFieldActive), for: UIControlEvents.touchDown)
         let realm = try! Realm()
         currentSubject = Array(Set(realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).value(forKey: "messageSubject") as! [String]))
-        
         // Do any additional setup after loading the view.
     }
     override func viewDidLayoutSubviews()
@@ -104,7 +111,11 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
             subjectID = realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).filter("messageSubject = %@",textField.text!).value(forKey: "messageSubjectId") as! [Double]
 
         }
-
+        var nSubjectID : Double? = nil
+        
+        if subjectID.count > 0 {
+            nSubjectID = subjectID[0]
+        }
         let name = firstName! + " \(lastName as! String)"
         let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
         
@@ -115,7 +126,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: strImgName)
                 let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                 hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
-                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":subjectID[0] as AnyObject],filePath:strFilePath, completionHandler: {(error) in
+                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
                     DispatchQueue.main.async {
                         hud.hide(animated: true)}
                     if error != nil  {
@@ -135,7 +146,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         else {
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
-            objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":subjectID[0] as AnyObject], completionHandler: { () in
+            objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":nSubjectID as AnyObject], completionHandler: { () in
                 DispatchQueue.main.async {
                     hud.hide(animated: true)
                     self.view.superview?.removeBlurEffect()

@@ -61,10 +61,11 @@ class MessageManager: NSObject{//, NOCClientDelegate {
         var arr = [Message]()
 
         let objLumiMessage = LumiMessage()
-        let originalString = Date().getFormattedTimestamp()
+        let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.messageTimeStamp)
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!]) { (objLumineer) in
-            let aryLumiMessage = objLumineer.lumiMessages.filter("messageSubjectId = %ld",GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId)
+            var aryLumiMessage = objLumineer.lumiMessages.filter("messageSubjectId = %ld",GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId)
+            aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "publishedTime", ascending: false)
             for obj in aryLumiMessage {
                 let msg = Message()
                 if obj.value(forKeyPath:"contentType") as! String == "Text" {

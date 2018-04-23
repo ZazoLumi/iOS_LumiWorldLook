@@ -38,15 +38,23 @@ class LumineerList : Object {
         return "id"
     }
 
-    public func getLumineerCompany(completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
+    public func getLumineerCompany(lastViewDate:String, completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerCompany)"
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerCompany)" + "?lastViewedDate=\(lastViewDate)"
+
             do {
                 self.getLumineerCompanyFollowingData(completionHandler: { (aryFollowdata) in
                     AFWrapper.requestGETURL(urlString, success: { (json) in
                         let tempArray = json.arrayValue
                         let realm = try! Realm()
+
+                        guard tempArray.count != 0 else {
+                            let objCategory  = GlobalShareData.sharedGlobal.realmManager.getObjects(type: LumiCategory.self)
+                            completionHandler(objCategory!)
+                            return
+                        }
+
                         for index in 0...tempArray.count-1 {
                             let aObject = tempArray[index]
                             let id : Int = aObject["id"].intValue
@@ -100,13 +108,12 @@ class LumineerList : Object {
                             }
                             
                             if objCategory.count>0 {
+                                
                                 let lumineerList = objCategory[0].lumineerList
                                 try! realm.write {
                                     realm.add(newLumineerObj, update: true)
                                     lumineerList.append(newLumineerObj)
                                 }
-                                objCategory[0].lumineerList = lumineerList
-                                GlobalShareData.sharedGlobal.realmManager.editObjects(objs: objCategory[0])
                             }
                         }
                         let objCategory  = GlobalShareData.sharedGlobal.realmManager.getObjects(type: LumiCategory.self)
@@ -395,12 +402,21 @@ class LumiCategory : Object{
                     let id : Int = aObject["id"].intValue
                     let data  = realm.objects(LumiCategory.self).filter("id == %d", id)
                     let newObj = LumiCategory(id : id , name : aObject["name"].string,status : aObject["status"].string,categoryDescription : aObject["categoryDescription"].string,originalImage:aObject["originalImage"].string,visitedImage:aObject["visitedImage"].string)
+                    let aryLumineerList = realm.objects(LumineerList.self).filter("parentid == %d", id)
+                    if aryLumineerList.count > 0 {
+                        for index in 0...aryLumineerList.count-1 {
+                            let objMessages = aryLumineerList[index] as LumineerList
+                            newObj.lumineerList.append(objMessages)
+                        }
+                    }
                     if data.count>0 {
                         GlobalShareData.sharedGlobal.realmManager.editObjects(objs: newObj)
                     }
                     else {
                         GlobalShareData.sharedGlobal.realmManager.saveObjects(objs: newObj)
                     }
+
+
                     aryCategory.append(newObj)
                 }
                 completionHandler(aryCategory)
