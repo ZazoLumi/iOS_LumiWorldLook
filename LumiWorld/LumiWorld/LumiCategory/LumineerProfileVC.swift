@@ -188,7 +188,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
                         }
                     }
                 }
-                
+                uniqueObjects = uniqueObjects.sorted(by: { $0.id > $1.id })
                 var strImageName : String!
                 if uniqueObjects.count > 0 {
                     if uniqueObjects[0].isReadByLumi  {
@@ -197,7 +197,6 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
                     else {
                         strImageName = "Artboard 91xxhdpi"
                     }
-                  uniqueObjects = uniqueObjects.sorted(by: { $0.id > $1.id })
                     
                     let section = ["title":objUniqueItem, "text":uniqueObjects[0].messageSubject,"date":Date().getFormattedDate(string: uniqueObjects[0].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
                     self.aryActivityData.append(section as [String : AnyObject])
@@ -539,11 +538,11 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let chat = botChat
+        let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
+        GlobalShareData.sharedGlobal.objCurrentLumiMessage = sectionData[indexPath.row] as LumiMessage
+
         var chatVC: UIViewController?
             chatVC = TGChatViewController(chat: chat)
-            let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
-            let objLumiMessage = sectionData[indexPath.row] as LumiMessage
-            GlobalShareData.sharedGlobal.messageSubjectId = objLumiMessage.messageSubjectId
             //chatVC.
 
         if let vc = chatVC {

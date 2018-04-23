@@ -40,18 +40,18 @@ class TGTitleView: UIView {
     }
     var detail: String? {
         set {
-            if detailLabel.text != newValue {
-                detailLabel.text = newValue
+            if detailLabel.titleLabel?.text != newValue {
+                detailLabel.setTitle(newValue, for: .normal)
                 updateLayouts()
             }
         }
         get {
-            return detailLabel.text
+            return detailLabel.titleLabel?.text
         }
     }
     
     private var titleLabel = UILabel()
-    private var detailLabel = UILabel()
+    private var detailLabel = UIButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,10 +62,11 @@ class TGTitleView: UIView {
         titleLabel.textAlignment = .center
         addSubview(titleLabel)
         
-        detailLabel.text = "detail"
-        detailLabel.font = UIFont.systemFont(ofSize: 12)
-        detailLabel.textColor = UIColor.gray
-        detailLabel.textAlignment = .center
+        detailLabel.setTitle("", for: .normal)
+        detailLabel.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        detailLabel.setTitleColor(UIColor.lumiGray, for: .normal)
+        detailLabel.setImage(UIImage(named: "Asset 3352"), for: .normal)
+        detailLabel.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0)
         addSubview(detailLabel)
         
         updateLayouts()

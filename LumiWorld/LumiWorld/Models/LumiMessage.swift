@@ -14,12 +14,12 @@ import MBProgressHUD
 class LumiMessage : Object {
     
     @objc private(set) dynamic var id = 0
-    var createdTime: Double? = 0
-    var expiryTime: Double? = 0
-    var publishedTime: Double? = 0
-    var latitude: Double? = 0
-    var longitude: Double? = 0
-    var messageSubjectId: Double? = 0
+    @objc dynamic var createdTime: Double = 0
+    @objc dynamic var expiryTime: Double = 0
+    @objc dynamic var publishedTime: Double = 0
+    @objc dynamic var latitude: Double = 0
+    @objc dynamic var longitude: Double = 0
+    @objc dynamic var messageSubjectId: Double = 0
 
     @objc dynamic var guid: String? = nil
     @objc dynamic var isArchived = false
@@ -81,13 +81,10 @@ class LumiMessage : Object {
                         let aObject = tempArray[index]
                         let realm = try! Realm()
                         let id : Int = aObject["id"].intValue
-//                        let result  = realm.objects(LumiCategory.self).filter("id == %d", aObject["categoryId"].intValue)
-//                        let realmObjects = realm.objects(LumiCategory.self)
                         let result = realm.objects(LumineerList.self).filter("id = \(aObject["enterpriseID"].intValue)")
 
                         if result.count > 0 {
                             let objLumineer = result[0] as LumineerList
-                            
                             let newLumiMessage = LumiMessage()
                             newLumiMessage.id = id
                             newLumiMessage.createdTime = aObject["createdTime"].doubleValue
@@ -125,9 +122,6 @@ class LumiMessage : Object {
                                     realm.add(newLumiMessage, update: true)
                                     objLumineerMessageList.append(newLumiMessage)
                                 }
-                            objLumineer.lumiMessages = objLumineerMessageList
-                            GlobalShareData.sharedGlobal.realmManager.editObjects(objs: objLumineer)
-
                         }
                     }
                     let realm = try! Realm()
@@ -154,7 +148,7 @@ class LumiMessage : Object {
         }
         
     }
-    func sendLumiTextMessage(param:[String:String],completionHandler: @escaping () -> Void) {
+    func sendLumiTextMessage(param:[String:AnyObject],completionHandler: @escaping () -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
@@ -181,7 +175,7 @@ class LumiMessage : Object {
         }
     }
     
-    func sendLumiAttachmentMessage(param:[String:String],filePath:String,completionHandler: @escaping (_ error: Error?) -> Void) {
+    func sendLumiAttachmentMessage(param:[String:AnyObject],filePath:String,completionHandler: @escaping (_ error: Error?) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])

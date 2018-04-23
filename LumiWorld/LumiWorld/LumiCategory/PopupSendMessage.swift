@@ -98,10 +98,10 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     @IBAction func onBtnSendTapped(_ sender: Any) {
         let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName  //Static "Christian"
         let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName  //Static "Nhlabano"
-        var subjectID : String = ""
+        var subjectID : [Double] = []
         if isSubjectPicked == true {
             let realm = try! Realm()
-            subjectID = realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).filter("messageSubject = %@",textField.text!).value(forKey: "messageSubjectId") as! String
+            subjectID = realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).filter("messageSubject = %@",textField.text!).value(forKey: "messageSubjectId") as! [Double]
 
         }
 
@@ -115,7 +115,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: strImgName)
                 let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                 hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
-                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!,"messageSubjectId":subjectID],filePath:strFilePath, completionHandler: {(error) in
+                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":subjectID[0] as AnyObject],filePath:strFilePath, completionHandler: {(error) in
                     DispatchQueue.main.async {
                         hud.hide(animated: true)}
                     if error != nil  {
@@ -135,7 +135,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         else {
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
-            objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name!,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber!,"messageCategory":activityType,"messageType":"1","sentBy":sentBy,"imageURL":"","longitude":"","latitude":"","messageSubject":textField.text!,"messageSubjectId":subjectID], completionHandler: { () in
+            objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":subjectID[0] as AnyObject], completionHandler: { () in
                 DispatchQueue.main.async {
                     hud.hide(animated: true)
                     self.view.superview?.removeBlurEffect()

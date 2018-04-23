@@ -80,7 +80,8 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        backgroundView?.image = UIImage(named: "TGWallpaper")!
+        //backgroundView?.image = UIImage(named: "TGWallpaper")!
+        backgroundView?.backgroundColor = UIColor.white
         navigationController?.delegate = self
         loadMessages()
     }
@@ -98,6 +99,7 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     func inputTextPanel(_ inputTextPanel: TGChatInputTextPanel, requestSendText text: String) {
         let msg = Message()
         msg.text = text
+        msg.msgType = "Text"
         sendMessage(msg)
     }
     
@@ -142,8 +144,10 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     // MARK: Private
     
     private func setupNavigationItems() {
-        titleView.title = chat.title
-        titleView.detail = chat.detail
+        titleView.title = GlobalShareData.sharedGlobal.objCurrentLumineer.name
+        let details: String = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory! + " | \(GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject!)"
+
+        titleView.detail = details
         navigationItem.titleView = titleView
         
         let spacerItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)

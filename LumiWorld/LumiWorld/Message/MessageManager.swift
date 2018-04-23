@@ -59,24 +59,12 @@ class MessageManager: NSObject{//, NOCClientDelegate {
     func fetchMessages(withChatId chatId: String, handler: @escaping ([Message]) -> Void) {
         messages.removeAll()
         var arr = [Message]()
-        
-        let msg = Message()
-        msg.msgType = "Date"
-        arr.append(msg)
-        
-        if chatId == "bot_89757" {
-            let msg = Message()
-            msg.msgType = "System"
-            msg.text = "Welcome to \(String(describing: GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName)) Please input `/start` to play!"
-            arr.append(msg)
-        }
-        
 
         let objLumiMessage = LumiMessage()
         let originalString = Date().getFormattedTimestamp()
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!]) { (objLumineer) in
-            let aryLumiMessage = objLumineer.lumiMessages.filter("messageSubjectId = %ld",GlobalShareData.sharedGlobal.messageSubjectId)
+            let aryLumiMessage = objLumineer.lumiMessages.filter("messageSubjectId = %ld",GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId)
             for obj in aryLumiMessage {
                 let msg = Message()
                 if obj.value(forKeyPath:"contentType") as! String == "Text" {
@@ -93,6 +81,18 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                     arr.append(msg)
                 }
             }
+            arr = arr.sorted(by: { $0.date < $1.date })
+
+            if chatId == "bot_89757" {
+                let msg = Message()
+                msg.msgType = "System"
+                msg.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input `/start` to play!"
+                arr.insert(msg, at: 0)
+            }
+            let msg = Message()
+            msg.msgType = "Date"
+            arr.insert(msg, at: 0)
+            
             self.saveMessages(arr, chatId: chatId)
             handler(arr)
 
@@ -101,16 +101,35 @@ class MessageManager: NSObject{//, NOCClientDelegate {
     
     func sendMessage(_ message: Message, toChat chat: Chat) {
         let chatId = chat.chatId
-        
         saveMessages([message], chatId: chatId)
+        let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName  //Static "Christian"
+        let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName  //Static "Nhlabano"
         
-        let dict = [
-            "from": message.senderId,
-            "to": chat.targetId,
-            "type": message.msgType,
-            "text": message.text,
-            "ctype": chat.type
-        ]
+        let name = firstName! + " \(lastName as! String)"
+        let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
+        
+        let objMessage = LumiMessage()
+        
+        /*if imgAttach.image != nil {
+            if let data = UIImageJPEGRepresentation(imgAttach.image!, 0.8) {
+                let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: strImgName)
+
+                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":subjectID[0] as AnyObject],filePath:strFilePath, completionHandler: {(error) in
+                    DispatchQueue.main.async {
+                        hud.hide(animated: true)}
+                    if error != nil  {
+                        self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
+                        })
+                    }
+                    
+                   
+                })
+            }
+        }
+        else {*/
+            objMessage.sendLumiTextMessage(param: ["newsFeedBody":message.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject as AnyObject,"messageSubjectId":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId as AnyObject], completionHandler: { () in
+            })
+       // }
         
        // client.sendMessage(dict)
     }

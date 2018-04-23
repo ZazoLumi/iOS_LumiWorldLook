@@ -46,8 +46,8 @@ class GlobalShareData {
     var userCellNumber: String! //for debugging
     var realmManager = RealmManager()
     var objCurrentLumineer : LumineerList!
+    var objCurrentLumiMessage : LumiMessage!
     var objCurrentUserDetails = UserData()
-    var messageSubjectId :Double!
     lazy var applicationDocumentsDirectory: URL = {
         
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
