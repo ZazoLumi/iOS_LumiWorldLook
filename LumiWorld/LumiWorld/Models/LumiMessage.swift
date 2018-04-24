@@ -117,11 +117,14 @@ class LumiMessage : Object {
                             newLumiMessage.tags = aObject["tags"].string
                             newLumiMessage.contentType = aObject["contentType"].string
                             newLumiMessage.messageSubjectId = aObject["messageSubjectId"].doubleValue
+                            let recordExist = objLumineer.lumiMessages.filter("guid = '\(aObject["guid"].string!)'")
+                            if recordExist.count == 0 {
                                 let objLumineerMessageList = objLumineer.lumiMessages
                                 try! realm.write {
                                     realm.add(newLumiMessage, update: true)
                                     objLumineerMessageList.append(newLumiMessage)
                                 }
+                            }
                         }
                     }
                     let realm = try! Realm()

@@ -89,12 +89,10 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
 
         sendButton = UIButton(type: .system)
         sendButton.isExclusiveTouch = true
-        sendButton.setTitle(NSLocalizedString("Send", comment: ""), for: .normal)
-        sendButton.setTitleColor(UIColor(red: Int(0/255.0), green: Int(126/255.0), blue: Int(229/255.0)), for: .normal)
-        sendButton.setTitleColor(UIColor(red: Int(142/255.0), green: Int(142/255.0), blue: Int(147/255.0)), for: .disabled)
-        sendButton.titleLabel?.font = UIFont.noc_mediumSystemFont(ofSize: 17)
-        sendButton.isEnabled = false
-        sendButton.isHidden = true
+        sendButton.setImage(UIImage(named: "Artboard 134xxhdpi"), for: .normal)
+        sendButton.tintColor = UIColor.lumiGreen
+        sendButton.isEnabled = true
+        sendButton.isHidden = false
         
         attachButton = UIButton(type: .system)
         attachButton.isExclusiveTouch = true
@@ -103,7 +101,8 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         micButton = UIButton(type: .system)
         micButton.isExclusiveTouch = true
         micButton.setImage(UIImage(named: "TGMicButton"), for: .normal)
-        
+        micButton.isHidden = true
+
         super.init(frame: frame)
         
         addSubview(backgroundView)
@@ -116,7 +115,8 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         inputFiledClippingContainer.addSubview(inputField)
         
         sendButton.addTarget(self, action: #selector(didTapSendButton(_:)), for: .touchUpInside)
-        
+        attachButton.addTarget(self, action: #selector(didTapAttachmentButton(_:)), for: .touchUpInside)
+
         addSubview(sendButton)
         addSubview(attachButton)
         addSubview(micButton)
@@ -219,7 +219,7 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         inputField.internalTextView.text = nil
         inputField.refreshHeight()
         
-        toggleSendButtonEnabled()
+        //toggleSendButtonEnabled()
     }
     
     func growingTextView(_ growingTextView: HPGrowingTextView!, willChangeHeight height: Float) {
@@ -234,9 +234,66 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
     }
     
     func growingTextViewDidChange(_ growingTextView: HPGrowingTextView!) {
-        toggleSendButtonEnabled()
+        //toggleSendButtonEnabled()
     }
     
+    @objc func didTapAttachmentButton(_ sender: UIButton) {
+        let alertController = UIAlertController.init()
+        
+        CameraHandler.shared.isFromchat = true
+        let actionCamera = UIAlertAction.init(title: "  Camera", style: .default, image: (UIImage(named: "Asset 1635")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+            CameraHandler.shared.showCamera(vc:self.parentViewController!)
+            CameraHandler.shared.didFinishCapturingImage = { (image, strUrl) in
+                /* get your image here */
+            }
+            CameraHandler.shared.didFinishCapturingVideo = { (url) in
+                /* get your image here */
+            }
+        }
+        let actionPhotoVideo = UIAlertAction.init(title: "   Photo & Video Library", style: .default, image:(UIImage(named: "Asset 1636")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+            CameraHandler.shared.showPhotoLibrary(vc:self.parentViewController!)
+            CameraHandler.shared.didFinishCapturingImage = { (image, strUrl) in
+                /* get your image here */
+            }
+            CameraHandler.shared.didFinishCapturingVideo = { (url) in
+                /* get your image here */
+            }
+
+        }
+        
+        let actionDocument = UIAlertAction.init(title: "  Document", style: .default, image: (UIImage(named: "Asset 1637")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -3, bottom: 0, right: 0)))!) { (action) in
+            
+        }
+        let actionLocation = UIAlertAction.init(title: "   Location", style: .default, image:(UIImage(named: "Asset 1638")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+            
+        }
+
+
+        
+        let cancelAction = UIAlertAction(title:"Cancel", style:.cancel)
+        actionCamera.setValue(UIColor.lumiGray, forKey: "titleTextColor")
+        actionPhotoVideo.setValue(UIColor.lumiGray, forKey: "titleTextColor")
+        actionDocument.setValue(UIColor.lumiGray, forKey: "titleTextColor")
+        actionLocation.setValue(UIColor.lumiGray, forKey: "titleTextColor")
+        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+        
+
+        actionCamera.setValue(0, forKey: "titleTextAlignment")
+        actionPhotoVideo.setValue(0, forKey: "titleTextAlignment")
+        actionDocument.setValue(0, forKey: "titleTextAlignment")
+        actionLocation.setValue(0, forKey: "titleTextAlignment")
+
+
+        alertController.addAction(actionCamera)
+        alertController.addAction(actionPhotoVideo)
+        alertController.addAction(actionDocument)
+        alertController.addAction(actionLocation)
+        alertController.addAction(cancelAction)
+        alertController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.parentViewController?.present(alertController, animated: true, completion: nil)
+
+
+    }
     @objc func didTapSendButton(_ sender: UIButton) {
         guard let text = inputField.internalTextView.text else {
             return

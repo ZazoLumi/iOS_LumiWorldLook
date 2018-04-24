@@ -11,6 +11,7 @@
 		093F445E206B715900BC9983 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445D206B715800BC9983 /* UserData.swift */; };
 		093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445F206B717F00BC9983 /* LumiCategory.swift */; };
 		093F4462206B7BC700BC9983 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F4461206B7BC700BC9983 /* Reachability.swift */; };
+		09559E04208F2D2D003A824C /* UIAlertAction+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09559E03208F2D2C003A824C /* UIAlertAction+Image.swift */; };
 		0964E591205FC811007E5924 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E557205FC811007E5924 /* AppDelegate.swift */; };
 		0964E592205FC811007E5924 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0964E558205FC811007E5924 /* Assets.xcassets */; };
 		0964E593205FC811007E5924 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0964E559205FC811007E5924 /* LaunchScreen.storyboard */; };
@@ -110,6 +111,7 @@
 		093F445F206B717F00BC9983 /* LumiCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiCategory.swift; sourceTree = "<group>"; };
 		093F4461206B7BC700BC9983 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		093F4463206B7BE500BC9983 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		09559E03208F2D2C003A824C /* UIAlertAction+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+Image.swift"; sourceTree = "<group>"; };
 		0964E557205FC811007E5924 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0964E558205FC811007E5924 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0964E55A205FC811007E5924 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 		0964E6E82060F981001D6F47 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				09559E03208F2D2C003A824C /* UIAlertAction+Image.swift */,
 				097BF9DB207E052D001F935C /* CameraHandler.swift */,
 				097BF9D9207DF865001F935C /* NoCopyPasteUITextField.swift */,
 				096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */,
@@ -663,6 +666,7 @@
 				093F445E206B715900BC9983 /* UserData.swift in Sources */,
 				097BFA4A207E3647001F935C /* TGDateMessageCell.swift in Sources */,
 				0964E5C2205FC811007E5924 /* ViewController.swift in Sources */,
+				09559E04208F2D2D003A824C /* UIAlertAction+Image.swift in Sources */,
 				096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */,
 				0964E7372060F981001D6F47 /* TextFieldTableViewController.swift in Sources */,
 				0964E7312060F981001D6F47 /* ValidationRule.swift in Sources */,

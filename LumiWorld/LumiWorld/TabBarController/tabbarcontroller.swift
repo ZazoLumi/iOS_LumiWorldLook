@@ -53,14 +53,47 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     tabBarController.selectedIndex = 1
     let navigationController = ExampleNavigationController.init(rootViewController: tabBarController)
     navigationController.navigationItem.addSettingButtonOnRight()
+    navigationController.navigationItem.addBackButtonOnLeft()
+
     return navigationController
     }
 }
 
+extension UIApplication {
+    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let navigationController = controller as? UINavigationController {
+            return topViewController(controller: navigationController.visibleViewController)
+        }
+        if let tabController = controller as? ESTabBarController {
+            if let selected = tabController.selectedViewController {
+                return topViewController(controller: selected)
+            }
+        }
+        if let presented = controller?.presentedViewController {
+            return topViewController(controller: presented)
+        }
+        return controller
+    }
+}
 
 
+extension UINavigationBar {
+    override open func layoutSubviews() {
+        super.layoutSubviews()
+        
+        subviews.forEach { (view) in
+            if let imageView = view as? UIImageView {
+                if imageView.image == backIndicatorImage || imageView.image == backIndicatorTransitionMaskImage {
+                    view.frame.origin.y = floor((frame.height - view.frame.height) / 2.0)
+                }
+            }
+        }
+    }
+
+}
 
 class ExampleNavigationController: UINavigationController {
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

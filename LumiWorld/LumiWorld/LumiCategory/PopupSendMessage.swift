@@ -158,8 +158,9 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     }
 
     @IBAction func onBtnAttachmentTapped(_ sender: Any) {
+        CameraHandler.shared.isFromchat = false
         CameraHandler.shared.showActionSheet(vc: self)
-        CameraHandler.shared.imagePickedBlock = { (image, strUrl) in
+        CameraHandler.shared.didFinishCapturingImage = { (image, strUrl) in
             /* get your image here */
             self.imgAttach.image = image
             self.strImgName = strUrl

@@ -157,7 +157,7 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         
         //navigationItem.rightBarButtonItems = [spacerItem, rightItem]
         navigationItem.addSettingButtonOnRight()
-
+        navigationItem.addBackButtonOnLeft()
     }
     
     private func loadMessages() {

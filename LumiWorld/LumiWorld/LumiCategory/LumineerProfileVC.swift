@@ -62,6 +62,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
+        self.navigationItem.addBackButtonOnLeft()
+
         NotificationCenter.default.addObserver(self, selector: #selector(getLatestLumiMessages), name: Notification.Name("popupRemoved"), object: nil)
 
         lblExpandableDescription.delegate = self
@@ -131,11 +133,13 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
             btnFollowLumineer.isSelected = false
         }
 
-        let insets: UIEdgeInsets = UIEdgeInsetsMake(10, 0, 0, 0)
-        let alignedImage = UIImage(named: "Artboard 142xxxhdpi")?.withAlignmentRectInsets(insets)
-        self.navigationController?.navigationBar.backIndicatorImage = alignedImage
-        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = alignedImage
+//        let insets: UIEdgeInsets = UIEdgeInsetsMake(-10, 0, 0, 0)
+//        let alignedImage = UIImage(named: "Artboard 142xxxhdpi")?.withAlignmentRectInsets(insets)
+//        self.navigationController?.navigationBar.backIndicatorImage = alignedImage
+//        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = alignedImage
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style:.plain, target: nil, action: nil)
+        
+        
         let realm = try! Realm()
         objLumineer.getLumineerAllRatings() { (json) in
             self.ratingVC.rating = Double((json["finalRating"]?.intValue)!)
@@ -715,10 +719,15 @@ extension Date {
     }
     
     func getDateFromString(string: String , formatter:String) -> Date {
-        let dateFormatterGet = DateFormatter()
+        var dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm"
         let date = dateFormatterGet.date(from:string)!
-        return date
+
+        dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = formatter
+        let strDate = dateFormatterGet.string(from: date)
+
+        return dateFormatterGet.date(from:strDate)!
     }
 }
 

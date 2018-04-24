@@ -48,7 +48,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.navigationItem.addSettingButtonOnRight()
-
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.yellow]
         self.tabBarController?.navigationController?.navigationBar.titleTextAttributes = attributes
         //Static
@@ -252,7 +251,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         cell.lblCompanyName.text = objLumineer.name
         let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgCompanyLogo.frame.size.width, height: cell.imgCompanyLogo.frame.size.height))
-
+        cell.imgCompanyLogo.contentMode = .scaleAspectFit
         cell.imgCompanyLogo.image = scalImg
         return cell
     }
@@ -289,8 +288,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             }
         }
     }
-
-    
     
     @objc func onBtnFollowUnfollowTapped(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
@@ -453,6 +450,9 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     
     func tableViewExpandSection(_ section: Int, imageView: UIImageView) {
         do {
+            guard self.aryCategory.count != 0 else {
+                return
+            }
             let sectionData = self.aryCategory[section].lumineerList
             
             if (sectionData.count == 0) {
@@ -515,7 +515,21 @@ extension UINavigationItem {
         let barButton = UIBarButtonItem(customView: btn1)
         self.rightBarButtonItem = barButton
     }
+    func addBackButtonOnLeft(){
+        let btn1 = UIButton(type: .custom)
+        let img = UIImage(named: "Artboard 142xxxhdpi")
+        btn1.setImage(img, for: .normal)
+        btn1.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        btn1.addTarget(self, action:#selector(gotoBackPage(_:)), for: .touchUpInside)
+        let barButton = UIBarButtonItem(customView: btn1)
+        self.leftBarButtonItem = barButton
+    }
 
+    @objc func gotoBackPage(_ sender: UIButton){
+        if let topController = UIApplication.topViewController() {
+            topController.navigationController?.popViewController(animated: true)
+        }
+    }
         @objc func gotoSettingPage(_ sender: UIButton){
             let actionSheet = UIAlertController(title: "\n\n\n\n\n\n", message: nil, preferredStyle: .actionSheet)
             let firstSubview = actionSheet.view.subviews.first

@@ -8,21 +8,26 @@
 import Foundation
 import UIKit
 import Photos
+import MobileCoreServices
 
 class CameraHandler: NSObject{
     static let shared = CameraHandler()
+    var isFromchat = false
     
     fileprivate var currentVC: UIViewController!
     
     //MARK: Internal Properties
-    var imagePickedBlock: ((UIImage,String) -> Void)?
-    
+    var didFinishCapturingImage: ((UIImage,String) -> Void)?
+    var didFinishCapturingVideo: ((_ videoURL: URL) -> Void)?
+
     func camera()
     {
         if UIImagePickerController.isSourceTypeAvailable(.camera){
             let myPickerController = UIImagePickerController()
             myPickerController.delegate = self;
             myPickerController.sourceType = .camera
+            myPickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
+
             currentVC.present(myPickerController, animated: true, completion: nil)
         }
         
@@ -35,10 +40,22 @@ class CameraHandler: NSObject{
             let myPickerController = UIImagePickerController()
             myPickerController.delegate = self;
             myPickerController.sourceType = .photoLibrary
+            myPickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
             currentVC.present(myPickerController, animated: true, completion: nil)
         }
         
     }
+    
+    func showCamera(vc: UIViewController) {
+        currentVC = vc
+        self.camera()
+    }
+    func showPhotoLibrary(vc: UIViewController) {
+        currentVC = vc
+        self.photoLibrary()
+    }
+
+
     
     func showActionSheet(vc: UIViewController) {
         currentVC = vc
@@ -66,18 +83,36 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
-                 let imgName = imgUrl.lastPathComponent
+        let mediaType = info[UIImagePickerControllerMediaType] as! String
+        
+        if mediaType == kUTTypeImage as String {
+            if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
+                    let imgName = imgUrl.lastPathComponent
                     print(imgName)
-                    self.imagePickedBlock?(image, imgName)
+                    self.didFinishCapturingImage?(image, imgName)
+                    }
+                else {
+                    self.didFinishCapturingImage?(image, "test.png")
+                }
             }
-            else {
-                self.imagePickedBlock?(image, "test.png")
-            }
-        }else{
-            print("Something went wrong")
+        } else if mediaType == kUTTypeMovie as String {
+            let videoURL = info[UIImagePickerControllerMediaURL] as! URL
+            self.didFinishCapturingVideo?(videoURL)
         }
+
+//        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+//            if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
+//                 let imgName = imgUrl.lastPathComponent
+//                    print(imgName)
+//                    self.didFinishCapturingImage?(image, imgName)
+//            }
+//            else {
+//                self.didFinishCapturingImage?(image, "test.png")
+//            }
+//        }else{
+//            print("Something went wrong")
+//        }
         currentVC.dismiss(animated: true, completion: nil)
     }
     

@@ -65,34 +65,47 @@ class MessageManager: NSObject{//, NOCClientDelegate {
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!]) { (objLumineer) in
             var aryLumiMessage = objLumineer.lumiMessages.filter("messageSubjectId = %ld",GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId)
-            aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "publishedTime", ascending: false)
-            for obj in aryLumiMessage {
-                let msg = Message()
+            aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "createdTime", ascending: true)
+            var date : Date!
+            for (index, obj) in aryLumiMessage.enumerated() {
+                print("Item \(index): \(obj)")
                 if obj.value(forKeyPath:"contentType") as! String == "Text" {
+                    let msg = Message()
                     msg.msgType = obj.contentType!
                     msg.text = obj.newsFeedBody!
                     msg.deliveryStatus = .Delivered
-                    msg.date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "")
+                    msg.date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd HH:mm")
                     if obj.isSentByLumi == true {
                         msg.isOutgoing = true
                     }
                     else {
                         msg.isOutgoing = false
                     }
+
+                    if index == 0 {
+                        date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
+                        let msg2 = Message()
+                        msg2.msgType = "System"
+                        msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input `/start` to play!"
+                        
+                        let msg1 = Message()
+                        msg1.msgType = "Date"
+                            msg1.date = date
+                        arr.append(msg1)
+                        arr.append(msg2)
+                    }
+                    else if date != Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd"), index != 0
+                    {
+                        let msg1 = Message()
+                        msg1.msgType = "Date"
+                        msg1.date = msg.date
+                        arr.append(msg1)
+                        date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
+                    }
                     arr.append(msg)
+
                 }
             }
-            arr = arr.sorted(by: { $0.date < $1.date })
-
-            if chatId == "bot_89757" {
-                let msg = Message()
-                msg.msgType = "System"
-                msg.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input `/start` to play!"
-                arr.insert(msg, at: 0)
-            }
-            let msg = Message()
-            msg.msgType = "Date"
-            arr.insert(msg, at: 0)
             
             self.saveMessages(arr, chatId: chatId)
             handler(arr)
