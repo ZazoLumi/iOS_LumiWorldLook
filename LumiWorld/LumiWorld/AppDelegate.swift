@@ -25,6 +25,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.statusBarStyle = .lightContent
         UISearchBar.appearance().tintColor = .lumiGreen
         IQKeyboardManager.sharedManager().enable = true
+        if UserDefaults.standard.getBoolValue(key:UserDefaultsKeys.pendingVerification) {
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let firstVC = storyBoard.instantiateViewController(withIdentifier: "CreateAccountVC") as! CreateAccountVC
+            
+            let objVerifyAccoutVC = storyBoard.instantiateViewController(withIdentifier: "VerifyAccoutVC") as! VerifyAccoutVC
+
+            var controllers = self.window?.rootViewController?.navigationController?.viewControllers
+            controllers?.append(firstVC)
+            controllers?.append(objVerifyAccoutVC)
+            UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.pendingVerification)
+            self.window?.rootViewController?.navigationController?.setViewControllers(controllers!, animated: true)
+
+        }
+
         return true
     }
 

@@ -684,11 +684,11 @@ extension String {
 extension Date {
     func getFormattedTimestamp(key: UserDefaultsKeys) -> String{
         var timeStamp : String!
-        let olderTimestamp = UserDefaults.standard.getTimestamp(key: key) as String
+        let olderTimestamp = UserDefaults.standard.getStringValue(key: key) as String
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
         let myString = formatter.string(from: Date())
-        UserDefaults.standard.setTimestamp(value: myString, key: key)
+        UserDefaults.standard.setStringValue(value: myString, key: key)
         timeStamp = olderTimestamp
         return timeStamp
     }
@@ -735,18 +735,32 @@ extension Date {
 extension UserDefaults{
     
     //MARK: Check Login
-    func setTimestamp(value: String, key: UserDefaultsKeys) {
+    func setStringValue(value: String, key: UserDefaultsKeys) {
         set(value, forKey: key.rawValue)
         //synchronize()
     }
     
     //MARK: Retrieve User Data
-    func getTimestamp(key: UserDefaultsKeys) -> String{
+    func getStringValue(key: UserDefaultsKeys) -> String{
         guard ((UserDefaults.standard.value(forKey: key.rawValue) as? String) != nil) else {
            return ""
         }
         return string(forKey: key.rawValue)!
     }
+    
+    func setBoolValue(value: Bool, key: UserDefaultsKeys) {
+        set(value, forKey:key.rawValue)
+        //synchronize()
+    }
+    
+    //MARK: Retrieve User Data
+    func getBoolValue(key: UserDefaultsKeys) -> Bool{
+        guard ((UserDefaults.standard.value(forKey: key.rawValue) as? Bool) != nil) else {
+            return false
+        }
+        return bool(forKey: key.rawValue)
+    }
+
 
     
 //    func isLoggedIn()-> Bool {
@@ -763,5 +777,6 @@ extension UserDefaults{
 enum UserDefaultsKeys : String {
     case messageTimeStamp
     case lumineerTimeStamp
+    case pendingVerification
 }
 

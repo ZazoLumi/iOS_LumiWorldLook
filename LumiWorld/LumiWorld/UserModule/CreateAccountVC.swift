@@ -94,8 +94,10 @@ class CreateAccountVC: UIViewController,FormDataDelegate {
                     }
 
                     self.showCustomAlert(strTitle: "Success", strDetails: "Your account is created successfully.", completion: { (str) in
+                        
                         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                         let objVerifyAccoutVC = storyBoard.instantiateViewController(withIdentifier: "VerifyAccoutVC") as! VerifyAccoutVC
+                        UserDefaults.standard.setBoolValue(value: true, key: UserDefaultsKeys.pendingVerification)
                         self.navigationController?.pushViewController(objVerifyAccoutVC, animated: true)
                     })
                     print(json)
