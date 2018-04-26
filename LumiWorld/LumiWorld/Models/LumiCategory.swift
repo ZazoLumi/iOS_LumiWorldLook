@@ -270,7 +270,7 @@ class LumineerList : Object {
     func getLumineerCompanyFollowingCounts(completionHandler: @escaping (_ objData: [String:JSON]) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerFollowingCounts)"+"?regnNumber=\(self.id)"
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerFollowingCounts)"+"?regnNumber=\(self.companyRegistrationNumber!)"
 
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in

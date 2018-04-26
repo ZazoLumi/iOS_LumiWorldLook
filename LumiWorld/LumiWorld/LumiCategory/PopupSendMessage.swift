@@ -48,7 +48,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         // Manage tableView visibility via TouchDown in textField
         textField.addTarget(self, action: #selector(textFieldActive), for: UIControlEvents.touchDown)
         let realm = try! Realm()
-        currentSubject = Array(Set(realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).value(forKey: "messageSubject") as! [String]))
+        currentSubject = Array(Set(realm.objects(LumiMessage.self).filter("enterpriseID = %@",GlobalShareData.sharedGlobal.objCurrentLumineer.id).filter("messageCategory = %@",activityType).value(forKey: "messageSubject") as! [String]))
         // Do any additional setup after loading the view.
     }
     override func viewDidLayoutSubviews()
