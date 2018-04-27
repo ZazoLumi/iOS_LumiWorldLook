@@ -1,5 +1,5 @@
 //
-//  TGTextMessageCell.swift
+//  TGAttachmentMessageCell.swift
 //  NoChat-Swift-Example
 //
 //  Copyright (c) 2016-present, little2s.
@@ -25,16 +25,18 @@
 
 import NoChat
 import YYText
+import Alamofire
 
 class TGAttachmentMessageCell: TGBaseMessageCell {
     
     var bubbleImageView = UIImageView()
+    var attachImageView = UIImageView()
     var textLabel = YYLabel()
     var timeLabel = UILabel()
     var deliveryStatusView = TGDeliveryStatusView()
     
     override class func reuseIdentifier() -> String {
-        return "TGTextMessageCell"
+        return "TGAttachmentMessageCell"
     }
     
     override init(frame: CGRect) {
@@ -57,6 +59,8 @@ class TGAttachmentMessageCell: TGBaseMessageCell {
                 d.didTapLink(cell: strongSelf, linkInfo: info)
             }
         }
+        bubbleView.addSubview(attachImageView)
+
         bubbleView.addSubview(textLabel)
         
         bubbleImageView.addSubview(timeLabel)
@@ -70,16 +74,27 @@ class TGAttachmentMessageCell: TGBaseMessageCell {
     
     override var layout: NOCChatItemCellLayout? {
         didSet {
-            guard let cellLayout = layout as? TGTextMessageCellLayout else {
+            guard let cellLayout = layout as? TGAttachmentMessageCellLayout else {
                 fatalError("invalid layout type")
             }
             
             bubbleImageView.frame = cellLayout.bubbleImageViewFrame
             bubbleImageView.image = isHighlight ? cellLayout.highlightBubbleImage : cellLayout.bubbleImage
             
+            attachImageView.frame = cellLayout.attachImageViewFrame
             textLabel.frame = cellLayout.textLableFrame
             textLabel.textLayout = cellLayout.textLayout
-            
+            self.attachImageView.cornerRadius = 5
+            self.attachImageView.contentMode = .scaleAspectFit
+            let urlOriginalImage = URL.init(string: cellLayout.attachURL!)
+            Alamofire.request(urlOriginalImage!).responseImage { response in
+                debugPrint(response)
+                if let image = response.result.value {
+                     let scalImg = image.af_imageScaled(to: CGSize(width:cellLayout.attachImageViewFrame.size.width , height: cellLayout.attachImageViewFrame.size.height))
+                    self.attachImageView.image = scalImg
+                }
+            }
+
             timeLabel.frame = cellLayout.timeLabelFrame
             timeLabel.attributedText = cellLayout.attributedTime
             

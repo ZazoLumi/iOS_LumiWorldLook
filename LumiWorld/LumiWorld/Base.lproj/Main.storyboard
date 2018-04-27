@@ -971,7 +971,7 @@
         <!--Navigation Controller-->
         <scene sceneID="BSL-bn-JC0">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="lKX-4L-Pcc" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="baseNav" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="lKX-4L-Pcc" sceneMemberID="viewController">
                     <toolbarItems/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -1482,6 +1482,6 @@
         <image name="nazish_passport_size" width="316" height="318"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="InY-X4-JKB"/>
+        <segue reference="bcw-54-L7N"/>
     </inferredMetricsTieBreakers>
 </document>

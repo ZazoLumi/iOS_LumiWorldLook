@@ -25,6 +25,7 @@
 
 import NoChat
 import YYText
+import Alamofire
 
 class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     
@@ -32,8 +33,10 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     var hasTail = false
     var bubbleImage: UIImage?
     var highlightBubbleImage: UIImage?
-    
+    var attachURL: String?
+
     var bubbleImageViewFrame = CGRect.zero
+    var attachImageViewFrame = CGRect.zero
     var textLableFrame = CGRect.zero
     var textLayout: YYTextLayout?
     var timeLabelFrame = CGRect.zero
@@ -43,7 +46,8 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     
     required init(chatItem: NOCChatItem, cellWidth width: CGFloat) {
         super.init(chatItem: chatItem, cellWidth: width)
-        reuseIdentifier = "TGTextMessageCell"
+        reuseIdentifier = "TGAttachmentMessageCell"
+        setupAttachmentData()
         setupAttributedText()
         setupAttributedTime()
         setupHasTail()
@@ -78,6 +82,20 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
         let timeColor = isOutgoing ? Style.outgoingTimeColor : Style.incomingTimeColor
         attributedTime = NSAttributedString(string: timeString, attributes: [NSAttributedStringKey.font: Style.timeFont, NSAttributedStringKey.foregroundColor: timeColor])
     }
+    
+    private func setupAttachmentData() {
+        attachURL = message.attachmentURL
+//        let urlOriginalImage = URL.init(string: message.attachmentURL)
+//        Alamofire.request(urlOriginalImage!).responseImage { response in
+//            debugPrint(response)
+//            if let image = response.result.value {
+//               // let scalImg = image.af_imageScaled(to: CGSize(width: , height: 20))
+//                self.attachImage = image
+//                
+//            }
+//        }
+    }
+
     
     private func setupHasTail() {
         hasTail = true
@@ -114,14 +132,18 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
         let timeLabelSize = time.noc_sizeThatFits(size: unlimitSize)
         let timeLabelWidth = timeLabelSize.width
         let timeLabelHeight = CGFloat(15)
-        
+        let attachmentMargin = isOutgoing ? UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 12) : UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
+
+        let attachmentWidth = bubbleViewWidth - attachmentMargin.left - attachmentMargin.right
         let deliveryStatusWidth: CGFloat = (isOutgoing && message.deliveryStatus != .Failure) ? 15 : 0
         let deliveryStatusHeight = deliveryStatusWidth
         
         let hPadding = CGFloat(8)
         let vPadding = CGFloat(4)
         
-        let textMargin = isOutgoing ? UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 15) : UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 10)
+        
+        
+        let textMargin = isOutgoing ? UIEdgeInsets(top: 2, left: 10, bottom: 8, right: 15) : UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 10)
         var textLabelWidth = bubbleViewWidth - textMargin.left - textMargin.right - hPadding - timeLabelWidth - hPadding/2 - deliveryStatusWidth
         
         let modifier = TGTextLinePositionModifier()
@@ -149,16 +171,23 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
             self.textLayout = newTextLayout
             
             // layout content in bubble
+
+            
             textLabelWidth = ceil(newTextLayout.textBoundingSize.width)
             let textLabelHeight = ceil(modifier.height(forLineCount: newTextLayout.rowCount))
-            textLableFrame = CGRect(x: textMargin.left, y: textMargin.top, width: textLabelWidth, height: textLabelHeight)
+            
+            bubbleViewWidth = attachmentMargin.left + attachmentWidth + attachmentMargin.right
+            bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom+attachmentMargin.top + 110 + attachmentMargin.bottom
+            attachImageViewFrame = CGRect(x: attachmentMargin.left, y: attachmentMargin.top, width: attachmentWidth, height: 110)
+
+            textLableFrame = CGRect(x: textMargin.left, y: attachmentMargin.top + 110 + attachmentMargin.bottom+textMargin.top, width: textLabelWidth, height: textLabelHeight)
             
             let tryPoint = CGPoint(x: textLabelWidth - deliveryStatusWidth - hPadding/2 - timeLabelWidth - hPadding, y: textLabelHeight - timeLabelHeight/2)
             
             let needNewLine = newTextLayout.textRange(at: tryPoint) != nil
             if needNewLine {
                 var x = bubbleViewWidth - textMargin.left - deliveryStatusWidth - hPadding/2 - timeLabelWidth
-                var y = textMargin.top + textLabelHeight
+                var y = textMargin.top + textLabelHeight + attachmentMargin.top + 110 + attachmentMargin.bottom
                 
                 y += vPadding
                 timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
@@ -166,13 +195,14 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
                 x += timeLabelWidth + hPadding/2
                 deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
                 
-                bubbleViewHeight = textMargin.top + textLabelHeight + vPadding + timeLabelHeight + textMargin.bottom
+                bubbleViewHeight = textMargin.top + textLabelHeight + vPadding + timeLabelHeight + textMargin.bottom + attachmentMargin.top + 110 + attachmentMargin.bottom
                 bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
                 
                 bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
                 
             } else {
-                bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom
+                bubbleViewHeight = textMargin.top + textLabelHeight + timeLabelHeight + textMargin.bottom + attachmentMargin.top + 110 + attachmentMargin.bottom
+
                 bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
                 
                 bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
@@ -190,14 +220,17 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
             textLabelWidth = ceil(textLayout.textBoundingSize.width)
             let textLabelHeight = ceil(modifier.height(forLineCount: textLayout.rowCount))
             
-            bubbleViewWidth = textMargin.left + textLabelWidth + hPadding + timeLabelWidth + hPadding/2 + deliveryStatusWidth + textMargin.right
-            bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom
+            bubbleViewWidth = attachmentMargin.left + attachmentWidth + attachmentMargin.right
+            bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom+attachmentMargin.top + 110 + attachmentMargin.bottom
             bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
+            
+            attachImageViewFrame = CGRect(x: attachmentMargin.left, y: attachmentMargin.top, width: attachmentWidth, height: 110)
             
             bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
             
+            
             var x = textMargin.left
-            var y = textMargin.top
+            var y = textMargin.top + attachImageViewFrame.size.height+attachmentMargin.top+attachmentMargin.bottom
             textLableFrame = CGRect(x: x, y: y, width: textLabelWidth, height: textLabelHeight)
             
             x += textLabelWidth + hPadding
@@ -213,7 +246,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     
     
     struct Style {
-        static let fullOutgoingBubbleImage = UIImage(named: "TGBubbleOutgoingFull")!
+        static let fullOutgoingBubbleImage = UIImage(named: "TGBubbleOutgoingFull")?.resizableImage(withCapInsets: UIEdgeInsetsMake(12, 20, 22, 12))
         static let highlightFullOutgoingBubbleImage = UIImage(named: "TGBubbleOutgoingFullHL")!
         static let partialOutgoingBubbleImage = UIImage(named: "TGBubbleOutgoingPartial")!
         static let highlightPartialOutgoingBubbleImage = UIImage(named: "TGBubbleOutgoingPartialHL")!

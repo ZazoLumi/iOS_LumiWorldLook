@@ -32,8 +32,21 @@ class LogInVC: UIViewController,FormDataDelegate {
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1]],fieldType:[[1,2]])
         customview.formDelegate = self
         viewTblData.addSubview(customview)
+        self.checkPendingVerification()
 
     }
+    
+    func checkPendingVerification() {
+        if UserDefaults.standard.getBoolValue(key:UserDefaultsKeys.pendingVerification) {
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let firstVC = storyBoard.instantiateViewController(withIdentifier: "CreateAccountVC") as! CreateAccountVC
+            let objVerifyAccoutVC = storyBoard.instantiateViewController(withIdentifier: "VerifyAccoutVC") as! VerifyAccoutVC
+            UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.pendingVerification)
+            self.navigationController?.pushViewController(firstVC, animated: false);
+            self.navigationController?.pushViewController(objVerifyAccoutVC, animated: true);
+        }
+    }
+
     @IBAction func onBtnSignInTapped(_ sender: Any) {
 //Static        UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
 //        return

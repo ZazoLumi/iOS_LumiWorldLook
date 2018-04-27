@@ -43,6 +43,9 @@ class Message: NSObject, NOCChatItem {
     var date: Date = Date()
     var text: String = ""
     
+    var attachmentURL: String? = ""
+
+    
     var isOutgoing: Bool = true
     var deliveryStatus: MessageDeliveryStatus = .Idle
     

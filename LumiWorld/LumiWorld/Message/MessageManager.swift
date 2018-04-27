@@ -69,42 +69,46 @@ class MessageManager: NSObject{//, NOCClientDelegate {
             var date : Date!
             for (index, obj) in aryLumiMessage.enumerated() {
                 print("Item \(index): \(obj)")
-                if obj.value(forKeyPath:"contentType") as! String == "Text" {
-                    let msg = Message()
-                    msg.msgType = obj.contentType!
-                    msg.text = obj.newsFeedBody!
-                    msg.deliveryStatus = .Delivered
-                    msg.date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd HH:mm")
-                    if obj.isSentByLumi == true {
-                        msg.isOutgoing = true
-                    }
-                    else {
-                        msg.isOutgoing = false
-                    }
+//                if obj.value(forKeyPath:"contentType") as! String == "Text" {
+//
+//                }
 
-                    if index == 0 {
-                        date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
-                        let msg2 = Message()
-                        msg2.msgType = "System"
-                        msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input `/start` to play!"
-                        
-                        let msg1 = Message()
-                        msg1.msgType = "Date"
-                            msg1.date = date
-                        arr.append(msg1)
-                        arr.append(msg2)
-                    }
-                    else if date != Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd"), index != 0
-                    {
-                        let msg1 = Message()
-                        msg1.msgType = "Date"
-                        msg1.date = msg.date
-                        arr.append(msg1)
-                        date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
-                    }
-                    arr.append(msg)
-
+                let msg = Message()
+                msg.msgType = obj.contentType!
+                msg.text = obj.newsFeedBody!
+                msg.attachmentURL = obj.fileName
+                msg.deliveryStatus = .Delivered
+                msg.date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd HH:mm")
+                if obj.isSentByLumi == true {
+                    msg.isOutgoing = true
                 }
+                else {
+                    msg.isOutgoing = false
+                }
+                
+                if index == 0 {
+                    date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
+                    let msg2 = Message()
+                    msg2.msgType = "System"
+                    msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input `/start` to play!"
+                    
+                    let msg1 = Message()
+                    msg1.msgType = "Date"
+                    msg1.date = date
+                    arr.append(msg1)
+                    arr.append(msg2)
+                }
+                else if date != Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd"), index != 0
+                {
+                    let msg1 = Message()
+                    msg1.msgType = "Date"
+                    msg1.date = msg.date
+                    arr.append(msg1)
+                    date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
+                }
+                arr.append(msg)
+                
+
             }
             
             self.saveMessages(arr, chatId: chatId)

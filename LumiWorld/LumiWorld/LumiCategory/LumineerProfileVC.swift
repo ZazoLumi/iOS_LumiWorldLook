@@ -76,6 +76,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleRatingTapFrom(recognizer:)))
         self.ratingVC.addGestureRecognizer(tapGestureRecognizer)
         self.ratingVC.isUserInteractionEnabled = true
+        viewActivityHeights.constant = 0
+        lblActivity.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,9 +90,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.systemFont(ofSize: 20)
         navigationItem.titleView = titleLabel
-
-
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -124,19 +125,12 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         else {
             self.lblExpandableDescription.text = objLumineer.shortDescription
         }
-        viewActivityHeights.constant = 0
-        lblActivity.isHidden = true
         if objLumineer.status == 1 {
             btnFollowLumineer.isSelected = true
         }
         else {
             btnFollowLumineer.isSelected = false
         }
-
-//        let insets: UIEdgeInsets = UIEdgeInsetsMake(-10, 0, 0, 0)
-//        let alignedImage = UIImage(named: "Artboard 142xxxhdpi")?.withAlignmentRectInsets(insets)
-//        self.navigationController?.navigationBar.backIndicatorImage = alignedImage
-//        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = alignedImage
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style:.plain, target: nil, action: nil)
         
         
@@ -203,7 +197,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
                         strImageName = "Artboard 91xxhdpi"
                     }
                     
-                    let section = ["title":objUniqueItem, "text":uniqueObjects[0].messageSubject,"date":Date().getFormattedDate(string: uniqueObjects[0].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
+                    let section = ["title":objUniqueItem, "text":uniqueObjects[0].messageSubject as Any,"date":Date().getFormattedDate(string: uniqueObjects[0].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
                     self.aryActivityData.append(section as [String : AnyObject])
                     
                 }
@@ -386,7 +380,7 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         lblTitle.font  = UIFont.init(name: "Helvetica-Bold", size: 14)
         lblTitle.textColor = UIColor.black
         lblTitle.backgroundColor = UIColor.clear
-        lblTitle.text = aryActivityData[section]["title"] as! String
+        lblTitle.text = aryActivityData[section]["title"] as? String
         innerView.addSubview(lblTitle)
         
         let lblTime = UILabel(frame: CGRect(x: lblTitle.frame.size.width+2, y: 5, width: 90, height: 12))
@@ -394,7 +388,7 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         lblTime.textColor = UIColor.lumiGray
         lblTime.backgroundColor = UIColor.clear
         lblTime.textAlignment = .center
-        lblTime.text = aryActivityData[section]["date"] as! String
+        lblTime.text = aryActivityData[section]["date"] as? String
         innerView.addSubview(lblTime)
 
         
@@ -407,7 +401,7 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         lblDesc.font  = UIFont.init(name: "Helvetica", size: 12)
         lblDesc.textColor = UIColor.lumiGray
         lblDesc.backgroundColor = UIColor.clear
-        lblDesc.text = aryActivityData[section]["text"] as! String
+        lblDesc.text = aryActivityData[section]["text"] as? String
         innerView.addSubview(lblDesc)
 
         

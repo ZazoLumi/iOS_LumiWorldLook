@@ -42,9 +42,11 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     override class func cellLayoutClass(forItemType type: String) -> Swift.AnyClass? {
         if type == "Text" {
             return TGTextMessageCellLayout.self
-        } else if type == "Date" {
+        } else if type == "Image" {
+            return TGAttachmentMessageCellLayout.self
+        }else if type == "Date" {
             return TGDateMessageCellLayout.self
-        } else if type == "System" {
+        }else if type == "System" {
             return TGSystemMessageCellLayout.self
         } else {
             return nil
@@ -59,6 +61,7 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         collectionView?.register(TGTextMessageCell.self, forCellWithReuseIdentifier: TGTextMessageCell.reuseIdentifier())
         collectionView?.register(TGDateMessageCell.self, forCellWithReuseIdentifier: TGDateMessageCell.reuseIdentifier())
         collectionView?.register(TGSystemMessageCell.self, forCellWithReuseIdentifier: TGSystemMessageCell.reuseIdentifier())
+        collectionView?.register(TGAttachmentMessageCell.self, forCellWithReuseIdentifier: TGAttachmentMessageCell.reuseIdentifier())
     }
     
     init(chat: Chat) {
