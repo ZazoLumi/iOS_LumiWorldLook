@@ -154,7 +154,7 @@ class TGTextMessageCellLayout: TGBaseMessageCellLayout {
             textLableFrame = CGRect(x: textMargin.left, y: textMargin.top, width: textLabelWidth, height: textLabelHeight)
             
             let tryPoint = CGPoint(x: textLabelWidth - deliveryStatusWidth - hPadding/2 - timeLabelWidth - hPadding, y: textLabelHeight - timeLabelHeight/2)
-            
+
             let needNewLine = newTextLayout.textRange(at: tryPoint) != nil
             if needNewLine {
                 var x = bubbleViewWidth - textMargin.left - deliveryStatusWidth - hPadding/2 - timeLabelWidth
@@ -167,15 +167,24 @@ class TGTextMessageCellLayout: TGBaseMessageCellLayout {
                 deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
                 
                 bubbleViewHeight = textMargin.top + textLabelHeight + vPadding + timeLabelHeight + textMargin.bottom
-                bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
-                
+                bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth+15, height: bubbleViewHeight)
+                if !isOutgoing {
+                    bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth+15, height: bubbleViewHeight)
+                }else {
                 bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+                }
                 
             } else {
                 bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom
-                bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
+
+                bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth+15, height: bubbleViewHeight)
                 
-                bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+                if !isOutgoing {
+                    bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth+15, height: bubbleViewHeight)
+                }else {
+                    bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+                }
+
                 
                 var x = bubbleViewWidth - textMargin.right - deliveryStatusWidth - hPadding/2 - timeLabelWidth
                 let y = bubbleViewHeight - textMargin.bottom - timeLabelHeight
@@ -192,9 +201,14 @@ class TGTextMessageCellLayout: TGBaseMessageCellLayout {
             
             bubbleViewWidth = textMargin.left + textLabelWidth + hPadding + timeLabelWidth + hPadding/2 + deliveryStatusWidth + textMargin.right
             bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom
-            bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
+            bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth+15, height: bubbleViewHeight)
             
-            bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+            if !isOutgoing {
+                bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth+15, height: bubbleViewHeight)
+            }else {
+                bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+            }
+
             
             var x = textMargin.left
             var y = textMargin.top

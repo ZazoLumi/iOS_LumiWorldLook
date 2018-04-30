@@ -28,7 +28,7 @@ class CameraHandler: NSObject{
             myPickerController.sourceType = .camera
             myPickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
 
-            currentVC.present(myPickerController, animated: true, completion: nil)
+            currentVC.navigationController?.present(myPickerController, animated: true, completion: nil)
         }
         
     }
@@ -41,7 +41,7 @@ class CameraHandler: NSObject{
             myPickerController.delegate = self;
             myPickerController.sourceType = .photoLibrary
             myPickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
-            currentVC.present(myPickerController, animated: true, completion: nil)
+            currentVC.navigationController?.present(myPickerController, animated: true, completion: nil)
         }
         
     }
@@ -69,11 +69,13 @@ class CameraHandler: NSObject{
             self.photoLibrary()
         }))
         
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
+        let cancelAction = UIAlertAction(title:"Cancel", style:.cancel)
+        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+
+        actionSheet.addAction(cancelAction)
+
         vc.present(actionSheet, animated: true, completion: nil)
     }
-    
 }
 
 

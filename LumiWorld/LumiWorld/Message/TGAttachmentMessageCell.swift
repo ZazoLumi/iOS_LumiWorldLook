@@ -90,8 +90,13 @@ class TGAttachmentMessageCell: TGBaseMessageCell {
             Alamofire.request(urlOriginalImage!).responseImage { response in
                 debugPrint(response)
                 if let image = response.result.value {
+                    if cellLayout.attachImageViewFrame.size.width > 0, cellLayout.attachImageViewFrame.size.height > 0 {
                      let scalImg = image.af_imageScaled(to: CGSize(width:cellLayout.attachImageViewFrame.size.width , height: cellLayout.attachImageViewFrame.size.height))
-                    self.attachImageView.image = scalImg
+                        self.attachImageView.image = scalImg
+                    }
+                    else {
+                        let scalImg = image.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
+                        self.attachImageView.image = scalImg }
                 }
             }
 

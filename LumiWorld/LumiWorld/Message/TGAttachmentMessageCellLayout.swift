@@ -116,14 +116,10 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
         timeLabelFrame = CGRect.zero
         deliveryStatusViewFrame = CGRect.zero
         
-        guard let text = attributedText, text.length > 0, let time = attributedTime else {
+        guard let time = attributedTime else {
             return
         }
-        
-        // dynamic font support
-        let dynamicFont = Style.textFont
-        text.yy_setAttribute(NSAttributedStringKey.font.rawValue, value: dynamicFont)
-        
+
         let preferredMaxBubbleWidth = ceil(width * 0.75)
         var bubbleViewWidth = preferredMaxBubbleWidth
         
@@ -133,115 +129,141 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
         let timeLabelWidth = timeLabelSize.width
         let timeLabelHeight = CGFloat(15)
         let attachmentMargin = isOutgoing ? UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 12) : UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
-
+        
         let attachmentWidth = bubbleViewWidth - attachmentMargin.left - attachmentMargin.right
         let deliveryStatusWidth: CGFloat = (isOutgoing && message.deliveryStatus != .Failure) ? 15 : 0
         let deliveryStatusHeight = deliveryStatusWidth
         
         let hPadding = CGFloat(8)
         let vPadding = CGFloat(4)
-        
-        
-        
-        let textMargin = isOutgoing ? UIEdgeInsets(top: 2, left: 10, bottom: 8, right: 15) : UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 10)
-        var textLabelWidth = bubbleViewWidth - textMargin.left - textMargin.right - hPadding - timeLabelWidth - hPadding/2 - deliveryStatusWidth
-        
-        let modifier = TGTextLinePositionModifier()
-        modifier.font = dynamicFont
-        modifier.paddingTop = 2
-        modifier.paddingBottom = 2
-        
-        let container = YYTextContainer()
-        container.size = CGSize(width: textLabelWidth, height: CGFloat.greatestFiniteMagnitude)
-        container.linePositionModifier = modifier
-        
-        guard let textLayout = YYTextLayout(container: container, text: text) else {
-            return
-        }
-        self.textLayout = textLayout
-        
         var bubbleViewHeight = CGFloat(0)
-        if textLayout.rowCount > 1 { // relayout
-            textLabelWidth = bubbleViewWidth - textMargin.left - textMargin.right
-            container.size = CGSize(width: textLabelWidth, height: CGFloat.greatestFiniteMagnitude)
+
+
+        if let text = attributedText, text.length > 0  {
+            // dynamic font support
+            let dynamicFont = Style.textFont
+            text.yy_setAttribute(NSAttributedStringKey.font.rawValue, value: dynamicFont)
             
-            guard let newTextLayout = YYTextLayout(container: container, text: text) else {
+            let textMargin = isOutgoing ? UIEdgeInsets(top: 2, left: 10, bottom: 8, right: 15) : UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 10)
+            var textLabelWidth = bubbleViewWidth - textMargin.left - textMargin.right - hPadding - timeLabelWidth - hPadding/2 - deliveryStatusWidth
+            
+            let modifier = TGTextLinePositionModifier()
+            modifier.font = dynamicFont
+            modifier.paddingTop = 2
+            modifier.paddingBottom = 2
+            
+            let container = YYTextContainer()
+            container.size = CGSize(width: textLabelWidth, height: CGFloat.greatestFiniteMagnitude)
+            container.linePositionModifier = modifier
+            
+            guard let textLayout = YYTextLayout(container: container, text: text) else {
                 return
             }
-            self.textLayout = newTextLayout
-            
-            // layout content in bubble
-
-            
-            textLabelWidth = ceil(newTextLayout.textBoundingSize.width)
-            let textLabelHeight = ceil(modifier.height(forLineCount: newTextLayout.rowCount))
-            
-            bubbleViewWidth = attachmentMargin.left + attachmentWidth + attachmentMargin.right
-            bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom+attachmentMargin.top + 110 + attachmentMargin.bottom
-            attachImageViewFrame = CGRect(x: attachmentMargin.left, y: attachmentMargin.top, width: attachmentWidth, height: 110)
-
-            textLableFrame = CGRect(x: textMargin.left, y: attachmentMargin.top + 110 + attachmentMargin.bottom+textMargin.top, width: textLabelWidth, height: textLabelHeight)
-            
-            let tryPoint = CGPoint(x: textLabelWidth - deliveryStatusWidth - hPadding/2 - timeLabelWidth - hPadding, y: textLabelHeight - timeLabelHeight/2)
-            
-            let needNewLine = newTextLayout.textRange(at: tryPoint) != nil
-            if needNewLine {
-                var x = bubbleViewWidth - textMargin.left - deliveryStatusWidth - hPadding/2 - timeLabelWidth
-                var y = textMargin.top + textLabelHeight + attachmentMargin.top + 110 + attachmentMargin.bottom
+            self.textLayout = textLayout
+            if textLayout.rowCount > 1 { // relayout
+                textLabelWidth = bubbleViewWidth - textMargin.left - textMargin.right
+                container.size = CGSize(width: textLabelWidth, height: CGFloat.greatestFiniteMagnitude)
                 
-                y += vPadding
-                timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
+                guard let newTextLayout = YYTextLayout(container: container, text: text) else {
+                    return
+                }
+                self.textLayout = newTextLayout
                 
-                x += timeLabelWidth + hPadding/2
-                deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                // layout content in bubble
                 
-                bubbleViewHeight = textMargin.top + textLabelHeight + vPadding + timeLabelHeight + textMargin.bottom + attachmentMargin.top + 110 + attachmentMargin.bottom
-                bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
                 
-                bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+                textLabelWidth = ceil(newTextLayout.textBoundingSize.width)
+                let textLabelHeight = ceil(modifier.height(forLineCount: newTextLayout.rowCount))
+                
+                bubbleViewWidth = attachmentMargin.left + attachmentWidth + attachmentMargin.right
+                bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom+attachmentMargin.top + 110 + attachmentMargin.bottom
+                attachImageViewFrame = CGRect(x: attachmentMargin.left, y: attachmentMargin.top, width: attachmentWidth, height: 110)
+                
+                textLableFrame = CGRect(x: textMargin.left, y: attachmentMargin.top + 110 + attachmentMargin.bottom+textMargin.top, width: textLabelWidth, height: textLabelHeight)
+                
+                let tryPoint = CGPoint(x: textLabelWidth - deliveryStatusWidth - hPadding/2 - timeLabelWidth - hPadding, y: textLabelHeight - timeLabelHeight/2)
+                
+                let needNewLine = newTextLayout.textRange(at: tryPoint) != nil
+                if needNewLine {
+                    var x = bubbleViewWidth - textMargin.left - deliveryStatusWidth - hPadding/2 - timeLabelWidth
+                    var y = textMargin.top + textLabelHeight + attachmentMargin.top + 110 + attachmentMargin.bottom
+                    
+                    y += vPadding
+                    timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
+                    
+                    x += timeLabelWidth + hPadding/2
+                    deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                    
+                    bubbleViewHeight = textMargin.top + textLabelHeight + vPadding + timeLabelHeight + textMargin.bottom + attachmentMargin.top + 110 + attachmentMargin.bottom
+                    bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
+                    
+                    bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+                    
+                } else {
+                    bubbleViewHeight = textMargin.top + textLabelHeight + timeLabelHeight + textMargin.bottom + attachmentMargin.top + 110 + attachmentMargin.bottom
+                    
+                    bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
+                    
+                    bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+                    
+                    var x = bubbleViewWidth - textMargin.right - deliveryStatusWidth - hPadding/2 - timeLabelWidth
+                    let y = bubbleViewHeight - textMargin.bottom - timeLabelHeight
+                    timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
+                    
+                    x += timeLabelWidth + hPadding/2
+                    deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                    
+                }
                 
             } else {
-                bubbleViewHeight = textMargin.top + textLabelHeight + timeLabelHeight + textMargin.bottom + attachmentMargin.top + 110 + attachmentMargin.bottom
-
+                textLabelWidth = ceil(textLayout.textBoundingSize.width)
+                let textLabelHeight = ceil(modifier.height(forLineCount: textLayout.rowCount))
+                
+                bubbleViewWidth = attachmentMargin.left + attachmentWidth + attachmentMargin.right
+                bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom+attachmentMargin.top + 110 + attachmentMargin.bottom
                 bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
+                
+                attachImageViewFrame = CGRect(x: attachmentMargin.left, y: attachmentMargin.top, width: attachmentWidth, height: 110)
                 
                 bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
                 
-                var x = bubbleViewWidth - textMargin.right - deliveryStatusWidth - hPadding/2 - timeLabelWidth
-                let y = bubbleViewHeight - textMargin.bottom - timeLabelHeight
+                var x = bubbleViewWidth - textLabelWidth - attachmentMargin.right - deliveryStatusWidth - hPadding/2 - timeLabelWidth - 10
+
+                var y = textMargin.top + attachImageViewFrame.size.height+attachmentMargin.top+attachmentMargin.bottom
+                textLableFrame = CGRect(x: x, y: y, width: textLabelWidth, height: textLabelHeight)
+                
+                x += textLabelWidth + hPadding
+                y = bubbleViewHeight - textMargin.bottom - timeLabelHeight
                 timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
                 
                 x += timeLabelWidth + hPadding/2
                 deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
-                
             }
             
-        } else {
-            textLabelWidth = ceil(textLayout.textBoundingSize.width)
-            let textLabelHeight = ceil(modifier.height(forLineCount: textLayout.rowCount))
-            
+            height = bubbleViewHeight + bubbleViewMargin.top + bubbleViewMargin.bottom
+        }
+        else {
             bubbleViewWidth = attachmentMargin.left + attachmentWidth + attachmentMargin.right
-            bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom+attachmentMargin.top + 110 + attachmentMargin.bottom
+            bubbleViewHeight = attachmentMargin.top + 110 + attachmentMargin.bottom + 20
             bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
             
             attachImageViewFrame = CGRect(x: attachmentMargin.left, y: attachmentMargin.top, width: attachmentWidth, height: 110)
             
             bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
             
+            var x = bubbleViewWidth - attachmentMargin.right - deliveryStatusWidth - hPadding/2 - timeLabelWidth
             
-            var x = textMargin.left
-            var y = textMargin.top + attachImageViewFrame.size.height+attachmentMargin.top+attachmentMargin.bottom
-            textLableFrame = CGRect(x: x, y: y, width: textLabelWidth, height: textLabelHeight)
+            let y =  bubbleViewHeight - attachmentMargin.bottom - 15
             
-            x += textLabelWidth + hPadding
-            y = bubbleViewHeight - textMargin.bottom - timeLabelHeight
             timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
             
             x += timeLabelWidth + hPadding/2
             deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+
+            height = bubbleViewHeight + bubbleViewMargin.top + bubbleViewMargin.bottom
+
         }
         
-        height = bubbleViewHeight + bubbleViewMargin.top + bubbleViewMargin.bottom
     }
     
     

@@ -55,6 +55,8 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
 
     private var messageAreaSize = CGSize.zero
     private var keyboardHeight = CGFloat(0)
+    var objSetAttachment : SendAttachmentVC! = nil
+
     
     override init(frame: CGRect) {
         sendButtonWidth = min(150, (NSLocalizedString("Send", comment: "") as NSString).size(withAttributes: [NSAttributedStringKey.font: UIFont.noc_mediumSystemFont(ofSize: 17)]).width + 8)
@@ -237,6 +239,15 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         //toggleSendButtonEnabled()
     }
     
+    func addMessgePopup(activityType:String) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objSetAttachment = storyBoard.instantiateViewController(withIdentifier: "PopupSendMessage") as! SendAttachmentVC
+        objSetAttachment.activityType = activityType
+        self.parentViewController?.addChildViewController(self.objSetAttachment)
+        self.objSetAttachment.didMove(toParentViewController: self.parentViewController)
+    }
+
+    
     @objc func didTapAttachmentButton(_ sender: UIButton) {
         let alertController = UIAlertController.init()
         
@@ -245,6 +256,7 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
             CameraHandler.shared.showCamera(vc:self.parentViewController!)
             CameraHandler.shared.didFinishCapturingImage = { (image, strUrl) in
                 /* get your image here */
+                self.addMessgePopup(activityType: "Image")
             }
             CameraHandler.shared.didFinishCapturingVideo = { (url) in
                 /* get your image here */
@@ -254,6 +266,7 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
             CameraHandler.shared.showPhotoLibrary(vc:self.parentViewController!)
             CameraHandler.shared.didFinishCapturingImage = { (image, strUrl) in
                 /* get your image here */
+                self.addMessgePopup(activityType: "Image")
             }
             CameraHandler.shared.didFinishCapturingVideo = { (url) in
                 /* get your image here */
@@ -290,7 +303,7 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         alertController.addAction(actionLocation)
         alertController.addAction(cancelAction)
         alertController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-        self.parentViewController?.present(alertController, animated: true, completion: nil)
+        self.parentViewController?.navigationController?.present(alertController, animated: true, completion: nil)
 
 
     }
