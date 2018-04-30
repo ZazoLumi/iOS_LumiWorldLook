@@ -239,12 +239,13 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         //toggleSendButtonEnabled()
     }
     
-    func addMessgePopup(activityType:String) {
+    func addMessgePopup(activityType:String, image:UIImage, fileUrl :URL) {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        objSetAttachment = storyBoard.instantiateViewController(withIdentifier: "PopupSendMessage") as! SendAttachmentVC
+        objSetAttachment = storyBoard.instantiateViewController(withIdentifier: "SendAttachmentVC") as! SendAttachmentVC
         objSetAttachment.activityType = activityType
-        self.parentViewController?.addChildViewController(self.objSetAttachment)
-        self.objSetAttachment.didMove(toParentViewController: self.parentViewController)
+        objSetAttachment.fileUrl = fileUrl.absoluteString
+        objSetAttachment.fileImage = image
+        self.parentViewController?.navigationController?.pushViewController(objSetAttachment, animated: false)
     }
 
     
@@ -254,9 +255,9 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         CameraHandler.shared.isFromchat = true
         let actionCamera = UIAlertAction.init(title: "  Camera", style: .default, image: (UIImage(named: "Asset 1635")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
             CameraHandler.shared.showCamera(vc:self.parentViewController!)
-            CameraHandler.shared.didFinishCapturingImage = { (image, strUrl) in
+            CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
                 /* get your image here */
-                self.addMessgePopup(activityType: "Image")
+                self.addMessgePopup(activityType: "Image", image: image, fileUrl : imgUrl!)
             }
             CameraHandler.shared.didFinishCapturingVideo = { (url) in
                 /* get your image here */
@@ -264,9 +265,9 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         }
         let actionPhotoVideo = UIAlertAction.init(title: "   Photo & Video Library", style: .default, image:(UIImage(named: "Asset 1636")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
             CameraHandler.shared.showPhotoLibrary(vc:self.parentViewController!)
-            CameraHandler.shared.didFinishCapturingImage = { (image, strUrl) in
+            CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
                 /* get your image here */
-                self.addMessgePopup(activityType: "Image")
+                self.addMessgePopup(activityType: "Image", image: image, fileUrl :imgUrl!)
             }
             CameraHandler.shared.didFinishCapturingVideo = { (url) in
                 /* get your image here */

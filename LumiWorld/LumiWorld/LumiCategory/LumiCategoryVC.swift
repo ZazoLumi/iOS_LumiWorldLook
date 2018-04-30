@@ -53,15 +53,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         //Static
        //Static GlobalShareData.sharedGlobal.userCellNumber = "27735526844"
         self.tableView!.tableFooterView = UIView()
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Lumineer"
-        self.tabBarController?.navigationItem.searchController = searchController
-        definesPresentationContext = true
-        
-        // Setup the Scope Bar
-        searchController.searchBar.scopeButtonTitles = ["All", "My"]
-        searchController.searchBar.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,9 +87,23 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                     }
                 })
             }
-            
         }
+        
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Lumineer"
+        self.tabBarController?.navigationItem.searchController = searchController
+        definesPresentationContext = true
+        
+        // Setup the Scope Bar
+        searchController.searchBar.scopeButtonTitles = ["All", "My"]
+        searchController.searchBar.delegate = self
 
+
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.tabBarController?.navigationItem.searchController = nil
     }
     
     override func didReceiveMemoryWarning() {

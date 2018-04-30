@@ -6,17 +6,35 @@
 //
 
 import UIKit
+import Realm
+import MBProgressHUD
 
 class SendAttachmentVC: UIViewController {
     var activityType : String!
     @IBOutlet weak var imgAttach: UIImageView!
-    @IBOutlet weak var textField: NoCopyPasteUITextField!
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var btnSend: UIButton!
 
+    var fileUrl : String?
+    var fileImage : UIImage?
     override func viewDidLoad() {
         super.viewDidLoad()
-        showAnimate()
+       // showAnimate()
+        if activityType == "Image" {
+            imgAttach.image = fileImage
+        }
+        self.view.backgroundColor = UIColor.lumiGray
+        btnSend.isExclusiveTouch = true
+        btnSend.tintColor = UIColor.lumiGreen
 
         // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,7 +53,8 @@ class SendAttachmentVC: UIViewController {
     }
     
     @IBAction func onBtnClosePopupTapped(_ sender: Any) {
-        removeAnimate()
+       // removeAnimate()
+        self.navigationController?.popViewController(animated: true)
     }
    
     @IBAction func onBtnSendMessageTapped(_ sender: Any) {
@@ -56,6 +75,41 @@ class SendAttachmentVC: UIViewController {
             }
         })
     }
+    
+    @IBAction func onBtnSendTapped(_ sender: Any) {
+        let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName
+        let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName
+        
+        var nSubjectID : Double? = nil
+            nSubjectID = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId
+
+        let name = firstName! + " \(lastName as! String)"
+        let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
+        
+        let objMessage = LumiMessage()
+        
+        if imgAttach.image != nil {
+            if let data = UIImageJPEGRepresentation(imgAttach.image!, 0.8) {
+                let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: (URL.init(string: fileUrl!)?.lastPathComponent)!)
+                let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
+                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":textField.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
+                    DispatchQueue.main.async {
+                        hud.hide(animated: true)}
+                    if error != nil  {
+                        self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
+                        })
+                    }
+                    DispatchQueue.main.async {
+                        GlobalShareData.sharedGlobal.removeFilefromDocumentDirectory(fileName: strFilePath)
+                        self.navigationController?.popViewController(animated: false)
+                    }
+                })
+            }
+            
+        }
+    }
+
     /*
     // MARK: - Navigation
 

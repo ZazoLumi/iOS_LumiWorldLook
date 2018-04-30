@@ -17,7 +17,7 @@ class CameraHandler: NSObject{
     fileprivate var currentVC: UIViewController!
     
     //MARK: Internal Properties
-    var didFinishCapturingImage: ((UIImage,String) -> Void)?
+    var didFinishCapturingImage: ((UIImage,URL?) -> Void)?
     var didFinishCapturingVideo: ((_ videoURL: URL) -> Void)?
 
     func camera()
@@ -92,10 +92,10 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
                 if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
                     let imgName = imgUrl.lastPathComponent
                     print(imgName)
-                    self.didFinishCapturingImage?(image, imgName)
+                    self.didFinishCapturingImage?(image, imgUrl)
                     }
                 else {
-                    self.didFinishCapturingImage?(image, "test.png")
+                    self.didFinishCapturingImage?(image, nil)
                 }
             }
         } else if mediaType == kUTTypeMovie as String {

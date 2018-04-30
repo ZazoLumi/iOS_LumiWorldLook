@@ -86,11 +86,11 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         //backgroundView?.image = UIImage(named: "TGWallpaper")!
         backgroundView?.backgroundColor = UIColor.white
         navigationController?.delegate = self
-        loadMessages()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
+        loadMessages()
     }
     override func viewWillDisappear(_ animated: Bool) {
         IQKeyboardManager.sharedManager().enableAutoToolbar = true
