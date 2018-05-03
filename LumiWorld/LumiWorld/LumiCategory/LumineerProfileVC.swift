@@ -259,7 +259,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         objPopupSendMessage.activityType = activityType
         self.objPopupSendMessage.view.cornerRadius = 10
         self.addChildViewController(self.objPopupSendMessage)
-        self.objPopupSendMessage.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-340)/2, width:self.view.frame.size.width , height:340);                             self.view.addSubview(self.objPopupSendMessage.view)
+        self.objPopupSendMessage.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-340)/2, width:self.view.frame.size.width , height:340);
+        self.view.addSubview(self.objPopupSendMessage.view)
         self.objPopupSendMessage.didMove(toParentViewController: self)
 
     }
@@ -451,7 +452,16 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
         }
         else {
             cell.constImgWidth.constant = 25
-            let urlOriginalImage = URL.init(string: objLumiMessage.fileName!)
+            let urlOriginalImage : URL!
+            if(objLumiMessage.fileName?.hasUrlPrefix())!
+            {
+                urlOriginalImage = URL.init(string: objLumiMessage.fileName!)
+            }
+            else {
+                let fileName = objLumiMessage.fileName?.lastPathComponent
+                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+            }
+
             Alamofire.request(urlOriginalImage!).responseImage { response in
                 debugPrint(response)
                 
@@ -636,11 +646,20 @@ struct SectionData {
 }
 extension UIView {
     func addBlurEffect()  {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = self.bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.addSubview(blurEffectView)
+        if !UIAccessibilityIsReduceTransparencyEnabled() {
+            self.backgroundColor = .clear
+            
+            let blurEffect = UIBlurEffect(style: .dark)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            //always fill the view
+            blurEffectView.frame = self.bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            self.addSubview(blurEffectView) //if you have more UIViews, use an insertSubview API to place it where needed
+        } else {
+            self.backgroundColor = .black
+        }
+
     }
     /// Remove UIBlurEffect from UIView
     func removeBlurEffect() {

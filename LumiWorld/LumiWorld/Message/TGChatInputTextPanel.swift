@@ -244,8 +244,17 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         objSetAttachment = storyBoard.instantiateViewController(withIdentifier: "SendAttachmentVC") as! SendAttachmentVC
         objSetAttachment.activityType = activityType
         objSetAttachment.fileUrl = fileUrl.absoluteString
-        objSetAttachment.fileImage = image
-        self.parentViewController?.navigationController?.pushViewController(objSetAttachment, animated: false)
+        if activityType == "Image" {
+            objSetAttachment.fileImage = image
+        }
+        //self.parentViewController?.navigationController?.pushViewController(objSetAttachment, animated: false)
+        
+        self.parentViewController?.addChildViewController(self.objSetAttachment)
+        self.parentViewController?.view.addSubview(self.objSetAttachment.view)
+
+//        self.objPopupSendMessage.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-340)/2, width:self.view.frame.size.width , height:340);                             self.view.addSubview(self.objPopupSendMessage.view)
+        self.parentViewController?.didMove(toParentViewController: self.parentViewController)
+
     }
 
     
@@ -260,8 +269,9 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
                 self.addMessgePopup(activityType: "Image", image: image, fileUrl : imgUrl!)
             }
             CameraHandler.shared.didFinishCapturingVideo = { (url) in
+                self.addMessgePopup(activityType: "Video", image: UIImage.init(), fileUrl : url)
                 /* get your image here */
-            }
+                } as ((URL) -> Void)
         }
         let actionPhotoVideo = UIAlertAction.init(title: "   Photo & Video Library", style: .default, image:(UIImage(named: "Asset 1636")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
             CameraHandler.shared.showPhotoLibrary(vc:self.parentViewController!)
@@ -271,7 +281,8 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
             }
             CameraHandler.shared.didFinishCapturingVideo = { (url) in
                 /* get your image here */
-            }
+                self.addMessgePopup(activityType: "Video", image: UIImage.init(), fileUrl : url)
+                } as ((URL) -> Void)
 
         }
         

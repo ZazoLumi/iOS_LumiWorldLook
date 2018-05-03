@@ -96,6 +96,7 @@
 		097BFA5B207E37EF001F935C /* NSAttributedString+NoChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA59207E37EF001F935C /* NSAttributedString+NoChat.swift */; };
 		097BFA5E207E3BE0001F935C /* notification.caf in Resources */ = {isa = PBXBuildFile; fileRef = 097BFA5C207E3BDE001F935C /* notification.caf */; };
 		097BFA5F207E3BE0001F935C /* sent.caf in Resources */ = {isa = PBXBuildFile; fileRef = 097BFA5D207E3BDF001F935C /* sent.caf */; };
+		09931B822099F804005D3BE1 /* DownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 09931B812099F804005D3BE1 /* DownloadManager.m */; };
 		09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */; };
 		09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0B2065042B00C74E1F /* AFWrapper.swift */; };
 		09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0F20652D6F00C74E1F /* RealmManager.swift */; };
@@ -200,6 +201,8 @@
 		097BFA59207E37EF001F935C /* NSAttributedString+NoChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+NoChat.swift"; sourceTree = "<group>"; };
 		097BFA5C207E3BDE001F935C /* notification.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = notification.caf; sourceTree = "<group>"; };
 		097BFA5D207E3BDF001F935C /* sent.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sent.caf; sourceTree = "<group>"; };
+		09931B802099F804005D3BE1 /* DownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownloadManager.h; sourceTree = "<group>"; };
+		09931B812099F804005D3BE1 /* DownloadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownloadManager.m; sourceTree = "<group>"; };
 		09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupSendMessage.swift; sourceTree = "<group>"; };
 		09D98A0B2065042B00C74E1F /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
 		09D98A0F20652D6F00C74E1F /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
@@ -331,6 +334,8 @@
 		0964E6E82060F981001D6F47 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				09931B802099F804005D3BE1 /* DownloadManager.h */,
+				09931B812099F804005D3BE1 /* DownloadManager.m */,
 				09559E03208F2D2C003A824C /* UIAlertAction+Image.swift */,
 				097BF9DB207E052D001F935C /* CameraHandler.swift */,
 				097BF9D9207DF865001F935C /* NoCopyPasteUITextField.swift */,
@@ -684,6 +689,7 @@
 				097BFA49207E3647001F935C /* TGTextMessageCellLayout.swift in Sources */,
 				093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */,
 				0964E7262060F981001D6F47 /* FullNameRule.swift in Sources */,
+				09931B822099F804005D3BE1 /* DownloadManager.m in Sources */,
 				093F4462206B7BC700BC9983 /* Reachability.swift in Sources */,
 				0964E7292060F981001D6F47 /* ISBNRule.swift in Sources */,
 				097BFA43207E3647001F935C /* TGAvatarButton.swift in Sources */,

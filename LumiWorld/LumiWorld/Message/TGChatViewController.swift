@@ -26,8 +26,12 @@
 import UIKit
 import NoChat
 import IQKeyboardManagerSwift
+import QuickLook
 
-class TGChatViewController: NOCChatViewController, UINavigationControllerDelegate, MessageManagerDelegate, TGChatInputTextPanelDelegate, TGTextMessageCellDelegate {
+class TGChatViewController: NOCChatViewController, UINavigationControllerDelegate, MessageManagerDelegate, TGChatInputTextPanelDelegate, TGTextMessageCellDelegate, TGAttachmentMessageCellDelegate,UIDocumentInteractionControllerDelegate,QLPreviewControllerDataSource {
+    
+    var docController : UIDocumentInteractionController!
+let quickLookController = QLPreviewController()
     
     var titleView = TGTitleView()
     var avatarButton = TGAvatarButton()
@@ -36,13 +40,15 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     var layoutQueue = DispatchQueue(label: "com.little2s.nochat-example.tg.layout", qos: DispatchQoS(qosClass: .default, relativePriority: 0))
 
     let chat: Chat
-    
+    var previewUrl : URL!
     // MARK: Overrides
     
     override class func cellLayoutClass(forItemType type: String) -> Swift.AnyClass? {
         if type == "Text" {
             return TGTextMessageCellLayout.self
         } else if type == "Image" {
+            return TGAttachmentMessageCellLayout.self
+        }else if type == "Video" {
             return TGAttachmentMessageCellLayout.self
         }else if type == "Date" {
             return TGDateMessageCellLayout.self
@@ -86,6 +92,9 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         //backgroundView?.image = UIImage(named: "TGWallpaper")!
         backgroundView?.backgroundColor = UIColor.white
         navigationController?.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(loadMessages), name: Notification.Name("attachmentPopupRemoved"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadAttachmentPreview), name: Notification.Name("openPreviewData"), object: nil)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,6 +105,43 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         IQKeyboardManager.sharedManager().enableAutoToolbar = true
     }
     
+    @objc func loadAttachmentPreview(notification: NSNotification) {
+        if let strUrl = notification.userInfo?["url"] as? String {
+            let url = URL.init(string: strUrl)
+//            docController = UIDocumentInteractionController.init(url:url!)
+//            
+//            docController.name = url?.lastPathComponent
+//            
+//            docController.delegate = self
+//            
+//            docController.presentPreview(animated: true)
+            
+            quickLookController.dataSource = self
+            previewUrl = url!
+            if QLPreviewController.canPreview(url! as QLPreviewItem) {
+                quickLookController.currentPreviewItemIndex = 0;                navigationController?.pushViewController(quickLookController, animated: true)
+            }
+
+
+            // do something with your image
+        }
+    }
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return 1
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return previewUrl! as QLPreviewItem
+    }
+
+    private func documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) -> UIViewController {
+        return self
+    }
+    private func documentInteractionControllerDidEndPreview(controller: UIDocumentInteractionController) {
+        docController = nil
+    }
+    
+
 
     // MARK: TGChatInputTextPanelDelegate
     
@@ -105,6 +151,14 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         msg.msgType = "Text"
         sendMessage(msg)
     }
+    
+    // MARK: TGAttachmentMessageCellDelegate
+    
+    func didTapLink(cell: TGAttachmentMessageCell, linkInfo: [AnyHashable : Any]) {
+        
+    }
+
+
     
     // MARK: TGTextMessageCellDelegate
     
@@ -163,7 +217,7 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         navigationItem.addBackButtonOnLeft()
     }
     
-    private func loadMessages() {
+    @objc private func loadMessages() {
         layouts.removeAllObjects()
         
         messageManager.fetchMessages(withChatId: chat.chatId) { [weak self] (msgs) in

@@ -42,7 +42,7 @@ class Message: NSObject, NOCChatItem {
     var senderId: String = ""
     var date: Date = Date()
     var text: String = ""
-    
+    var messageId : Int = 0
     var attachmentURL: String? = ""
 
     

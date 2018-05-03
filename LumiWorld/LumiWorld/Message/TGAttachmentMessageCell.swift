@@ -26,15 +26,16 @@
 import NoChat
 import YYText
 import Alamofire
+import AVKit
 
-class TGAttachmentMessageCell: TGBaseMessageCell {
+class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControllerDelegate {
     
     var bubbleImageView = UIImageView()
     var attachImageView = UIImageView()
     var textLabel = YYLabel()
     var timeLabel = UILabel()
     var deliveryStatusView = TGDeliveryStatusView()
-    
+
     override class func reuseIdentifier() -> String {
         return "TGAttachmentMessageCell"
     }
@@ -54,10 +55,6 @@ class TGAttachmentMessageCell: TGBaseMessageCell {
             let highlight = text.yy_attribute(YYTextHighlightAttributeName, at: UInt(range.location)) as! YYTextHighlight
             guard let info = highlight.userInfo, info.count > 0 else { return }
             
-            guard let strongSelf = self else { return }
-            if let d = strongSelf.delegate as? TGAttachmentMessageCellDelegate {
-                d.didTapLink(cell: strongSelf, linkInfo: info)
-            }
         }
         bubbleView.addSubview(attachImageView)
 
@@ -66,8 +63,24 @@ class TGAttachmentMessageCell: TGBaseMessageCell {
         bubbleImageView.addSubview(timeLabel)
         
         bubbleImageView.addSubview(deliveryStatusView)
+        
+
+    }
+    @objc func handleTapFrom(recognizer : UITapGestureRecognizer)
+    {
+        guard let cellLayout = layout as? TGAttachmentMessageCellLayout else {
+            fatalError("invalid layout type")
+        }
+       
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("openPreviewData"), object: nil, userInfo: ["url":cellLayout.attachURL!])
+
+        }
+
+
     }
     
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -86,30 +99,96 @@ class TGAttachmentMessageCell: TGBaseMessageCell {
             textLabel.textLayout = cellLayout.textLayout
             self.attachImageView.cornerRadius = 5
             self.attachImageView.contentMode = .scaleAspectFit
-            let urlOriginalImage = URL.init(string: cellLayout.attachURL!)
-            Alamofire.request(urlOriginalImage!).responseImage { response in
-                debugPrint(response)
-                if let image = response.result.value {
-                    if cellLayout.attachImageViewFrame.size.width > 0, cellLayout.attachImageViewFrame.size.height > 0 {
-                     let scalImg = image.af_imageScaled(to: CGSize(width:cellLayout.attachImageViewFrame.size.width , height: cellLayout.attachImageViewFrame.size.height))
-                        self.attachImageView.image = scalImg
+            let urlOriginalImage : URL!
+            if(cellLayout.attachURL?.hasUrlPrefix())!
+            {
+                urlOriginalImage = URL.init(string: cellLayout.attachURL!)
+            }
+            else {
+                let fileName = cellLayout.attachURL?.lastPathComponent
+                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+            }
+            if cellLayout.attachType == "Image" {
+                Alamofire.request(urlOriginalImage!).responseImage { response in
+                    debugPrint(response)
+                    if let image = response.result.value {
+                        if cellLayout.attachImageViewFrame.size.width > 0, cellLayout.attachImageViewFrame.size.height > 0 {
+                            let scalImg = image.af_imageScaled(to: CGSize(width:cellLayout.attachImageViewFrame.size.width , height: cellLayout.attachImageViewFrame.size.height))
+                            self.attachImageView.image = scalImg
+                        }
+                        else {
+
+                            let scalImg = image.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
+                            self.attachImageView.image = scalImg }
                     }
-                    else {
-                        let scalImg = image.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
-                        self.attachImageView.image = scalImg }
+                }
+            }
+            else if cellLayout.attachType == "Video" {
+                Alamofire.request(urlOriginalImage!).responseImage { response in
+                    debugPrint(response)
+                    if let image = response.result.value {
+                        if cellLayout.attachImageViewFrame.size.width > 0, cellLayout.attachImageViewFrame.size.height > 0 {
+                            let scalImg = image.af_imageScaled(to: CGSize(width:cellLayout.attachImageViewFrame.size.width , height: cellLayout.attachImageViewFrame.size.height))
+                            self.attachImageView.image = scalImg
+                        }
+                        else {
+                            
+                            let scalImg = image.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
+                            self.attachImageView.image = scalImg }
+                    }
                 }
             }
 
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTapFrom(recognizer:)))
+            self.bubbleImageView.tag = cellLayout.attachTag!
+            self.bubbleImageView.addGestureRecognizer(tapGestureRecognizer)
+            self.bubbleImageView.isUserInteractionEnabled = true
+
             timeLabel.frame = cellLayout.timeLabelFrame
             timeLabel.attributedText = cellLayout.attributedTime
-            
             deliveryStatusView.frame = cellLayout.deliveryStatusViewFrame
             deliveryStatusView.deliveryStatus = cellLayout.message.deliveryStatus
         }
     }
     
+    func loadThumbNail(_ urlVideo: URL?) -> UIImage? {
+        var asset: AVURLAsset? = nil
+        if let aVideo = urlVideo {
+            asset = AVURLAsset(url: aVideo, options: nil)
+        }
+        var generate: AVAssetImageGenerator? = nil
+        if let anAsset = asset {
+            generate = AVAssetImageGenerator(asset: anAsset)
+        }
+        generate?.appliesPreferredTrackTransform = true
+        let err: Error? = nil
+        let time: CMTime = CMTimeMake(1, 60)
+        let imgRef = try? generate?.copyCGImage(at: time, actualTime: nil)
+        if let anErr = err, let aRef = imgRef {
+           // print("err==\(anErr), imageRef==\(aRef)")
+        }
+        if let aRef = imgRef {
+            return UIImage(cgImage: aRef!)
+        }
+        return nil
+    }
+
+    
 }
+
 
 protocol TGAttachmentMessageCellDelegate: NOCChatItemCellDelegate {
     func didTapLink(cell: TGAttachmentMessageCell, linkInfo: [AnyHashable: Any])
 }
+
+extension String{
+    
+    func hasUrlPrefix()->Bool{
+        
+        if(self.hasPrefix("http") || self.hasPrefix("https")){
+            return true
+        }
+        return false
+    }
+}
+

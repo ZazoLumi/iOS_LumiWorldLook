@@ -36,7 +36,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
     private var delegates: NSHashTable<AnyObject>
    // private var client: NOCClient
     
-    private var messages: Dictionary<String, [Message]>
+    var messages: Dictionary<String, [Message]>
     
     override init() {
         delegates = NSHashTable<AnyObject>.weakObjects()
@@ -79,6 +79,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                 msg.attachmentURL = obj.fileName
                 msg.deliveryStatus = .Delivered
                 msg.date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd HH:mm")
+                msg.messageId = obj.id
                 if obj.isSentByLumi == true {
                     msg.isOutgoing = true
                 }

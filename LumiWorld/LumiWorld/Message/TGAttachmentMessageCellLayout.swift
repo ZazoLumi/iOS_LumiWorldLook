@@ -34,6 +34,8 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     var bubbleImage: UIImage?
     var highlightBubbleImage: UIImage?
     var attachURL: String?
+    var attachType: String?
+    var attachTag: Int?
 
     var bubbleImageViewFrame = CGRect.zero
     var attachImageViewFrame = CGRect.zero
@@ -85,6 +87,8 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     
     private func setupAttachmentData() {
         attachURL = message.attachmentURL
+        attachType = message.msgType
+        attachTag = message.messageId
 //        let urlOriginalImage = URL.init(string: message.attachmentURL)
 //        Alamofire.request(urlOriginalImage!).responseImage { response in
 //            debugPrint(response)

@@ -14,7 +14,8 @@ class SendAttachmentVC: UIViewController {
     @IBOutlet weak var imgAttach: UIImageView!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var btnSend: UIButton!
-
+    @IBOutlet weak var btnClose: UIButton!
+    
     var fileUrl : String?
     var fileImage : UIImage?
     override func viewDidLoad() {
@@ -23,6 +24,11 @@ class SendAttachmentVC: UIViewController {
         if activityType == "Image" {
             imgAttach.image = fileImage
         }
+        else if activityType == "Video" {
+            let image = GlobalShareData.sharedGlobal.createThumbnailOfVideoFromFileURL(videoURL:fileUrl!)
+            imgAttach.image = image
+        }
+
         self.view.backgroundColor = UIColor.lumiGray
         btnSend.isExclusiveTouch = true
         btnSend.tintColor = UIColor.lumiGreen
@@ -30,6 +36,26 @@ class SendAttachmentVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
+        if !UIAccessibilityIsReduceTransparencyEnabled() {
+            view.backgroundColor = .clear
+            
+            let blurEffect = UIBlurEffect(style: .dark)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            //always fill the view
+            blurEffectView.frame = self.view.bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            view.addSubview(blurEffectView) //if you have more UIViews, use an insertSubview API to place it where needed
+            blurEffectView.contentView.addSubview(imgAttach)
+            blurEffectView.contentView.addSubview(btnSend)
+            blurEffectView.contentView.addSubview(textField)
+            blurEffectView.contentView.addSubview(btnClose)
+            btnClose.tintColor = UIColor.lumiGreen
+
+        } else {
+            view.backgroundColor = .black
+        }
+
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
@@ -53,8 +79,8 @@ class SendAttachmentVC: UIViewController {
     }
     
     @IBAction func onBtnClosePopupTapped(_ sender: Any) {
-       // removeAnimate()
-        self.navigationController?.popViewController(animated: true)
+        removeAnimate()
+       // self.navigationController?.popViewController(animated: true)
     }
    
     @IBAction func onBtnSendMessageTapped(_ sender: Any) {
@@ -63,6 +89,7 @@ class SendAttachmentVC: UIViewController {
     
     func removeAnimate()
     {
+        self.view.superview?.removeBlurEffect()
         UIView.animate(withDuration: 0.25, animations: {
             self.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             self.view.alpha = 0.0
@@ -102,13 +129,16 @@ class SendAttachmentVC: UIViewController {
                     }
                     DispatchQueue.main.async {
                         GlobalShareData.sharedGlobal.removeFilefromDocumentDirectory(fileName: strFilePath)
-                        self.navigationController?.popViewController(animated: false)
+                        //self.navigationController?.popViewController(animated: false)
+                        NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
+                        self.removeAnimate()
                     }
                 })
             }
             
         }
     }
+
 
     /*
     // MARK: - Navigation

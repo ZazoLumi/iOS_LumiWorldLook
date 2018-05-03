@@ -38,6 +38,7 @@ struct Constants {
 import Foundation
 import RealmSwift
 import Realm
+import AVKit
 
 class GlobalShareData {
     
@@ -87,6 +88,19 @@ class GlobalShareData {
 
     }
     
+    func createThumbnailOfVideoFromFileURL(videoURL: String) -> UIImage? {
+        let asset = AVAsset(url: URL(string: videoURL)!)
+        let assetImgGenerate = AVAssetImageGenerator(asset: asset)
+        assetImgGenerate.appliesPreferredTrackTransform = true
+        let time = CMTimeMakeWithSeconds(Float64(1), 100)
+        do {
+            let img = try assetImgGenerate.copyCGImage(at: time, actualTime: nil)
+            let thumbnail = UIImage(cgImage: img)
+            return thumbnail
+        } catch {
+            return UIImage(named: "ico_placeholder")
+        }
+    }
 
     func extractAllFile(atPath path: String, withExtension fileExtension:String) -> [String] {
         var allFiles: [String] = []

@@ -28,6 +28,7 @@ class LumiMessage : Object {
     @objc dynamic var isSentByLumineer = false
     @objc dynamic var isReadByLumi = false
     @objc dynamic var isDeletedByLumi = false
+    @objc dynamic var isFileDownloaded = false
 
     @objc dynamic var reachedConsumers: String? = nil
     @objc dynamic var sentBy: String? = nil
@@ -117,12 +118,30 @@ class LumiMessage : Object {
                             newLumiMessage.tags = aObject["tags"].string
                             newLumiMessage.contentType = aObject["contentType"].string
                             newLumiMessage.messageSubjectId = aObject["messageSubjectId"].doubleValue
+                            newLumiMessage.isFileDownloaded = false
                             let recordExist = objLumineer.lumiMessages.filter("guid = '\(aObject["guid"].string!)'")
                             if recordExist.count == 0 {
                                 let objLumineerMessageList = objLumineer.lumiMessages
                                 try! realm.write {
                                     realm.add(newLumiMessage, update: true)
                                     objLumineerMessageList.append(newLumiMessage)
+                                }
+                                if aObject["fileName"].string != nil, (aObject["fileName"].string?.count)! > 0 {
+                                    DownloadManager.shared().startFileDownloads(FileDownloadInfo.init(fileTitle: Int32(newLumiMessage.id), andDownloadSource: newLumiMessage.fileName), withCompletionBlock: { (response,url) in
+                                    DispatchQueue.main.async {
+                                        let messages = objLumineerMessageList.filter("id == %d", response)
+                                            if messages.count > 0 {
+                                                try! realm.write {
+                                                let objLumiMsg = messages[0] as LumiMessage
+                                                objLumiMsg.fileName = url?.absoluteString
+                                                objLumiMsg.isFileDownloaded = true
+                                                realm.add(objLumiMsg, update: true)
+                                            }
+                                        }
+                                    }
+                                    
+                                    
+                                })
                                 }
                             }
                         }
@@ -162,6 +181,10 @@ class LumiMessage : Object {
             do {
                 let multiAPI : multipartAPI = multipartAPI()
                 multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
+                    guard dict?.count != 0 else {
+                        return
+                    }
+
                     let strResponseCode = dict!["responseCode"] as! Int
                     guard strResponseCode != 0 else {
                         DispatchQueue.main.async {
@@ -208,6 +231,7 @@ class LumiMessage : Object {
             print("Internet Connection not Available!")
         }
     }
+    
 }
 
 

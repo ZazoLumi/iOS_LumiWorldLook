@@ -95,12 +95,17 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
                     self.didFinishCapturingImage?(image, imgUrl)
                     }
                 else {
-                    self.didFinishCapturingImage?(image, nil)
+                    if let data = UIImageJPEGRepresentation(image, 1.0) {
+                        let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName:"temp.png")
+                        self.didFinishCapturingImage?(image, URL.init(string: strFilePath))
+
+                    }
                 }
             }
         } else if mediaType == kUTTypeMovie as String {
-            let videoURL = info[UIImagePickerControllerMediaURL] as! URL
-            self.didFinishCapturingVideo?(videoURL)
+            if  let videoURL = info[UIImagePickerControllerMediaURL] as? URL {
+                self.didFinishCapturingVideo?(videoURL)
+            }
         }
 
 //        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
