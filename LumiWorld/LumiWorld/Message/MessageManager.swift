@@ -86,6 +86,10 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                 else {
                     msg.isOutgoing = false
                 }
+                if msg.msgType == "Location" {
+                    msg.latitude = obj.latitude
+                    msg.longitude = obj.longitude
+                }
                 
                 if index == 0 {
                     date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")

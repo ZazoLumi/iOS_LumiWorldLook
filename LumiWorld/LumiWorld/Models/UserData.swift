@@ -25,6 +25,7 @@ class UserData : Object{
    @objc dynamic var gcmId: String? = nil
     @objc dynamic var firstName: String? = nil
     @objc dynamic var displayName: String? = nil
+    @objc dynamic var emailAddress: String? = nil
 
 //    init(json : JSON){
 //        self.id = json["id"].intValue
@@ -45,7 +46,7 @@ class UserData : Object{
         return "id"
     }
 
-    convenience init(id : Int, gcmId: String?, profilePic : String? , token: String?, updateDate: String?, lastName: String?, appVersion: String?, cell: String?, status: String?, password: String?, createDate: String?, displayName: String?, firstName: String?) {
+    convenience init(id : Int, gcmId: String?, profilePic : String? , token: String?, updateDate: String?, lastName: String?, appVersion: String?, cell: String?, status: String?, password: String?, createDate: String?, displayName: String?, firstName: String?,emailAddress:String?) {
         self.init()
         self.id = id
         self.firstName = firstName
@@ -61,6 +62,7 @@ class UserData : Object{
         self.password = password
         self.createDate = createDate
         self.displayName = displayName
+        self.emailAddress = emailAddress
 
     }
 }

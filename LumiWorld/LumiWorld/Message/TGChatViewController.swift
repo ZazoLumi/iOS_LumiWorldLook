@@ -48,7 +48,10 @@ let quickLookController = QLPreviewController()
             return TGTextMessageCellLayout.self
         } else if type == "Image" {
             return TGAttachmentMessageCellLayout.self
-        }else if type == "Video" {
+        } else if type == "Location" {
+            return TGAttachmentMessageCellLayout.self
+        }
+        else if type == "Video" {
             return TGAttachmentMessageCellLayout.self
         }else if type == "Date" {
             return TGDateMessageCellLayout.self
@@ -94,7 +97,6 @@ let quickLookController = QLPreviewController()
         navigationController?.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(loadMessages), name: Notification.Name("attachmentPopupRemoved"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(loadAttachmentPreview), name: Notification.Name("openPreviewData"), object: nil)
-
     }
     
     override func viewWillAppear(_ animated: Bool) {

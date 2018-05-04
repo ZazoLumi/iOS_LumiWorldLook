@@ -34,7 +34,7 @@ class TemporaryPasswordVC: UIViewController,FormDataDelegate {
         let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIForgotPassword)"
         do {
             let strUser = GlobalShareData.sharedGlobal.userCellNumber.replacingOccurrences(of: "+", with:"")
-            let param = ["cellNumber": strUser]
+            let param = ["cellNumber": strUser,"email":""]
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
             

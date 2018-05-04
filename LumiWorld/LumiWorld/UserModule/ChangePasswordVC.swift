@@ -64,7 +64,7 @@ class ChangePasswordVC: UIViewController,FormDataDelegate {
             else {
             var strUser : String  = formData["0"]!
             strUser = strUser.replacingOccurrences(of: "+", with:"")
-            let param = ["cellNumber": strUser,"newPassword":formData["1"]]
+                let param = ["cellNumber": strUser,"newPassword":formData["1"],"email":""]
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
             AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in

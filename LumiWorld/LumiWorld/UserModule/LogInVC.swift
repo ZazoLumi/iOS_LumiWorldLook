@@ -81,7 +81,7 @@ class LogInVC: UIViewController,FormDataDelegate {
                 let realm = try! Realm()
                 let id : Int = json["id"].intValue
                 let data  = realm.objects(UserData.self).filter("id == %d", id)
-                let newObj = UserData(id : id , gcmId : json["gcmId"].string,profilePic : json["profilePic"].string,token : json["token"].string,updateDate : json["updateDate"].string,lastName : json["lastName"].string,appVersion : json["appVersion"].string,cell : json["cell"].string,status : json["status"].string,password : json["password"].string,createDate : json["createDate"].string,displayName : json["displayName"].string,firstName : json["firstName"].string)
+                let newObj = UserData(id : id , gcmId : json["gcmId"].string,profilePic : json["profilePic"].string,token : json["token"].string,updateDate : json["updateDate"].string,lastName : json["lastName"].string,appVersion : json["appVersion"].string,cell : json["cell"].string,status : json["status"].string,password : json["password"].string,createDate : json["createDate"].string,displayName : json["displayName"].string,firstName : json["firstName"].string,emailAddress: json["email"].string)
 
                 GlobalShareData.sharedGlobal.objCurrentUserDetails = newObj
                 GlobalShareData.sharedGlobal.userCellNumber = newObj.cell

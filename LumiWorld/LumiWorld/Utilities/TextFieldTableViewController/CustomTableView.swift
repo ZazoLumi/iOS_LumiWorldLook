@@ -142,6 +142,9 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
         if fieldType[indexPath.section][indexPath.row] == 1 {
             textField.keyboardType = UIKeyboardType.phonePad
         }
+        else if fieldType[indexPath.section][indexPath.row] == 8 {
+            textField.keyboardType = UIKeyboardType.emailAddress
+        }
         else if fieldType[indexPath.section][indexPath.row] == 2 {
             textField.isSecureTextEntry = true
             compareField = textField

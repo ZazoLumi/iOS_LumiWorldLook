@@ -63,7 +63,7 @@ class ForgotPasswordVC: UIViewController,FormDataDelegate {
             var strUser : String  = formData["0"]!
             GlobalShareData.sharedGlobal.userCellNumber = strUser
             strUser = strUser.replacingOccurrences(of: "+", with:"")
-            let param = ["cellNumber": strUser]
+            let param = ["cellNumber": strUser,"email":""]
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
 

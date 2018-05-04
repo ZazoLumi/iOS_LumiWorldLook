@@ -29,11 +29,12 @@ class CreateAccountVC: UIViewController,FormDataDelegate {
         let dict1: [Rule] = [RequiredRule(), MinLengthRule()]
         let dict2: [Rule] = [RequiredRule(), MinLengthRule()]
         let dict3: [Rule] = [RequiredRule(), PhoneNumberRule()]
+        let dict6: [Rule] = [RequiredRule(), EmailRule()]
         let dict4: [Rule] = [RequiredRule(), PasswordRule()]
         let dict5: [Rule] = [RequiredRule(), PasswordRule()]
         
-        customview = CustomTableView(placeholders: [["Name","Surname","My Lumi Profile Name","Mobile Number","Password","Repeat New Password"]], texts: [["","","","","",""]], images:[["Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 71xxxhdpi","Artboard 72xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
-            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1],["rule":dict2],["rule":dict3],["rule":dict4],["rule":dict5]],fieldType:[[4,5,7,1,2,3]])
+        customview = CustomTableView(placeholders: [["Name","Surname","My Lumi Profile Name","Mobile Number","Email Address","Password","Repeat New Password"]], texts: [["","","","","","",""]], images:[["Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 71xxxhdpi","emailIcon","Artboard 72xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
+            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1],["rule":dict2],["rule":dict3],["rule":dict6],["rule":dict4],["rule":dict5]],fieldType:[[4,5,7,1,8,2,3]])
         customview.formDelegate = self
         viewTblData.addSubview(customview)
         
@@ -75,9 +76,9 @@ class CreateAccountVC: UIViewController,FormDataDelegate {
             else {
                 var strCellNumber : String  = formData["3"]!
                 strCellNumber = strCellNumber.replacingOccurrences(of: "+", with:"")
-                let newObj = UserData(id : 123456 , gcmId : nil,profilePic : nil,token : nil,updateDate : nil,lastName : formData["1"],appVersion : nil,cell : strCellNumber,status : nil,password : formData["4"],createDate : nil,displayName : formData["2"],firstName : formData["0"])
+                let newObj = UserData(id : 123456 , gcmId : nil,profilePic : nil,token : nil,updateDate : nil,lastName : formData["1"],appVersion : nil,cell : strCellNumber,status : nil,password : formData["5"],createDate : nil,displayName : formData["2"],firstName : formData["0"],emailAddress:formData["4"])
 
-                let param = ["cellNumber": strCellNumber,"firstName":formData["0"],"lastName":formData["1"],"displayName":formData["2"],"deviceToken":"123456789"]
+                let param = ["cellNumber": strCellNumber,"firstName":formData["0"],"lastName":formData["1"],"displayName":formData["2"],"deviceToken":"123456789","email":formData["4"]]
                 let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                 hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
 

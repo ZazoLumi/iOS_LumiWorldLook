@@ -73,10 +73,18 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
         guard let cellLayout = layout as? TGAttachmentMessageCellLayout else {
             fatalError("invalid layout type")
         }
-       
+        if cellLayout.attachType == "Location" as String {
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let objMapViewController = storyBoard.instantiateViewController(withIdentifier: "mapViewController") as! mapViewController
+           objMapViewController.currentLat = cellLayout.locations[0]
+            objMapViewController.currentLong = cellLayout.locations[1];
+            self.parentViewController?.navigationController?.pushViewController(objMapViewController, animated: false)
+
+        }
+        else {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: Notification.Name("openPreviewData"), object: nil, userInfo: ["url":cellLayout.attachURL!])
-
+            }
         }
 
 
@@ -112,7 +120,7 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
             }
             imgPlay.isHidden = true
 
-            if cellLayout.attachType == "Image" {
+            if cellLayout.attachType == "Image" || cellLayout.attachType == "Location" {
                 Alamofire.request(urlOriginalImage!).responseImage { response in
                     debugPrint(response)
                     if let image = response.result.value {

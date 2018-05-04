@@ -36,6 +36,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     var attachURL: String?
     var attachType: String?
     var attachTag: Int?
+    var locations : [Double] = []
 
     var bubbleImageViewFrame = CGRect.zero
     var attachImageViewFrame = CGRect.zero
@@ -94,6 +95,10 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
         }
         attachType = message.msgType
         attachTag = message.messageId
+        if attachType == "Location" {
+            locations.append(message.latitude)
+            locations.append(message.longitude)
+        }
     }
 
     

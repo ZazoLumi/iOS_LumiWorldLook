@@ -34,7 +34,12 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if currentLat > 0 && currentLong > 0 {
+            self.dropPinZoomIn(MKPlacemark.init(coordinate: CLLocationCoordinate2D.init(latitude: currentLat, longitude: currentLong)))
+            tableView.isHidden = true
+        }
+        else {
+        tableView.isHidden = false
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -58,7 +63,7 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
             // Fallback on earlier versions
             navigationItem.titleView = resultSearchController?.searchBar
         }
-
+        }
         
         
     }

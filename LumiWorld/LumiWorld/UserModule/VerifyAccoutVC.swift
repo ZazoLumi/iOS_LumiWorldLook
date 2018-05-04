@@ -72,6 +72,7 @@ class VerifyAccoutVC: UIViewController,FormDataDelegate {
                     return
                 }
                 self.showCustomAlert(strTitle: "Success", strDetails: "Your account is verified successfully.", completion: { (str) in
+                    UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.pendingVerification)
                     self.navigationController?.popToRootViewController(animated: true)
                 })
             }, failure: { (Error) in
