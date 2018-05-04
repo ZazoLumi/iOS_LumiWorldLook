@@ -32,6 +32,7 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
     
     var bubbleImageView = UIImageView()
     var attachImageView = UIImageView()
+    var imgPlay = UIImageView()
     var textLabel = YYLabel()
     var timeLabel = UILabel()
     var deliveryStatusView = TGDeliveryStatusView()
@@ -57,7 +58,8 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
             
         }
         bubbleView.addSubview(attachImageView)
-
+        bubbleView.addSubview(imgPlay)
+        imgPlay.isHidden = true
         bubbleView.addSubview(textLabel)
         
         bubbleImageView.addSubview(timeLabel)
@@ -108,6 +110,8 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
                 let fileName = cellLayout.attachURL?.lastPathComponent
                 urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
             }
+            imgPlay.isHidden = true
+
             if cellLayout.attachType == "Image" {
                 Alamofire.request(urlOriginalImage!).responseImage { response in
                     debugPrint(response)
@@ -124,6 +128,11 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
                 }
             }
             else if cellLayout.attachType == "Video" {
+                imgPlay.isHidden = false
+                let img = UIImage(named: "play")
+                imgPlay.image = img
+                imgPlay.frame = CGRect(x: ((attachImageView.frame.size.width+8)-(img?.size.width)!)/2, y: ((attachImageView.frame.size.height+6)-(img?.size.height)!)/2, width: (img?.size.width)!, height: (img?.size.height)!)
+
                 Alamofire.request(urlOriginalImage!).responseImage { response in
                     debugPrint(response)
                     if let image = response.result.value {

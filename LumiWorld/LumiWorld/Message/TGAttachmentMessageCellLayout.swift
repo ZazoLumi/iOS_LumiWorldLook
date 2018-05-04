@@ -86,18 +86,14 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     }
     
     private func setupAttachmentData() {
-        attachURL = message.attachmentURL
+        if let strUrl = message.attachmentURL {
+            attachURL = strUrl
+            let fileName = strUrl.lastPathComponent
+            let url = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName)
+            GlobalShareData.sharedGlobal.aryAttachUrls.append(url)
+        }
         attachType = message.msgType
         attachTag = message.messageId
-//        let urlOriginalImage = URL.init(string: message.attachmentURL)
-//        Alamofire.request(urlOriginalImage!).responseImage { response in
-//            debugPrint(response)
-//            if let image = response.result.value {
-//               // let scalImg = image.af_imageScaled(to: CGSize(width: , height: 20))
-//                self.attachImage = image
-//                
-//            }
-//        }
     }
 
     

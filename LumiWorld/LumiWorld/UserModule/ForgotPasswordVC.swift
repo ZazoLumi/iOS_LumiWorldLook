@@ -26,7 +26,11 @@ class ForgotPasswordVC: UIViewController,FormDataDelegate {
 
     }
     @IBAction func onBtnSignInTapped(_ sender: Any) {
-        UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
+        if #available(iOS 11.0, *) {
+            UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @IBAction func onBtnResetPasswordTapped(_ sender: Any) {

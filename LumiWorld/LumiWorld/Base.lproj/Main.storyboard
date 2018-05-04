@@ -445,7 +445,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cMy-L8-8Qx">
                                                         <rect key="frame" x="25" y="477" width="275" height="36"/>
                                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
-                                                        <state key="normal" title="PRODUCTS" backgroundImage="Artboard 136xxhdpi">
+                                                        <state key="normal" title="PRODUCTS &amp; SERVICES" backgroundImage="Artboard 136xxhdpi">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -1548,6 +1548,138 @@
             </objects>
             <point key="canvasLocation" x="-1318" y="689"/>
         </scene>
+        <!--Map View Controller-->
+        <scene sceneID="vp8-73-LRY">
+            <objects>
+                <viewController storyboardIdentifier="mapViewController" id="Nep-jN-Lth" customClass="mapViewController" customModule="LumiWorld" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YMk-xE-S3o"/>
+                        <viewControllerLayoutGuide type="bottom" id="wq5-SM-0wB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hiH-Pd-Zef">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jbx-NS-PXN">
+                                <rect key="frame" x="0.0" y="20" width="320" height="388"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Nep-jN-Lth" id="I12-t3-7PB"/>
+                                </connections>
+                            </mapView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Nya-cR-OU3">
+                                <rect key="frame" x="0.0" y="408" width="320" height="160"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="locationTableViewCell" id="BOT-KM-gmn" customClass="locationTableViewCell" customModule="LumiWorld" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BOT-KM-gmn" id="xe9-v5-rWG">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CYr-S6-VR7">
+                                                    <rect key="frame" x="20" y="4" width="280" height="34"/>
+                                                    <state key="normal" title="Button"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="CYr-S6-VR7" firstAttribute="centerX" secondItem="xe9-v5-rWG" secondAttribute="centerX" id="Z8a-nW-PCz"/>
+                                                <constraint firstItem="CYr-S6-VR7" firstAttribute="leading" secondItem="xe9-v5-rWG" secondAttribute="leading" constant="20" id="bYJ-gJ-aa9"/>
+                                                <constraint firstAttribute="trailing" secondItem="CYr-S6-VR7" secondAttribute="trailing" constant="20" id="fu9-xR-XnU"/>
+                                                <constraint firstItem="CYr-S6-VR7" firstAttribute="centerY" secondItem="xe9-v5-rWG" secondAttribute="centerY" id="rpG-2L-BOZ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="btnLocation" destination="CYr-S6-VR7" id="2a2-B8-lhw"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Nep-jN-Lth" id="1Vp-hd-eft"/>
+                                    <outlet property="delegate" destination="Nep-jN-Lth" id="HvL-Xa-op2"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Jbx-NS-PXN" secondAttribute="trailing" id="3js-hK-TOn"/>
+                            <constraint firstItem="Jbx-NS-PXN" firstAttribute="leading" secondItem="hiH-Pd-Zef" secondAttribute="leading" id="4dE-Zi-Us9"/>
+                            <constraint firstItem="Jbx-NS-PXN" firstAttribute="top" secondItem="YMk-xE-S3o" secondAttribute="bottom" id="EWF-il-gwh"/>
+                            <constraint firstAttribute="trailing" secondItem="Nya-cR-OU3" secondAttribute="trailing" id="MW5-4f-I1K"/>
+                            <constraint firstItem="wq5-SM-0wB" firstAttribute="top" secondItem="Jbx-NS-PXN" secondAttribute="bottom" constant="160" id="WeW-OX-bx5"/>
+                            <constraint firstItem="Nya-cR-OU3" firstAttribute="top" secondItem="Jbx-NS-PXN" secondAttribute="bottom" id="nuc-nh-XMo"/>
+                            <constraint firstAttribute="bottom" secondItem="Nya-cR-OU3" secondAttribute="bottom" id="pWp-oY-dVK"/>
+                            <constraint firstItem="Nya-cR-OU3" firstAttribute="leading" secondItem="hiH-Pd-Zef" secondAttribute="leading" id="tYe-id-bvF"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Oqv-ly-45I"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="LeN-hJ-0ts">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="vGA-NK-vIW">
+                            <color key="tintColor" red="0.41960784309999999" green="0.77647058820000003" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="onBtnCancelTapped:" destination="Nep-jN-Lth" id="DQJ-GR-Emk"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="Refresh (2)" id="raS-wk-7iS">
+                            <color key="tintColor" red="0.41960784309999999" green="0.77647058820000003" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="onBtnRefreshTapped:" destination="Nep-jN-Lth" id="1pe-nW-4r6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="mapView" destination="Jbx-NS-PXN" id="Ej9-IB-2Ze"/>
+                        <outlet property="tableView" destination="Nya-cR-OU3" id="n9u-pS-8nz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tcv-XJ-JI4" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1073" y="885"/>
+        </scene>
+        <!--Location Search Table-->
+        <scene sceneID="bm9-Ra-unq">
+            <objects>
+                <tableViewController storyboardIdentifier="LocationSearchTable" id="Sk0-iA-Poy" customClass="LocationSearchTable" customModule="LumiWorld" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="rG6-rF-eKS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="m7S-Bu-F9r" detailTextLabel="1i7-8S-nZj" style="IBUITableViewCellStyleSubtitle" id="NoX-OF-sX0">
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NoX-OF-sX0" id="rnu-Lz-n6i">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="m7S-Bu-F9r">
+                                            <rect key="frame" x="16" y="6" width="31.5" height="19.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1i7-8S-nZj">
+                                            <rect key="frame" x="16" y="25.5" width="40.5" height="13.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Sk0-iA-Poy" id="rCZ-vV-nYT"/>
+                            <outlet property="delegate" destination="Sk0-iA-Poy" id="zFD-UQ-CEL"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="47t-Tv-DOy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1779" y="884"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Artboard 103xxhdpi" width="48" height="42"/>
@@ -1568,6 +1700,7 @@
         <image name="Background2" width="325" height="60"/>
         <image name="Background3" width="280" height="50"/>
         <image name="Close" width="25" height="25"/>
+        <image name="Refresh (2)" width="16" height="19"/>
         <image name="StarEmpty" width="18" height="17"/>
         <image name="StarFull" width="14" height="13"/>
         <image name="button:3cS-gZ-0qp:image" width="25" height="25">

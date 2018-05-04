@@ -50,6 +50,7 @@ class GlobalShareData {
     var objCurrentLumineer : LumineerList!
     var objCurrentLumiMessage : LumiMessage!
     var objCurrentUserDetails = UserData()
+    var aryAttachUrls : [URL] = []
     lazy var applicationDocumentsDirectory: URL = {
         
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)

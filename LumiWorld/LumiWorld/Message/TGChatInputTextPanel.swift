@@ -288,8 +288,15 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         
         let actionDocument = UIAlertAction.init(title: "  Document", style: .default, image: (UIImage(named: "Asset 1637")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -3, bottom: 0, right: 0)))!) { (action) in
             
+            
+            
         }
         let actionLocation = UIAlertAction.init(title: "   Location", style: .default, image:(UIImage(named: "Asset 1638")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+           let objMapViewController = storyBoard.instantiateViewController(withIdentifier: "mapViewController") as! mapViewController
+ self.parentViewController?.navigationController?.pushViewController(objMapViewController, animated: false)
+
             
         }
 

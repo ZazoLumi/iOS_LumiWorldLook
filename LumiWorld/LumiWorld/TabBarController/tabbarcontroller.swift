@@ -9,6 +9,7 @@
 import Foundation
 import ESTabBarController_swift
 
+@available(iOS 11.0, *)
 enum ExampleProvider {
 
 static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> ExampleNavigationController {

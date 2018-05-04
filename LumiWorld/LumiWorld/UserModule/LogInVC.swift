@@ -92,7 +92,11 @@ class LogInVC: UIViewController,FormDataDelegate {
                     GlobalShareData.sharedGlobal.realmManager.saveObjects(objs: newObj)
                 }
 
-                UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
+                if #available(iOS 11.0, *) {
+                    UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
+                } else {
+                    // Fallback on earlier versions
+                }
                 print(json)
             }, failure: { (Error) in
                 hud.hide(animated: true)

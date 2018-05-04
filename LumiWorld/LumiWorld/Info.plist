@@ -50,5 +50,7 @@
 	<string>To take pictures</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Please allow permission to  get access of your photo library</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Lumi World wants to use your location</string>
 </dict>
 </plist>

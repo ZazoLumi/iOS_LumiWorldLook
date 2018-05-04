@@ -29,6 +29,7 @@ class LumineerCompanyCell: UITableViewCell {
 
 }
 
+@available(iOS 11.0, *)
 class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSource {
     
     let kHeaderSectionTag: Int = 6900;
@@ -650,6 +651,7 @@ extension UIView {
         return nil
     }
 }
+@available(iOS 11.0, *)
 extension LumiCategoryVC: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
@@ -657,6 +659,7 @@ extension LumiCategoryVC: UISearchBarDelegate {
     }
 }
 
+@available(iOS 11.0, *)
 extension LumiCategoryVC: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {

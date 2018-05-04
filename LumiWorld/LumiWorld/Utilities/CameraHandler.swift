@@ -89,17 +89,21 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
         
         if mediaType == kUTTypeImage as String {
             if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-                if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
-                    let imgName = imgUrl.lastPathComponent
-                    print(imgName)
-                    self.didFinishCapturingImage?(image, imgUrl)
+                if #available(iOS 11.0, *) {
+                    if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
+                        let imgName = imgUrl.lastPathComponent
+                        print(imgName)
+                        self.didFinishCapturingImage?(image, imgUrl)
                     }
-                else {
-                    if let data = UIImageJPEGRepresentation(image, 1.0) {
-                        let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName:"temp.png")
-                        self.didFinishCapturingImage?(image, URL.init(string: strFilePath))
-
+                    else {
+                        if let data = UIImageJPEGRepresentation(image, 1.0) {
+                            let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName:"temp.png")
+                            self.didFinishCapturingImage?(image, URL.init(string: strFilePath))
+                            
+                        }
                     }
+                } else {
+                    // Fallback on earlier versions
                 }
             }
         } else if mediaType == kUTTypeMovie as String {

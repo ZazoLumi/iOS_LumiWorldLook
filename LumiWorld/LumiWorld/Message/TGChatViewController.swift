@@ -107,31 +107,26 @@ let quickLookController = QLPreviewController()
     
     @objc func loadAttachmentPreview(notification: NSNotification) {
         if let strUrl = notification.userInfo?["url"] as? String {
-            let url = URL.init(string: strUrl)
-//            docController = UIDocumentInteractionController.init(url:url!)
-//            
-//            docController.name = url?.lastPathComponent
-//            
-//            docController.delegate = self
-//            
-//            docController.presentPreview(animated: true)
-            
+            let fileName = strUrl.lastPathComponent
+            let url = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName)
             quickLookController.dataSource = self
-            previewUrl = url!
-            if QLPreviewController.canPreview(url! as QLPreviewItem) {
-                quickLookController.currentPreviewItemIndex = 0;                navigationController?.pushViewController(quickLookController, animated: true)
+            previewUrl = url
+            if QLPreviewController.canPreview(url as QLPreviewItem) {
+                let index = GlobalShareData.sharedGlobal.aryAttachUrls.index(of:  url)
+                quickLookController.currentPreviewItemIndex = index!;
+                navigationController?.pushViewController(quickLookController, animated: true)
+                quickLookController.navigationController?.navigationItem.addBackButtonOnLeft()
+
             }
-
-
-            // do something with your image
         }
     }
+    
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return 1
+        return GlobalShareData.sharedGlobal.aryAttachUrls.count
     }
     
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        return previewUrl! as QLPreviewItem
+        return GlobalShareData.sharedGlobal.aryAttachUrls[index] as QLPreviewItem
     }
 
     private func documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) -> UIViewController {
@@ -219,7 +214,7 @@ let quickLookController = QLPreviewController()
     
     @objc private func loadMessages() {
         layouts.removeAllObjects()
-        
+        GlobalShareData.sharedGlobal.aryAttachUrls = []
         messageManager.fetchMessages(withChatId: chat.chatId) { [weak self] (msgs) in
             if let strongSelf = self {
                 strongSelf.addMessages(msgs, scrollToBottom: true, animated: false)
