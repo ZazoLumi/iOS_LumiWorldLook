@@ -66,6 +66,7 @@ class LumiMessage : Object {
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempArray = json.arrayValue
+
                     guard tempArray.count != 0 else {
                         let realm = try! Realm()
                         let parentId : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.parentid

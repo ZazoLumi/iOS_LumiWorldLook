@@ -76,8 +76,9 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
         if cellLayout.attachType == "Location" as String {
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let objMapViewController = storyBoard.instantiateViewController(withIdentifier: "mapViewController") as! mapViewController
-           objMapViewController.currentLat = cellLayout.locations[0]
-            objMapViewController.currentLong = cellLayout.locations[1];
+           objMapViewController.currentLat = cellLayout.locations[1]
+            objMapViewController.currentLong = cellLayout.locations[0];
+            objMapViewController.strLocationAddress = cellLayout.attributedText?.string
             self.parentViewController?.navigationController?.pushViewController(objMapViewController, animated: false)
 
         }

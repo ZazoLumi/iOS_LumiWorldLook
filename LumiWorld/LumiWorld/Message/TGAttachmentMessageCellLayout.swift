@@ -45,7 +45,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     var timeLabelFrame = CGRect.zero
     var deliveryStatusViewFrame = CGRect.zero
     
-    private var attributedText: NSMutableAttributedString?
+    var attributedText: NSMutableAttributedString?
     
     required init(chatItem: NOCChatItem, cellWidth width: CGFloat) {
         super.init(chatItem: chatItem, cellWidth: width)

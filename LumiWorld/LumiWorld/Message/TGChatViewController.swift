@@ -27,6 +27,7 @@ import UIKit
 import NoChat
 import IQKeyboardManagerSwift
 import QuickLook
+import MBProgressHUD
 
 class TGChatViewController: NOCChatViewController, UINavigationControllerDelegate, MessageManagerDelegate, TGChatInputTextPanelDelegate, TGTextMessageCellDelegate, TGAttachmentMessageCellDelegate,UIDocumentInteractionControllerDelegate,QLPreviewControllerDataSource {
     
@@ -101,6 +102,9 @@ let quickLookController = QLPreviewController()
     
     override func viewWillAppear(_ animated: Bool) {
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
+        DispatchQueue.main.async {
+            MBProgressHUD.hide(for: (self.navigationController?.view)!, animated: true)}
+
         loadMessages()
     }
     override func viewWillDisappear(_ animated: Bool) {

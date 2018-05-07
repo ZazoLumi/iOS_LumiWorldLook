@@ -551,6 +551,9 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
 
         var chatVC: UIViewController?
             chatVC = TGChatViewController(chat: chat)
+        } else {
+            // Fallback on earlier versions
+        }
             //chatVC.
 
         if let vc = chatVC {

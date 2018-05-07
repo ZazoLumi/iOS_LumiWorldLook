@@ -1620,14 +1620,15 @@
                                 <action selector="onBtnCancelTapped:" destination="Nep-jN-Lth" id="DQJ-GR-Emk"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="Refresh (2)" id="raS-wk-7iS">
+                        <barButtonItem key="rightBarButtonItem" tag="1000" image="Refresh (2)" id="raS-wk-7iS">
                             <color key="tintColor" red="0.41960784309999999" green="0.77647058820000003" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <action selector="onBtnRefreshTapped:" destination="Nep-jN-Lth" id="1pe-nW-4r6"/>
+                                <action selector="onBtnRefreshTapped:" destination="Nep-jN-Lth" id="4rJ-XT-Jxw"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="mapBottomPadding" destination="WeW-OX-bx5" id="pOy-G3-UUV"/>
                         <outlet property="mapView" destination="Jbx-NS-PXN" id="Ej9-IB-2Ze"/>
                         <outlet property="tableView" destination="Nya-cR-OU3" id="n9u-pS-8nz"/>
                     </connections>

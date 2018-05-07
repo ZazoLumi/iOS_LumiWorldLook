@@ -24,9 +24,14 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
     var resultSearchController: UISearchController!
     var currentLat : Double = 0
     var currentLong : Double = 0
+    
+    var liveLat : Double = 0
+    var liveLong : Double = 0
+    var strLocationAddress : String!
     let locationManager = CLLocationManager()
     let cellReuseIdentifier = "locationTableViewCell"
     
+    @IBOutlet weak var mapBottomPadding: NSLayoutConstraint!
     // don't forget to hook this up from the storyboard
     @IBOutlet var tableView: UITableView!
 
@@ -34,11 +39,17 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if currentLat > 0 && currentLong > 0 {
+            let btnRefresh = self.navigationController?.navigationBar.viewWithTag(1000)
+        if currentLat != 0 && currentLong != 0 {
+           mapBottomPadding.constant = 0
             self.dropPinZoomIn(MKPlacemark.init(coordinate: CLLocationCoordinate2D.init(latitude: currentLat, longitude: currentLong)))
             tableView.isHidden = true
+            btnRefresh?.isHidden = true
+            self.navigationItem.title = strLocationAddress
         }
         else {
+        mapBottomPadding.constant = 160
+        btnRefresh?.isHidden = false
         tableView.isHidden = false
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -56,7 +67,7 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
         definesPresentationContext = true
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
-        
+        navigationItem.title = "Select Location"
         if #available(iOS 11.0, *) {
             navigationItem.searchController = resultSearchController
         } else {
@@ -73,6 +84,12 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
     }
     
     @IBAction func onBtnRefreshTapped(_ sender: Any) {
+        strLocationAddress = ""
+        resultSearchController.searchBar.text = ""
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
     }
 
     @objc func getDirections(){
@@ -115,7 +132,21 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         print("You tapped cell number \(indexPath.row).")
-        let staticMapUrl: String = "http://maps.google.com/maps/api/staticmap?markers=color:red|\(currentLat),\(currentLong)&\("zoom=13&size=\(2 * Int(100))x\(2 * Int(150))")&sensor=true"
+        var staticMapUrl: String!
+        var selectedLat : Double = 0
+        var selectedLong : Double = 0
+
+        if indexPath.row == 0 {
+            staticMapUrl = "http://maps.google.com/maps/api/staticmap?markers=color:red|\(liveLat),\(liveLong)&\("zo om=13&size=\(2 * Int(100))x\(2 * Int(150))")&sensor=true"
+            selectedLat = liveLat
+            selectedLong = liveLong
+        }
+        else {
+            staticMapUrl = "http://maps.google.com/maps/api/staticmap?markers=color:red|\(currentLat),\(currentLong)&\("zo om=13&size=\(2 * Int(100))x\(2 * Int(150))")&sensor=true"
+            selectedLat = currentLat
+            selectedLong = currentLong
+
+        }
         
         let url = URL(string: staticMapUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
         
@@ -140,7 +171,7 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
                 let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: "location.png")
                 let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                 hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
-                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":"" as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":currentLong as AnyObject,"latitude":currentLat as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
+                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":strLocationAddress as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":selectedLong as AnyObject,"latitude":selectedLat as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
                     DispatchQueue.main.async {
                         hud.hide(animated: true)}
                     if error != nil  {
@@ -171,9 +202,15 @@ extension mapViewController : CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
+        liveLat =  (location.coordinate.latitude)
+        liveLong =  (location.coordinate.longitude)
         currentLat =  (location.coordinate.latitude)
         currentLong =  (location.coordinate.longitude)
 
+        getAddressFrom(location: location) { (address) in
+            print(address)
+            self.strLocationAddress = address
+        }
         let span = MKCoordinateSpanMake(0.05, 0.05)
         let region = MKCoordinateRegion(center: location.coordinate, span: span)
         mapView.setRegion(region, animated: true)
@@ -182,6 +219,25 @@ extension mapViewController : CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
     }
+    func getAddressFrom(location: CLLocation, completion:@escaping ((String?) -> Void)) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if let placemark = placemarks?.first,
+                let subThoroughfare = placemark.subThoroughfare,
+                let thoroughfare = placemark.thoroughfare,
+                let locality = placemark.locality,
+                let administrativeArea = placemark.administrativeArea {
+                let address = subThoroughfare + " " + thoroughfare + ", " + locality + " " + administrativeArea
+                
+                placemark.addressDictionary
+                
+                return completion(address)
+                
+            }
+            completion(nil)
+        }
+    }
+
 
 }
 
@@ -199,6 +255,9 @@ extension mapViewController: HandleMapSearch {
         if let city = placemark.locality,
             let state = placemark.administrativeArea {
                 annotation.subtitle = "\(city) \(state)"
+          if let strcountry = placemark.country, let strname = placemark.name {
+            strLocationAddress = "\(strname) \(city) \(state) \(strcountry)"
+            }
         }
         currentLat =  (placemark.location?.coordinate.latitude)!
         currentLong =  (placemark.location?.coordinate.longitude)!

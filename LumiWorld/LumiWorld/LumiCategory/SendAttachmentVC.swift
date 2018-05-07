@@ -15,7 +15,7 @@ class SendAttachmentVC: UIViewController {
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var btnSend: UIButton!
     @IBOutlet weak var btnClose: UIButton!
-    
+     @IBOutlet weak var btnRefresh : UIBarButtonItem!
     var fileUrl : String?
     var fileImage : UIImage?
     override func viewDidLoad() {
