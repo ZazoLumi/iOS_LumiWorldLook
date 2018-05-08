@@ -59,8 +59,11 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     }
     
     private func setupAttributedText() {
+        guard message.text?.count != nil  else{
+            return
+        }
         let text = message.text
-        let attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: Style.textFont, NSAttributedStringKey.foregroundColor: Style.textColor])
+        let attributedText = NSMutableAttributedString(string: text!, attributes: [NSAttributedStringKey.font: Style.textFont, NSAttributedStringKey.foregroundColor: Style.textColor])
         
         if text == "/start" {
             attributedText.yy_setColor(Style.linkColor, range: attributedText.yy_rangeOfAll())
@@ -133,8 +136,120 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
         let timeLabelSize = time.noc_sizeThatFits(size: unlimitSize)
         let timeLabelWidth = timeLabelSize.width
         let timeLabelHeight = CGFloat(15)
-        let attachmentMargin = isOutgoing ? UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 12) : UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
-        
+        let attachmentMargin = isOutgoing ? UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10) : UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
+        if attachType == "Document" {
+            let attachmentWidth = 80
+            let deliveryStatusWidth: CGFloat = (isOutgoing && message.deliveryStatus != .Failure) ? 15 : 0
+            let deliveryStatusHeight = deliveryStatusWidth
+            
+            let hPadding = CGFloat(8)
+            let vPadding = CGFloat(4)
+            var bubbleViewHeight = CGFloat(0)
+            
+            if let text = attributedText, text.length > 0  {
+                // dynamic font support
+                let dynamicFont = Style.textFont
+                text.yy_setAttribute(NSAttributedStringKey.font.rawValue, value: dynamicFont)
+                
+                let textMargin = isOutgoing ? UIEdgeInsets(top: 5, left: 5, bottom: 8, right: 5) : UIEdgeInsets(top: 5, left: 5, bottom: 8, right: 5)
+                var textLabelWidth = bubbleViewWidth - textMargin.left - textMargin.right - hPadding - timeLabelWidth - hPadding/2 - deliveryStatusWidth - 80
+                
+                let modifier = TGTextLinePositionModifier()
+                modifier.font = dynamicFont
+                modifier.paddingTop = 2
+                modifier.paddingBottom = 2
+                
+                let container = YYTextContainer()
+                container.size = CGSize(width: textLabelWidth, height: CGFloat.greatestFiniteMagnitude)
+                container.linePositionModifier = modifier
+                
+                guard let textLayout = YYTextLayout(container: container, text: text) else {
+                    return
+                }
+                self.textLayout = textLayout
+                if textLayout.rowCount > 1 { // relayout
+                    textLabelWidth = bubbleViewWidth - textMargin.left - textMargin.right - 80
+                    container.size = CGSize(width: textLabelWidth, height: CGFloat.greatestFiniteMagnitude)
+                    
+                    guard let newTextLayout = YYTextLayout(container: container, text: text) else {
+                        return
+                    }
+                    self.textLayout = newTextLayout
+                    
+                    // layout content in bubble
+                    
+                    
+                    textLabelWidth = ceil(newTextLayout.textBoundingSize.width)
+                    let textLabelHeight = ceil(modifier.height(forLineCount: newTextLayout.rowCount))
+                    
+                    bubbleViewWidth =  CGFloat(Int(attachmentWidth) + Int(textLabelWidth) + 30)
+                    bubbleViewHeight = (textLabelHeight > 80) ? textLabelHeight+30 : 100
+                    attachImageViewFrame = CGRect(x: Int(attachmentMargin.left), y: Int(attachmentMargin.top), width: attachmentWidth, height: 80)
+                    
+                    textLableFrame = CGRect(x: CGFloat(Int(attachmentMargin.left) + Int(attachmentWidth) + Int(textMargin.left)), y: attachmentMargin.top, width: textLabelWidth, height: textLabelHeight)
+                    
+                    let tryPoint = CGPoint(x: textLabelWidth - deliveryStatusWidth - hPadding/2 - timeLabelWidth - hPadding, y: textLabelHeight - timeLabelHeight/2)
+                    
+                    let needNewLine = newTextLayout.textRange(at: tryPoint) != nil
+                    if needNewLine {
+                        var x = bubbleViewWidth - textMargin.left - deliveryStatusWidth - hPadding/2 - timeLabelWidth
+                        var y = textMargin.top + textLabelHeight + attachmentMargin.top + 80 + attachmentMargin.bottom
+                        
+                        y += vPadding
+                        timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
+                        
+                        x += timeLabelWidth + hPadding/2
+                        deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                        
+                        bubbleViewHeight = textMargin.top + textLabelHeight + vPadding + timeLabelHeight + textMargin.bottom + attachmentMargin.top + 110 + attachmentMargin.bottom
+                        bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
+                        
+                        bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+                        
+                    } else {
+                        bubbleViewHeight = textMargin.top + textLabelHeight + timeLabelHeight + textMargin.bottom + attachmentMargin.top + 80 + attachmentMargin.bottom
+                        
+                        bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
+                        
+                        bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+                        
+                        var x = bubbleViewWidth - textMargin.right - deliveryStatusWidth - hPadding/2 - timeLabelWidth
+                        let y = bubbleViewHeight - textMargin.bottom - timeLabelHeight
+                        timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
+                        
+                        x += timeLabelWidth + hPadding/2
+                        deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                    }
+                    
+                } else {
+                    textLabelWidth = ceil(textLayout.textBoundingSize.width)
+                    let textLabelHeight = ceil(modifier.height(forLineCount: textLayout.rowCount))
+                    
+                    bubbleViewWidth = CGFloat(Int(attachmentMargin.left) + Int(attachmentWidth) + Int(attachmentMargin.right) + Int(textMargin.left) + Int(textLabelWidth))
+                    bubbleViewHeight = textLabelHeight + textMargin.top + textMargin.bottom+attachmentMargin.top + 110 + attachmentMargin.bottom
+                    bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
+                    
+                    attachImageViewFrame = CGRect(x: Int(attachmentMargin.left), y: Int(attachmentMargin.top), width: attachmentWidth, height: 110)
+                    
+                    bubbleImageViewFrame = CGRect(x: 0, y: 0, width: bubbleViewWidth, height: bubbleViewHeight)
+                    
+                    var x = bubbleViewWidth - textLabelWidth - attachmentMargin.right - deliveryStatusWidth - hPadding/2
+                    x -=  CGFloat(Int(timeLabelWidth) - Int(10) - Int(attachmentWidth))
+                    
+                    var y = textMargin.top + attachmentMargin.left
+                    textLableFrame = CGRect(x: x, y: y, width: textLabelWidth, height: textLabelHeight)
+                    
+                    x += textLabelWidth + hPadding
+                    y = bubbleViewHeight - textMargin.bottom - timeLabelHeight
+                    timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
+                    
+                    x += timeLabelWidth + hPadding/2
+                    deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                }
+                height = bubbleViewHeight + bubbleViewMargin.top + bubbleViewMargin.bottom
+            }
+        }
+        else {
         let attachmentWidth = bubbleViewWidth - attachmentMargin.left - attachmentMargin.right
         let deliveryStatusWidth: CGFloat = (isOutgoing && message.deliveryStatus != .Failure) ? 15 : 0
         let deliveryStatusHeight = deliveryStatusWidth
@@ -268,7 +383,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
             height = bubbleViewHeight + bubbleViewMargin.top + bubbleViewMargin.bottom
 
         }
-        
+        }
     }
     
     

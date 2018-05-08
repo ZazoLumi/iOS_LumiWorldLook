@@ -75,7 +75,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
 
                 let msg = Message()
                 msg.msgType = obj.contentType!
-                msg.text = obj.newsFeedBody!
+                msg.text = obj.newsFeedBody
                 msg.attachmentURL = obj.fileName
                 msg.deliveryStatus = .Delivered
                 msg.date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd HH:mm")

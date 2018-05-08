@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 @available(iOS 11.0, *)
 class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
@@ -63,9 +64,74 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     // MARK: Document Presentation
     
     func presentDocument(at documentURL: URL) {
+        let destinationFilename = documentURL.lastPathComponent
+
+        let alert = UIAlertController(title: "", message: "Send \(destinationFilename) to \(GlobalShareData.sharedGlobal.objCurrentLumineer.name) ?", preferredStyle: UIAlertControllerStyle.alert)
+
+        let notNowAction = UIAlertAction(title: "Cancel", style: .default)
+        notNowAction.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+        alert.addAction(notNowAction)
+        
+        let submitAction = UIAlertAction(title:"Send", style:.default ) { (action) in
+            let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName
+            let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName
+            
+            var nSubjectID : Double? = nil
+            nSubjectID = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId
+            
+            let name = firstName! + " \(lastName as! String)"
+            let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
+            
+            let objMessage = LumiMessage()
+            
+            if documentURL.isFileURL {
+                if documentURL.startAccessingSecurityScopedResource() {
+                    if let data = NSData(contentsOfFile: documentURL.path) {
+                        print(data.length)
+                        var _: Error?
+                        let fileManager = FileManager.default
+                        let destinationURL = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(destinationFilename )
+
+                        let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: destinationFilename)
+//                        do {
+//                            try fileManager.copyItem(atPath: (documentURL.path), toPath: destinationURL.path)
+//                        } catch let error as NSError {
+//                            print("Couldn't copy file to final location! Error:\(error.description)")
+//                        }
+
+                        let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                        hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
+                        objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":destinationFilename as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
+                            DispatchQueue.main.async {
+                                hud.hide(animated: true)}
+                            documentURL.stopAccessingSecurityScopedResource()
+                            if error != nil  {
+                                self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
+                                })
+                            }
+                            DispatchQueue.main.async {
+                                GlobalShareData.sharedGlobal.removeFilefromDocumentDirectory(fileName: strFilePath)
+                                self.navigationController?.popViewController(animated: true)
+                            }
+                        })
+                    }
+                    
+                }
+
+                
+                
+            }
+
+
+        }
+        submitAction.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+        alert.addAction(submitAction)
+        
+        self.present(alert, animated: true, completion: nil)
+
+        
         var _: Error?
         let fileManager = FileManager.default
-        let destinationFilename = documentURL.lastPathComponent
         let destinationURL = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(destinationFilename )
         if fileManager.fileExists(atPath: destinationURL.path ) {
             if destinationURL.isFileURL {
@@ -79,7 +145,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
                 print("Couldn't copy file to final location! Error:\(error.description)")
             }
             documentURL.stopAccessingSecurityScopedResource()
-           
+
         }
 
 

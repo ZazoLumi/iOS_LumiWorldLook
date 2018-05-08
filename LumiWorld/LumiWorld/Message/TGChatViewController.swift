@@ -58,6 +58,8 @@ let quickLookController = QLPreviewController()
             return TGDateMessageCellLayout.self
         }else if type == "System" {
             return TGSystemMessageCellLayout.self
+        }else if type == "Document" {
+            return TGAttachmentMessageCellLayout.self
         } else {
             return nil
         }

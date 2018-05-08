@@ -287,10 +287,13 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         }
         
         let actionDocument = UIAlertAction.init(title: "  Document", style: .default, image: (UIImage(named: "Asset 1637")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -3, bottom: 0, right: 0)))!) { (action) in
-//            @available(iOS 11.0, *) {
-//            let objDocumentVC = DocumentBrowserViewController()
-//            self.parentViewController?.navigationController?.pushViewController(objDocumentVC, animated: false)
-//            }
+            if #available(iOS 11.0, *) {
+                let objDocumentVC = DocumentBrowserViewController()
+                self.parentViewController?.navigationController?.pushViewController(objDocumentVC, animated: false)
+            } else {
+                // Earlier version of iOS
+            }
+
             
         }
         let actionLocation = UIAlertAction.init(title: "   Location", style: .default, image:(UIImage(named: "Asset 1638")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in

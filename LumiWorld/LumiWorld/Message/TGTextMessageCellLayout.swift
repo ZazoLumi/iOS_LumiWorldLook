@@ -53,7 +53,7 @@ class TGTextMessageCellLayout: TGBaseMessageCellLayout {
     
     private func setupAttributedText() {
         let text = message.text
-        let attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: Style.textFont, NSAttributedStringKey.foregroundColor: Style.textColor])
+        let attributedText = NSMutableAttributedString(string: text!, attributes: [NSAttributedStringKey.font: Style.textFont, NSAttributedStringKey.foregroundColor: Style.textColor])
         
         if text == "/start" {
             attributedText.yy_setColor(Style.linkColor, range: attributedText.yy_rangeOfAll())

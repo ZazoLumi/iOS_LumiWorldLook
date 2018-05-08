@@ -156,6 +156,10 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
                     }
                 }
             }
+            else if cellLayout.attachType == "Document" {
+                imgPlay.isHidden = true
+                
+            }
 
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTapFrom(recognizer:)))
             self.bubbleImageView.tag = cellLayout.attachTag!

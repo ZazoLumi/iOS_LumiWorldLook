@@ -78,8 +78,11 @@ class TGSystemMessageCellLayout: NSObject, NOCChatItemCellLayout {
     }
     
     private func setupAttributedText() {
+        guard message.text?.count != nil  else{
+            return
+        }
         let text = message.text
-        let one = NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: Style.textFont, NSAttributedStringKey.foregroundColor: Style.textColor])
+        let one = NSAttributedString(string: text!, attributes: [NSAttributedStringKey.font: Style.textFont, NSAttributedStringKey.foregroundColor: Style.textColor])
         attributedText = one
     }
     
