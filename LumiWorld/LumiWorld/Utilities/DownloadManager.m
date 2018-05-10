@@ -83,7 +83,6 @@
         }
 }
 
-
 #pragma mark - NSURLSession Delegate method implementation
     
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{

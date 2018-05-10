@@ -117,23 +117,40 @@ class SendAttachmentVC: UIViewController {
         
         if imgAttach.image != nil {
             if let data = UIImageJPEGRepresentation(imgAttach.image!, 0.8) {
-                let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: (URL.init(string: fileUrl!)?.lastPathComponent)!)
-                let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
-                hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
-                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":textField.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
-                    DispatchQueue.main.async {
-                        hud.hide(animated: true)}
-                    if error != nil  {
-                        self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
-                        })
+                var strFilePath : String!
+                if activityType == "Video" {
+                    do {
+                        let weatherData = try NSData(contentsOf:URL.init(string: fileUrl!
+                            )! , options: NSData.ReadingOptions())
+                        strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: weatherData as NSData, fileName: (URL.init(string: fileUrl!)?.lastPathComponent)!)
+                        print(weatherData.length)
+                    } catch {
+                        print(error)
                     }
-                    DispatchQueue.main.async {
-                        GlobalShareData.sharedGlobal.removeFilefromDocumentDirectory(fileName: strFilePath)
-                        //self.navigationController?.popViewController(animated: false)
-                        NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
-                        self.removeAnimate()
-                    }
-                })
+                }
+                else {
+                    strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: (URL.init(string: fileUrl!)?.lastPathComponent)!)
+                }
+                
+                defer {
+                    let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                    hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
+                    objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":textField.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
+                        DispatchQueue.main.async {
+                            hud.hide(animated: true)}
+                        if error != nil  {
+                            self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
+                            })
+                        }
+                        DispatchQueue.main.async {
+                            GlobalShareData.sharedGlobal.removeFilefromDocumentDirectory(fileName: strFilePath)
+                            //self.navigationController?.popViewController(animated: false)
+                            NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
+                            self.removeAnimate()
+                        }
+                    })
+                }
+
             }
             
         }

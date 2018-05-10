@@ -10,6 +10,7 @@ import UIKit
 import Realm
 import RealmSwift
 import Alamofire
+import AVKit
 
 class SubjectCell: UITableViewCell {
     @IBOutlet weak var imgStatus: UIImageView!
@@ -442,7 +443,7 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SubjectCell", for: indexPath) as! SubjectCell
         let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
-let objLumiMessage = sectionData[indexPath.row] as LumiMessage
+        let objLumiMessage = sectionData[indexPath.row] as LumiMessage
         cell.lblSubject.text = objLumiMessage.messageSubject
         cell.lblDate.text = Date().getFormattedDate(string: objLumiMessage.newsfeedPostedTime!, formatter: "")
         cell.lblMessage.text = objLumiMessage.newsFeedBody
@@ -462,15 +463,31 @@ let objLumiMessage = sectionData[indexPath.row] as LumiMessage
                 urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
             }
 
-            Alamofire.request(urlOriginalImage!).responseImage { response in
-                debugPrint(response)
-                
-                if let image = response.result.value {
-                    let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+            if objLumiMessage.contentType == "Video" {
+                DispatchQueue.main.async {
+                    let asset = AVAsset(url: urlOriginalImage!)
+                    let imageGenerator = AVAssetImageGenerator(asset: asset)
+                    let time = CMTimeMake(1, 20)
+                    let imageRef = try! imageGenerator.copyCGImage(at: time, actualTime: nil)
+                    let thumbnail1 = UIImage(cgImage:imageRef)
+                    let scalImg = thumbnail1.af_imageScaled(to: CGSize(width: 25, height: 25))
                     cell.imgMessage.image = scalImg
                 }
+                
             }
-        }
+            else {
+                Alamofire.request(urlOriginalImage!).responseImage { response in
+                    debugPrint(response)
+                    
+                    if let image = response.result.value {
+                        let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+                        cell.imgMessage.image = scalImg
+                    }
+                }
+
+            }
+
+            }
         var strImageName : String!
         
         if objLumiMessage.isReadByLumi {

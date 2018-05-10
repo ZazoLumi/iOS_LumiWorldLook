@@ -58,6 +58,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.setToolbarHidden(true, animated: false)
         self.tabBarController?.title = "LUMINEER CATEGORIES"
         self.tableView.backgroundView = self.dataMsgLabel;
         let objLumiCate = LumiCategory()
@@ -266,34 +267,67 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         tableView.deselectRow(at: indexPath, animated: true)
         
     }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let indexPath = tableView.indexPathForSelectedRow{
-            if segue.identifier == "LumineerProfileSelected" {
-                let objLumineerProfileVC = segue.destination as! LumineerProfileVC
-                let arrayOfItems = self.aryCategory[(indexPath.section)].lumineerList
-                
-                var objLumineer : LumineerList!
-                if isFiltering() {
-                    objLumineer = arySearchLumineer[(indexPath.row)] as LumineerList
-                }
-                else {
-                    objLumineer = arrayOfItems[(indexPath.row)] as LumineerList
-                    let sectionHeaderView = tableView.headerView(forSection: indexPath.section)
-                    let eImageView = sectionHeaderView?.viewWithTag(kHeaderSectionTag + indexPath.section) as? UIImageView
-                    let cImageView = tableView.viewWithTag(kHeaderSectionTag + self.expandedSectionHeaderNumber) as? UIImageView
-                    if (self.expandedSectionHeaderNumber == indexPath.section) {
-                        tableViewCollapeSection(indexPath.section, imageView: eImageView)
-                    } else {
-                        tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView)
-                        tableViewExpandSection(indexPath.section, imageView: eImageView!)
-                    }
-
-                }
-
-                GlobalShareData.sharedGlobal.objCurrentLumineer = objLumineer
-            }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var objLumineer : LumineerList!
+        let arrayOfItems = self.aryCategory[(indexPath.section)].lumineerList
+        var delaytime : Double = 0
+        if self.isFiltering() {
+            objLumineer = self.arySearchLumineer[(indexPath.row)] as LumineerList
+            delaytime = 0.5
         }
+        else {
+            objLumineer = arrayOfItems[(indexPath.row)] as LumineerList
+            let sectionHeaderView = tableView.headerView(forSection: indexPath.section)
+            let eImageView = sectionHeaderView?.viewWithTag(self.kHeaderSectionTag + indexPath.section) as? UIImageView
+            let cImageView = tableView.viewWithTag(self.kHeaderSectionTag + self.expandedSectionHeaderNumber) as? UIImageView
+            if (self.expandedSectionHeaderNumber == indexPath.section) {
+                self.tableViewCollapeSection(indexPath.section, imageView: eImageView)
+            } else {
+                self.tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView)
+                self.tableViewExpandSection(indexPath.section, imageView: eImageView!)
+            }
+
+        }
+        searchController.isActive = false
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + delaytime) {
+            // your code here
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let objLumineerProfileVC = storyBoard.instantiateViewController(withIdentifier: "LumineerProfileVC") as! LumineerProfileVC
+            GlobalShareData.sharedGlobal.objCurrentLumineer = objLumineer
+            self.navigationController?.pushViewController(objLumineerProfileVC, animated: false)
+        }
+        defer {             }
     }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if let indexPath = tableView.indexPathForSelectedRow{
+//            if segue.identifier == "LumineerProfileSelected" {
+//                searchController.isActive = false
+//                let objLumineerProfileVC = segue.destination as! LumineerProfileVC
+//                let arrayOfItems = self.aryCategory[(indexPath.section)].lumineerList
+//
+//                var objLumineer : LumineerList!
+//                if isFiltering() {
+//                    objLumineer = arySearchLumineer[(indexPath.row)] as LumineerList
+//                }
+//                else {
+//                    objLumineer = arrayOfItems[(indexPath.row)] as LumineerList
+//                    let sectionHeaderView = tableView.headerView(forSection: indexPath.section)
+//                    let eImageView = sectionHeaderView?.viewWithTag(kHeaderSectionTag + indexPath.section) as? UIImageView
+//                    let cImageView = tableView.viewWithTag(kHeaderSectionTag + self.expandedSectionHeaderNumber) as? UIImageView
+//                    if (self.expandedSectionHeaderNumber == indexPath.section) {
+//                        tableViewCollapeSection(indexPath.section, imageView: eImageView)
+//                    } else {
+//                        tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView)
+//                        tableViewExpandSection(indexPath.section, imageView: eImageView!)
+//                    }
+//
+//                }
+//
+//                GlobalShareData.sharedGlobal.objCurrentLumineer = objLumineer
+//            }
+//        }
+//    }
     
     @objc func onBtnFollowUnfollowTapped(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
@@ -387,6 +421,10 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     
     @objc func sectionHeaderWasTouched(_ sender: UITapGestureRecognizer) {
         do {
+            guard !isFiltering() else {
+                return
+            }
+
             let headerView = sender.view
             let section    = headerView?.tag
             let eImageView = headerView?.viewWithTag(kHeaderSectionTag + section!) as? UIImageView
@@ -633,12 +671,37 @@ extension UIImage {
      */
     static func decodeBase64(strEncodeData: String!) -> UIImage {
       var newEncodeData = strEncodeData.replacingOccurrences(of: "data:image/png;base64,", with: "")
+        newEncodeData = strEncodeData.replacingOccurrences(of: "data:image/jpeg;base64,", with: "")
         if let decData = Data(base64Encoded: newEncodeData, options: .ignoreUnknownCharacters), newEncodeData.characters.count > 0 {
             return UIImage(data: decData)!
         }
         return UIImage()
     }
 }
+extension UIViewController {
+    func topMostViewController() -> UIViewController {
+        if self.presentedViewController == nil {
+            return self
+        }
+        if let navigation = self.presentedViewController as? UINavigationController {
+            return navigation.visibleViewController!.topMostViewController()
+        }
+        if let tab = self.presentedViewController as? UITabBarController {
+            if let selectedTab = tab.selectedViewController {
+                return selectedTab.topMostViewController()
+            }
+            return tab.topMostViewController()
+        }
+        return self.presentedViewController!.topMostViewController()
+    }
+}
+
+extension UIApplication {
+    func topMostViewController() -> UIViewController? {
+        return self.keyWindow?.rootViewController?.topMostViewController()
+    }
+}
+
 extension UIView {
     var parentViewController: UIViewController? {
         var parentResponder: UIResponder? = self

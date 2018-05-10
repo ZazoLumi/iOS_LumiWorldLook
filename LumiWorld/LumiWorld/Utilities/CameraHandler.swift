@@ -28,22 +28,21 @@ class CameraHandler: NSObject{
             myPickerController.sourceType = .camera
             myPickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
 
-            currentVC.navigationController?.present(myPickerController, animated: true, completion: nil)
+            appDelInstance().window?.rootViewController?.navigationController?.present(myPickerController, animated: true, completion: nil)
         }
         
     }
     
     func photoLibrary()
     {
-        
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
             let myPickerController = UIImagePickerController()
             myPickerController.delegate = self;
             myPickerController.sourceType = .photoLibrary
             myPickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
-            currentVC.navigationController?.present(myPickerController, animated: true, completion: nil)
+            currentVC.navigationController?.setNavigationBarHidden(false, animated: true)
+            currentVC?.navigationController?.present(myPickerController, animated: true, completion: nil)
         }
-        
     }
     
     func showCamera(vc: UIViewController) {
@@ -55,8 +54,6 @@ class CameraHandler: NSObject{
         self.photoLibrary()
     }
 
-
-    
     func showActionSheet(vc: UIViewController) {
         currentVC = vc
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

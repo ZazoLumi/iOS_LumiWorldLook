@@ -232,6 +232,33 @@ class LumiMessage : Object {
             print("Internet Connection not Available!")
         }
     }
+    func setLumineerMessageReadByLumi(strGUID:String,completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            do {
+                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIViewMessagesByLumi)"
+                
+                AFWrapper.requestPOSTURL(urlString, params:["cellNumber":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"guid":strGUID as AnyObject], headers: nil, success: { (json) in
+                    print(json)
+                    let tempDict = json.dictionary
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        return
+                    }
+                    
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+                
+            } catch let jsonError{
+                print(jsonError)
+            }
+            
+            
+        }else{
+            print("Internet Connection not Available!")
+        }
+        
+    }
     
 }
 

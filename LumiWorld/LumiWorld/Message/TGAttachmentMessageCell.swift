@@ -27,6 +27,7 @@ import NoChat
 import YYText
 import Alamofire
 import AVKit
+import MediaPlayer
 
 class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControllerDelegate {
     
@@ -141,24 +142,23 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
                 let img = UIImage(named: "play")
                 imgPlay.image = img
                 imgPlay.frame = CGRect(x: ((attachImageView.frame.size.width+8)-(img?.size.width)!)/2, y: ((attachImageView.frame.size.height+6)-(img?.size.height)!)/2, width: (img?.size.width)!, height: (img?.size.height)!)
-
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    if let image = response.result.value {
-                        if cellLayout.attachImageViewFrame.size.width > 0, cellLayout.attachImageViewFrame.size.height > 0 {
-                            let scalImg = image.af_imageScaled(to: CGSize(width:cellLayout.attachImageViewFrame.size.width , height: cellLayout.attachImageViewFrame.size.height))
-                            self.attachImageView.image = scalImg
-                        }
-                        else {
-                            
-                            let scalImg = image.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
-                            self.attachImageView.image = scalImg }
+                
+                DispatchQueue.main.async {
+                    do {
+                        let asset = AVAsset(url: urlOriginalImage!)
+                        let imageGenerator = AVAssetImageGenerator(asset: asset)
+                        let time = CMTimeMake(1, 20)
+                        let imageRef = try! imageGenerator.copyCGImage(at: time, actualTime: nil)
+                        let thumbnail1 = UIImage(cgImage:imageRef)
+                        let scalImg = thumbnail1.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
+                        self.attachImageView.image = scalImg
+                    } catch {
+                        print(error)
                     }
                 }
             }
             else if cellLayout.attachType == "Document" {
                 imgPlay.isHidden = true
-                
             }
 
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTapFrom(recognizer:)))

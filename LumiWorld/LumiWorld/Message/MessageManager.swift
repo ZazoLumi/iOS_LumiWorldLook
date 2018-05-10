@@ -63,6 +63,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
         let objLumiMessage = LumiMessage()
         let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.messageTimeStamp)
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        var aryUnreadMessage : [String] = []
         objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!]) { (objLumineer) in
             var aryLumiMessage = objLumineer.lumiMessages.filter("messageSubjectId = %ld",GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId)
             aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "createdTime", ascending: true)
@@ -72,7 +73,9 @@ class MessageManager: NSObject{//, NOCClientDelegate {
 //                if obj.value(forKeyPath:"contentType") as! String == "Text" {
 //
 //                }
-
+                if obj.isReadByLumi == false {
+                    aryUnreadMessage.append(obj.guid!)
+                }
                 let msg = Message()
                 msg.msgType = obj.contentType!
                 msg.text = obj.newsFeedBody
@@ -117,9 +120,15 @@ class MessageManager: NSObject{//, NOCClientDelegate {
             }
             
             self.saveMessages(arr, chatId: chatId)
+            for strGuid in aryUnreadMessage {
+                objLumiMessage.setLumineerMessageReadByLumi(strGUID: strGuid) { (json) in
+                    
+                }
+            }
             handler(arr)
 
         }
+        
     }
     
     func sendMessage(_ message: Message, toChat chat: Chat) {

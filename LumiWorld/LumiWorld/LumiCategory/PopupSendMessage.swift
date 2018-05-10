@@ -10,9 +10,12 @@ import UIKit
 import Realm
 import RealmSwift
 import MBProgressHUD
+import AVKit
 
 class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     var activityType : String!
+    var strFileUrl : String!
+    var isVideoPickup = false
     @IBOutlet weak var btnSend: UIButton!
     @IBOutlet weak var imgAttach: UIImageView!
     @IBOutlet weak var btnAttachment: UIButton!
@@ -121,27 +124,42 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         
         let objMessage = LumiMessage()
 
-        if imgAttach.image != nil {
-            if let data = UIImageJPEGRepresentation(imgAttach.image!, 0.8) {
-                let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: strImgName)
-                let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
-                hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
-                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
-                    DispatchQueue.main.async {
-                        hud.hide(animated: true)}
-                    if error != nil  {
-                        self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
-                        })
+        if imgAttach.image != nil || self.isVideoPickup {
+                var strFilePath : String!
+                if self.isVideoPickup {
+                    do {
+                        let weatherData = try NSData(contentsOf:URL.init(string: strFileUrl!
+                            )! , options: NSData.ReadingOptions())
+                        strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: weatherData as NSData, fileName: (URL.init(string: strFileUrl!)?.lastPathComponent)!)
+                        print(weatherData.length)
+                    } catch {
+                        print(error)
                     }
-
-                    DispatchQueue.main.async {
-                        self.view.superview?.removeBlurEffect()
-                        NotificationCenter.default.post(name: Notification.Name("popupRemoved"), object: nil)
-                        self.removeAnimate()
+                }
+                else {
+                    if let data = UIImageJPEGRepresentation(imgAttach.image!, 0.8) {
+                        let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: strImgName)
                     }
-                })
-            }
+                }
+                
+                defer {
+                    let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                    hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
+                    objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
+                        DispatchQueue.main.async {
+                            hud.hide(animated: true)}
+                        if error != nil  {
+                            self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
+                            })
+                        }
 
+                        DispatchQueue.main.async {
+                            self.view.superview?.removeBlurEffect()
+                            NotificationCenter.default.post(name: Notification.Name("popupRemoved"), object: nil)
+                            self.removeAnimate()
+                        }
+                    })
+                }
         }
         else {
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
@@ -168,9 +186,26 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
             else {
                 imgName = "test.png"
             }
+            self.isVideoPickup = false
             self.imgAttach.image = image
             self.strImgName = imgName
         }
+        CameraHandler.shared.didFinishCapturingVideo = { (url) in
+            var _ : String? = url.lastPathComponent
+            self.strFileUrl = url.absoluteString
+            self.isVideoPickup = true
+            DispatchQueue.main.async {
+                let asset = AVAsset(url: url)
+                let imageGenerator = AVAssetImageGenerator(asset: asset)
+                let time = CMTimeMake(1, 20)
+                let imageRef = try! imageGenerator.copyCGImage(at: time, actualTime: nil)
+                let thumbnail1 = UIImage(cgImage:imageRef)
+                let scalImg = thumbnail1.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
+                self.imgAttach.image = scalImg
+            }
+            /* get your image here */
+            } as ((URL) -> Void)
+
     }
     
     @IBAction func textFieldChanged(_ sender: AnyObject) {

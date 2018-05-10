@@ -161,8 +161,8 @@ extension UIViewController:FloatRatingViewDelegate {
         floatRatingView.rating = 0
         floatRatingView.minRating = 0
         floatRatingView.maxRating = 5
-        floatRatingView.emptyImage = UIImage.init(named: "StarEmpty")
-        floatRatingView.fullImage = UIImage.init(named: "StarFull")
+        floatRatingView.emptyImage = UIImage.init(named: "Star-Icon1")
+        floatRatingView.fullImage = UIImage.init(named: "Star-Icon")
         floatRatingView.rating = currntRating
 
         let notNowAction = UIAlertAction(title: "Not Now", style: .default)

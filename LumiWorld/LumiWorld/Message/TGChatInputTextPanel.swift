@@ -263,7 +263,8 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         
         CameraHandler.shared.isFromchat = true
         let actionCamera = UIAlertAction.init(title: "  Camera", style: .default, image: (UIImage(named: "Asset 1635")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
-            CameraHandler.shared.showCamera(vc:self.parentViewController!)
+            
+            CameraHandler.shared.showCamera(vc:GlobalShareData.sharedGlobal.getVisibleViewController(self.parentViewController)!)
             CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
                 /* get your image here */
                 self.addMessgePopup(activityType: "Image", image: image, fileUrl : imgUrl!)
@@ -274,7 +275,7 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
                 } as ((URL) -> Void)
         }
         let actionPhotoVideo = UIAlertAction.init(title: "   Photo & Video Library", style: .default, image:(UIImage(named: "Asset 1636")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
-            CameraHandler.shared.showPhotoLibrary(vc:self.parentViewController!)
+            CameraHandler.shared.showPhotoLibrary(vc:self.parentViewController!.topMostViewController())
             CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
                 /* get your image here */
                 self.addMessgePopup(activityType: "Image", image: image, fileUrl :imgUrl!)
