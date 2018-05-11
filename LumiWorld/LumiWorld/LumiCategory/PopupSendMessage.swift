@@ -138,7 +138,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 }
                 else {
                     if let data = UIImageJPEGRepresentation(imgAttach.image!, 0.8) {
-                        let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: strImgName)
+                        strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: strImgName)
                     }
                 }
                 
