@@ -165,7 +165,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         let objLumiMessage = LumiMessage()
         let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.messageTimeStamp)
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!]) { (objLumineer) in
+        objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!], nParentId: GlobalShareData.sharedGlobal.objCurrentLumineer.parentid) { (objLumineer) in
             let realm = try! Realm()
             let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageCategory") as! [String]))
             self.aryActivityData = []

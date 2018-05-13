@@ -53,7 +53,7 @@ class LumiMessage : Object {
             return "id"
     }
     
-    func getLumiMessage(param:[String:String],completionHandler: @escaping (_ objData: LumineerList) -> Void) {
+    func getLumiMessage(param:[String:String],nParentId:Int,completionHandler: @escaping (_ objData: LumineerList) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             let cellNumber = param["cellNumber"]!
@@ -69,13 +69,23 @@ class LumiMessage : Object {
 
                     guard tempArray.count != 0 else {
                         let realm = try! Realm()
-                        let parentId : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.parentid
-                        let result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
-                        if result.count > 0 {
-                            let objCategory = result[0] as LumiCategory
-                            let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
-                            let objLumineer = objCategory.lumineerList.filter("id == %d", id)
-                            completionHandler(objLumineer[0])
+                        let parentId : Int = nParentId
+                        var result : Results<LumiCategory>
+                        
+                        if parentId != -1 { result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
+                            if result.count > 0 {
+                                let objCategory = result[0] as LumiCategory
+                                let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
+                                let objLumineer = objCategory.lumineerList.filter("id == %d", id)
+                                completionHandler(objLumineer[0])
+                            }
+                        }
+                        else {
+                            result  = realm.objects(LumiCategory.self)
+                            if result.count > 0 {
+                                let objCategory = result[0] as LumiCategory
+                                completionHandler(objCategory.lumineerList[0])
+                            }
                         }
                         return
                     }
