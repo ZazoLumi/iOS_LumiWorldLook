@@ -36,6 +36,15 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     let kHeaderDataTag: Int = 100;
     let kFollowDataTag: Int = 20000;
     let searchController = UISearchController(searchResultsController: nil)
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+            #selector(LumiCategoryVC.handleRefresh(_:)),
+                                 for: UIControlEvents.valueChanged)
+        refreshControl.tintColor = UIColor.lumiGreen
+        
+        return refreshControl
+    }()
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -53,6 +62,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         self.tabBarController?.navigationController?.navigationBar.titleTextAttributes = attributes
         //Static
        //Static GlobalShareData.sharedGlobal.userCellNumber = "27735526844"
+        self.tableView.addSubview(self.refreshControl)
         self.tableView!.tableFooterView = UIView()
     }
     
@@ -61,18 +71,52 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         self.navigationController?.setToolbarHidden(true, animated: false)
         self.tabBarController?.title = "LUMINEER CATEGORIES"
         self.tableView.backgroundView = self.dataMsgLabel;
+        
+        self.getLatestLumiCategories()
+        searchController.searchResultsUpdater = self
+       // searchController.obscuresBackgroundDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Lumineer"
+     //   self.tabBarController?.navigationItem.searchController = searchController
+        
+        definesPresentationContext = true
+        
+        // Setup the Scope Bar
+        searchController.searchBar.scopeButtonTitles = ["All", "My"]
+        searchController.searchBar.delegate = self
+        self.tableView.tableHeaderView = self.searchController.searchBar;
+
+
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        searchController.isActive = false
+        self.tabBarController?.navigationItem.searchController = nil
+        
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+   
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        self.getLatestLumiCategories()
+    }
+    
+    func getLatestLumiCategories() {
         let objLumiCate = LumiCategory()
         DispatchQueue.global(qos: .userInitiated).async {
-        objLumiCate.getLumiCategory(viewCtrl: self) { (aryCategory) in
-            self.aryCategory = aryCategory
-            guard self.aryCategory.count != 0 else {
-                self.tableView.backgroundView = self.imgBg;
-                return
-            }
+            objLumiCate.getLumiCategory(viewCtrl: self) { (aryCategory) in
+                self.aryCategory = aryCategory
+                guard self.aryCategory.count != 0 else {
+                    self.tableView.backgroundView = self.imgBg;
+                    return
+                }
                 let objLumineerList = LumineerList()
-            let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.lumineerTimeStamp)
-            let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-            objLumineerList.getLumineerCompany(lastViewDate:escapedString!,completionHandler: { (List) in
+                let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.lumineerTimeStamp)
+                let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+                objLumineerList.getLumineerCompany(lastViewDate:escapedString!,completionHandler: { (List) in
                     self.aryCategory = [LumiCategory]()
                     for element in List {
                         if let category = element as? LumiCategory {
@@ -80,6 +124,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                         }
                     }
                     DispatchQueue.main.async {
+                        self.refreshControl.endRefreshing()
                         if self.aryCategory.count > 0 {
                             self.tableView.reloadData()
                         }
@@ -90,29 +135,8 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 })
             }
         }
-        
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Lumineer"
-        self.tabBarController?.navigationItem.searchController = searchController
-        definesPresentationContext = true
-        
-        // Setup the Scope Bar
-        searchController.searchBar.scopeButtonTitles = ["All", "My"]
-        searchController.searchBar.delegate = self
+    }
 
-
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        self.tabBarController?.navigationItem.searchController = nil
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     // MARK: - Tableview Methods
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -260,6 +284,9 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgCompanyLogo.frame.size.width, height: cell.imgCompanyLogo.frame.size.height))
         cell.imgCompanyLogo.contentMode = .scaleAspectFit
         cell.imgCompanyLogo.image = scalImg
+        cell.imgCompanyLogo?.layer.cornerRadius = (scalImg.size.width)/2
+        cell.imgCompanyLogo?.clipsToBounds = true;
+
         return cell
     }
     

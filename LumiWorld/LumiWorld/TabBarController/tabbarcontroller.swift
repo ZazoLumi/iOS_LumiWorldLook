@@ -50,6 +50,7 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     v2.tabBarItem = ESTabBarItem.init(ExampleIrregularityContentView(), title: nil, image: UIImage(named: "Artboard 77xxhdpi"), selectedImage: UIImage(named: "Artboard 77xxhdpi"))
     v3.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 78xxhdpi"), selectedImage: UIImage(named: "Artboard 78xxhdpi"))
     
+    
     tabBarController.viewControllers = [v1, v2, v3]
     tabBarController.selectedIndex = 1
     let navigationController = ExampleNavigationController.init(rootViewController: tabBarController)

@@ -72,7 +72,8 @@ class LumiMessage : Object {
                         let parentId : Int = nParentId
                         var result : Results<LumiCategory>
                         
-                        if parentId != -1 { result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
+                        if parentId != -1 {
+                            result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
                             if result.count > 0 {
                                 let objCategory = result[0] as LumiCategory
                                 let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
@@ -158,14 +159,33 @@ class LumiMessage : Object {
                         }
                     }
                     let realm = try! Realm()
-                    let parentId : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.parentid
-                    let result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
-                    if result.count > 0 {
-                        let objCategory = result[0] as LumiCategory
-                        let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
-                        let objLumineer = objCategory.lumineerList.filter("id == %d", id)
-                        completionHandler(objLumineer[0])
+                    let parentId : Int = nParentId
+                    //let result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
+                    var result : Results<LumiCategory>
+                    
+                    if parentId != -1 {
+                        result  = realm.objects(LumiCategory.self).filter("id == %d", parentId)
+                        if result.count > 0 {
+                            let objCategory = result[0] as LumiCategory
+                            let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
+                            let objLumineer = objCategory.lumineerList.filter("id == %d", id)
+                            completionHandler(objLumineer[0])
+                        }
                     }
+                    else {
+                        result  = realm.objects(LumiCategory.self)
+                        if result.count > 0 {
+                            let objCategory = result[0] as LumiCategory
+                            completionHandler(objCategory.lumineerList[0])
+                        }
+                    }
+
+//                    if result.count > 0 {
+//                        let objCategory = result[0] as LumiCategory
+//                        let id : Int = GlobalShareData.sharedGlobal.objCurrentLumineer.id
+//                        let objLumineer = objCategory.lumineerList.filter("id == %d", id)
+//                        completionHandler(objLumineer[0])
+//                    }
                 }, failure: { (Error) in
                     print(Error.localizedDescription)
                 })
