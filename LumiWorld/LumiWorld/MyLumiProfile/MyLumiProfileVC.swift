@@ -16,7 +16,9 @@ class MyLumiProfileVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.title = "Profile"
+        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        self.navigationController?.navigationBar.titleTextAttributes = attributes
+        self.navigationItem.title = "Profile"
 
     }
 

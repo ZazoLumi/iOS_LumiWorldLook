@@ -991,7 +991,7 @@
         <!--Lumi CategoryVC-->
         <scene sceneID="X66-MB-OgO">
             <objects>
-                <viewController storyboardIdentifier="LumiCategoryVC" id="63I-Hb-zTL" customClass="LumiCategoryVC" customModule="LumiWorld" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LumiCategoryVC" automaticallyAdjustsScrollViewInsets="NO" id="63I-Hb-zTL" customClass="LumiCategoryVC" customModule="LumiWorld" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Iwg-mO-v6t">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

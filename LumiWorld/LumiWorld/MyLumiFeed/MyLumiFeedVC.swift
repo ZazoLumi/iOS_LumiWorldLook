@@ -54,16 +54,20 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         self.tableView.tableFooterView = UIView()
         self.tableView.estimatedRowHeight = 64
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tabBarController?.title = "Feed"
-//        searchController.searchResultsUpdater = self
-//        searchController.obscuresBackgroundDuringPresentation = false
-//        searchController.searchBar.placeholder = "Search Feed"
-//        self.tabBarController?.navigationItem.searchController = searchController
-//        definesPresentationContext = true
-//
-//        // Setup the Scope Bar
-//        searchController.searchBar.scopeButtonTitles = []
-//        searchController.searchBar.delegate = self
+        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        self.navigationController?.navigationBar.titleTextAttributes = attributes
+
+        self.navigationItem.title = "Feed"
+
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Feed"
+        self.navigationItem.searchController = searchController
+        definesPresentationContext = true
+
+        // Setup the Scope Bar
+        searchController.searchBar.scopeButtonTitles = []
+        searchController.searchBar.delegate = self
 
     }
     
@@ -241,7 +245,7 @@ extension MyLumiFeedVC: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
-        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
-        filterContentForSearchText(searchController.searchBar.text!, scope: scope)
+       // let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        filterContentForSearchText(searchController.searchBar.text!, scope: "")
     }
 }

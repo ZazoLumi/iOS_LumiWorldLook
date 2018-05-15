@@ -57,11 +57,11 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     var imgBg : UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tabBarController?.navigationItem.addSettingButtonOnRight()
-        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.yellow]
-        self.tabBarController?.navigationController?.navigationBar.titleTextAttributes = attributes
+        self.tabBarController?.navigationController?.setNavigationBarHidden(true, animated: true)
+        self.navigationItem.addSettingButtonOnRight()
+        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        self.navigationController?.navigationBar.titleTextAttributes = attributes
         //Static
-       //Static GlobalShareData.sharedGlobal.userCellNumber = "27735526844"
         self.tableView.addSubview(self.refreshControl)
         self.tableView!.tableFooterView = UIView()
     }
@@ -69,7 +69,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setToolbarHidden(true, animated: false)
-        self.tabBarController?.title = "LUMINEER CATEGORIES"
+        self.navigationItem.title = "LUMINEER CATEGORIES"
         self.tableView.backgroundView = self.dataMsgLabel;
         
         self.getLatestLumiCategories()
@@ -77,14 +77,14 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
        // searchController.obscuresBackgroundDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search Lumineer"
-     //   self.tabBarController?.navigationItem.searchController = searchController
+        self.navigationItem.searchController = searchController
         
         definesPresentationContext = true
         
         // Setup the Scope Bar
         searchController.searchBar.scopeButtonTitles = ["All", "My"]
         searchController.searchBar.delegate = self
-        self.tableView.tableHeaderView = self.searchController.searchBar;
+       // self.tableView.tableHeaderView = self.searchController.searchBar;
 
 
     }
