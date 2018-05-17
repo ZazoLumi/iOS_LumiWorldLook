@@ -43,4 +43,5 @@ typedef void (^fileDownloadCompletionBlock)(int fileId, NSURL *url);
 -(void)initDownloadManagerData;
 - (void)startFileDownloads:(FileDownloadInfo *)fdi withCompletionBlock:(void (^)(int fileId, NSURL *url))handler;
 + (instancetype)sharedManager;
+-(void)cancelAllPendingDownloadTask;
 @end

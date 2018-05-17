@@ -187,7 +187,6 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
         } catch {
             let img = UIImage()
         }
-
     }
 
 }

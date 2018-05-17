@@ -83,10 +83,34 @@
         }
 }
 
+-(void)cancelAllPendingDownloadTask {
+    for (int i=0; i<[self.arrFileDownloadData count]; i++) {
+        FileDownloadInfo *fdi = [self.arrFileDownloadData objectAtIndex:i];
+        [fdi.downloadTask suspend];
+    }
+    [self.arrFileDownloadData removeAllObjects];
+    [self.session  getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+        
+        if (!dataTasks || !dataTasks.count) {
+            return;
+        }
+        for (NSURLSessionTask *task in dataTasks) {
+            [task cancel];
+        }
+        for (NSURLSessionTask *task in downloadTasks) {
+            [task cancel];
+        }
+
+    }];
+
+}
+
 #pragma mark - NSURLSession Delegate method implementation
     
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
-        
+    if (self.arrFileDownloadData ==nil || self.arrFileDownloadData.count ==0) {
+        return;
+    }
         NSError *error;
         NSFileManager *fileManager = [NSFileManager defaultManager];
         
@@ -159,7 +183,6 @@
 -(void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session{
     
     // Check if all download tasks have been finished.
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         

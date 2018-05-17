@@ -92,15 +92,14 @@ class GlobalShareData {
 
     }
     
-    func createThumbnailOfVideoFromFileURL(videoURL: String) -> UIImage? {
-        let asset = AVAsset(url: URL(string: videoURL)!)
-        let assetImgGenerate = AVAssetImageGenerator(asset: asset)
-        assetImgGenerate.appliesPreferredTrackTransform = true
-        let time = CMTimeMakeWithSeconds(Float64(1), 100)
+    func createThumbnailOfVideoFromFileURL(videoURL: URL) -> UIImage? {
+        let asset = AVAsset(url: videoURL)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        let time = CMTimeMake(1, 20)
         do {
-            let img = try assetImgGenerate.copyCGImage(at: time, actualTime: nil)
-            let thumbnail = UIImage(cgImage: img)
-            return thumbnail
+            let imageRef = try! imageGenerator.copyCGImage(at: time, actualTime: nil)
+            let thumbnail1 = UIImage(cgImage:imageRef)
+            return thumbnail1
         } catch {
             return UIImage(named: "ico_placeholder")
         }
@@ -140,7 +139,6 @@ class GlobalShareData {
         }
     }
 
-
     func getVisibleViewController(_ rootViewController: UIViewController?) -> UIViewController? {
         
         var rootVC = rootViewController
@@ -167,8 +165,6 @@ class GlobalShareData {
         }
         return nil
     }
-
-
     
 }
 

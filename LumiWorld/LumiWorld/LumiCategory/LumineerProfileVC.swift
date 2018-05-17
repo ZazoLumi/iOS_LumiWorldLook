@@ -453,7 +453,7 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         }
         else {
             cell.constImgWidth.constant = 25
-            let urlOriginalImage : URL!
+            var urlOriginalImage : URL!
             if(objLumiMessage.fileName?.hasUrlPrefix())!
             {
                 urlOriginalImage = URL.init(string: objLumiMessage.fileName!)
@@ -463,17 +463,17 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
                 urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
             }
 
-            if objLumiMessage.contentType == "Video" {
-                DispatchQueue.main.async {
-                    let asset = AVAsset(url: urlOriginalImage!)
-                    let imageGenerator = AVAssetImageGenerator(asset: asset)
-                    let time = CMTimeMake(1, 20)
-                    let imageRef = try! imageGenerator.copyCGImage(at: time, actualTime: nil)
-                    let thumbnail1 = UIImage(cgImage:imageRef)
-                    let scalImg = thumbnail1.af_imageScaled(to: CGSize(width: 25, height: 25))
-                    cell.imgMessage.image = scalImg
+            if objLumiMessage.contentType == "Video" && objLumiMessage.imageURL != nil {
+                let fileName = objLumiMessage.imageURL
+                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                Alamofire.request(urlOriginalImage!).responseImage { response in
+                    debugPrint(response)
+                    
+                    if let image = response.result.value {
+                        let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+                        cell.imgMessage.image = scalImg
+                    }
                 }
-                
             }
             else {
                 Alamofire.request(urlOriginalImage!).responseImage { response in
@@ -486,7 +486,6 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
                 }
 
             }
-
             }
         var strImageName : String!
         
@@ -808,5 +807,7 @@ enum UserDefaultsKeys : String {
     case messageTimeStamp
     case lumineerTimeStamp
     case pendingVerification
+    case isAlreadyLogin
+
 }
 

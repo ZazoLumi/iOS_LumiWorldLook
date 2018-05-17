@@ -10,6 +10,7 @@ import UIKit
 import SwiftyJSON
 import RealmSwift
 import MBProgressHUD
+import AVKit
 
 class LumiMessage : Object {
     
@@ -143,8 +144,22 @@ class LumiMessage : Object {
                                     DispatchQueue.main.async {
                                         let messages = objLumineerMessageList.filter("id == %d", response)
                                             if messages.count > 0 {
-                                                try! realm.write {
+                                                var fileName : String!
                                                 let objLumiMsg = messages[0] as LumiMessage
+                                                if objLumiMsg.contentType == "Video" {
+                                                    let thumbnail1 = GlobalShareData.sharedGlobal.createThumbnailOfVideoFromFileURL(videoURL: url!)
+                                                    if let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
+                                                        fileName = url?.lastPathComponent
+                                                        fileName = fileName?.deletingPathExtension
+                                                        fileName = fileName?.appendingPathExtension("png")
+                                                        let _ = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: fileName!)
+                                                    }
+
+                                                }
+                                                try! realm.write {
+                                                    if objLumiMsg.contentType == "Video" {
+                                                        objLumiMsg.imageURL = fileName
+                                                    }
                                                 objLumiMsg.fileName = url?.absoluteString
                                                 objLumiMsg.isFileDownloaded = true
                                                 realm.add(objLumiMsg, update: true)
@@ -274,7 +289,17 @@ class LumiMessage : Object {
                     guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         return
                     }
+                    let realm = try! Realm()
+                    let result = realm.objects(LumineerList.self).filter("id = \(GlobalShareData.sharedGlobal.objCurrentLumineer.id)")
                     
+                    let objLumineer = result[0] as LumineerList
+                    let lumiMessages = objLumineer.lumiMessages.filter("guid = '\(strGUID)'")
+                    try! realm.write {
+                        let objMessage = lumiMessages[0] as LumiMessage
+                        objMessage.isReadByLumi = true
+                        realm.add(objMessage, update: true)
+                    }
+                   
                 }, failure: { (Error) in
                     print(Error.localizedDescription)
                 })

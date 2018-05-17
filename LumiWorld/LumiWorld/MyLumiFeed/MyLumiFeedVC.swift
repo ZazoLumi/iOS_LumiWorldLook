@@ -22,6 +22,7 @@ class lumiFeedCell: UITableViewCell {
     @IBOutlet weak var constImgWidth: NSLayoutConstraint!
     @IBOutlet weak var imgMessage: UIImageView!
 
+    @IBOutlet weak var constImgHeight: NSLayoutConstraint!
     override func layoutSubviews() {
         super.layoutSubviews()
         self.imgLumineerProfile.layer.cornerRadius = self.imgLumineerProfile.bounds.size.height/2
@@ -34,6 +35,8 @@ class lumiFeedCell: UITableViewCell {
 class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     @IBOutlet weak var tableView: UITableView!
     var aryActivityData: [[String:AnyObject]] = []
+    var arySearchData: [[String:AnyObject]] = []
+    var strSearchText : NSString!
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
@@ -46,6 +49,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
+        self.navigationItem.addSettingButtonOnRight()
         self.tableView.addSubview(self.refreshControl)
 
     }
@@ -95,10 +99,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                             let message = aryLumiMessage[0]
                             let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",message.enterpriseID)
                             let lumineer = objsLumineer[0]
-                            
-                          //  let section = ["title":lumineer.name as Any, "text":message.newsFeedBody as Any,"date":Date().getFormattedDate(string: message.newsfeedPostedTime!, formatter: ""),"profileImg":lumineer.enterpriseLogo as Any] as [String : Any]
                             let section = ["title":lumineer.name as Any, "message":message as Any,"profileImg":lumineer.enterpriseLogo as Any] as [String : Any]
-
                             self.aryActivityData.append(section as [String : AnyObject])
                         }
                     }
@@ -117,18 +118,32 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering() {
+            return arySearchData.count
+        }
+        strSearchText = ""
         return aryActivityData.count;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "lumiFeedCell", for: indexPath) as! lumiFeedCell
-        let objCellData = aryActivityData[indexPath.row]
+        var objCellData : [String : Any]!
         //  let section = ["title":lumineer.name as Any, "text":message.newsFeedBody as Any,"date":Date().getFormattedDate(string: message.newsfeedPostedTime!, formatter: ""),"profileImg":lumineer.enterpriseLogo as Any] as [String : Any]
+        
+        if isFiltering() {
+            objCellData = arySearchData[indexPath.row]
+        }
+        else {
+            objCellData = aryActivityData[indexPath.row]
+        }
         
         let message = objCellData["message"] as? LumiMessage
 
+
+
         cell.lblLumineerTitle.text = objCellData["title"] as? String
-        cell.lblMessageDetails.text = message?.newsFeedBody
+        let myStr = underlinedString(string: (message?.newsFeedBody)! as NSString, term: strSearchText)
+        cell.lblMessageDetails.attributedText = myStr
         var msgCatDate = message?.messageCategory
         msgCatDate?.append(" | \(Date().getFormattedDate(string: (message?.newsfeedPostedTime!)!, formatter: ""))")
         cell.lblMessageTime.text = msgCatDate
@@ -140,9 +155,11 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         var strImageName : String!
         if (message?.isReadByLumi)! {
             strImageName = "Artboard 92xxhdpi"
+            cell.backgroundColor = UIColor.init(red: 250/255.0, green: 250/255.0, blue: 250/255.0, alpha: 0.8)
         }
         else {
-            strImageName = "Artboard 91xxhdpi"
+            strImageName = "Asset714"
+            cell.backgroundColor = UIColor.white
         }
         cell.imgRedDot?.image = UIImage(named:strImageName)
 
@@ -151,7 +168,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         }
         else {
             cell.constImgWidth.constant = 25
-            let urlOriginalImage : URL!
+            var urlOriginalImage : URL!
             if(message?.fileName?.hasUrlPrefix())!
             {
                 urlOriginalImage = URL.init(string: (message?.fileName!)!)
@@ -161,15 +178,16 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                 urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
             }
             
-            if message?.contentType == "Video" {
-                DispatchQueue.main.async {
-                    let asset = AVAsset(url: urlOriginalImage!)
-                    let imageGenerator = AVAssetImageGenerator(asset: asset)
-                    let time = CMTimeMake(1, 20)
-                    let imageRef = try! imageGenerator.copyCGImage(at: time, actualTime: nil)
-                    let thumbnail1 = UIImage(cgImage:imageRef)
-                    let scalImg = thumbnail1.af_imageScaled(to: CGSize(width: 25, height: 25))
-                    cell.imgMessage.image = scalImg
+            if message?.contentType == "Video" && message?.imageURL != nil{
+                let fileName = message?.imageURL
+                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                Alamofire.request(urlOriginalImage!).responseImage { response in
+                    debugPrint(response)
+                    
+                    if let image = response.result.value {
+                        let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+                        cell.imgMessage.image = scalImg
+                    }
                 }
             }
             else {
@@ -194,42 +212,70 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.isFiltering() {
+//            objLumineer = self.arySearchLumineer[(indexPath.row)] as LumineerList
+//            delaytime = 0.5
+        }
+        else {
+        }
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Deleted")
+            
+//            self.catNames.remove(at: indexPath.row)
+//            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+
+    
+    func underlinedString(string: NSString, term: NSString) -> NSAttributedString {
+        let output = NSMutableAttributedString(string: string as String)
+        let underlineRange = string.range(of: term as String, options: .caseInsensitive)
+        output.addAttribute(kCTUnderlineStyleAttributeName as NSAttributedStringKey, value: NSUnderlineStyle.styleNone.rawValue, range: NSMakeRange(0, string.length))
+        output.addAttribute(kCTUnderlineStyleAttributeName as NSAttributedStringKey, value: NSUnderlineStyle.styleSingle.rawValue, range: underlineRange)
+        output.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.lumiGreen as Any, range: underlineRange)
+        return output
+    }
+
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.getLatestLumiMessages()
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-       /* arySearchLumineer = []
-            let realm = try! Realm()
-            let realmObjects = realm.objects(LumiCategory.self)
-            let result = realmObjects.filter("ANY lumineerList.status == 1")
-            if result.count > 0 {
-                for objCategory in result{
-                    for lumineer in objCategory.lumineerList.filter("status == 1") {
-                        let  objLumineer = lumineer as LumineerList
-                        arySearchLumineer.append(objLumineer)
-                        // do something with your vegan meal
-                    }
+        strSearchText = searchText as NSString
+        arySearchData = []
+        let realm = try! Realm()
+        let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "enterpriseID") as! [Int]))
+        for objUniqueItem in distinctTypes {
+            let result  = realm.objects(LumiCategory.self)
+            for objCategory in result  {
+                for objNLumineer in objCategory.lumineerList {
+                    var aryLumiMessage = objNLumineer.lumiMessages.filter("enterpriseID = %@",objUniqueItem).filter("newsFeedBody CONTAINS[c] '\(searchText)'")
                     
+                    if aryLumiMessage.count > 0 {
+                        aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "id", ascending: false)
+                        let message = aryLumiMessage[0]
+                        let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",message.enterpriseID)
+                        let lumineer = objsLumineer[0]
+                        let section = ["title":lumineer.name as Any, "message":message as Any,"profileImg":lumineer.enterpriseLogo as Any] as [String : Any]
+                        self.arySearchData.append(section as [String : AnyObject])
+                    }
                 }
             }
+            self.tableView.reloadData()
         }
-        else {
-            let realm = try! Realm()
-            let realmObjects = realm.objects(LumiCategory.self)
-            let result = realmObjects.filter("ANY lumineerList.name CONTAINS[cd] '\(searchText)'")
-            if result.count > 0 {
-                let objCategory = result[0] as LumiCategory
-                for lumineer in objCategory.lumineerList.filter("name CONTAINS[cd] '\(searchText)'") {
-                    let  objLumineer = lumineer as LumineerList
-                    arySearchLumineer.append(objLumineer)
-                }
-            }
-        tableView.reloadData()*/
+    }
+    func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
     }
 
+    func isFiltering() -> Bool {
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+    }
 
 }
 @available(iOS 11.0, *)
@@ -240,6 +286,8 @@ extension MyLumiFeedVC: UISearchBarDelegate {
     }
 }
 
+
+
 @available(iOS 11.0, *)
 extension MyLumiFeedVC: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
@@ -249,3 +297,20 @@ extension MyLumiFeedVC: UISearchResultsUpdating {
         filterContentForSearchText(searchController.searchBar.text!, scope: "")
     }
 }
+extension NSMutableAttributedString
+{
+    
+    
+    func changeWordsColour(terms:[NSString])
+    {
+        let string = self.string as NSString
+        self.addAttribute(kCTForegroundColorAttributeName as NSAttributedStringKey, value: UIColor.brown, range: NSMakeRange(0, self.length))
+        for term in terms
+        {
+            let underlineRange = string.range(of: term as String)
+            self.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.red, range: underlineRange)
+            
+        }
+    }
+}
+

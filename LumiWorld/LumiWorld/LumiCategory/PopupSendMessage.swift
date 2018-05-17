@@ -195,12 +195,8 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
             self.strFileUrl = url.absoluteString
             self.isVideoPickup = true
             DispatchQueue.main.async {
-                let asset = AVAsset(url: url)
-                let imageGenerator = AVAssetImageGenerator(asset: asset)
-                let time = CMTimeMake(1, 20)
-                let imageRef = try! imageGenerator.copyCGImage(at: time, actualTime: nil)
-                let thumbnail1 = UIImage(cgImage:imageRef)
-                let scalImg = thumbnail1.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
+                let thumbnail1 = GlobalShareData.sharedGlobal.createThumbnailOfVideoFromFileURL(videoURL: url)
+                let scalImg = thumbnail1?.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
                 self.imgAttach.image = scalImg
             }
             /* get your image here */

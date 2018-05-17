@@ -393,12 +393,9 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             }
 
         }
-
-
     }
     
     // MARK: - Private instance methods
-    
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         arySearchLumineer = []
         if searchBarIsEmpty() && scope == "All" {
@@ -421,16 +418,16 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             }
         }
         else {
-        let realm = try! Realm()
-        let realmObjects = realm.objects(LumiCategory.self)
-        let result = realmObjects.filter("ANY lumineerList.name CONTAINS[cd] '\(searchText)'")
-        if result.count > 0 {
-            let objCategory = result[0] as LumiCategory
-            for lumineer in objCategory.lumineerList.filter("name CONTAINS[cd] '\(searchText)'") {
-                    let  objLumineer = lumineer as LumineerList
-                    arySearchLumineer.append(objLumineer)
+            let realm = try! Realm()
+            let realmObjects = realm.objects(LumiCategory.self)
+            let result = realmObjects.filter("ANY lumineerList.name CONTAINS[cd] '\(searchText)'")
+            if result.count > 0 {
+                let objCategory = result[0] as LumiCategory
+                for lumineer in objCategory.lumineerList.filter("name CONTAINS[cd] '\(searchText)'") {
+                        let  objLumineer = lumineer as LumineerList
+                        arySearchLumineer.append(objLumineer)
+                }
             }
-        }
         }
         tableView.reloadData()
     }
@@ -684,6 +681,22 @@ extension UINavigationItem {
         }
     @objc func actionItemTapped(_ sender: UIButton) {
         let btnAction :UIButton = sender
+        if btnAction.tag == 205 {
+            GlobalShareData.sharedGlobal.realmManager.deleteDatabase()
+//            let realm = try? Realm()
+//            try! realm?.write({
+//                realm?.deleteAll()
+//            })
+            defer {
+                GlobalShareData.sharedGlobal.clearDiskCache()
+                DownloadManager.shared().cancelAllPendingDownloadTask()
+                UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.messageTimeStamp.rawValue)
+                UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.lumineerTimeStamp.rawValue)
+                UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.isAlreadyLogin)
+                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let objLogInVC = storyBoard.instantiateInitialViewController()
+                UIApplication.shared.keyWindow?.rootViewController = objLogInVC }
+        }
         print(btnAction.tag)
     }
     @objc func actionProfileTapped(_ sender: UIButton) {

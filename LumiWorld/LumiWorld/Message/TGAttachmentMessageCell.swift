@@ -145,12 +145,8 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
                 
                 DispatchQueue.main.async {
                     do {
-                        let asset = AVAsset(url: urlOriginalImage!)
-                        let imageGenerator = AVAssetImageGenerator(asset: asset)
-                        let time = CMTimeMake(1, 20)
-                        let imageRef = try! imageGenerator.copyCGImage(at: time, actualTime: nil)
-                        let thumbnail1 = UIImage(cgImage:imageRef)
-                        let scalImg = thumbnail1.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
+                        let thumbnail1 = GlobalShareData.sharedGlobal.createThumbnailOfVideoFromFileURL(videoURL: urlOriginalImage!)
+                        let scalImg = thumbnail1?.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
                         self.attachImageView.image = scalImg
                     } catch {
                         print(error)

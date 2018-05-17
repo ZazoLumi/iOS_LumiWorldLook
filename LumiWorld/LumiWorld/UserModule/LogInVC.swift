@@ -21,7 +21,16 @@ class LogInVC: UIViewController,FormDataDelegate {
 
     @IBOutlet weak var viewTblData: UIView!
     override func viewDidLoad() {
+        if UserDefaults.standard.getBoolValue(key:UserDefaultsKeys.isAlreadyLogin) {
+            let realm = try! Realm()
+            let data  = realm.objects(UserData.self)
+            if data.count>0 {
+                GlobalShareData.sharedGlobal.objCurrentUserDetails = data[0]
+                GlobalShareData.sharedGlobal.userCellNumber = data[0].cell
+            }
 
+            UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -92,6 +101,7 @@ class LogInVC: UIViewController,FormDataDelegate {
                     GlobalShareData.sharedGlobal.realmManager.saveObjects(objs: newObj)
                 }
 
+                UserDefaults.standard.setBoolValue(value: true, key: UserDefaultsKeys.isAlreadyLogin)
                 if #available(iOS 11.0, *) {
                     UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
                 } else {

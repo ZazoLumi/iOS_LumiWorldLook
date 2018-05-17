@@ -25,7 +25,7 @@ class SendAttachmentVC: UIViewController {
             imgAttach.image = fileImage
         }
         else if activityType == "Video" {
-            let image = GlobalShareData.sharedGlobal.createThumbnailOfVideoFromFileURL(videoURL:fileUrl!)
+            let image = GlobalShareData.sharedGlobal.createThumbnailOfVideoFromFileURL(videoURL:URL.init(string: fileUrl!)!)
             imgAttach.image = image
         }
 
