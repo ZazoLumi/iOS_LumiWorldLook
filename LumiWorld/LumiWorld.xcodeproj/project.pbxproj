@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09028A7C20AEB86B007F85F2 /* AboutPlusTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */; };
 		0916065420871FA400F8E8EC /* multipartAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0916065320871FA400F8E8EC /* multipartAPI.m */; };
 		093F445E206B715900BC9983 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445D206B715800BC9983 /* UserData.swift */; };
 		093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445F206B717F00BC9983 /* LumiCategory.swift */; };
@@ -111,6 +112,7 @@
 
 /* Begin PBXFileReference section */
 		0900544620591EC700262084 /* LumiWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LumiWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutPlusTC.swift; sourceTree = "<group>"; };
 		0916065120871FA300F8E8EC /* LumiWorld-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LumiWorld-Bridging-Header.h"; sourceTree = "<group>"; };
 		0916065220871FA400F8E8EC /* multipartAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multipartAPI.h; sourceTree = "<group>"; };
 		0916065320871FA400F8E8EC /* multipartAPI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = multipartAPI.m; sourceTree = "<group>"; };
@@ -252,6 +254,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		09028A7A20AEB7F9007F85F2 /* LumiMenu */ = {
+			isa = PBXGroup;
+			children = (
+				09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */,
+			);
+			path = LumiMenu;
+			sourceTree = "<group>";
+		};
 		093F445C206B715800BC9983 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -265,6 +275,7 @@
 		0964E556205FC811007E5924 /* LumiWorld */ = {
 			isa = PBXGroup;
 			children = (
+				09028A7A20AEB7F9007F85F2 /* LumiMenu */,
 				097BF9DE207E35D2001F935C /* Message */,
 				093F445C206B715800BC9983 /* Models */,
 				0964E70D2060F981001D6F47 /* LumiCategory */,
@@ -733,6 +744,7 @@
 				0964E7332060F981001D6F47 /* CustomTableView.swift in Sources */,
 				0964E71C2060F981001D6F47 /* Validator.swift in Sources */,
 				096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */,
+				09028A7C20AEB86B007F85F2 /* AboutPlusTC.swift in Sources */,
 				0964E7252060F981001D6F47 /* FloatRule.swift in Sources */,
 				0964E7212060F981001D6F47 /* CharacterSetRule.swift in Sources */,
 				0964E72B2060F981001D6F47 /* MinLengthRule.swift in Sources */,

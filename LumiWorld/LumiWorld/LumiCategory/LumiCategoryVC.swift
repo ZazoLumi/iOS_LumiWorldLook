@@ -64,6 +64,8 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         //Static
         self.tableView.addSubview(self.refreshControl)
         self.tableView!.tableFooterView = UIView()
+        NotificationCenter.default.addObserver(self, selector: #selector(openAboutPlusTCVC), name: Notification.Name("openAboutPlusTC"), object: nil)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,6 +101,18 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @objc func openAboutPlusTCVC(notification: NSNotification) {
+        print(self.tabBarController?.selectedIndex)
+        if let strUrl = notification.userInfo?["url"] as? String  {
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let objAboutPlusTC = storyBoard.instantiateViewController(withIdentifier: "AboutPlusTC") as! AboutPlusTC
+            objAboutPlusTC.urlToDisplay = URL.init(string: strUrl)
+            objAboutPlusTC.strTitle = notification.userInfo?["title"] as? String
+            self.navigationController?.pushViewController(objAboutPlusTC, animated: true)
+        }
+    }
+
    
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.getLatestLumiCategories()
@@ -681,22 +695,37 @@ extension UINavigationItem {
         }
     @objc func actionItemTapped(_ sender: UIButton) {
         let btnAction :UIButton = sender
-        if btnAction.tag == 205 {
-            GlobalShareData.sharedGlobal.realmManager.deleteDatabase()
-//            let realm = try? Realm()
-//            try! realm?.write({
-//                realm?.deleteAll()
-//            })
-            defer {
-                GlobalShareData.sharedGlobal.clearDiskCache()
-                DownloadManager.shared().cancelAllPendingDownloadTask()
-                UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.messageTimeStamp.rawValue)
-                UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.lumineerTimeStamp.rawValue)
-                UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.isAlreadyLogin)
-                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let objLogInVC = storyBoard.instantiateInitialViewController()
-                UIApplication.shared.keyWindow?.rootViewController = objLogInVC }
-        }
+        sender.superview?.parentViewController?.dismiss(animated: true, completion: {
+            if btnAction.tag == 203 || btnAction.tag == 201 {
+                var strUrl : String!
+                var strTitle : String!
+
+                if btnAction.tag == 203 {
+                    strUrl = "http://196.223.97.152/portal/About-Lumi-World_191217.html"
+                    strTitle = "About"
+                }
+                else {
+                    strUrl = "http://196.223.97.152/portal/mobiletncs.html"
+                    strTitle = "Terms & Conditions"
+                }
+                
+                NotificationCenter.default.post(name: Notification.Name("openAboutPlusTC"), object: nil, userInfo: ["url":strUrl!,"title":strTitle])
+            }
+            else if btnAction.tag == 204 {
+            }
+            else if btnAction.tag == 205 {
+                GlobalShareData.sharedGlobal.realmManager.deleteDatabase()
+                defer {
+                    GlobalShareData.sharedGlobal.clearDiskCache()
+                    DownloadManager.shared().cancelAllPendingDownloadTask()
+                    UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.messageTimeStamp.rawValue)
+                    UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.lumineerTimeStamp.rawValue)
+                    UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.isAlreadyLogin)
+                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let objLogInVC = storyBoard.instantiateInitialViewController()
+                    UIApplication.shared.keyWindow?.rootViewController = objLogInVC }
+            }
+        })
         print(btnAction.tag)
     }
     @objc func actionProfileTapped(_ sender: UIButton) {

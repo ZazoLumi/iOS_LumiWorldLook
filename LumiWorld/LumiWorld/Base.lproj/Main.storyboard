@@ -1471,6 +1471,21 @@
             </objects>
             <point key="canvasLocation" x="2994.375" y="134.1549295774648"/>
         </scene>
+        <!--About PlusTC-->
+        <scene sceneID="jII-0d-hwP">
+            <objects>
+                <viewController storyboardIdentifier="AboutPlusTC" id="Zg3-yB-b3V" customClass="AboutPlusTC" customModule="LumiWorld" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8gW-hS-KT3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="JEC-Cz-9Nx"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sZt-PD-dER" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-652" y="830"/>
+        </scene>
         <!--Create AccountVC-->
         <scene sceneID="Z34-Tc-Y03">
             <objects>
@@ -1589,11 +1604,11 @@
         <scene sceneID="Bbc-3g-yFH">
             <objects>
                 <viewController storyboardIdentifier="SendAttachmentVC" id="FuN-Pa-CNi" customClass="SendAttachmentVC" customModule="LumiWorld" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Wn8-LQ-tjD">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="Wn8-LQ-tjD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Caption" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KSz-wN-RU8" customClass="NoCopyPasteUITextField" customModule="LumiWorld" customModuleProvider="target">
+                            <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Caption" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KSz-wN-RU8" customClass="NoCopyPasteUITextField" customModule="LumiWorld" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="637" width="345" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="S9V-fO-CYx"/>
@@ -1611,20 +1626,20 @@
                                     <outlet property="delegate" destination="FuN-Pa-CNi" id="WaO-Jw-VN6"/>
                                 </connections>
                             </textField>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2sc-O3-3gd">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2sc-O3-3gd">
                                 <rect key="frame" x="0.0" y="20" width="375" height="617"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="2sc-O3-3gd" secondAttribute="height" multiplier="160:259" id="G8k-eU-D3M"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPd-fG-ugi">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPd-fG-ugi">
                                 <rect key="frame" x="350" y="20" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="BPd-fG-ugi" secondAttribute="height" multiplier="1:1" id="jbP-rZ-HMN"/>
                                 </constraints>
                                 <state key="normal" image="Close"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cS-gZ-0qp">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cS-gZ-0qp">
                                 <rect key="frame" x="0.0" y="20" width="22" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="3cS-gZ-0qp" secondAttribute="height" multiplier="1:1" id="jla-8L-lPD"/>
@@ -1639,7 +1654,7 @@
                                     <action selector="onBtnClosePopupTapped:" destination="FuN-Pa-CNi" eventType="touchUpInside" id="ccQ-ha-QvN"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBG-1Z-TYa">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBG-1Z-TYa">
                                 <rect key="frame" x="353" y="641" width="22" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="wBG-1Z-TYa" secondAttribute="height" multiplier="1:1" id="B5D-ml-agx"/>

@@ -97,6 +97,12 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                         if aryLumiMessage.count > 0 {
                             aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "id", ascending: false)
                             let message = aryLumiMessage[0]
+                            try! realm.write {
+                                if message.newsFeedBody == nil {
+                                    message.newsFeedBody = ""
+                                }
+                            }
+
                             let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",message.enterpriseID)
                             let lumineer = objsLumineer[0]
                             let section = ["title":lumineer.name as Any, "message":message as Any,"profileImg":lumineer.enterpriseLogo as Any] as [String : Any]
@@ -142,6 +148,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
 
 
         cell.lblLumineerTitle.text = objCellData["title"] as? String
+
         let myStr = underlinedString(string: (message?.newsFeedBody)! as NSString, term: strSearchText)
         cell.lblMessageDetails.attributedText = myStr
         var msgCatDate = message?.messageCategory
