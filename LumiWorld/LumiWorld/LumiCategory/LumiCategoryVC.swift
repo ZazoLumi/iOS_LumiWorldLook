@@ -103,8 +103,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     }
     
     @objc func openAboutPlusTCVC(notification: NSNotification) {
-        print(self.tabBarController?.selectedIndex)
-        if let strUrl = notification.userInfo?["url"] as? String  {
+        if let strUrl = notification.userInfo?["url"] as? String, self.tabBarController?.selectedIndex == 1  {
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let objAboutPlusTC = storyBoard.instantiateViewController(withIdentifier: "AboutPlusTC") as! AboutPlusTC
             objAboutPlusTC.urlToDisplay = URL.init(string: strUrl)

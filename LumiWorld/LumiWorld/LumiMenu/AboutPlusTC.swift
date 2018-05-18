@@ -31,7 +31,6 @@ class AboutPlusTC: UIViewController {
         webView.allowsBackForwardNavigationGestures = true
         webView.navigationDelegate = self
 
-
     }
     /*
     // Only override draw() if you perform custom drawing.
