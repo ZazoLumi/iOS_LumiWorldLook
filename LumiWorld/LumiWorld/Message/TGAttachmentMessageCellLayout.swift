@@ -200,7 +200,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
                         timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
                         
                         x += timeLabelWidth + hPadding/2
-                        deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                        deliveryStatusViewFrame = isOutgoing ?CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
                         
                         bubbleViewHeight = textMargin.top + textLabelHeight + vPadding + timeLabelHeight + textMargin.bottom + attachmentMargin.top + 80 + attachmentMargin.bottom
                         bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
@@ -219,7 +219,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
                         timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
                         
                         x += timeLabelWidth + hPadding/2
-                        deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                        deliveryStatusViewFrame = isOutgoing ?CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
                         
                     }
                     
@@ -245,7 +245,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
                     timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
                     
                     x += timeLabelWidth + hPadding/2
-                    deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                    deliveryStatusViewFrame = isOutgoing ?CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
                 }
                 
                 height = bubbleViewHeight + bubbleViewMargin.top + bubbleViewMargin.bottom
@@ -266,7 +266,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
                 timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
                 
                 x += timeLabelWidth + hPadding/2
-                deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                deliveryStatusViewFrame = isOutgoing ? CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
                 
                 height = bubbleViewHeight + bubbleViewMargin.top + bubbleViewMargin.bottom
                 
@@ -335,7 +335,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
                     timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
                     
                     x += timeLabelWidth + hPadding/2
-                    deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                    deliveryStatusViewFrame = isOutgoing ? CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
                     
                     bubbleViewHeight = textMargin.top + textLabelHeight + vPadding + timeLabelHeight + textMargin.bottom + attachmentMargin.top + 110 + attachmentMargin.bottom
                     bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight)
@@ -354,7 +354,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
                     timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
                     
                     x += timeLabelWidth + hPadding/2
-                    deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                    deliveryStatusViewFrame = isOutgoing ? CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
                     
                 }
                 
@@ -380,7 +380,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
                 timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
                 
                 x += timeLabelWidth + hPadding/2
-                deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                deliveryStatusViewFrame = isOutgoing ? CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
             }
             
             height = bubbleViewHeight + bubbleViewMargin.top + bubbleViewMargin.bottom
@@ -401,7 +401,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
             timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
             
             x += timeLabelWidth + hPadding/2
-            deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+            deliveryStatusViewFrame = isOutgoing ? CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
 
             height = bubbleViewHeight + bubbleViewMargin.top + bubbleViewMargin.bottom
 

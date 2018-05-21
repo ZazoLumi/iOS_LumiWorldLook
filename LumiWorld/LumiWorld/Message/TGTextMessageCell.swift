@@ -82,8 +82,13 @@ class TGTextMessageCell: TGBaseMessageCell {
             
             timeLabel.frame = cellLayout.timeLabelFrame
             timeLabel.attributedText = cellLayout.attributedTime
+            if cellLayout.deliveryStatusViewFrame != CGRect.zero {
+                deliveryStatusView.frame = cellLayout.deliveryStatusViewFrame
+            }
+            else {
             
-            deliveryStatusView.frame = cellLayout.deliveryStatusViewFrame
+            }
+            
             deliveryStatusView.deliveryStatus = cellLayout.message.deliveryStatus
         }
     }

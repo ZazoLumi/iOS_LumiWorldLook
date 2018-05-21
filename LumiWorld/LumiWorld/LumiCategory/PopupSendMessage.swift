@@ -213,7 +213,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     //
 
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == "Enter Message" {
+        if textView.text == "Type Message" {
             textView.text = nil
             textView.textColor = UIColor.black
             textField.endEditing(true)
@@ -223,7 +223,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "Enter Message"
+            textView.text = "Type Message"
             textView.textColor = .lumiGray
         }
     }
@@ -237,7 +237,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         
         if updatedText.isEmpty {
             isSubjectPicked = true
-            textView.text = "Enter Message"
+            textView.text = "Type Message"
             textView.textColor = .lumiGray
             
             textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
@@ -245,7 +245,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
             return false
         }
             
-        else if textView.text == "Enter Message" && !text.isEmpty {
+        else if textView.text == "Type Message" && !text.isEmpty {
             textView.text = nil
             textView.textColor = UIColor.black
         }

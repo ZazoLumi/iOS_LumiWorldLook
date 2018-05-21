@@ -61,7 +61,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
 
-        self.navigationItem.title = "Feed"
+        self.navigationItem.title = "MY LUMI FEED"
 
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -229,12 +229,24 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.isFiltering() {
-//            objLumineer = self.arySearchLumineer[(indexPath.row)] as LumineerList
-//            delaytime = 0.5
+        let chat = botChat
+        var objCellData : [String : Any]!
+        if isFiltering() {
+            objCellData = arySearchData[indexPath.row]
         }
         else {
+            objCellData = aryActivityData[indexPath.row]
         }
+        
+        let message = objCellData["message"] as? LumiMessage
+        GlobalShareData.sharedGlobal.objCurrentLumiMessage = message
+        var chatVC: UIViewController?
+        chatVC = TGChatViewController(chat: chat)
+        //chatVC.
+        if let vc = chatVC {
+            navigationController?.pushViewController(vc, animated: true)
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

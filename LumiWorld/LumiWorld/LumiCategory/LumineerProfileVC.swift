@@ -11,6 +11,7 @@ import Realm
 import RealmSwift
 import Alamofire
 import AVKit
+import MBProgressHUD
 
 class SubjectCell: UITableViewCell {
     @IBOutlet weak var imgStatus: UIImageView!
@@ -32,7 +33,7 @@ class SubjectCell: UITableViewCell {
     
 }
 
-class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
+class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
     let kHeaderSectionTag: Int = 6900;
     var expandedSectionHeaderNumber: Int = -1
     var expandedSectionHeader: UITableViewHeaderFooterView!
@@ -50,6 +51,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     @IBOutlet weak var lblFollowers: UILabel!
     var aryActivityData: [[String:AnyObject]]!
     var objLumineer : LumineerList!
+    var isInboxCountSelected = false
     
     @IBOutlet weak var lblActivity: UIView!
     @IBOutlet weak var viewActivityHeights: NSLayoutConstraint!
@@ -68,17 +70,21 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(getLatestLumiMessages), name: Notification.Name("popupRemoved"), object: nil)
 
         lblExpandableDescription.delegate = self
-        lblExpandableDescription.setLessLinkWith(lessLink: "Close", attributes: [.foregroundColor:UIColor.red], position: .left)
+        lblExpandableDescription.setLessLinkWith(lessLink: "Close", attributes: [.foregroundColor:UIColor.red], position: .center)
         
         lblExpandableDescription.shouldCollapse = true
         lblExpandableDescription.textReplacementType = .word
         lblExpandableDescription.numberOfLines = 2
+       // lblExpandableDescription.textAlignment = .right
+        lblExpandableDescription.textAlignment = .center
+
         // Do any additional setup after loading the view.
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleRatingTapFrom(recognizer:)))
         self.ratingVC.addGestureRecognizer(tapGestureRecognizer)
         self.ratingVC.isUserInteractionEnabled = true
         viewActivityHeights.constant = 0
         lblActivity.isHidden = true
+        lblLumiProfileTxt.text =  "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!), how can we help you?"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,7 +106,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     
     func calculateCurrentHeight() {
         var tableHeight = 0
-        if !btnInboxCount.isSelected {
+        if !isInboxCountSelected {
             tableHeight = 0
         }
         else if self.aryActivityData != nil, self.expandedSectionHeaderNumber == -1 ,(self.aryActivityData.count)>0{
@@ -122,9 +128,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         self.lblCompanyName.text = objLumineer.name
         if let data = objLumineer.detailedDescription?.count {
             self.lblExpandableDescription.text = objLumineer.detailedDescription
+            lblExpandableDescription.textAlignment = .center
         }
         else {
             self.lblExpandableDescription.text = objLumineer.shortDescription
+            lblExpandableDescription.textAlignment = .center
         }
         if objLumineer.status == 1 {
             btnFollowLumineer.isSelected = true
@@ -145,13 +153,13 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
 //todo \(String(describing: GlobalShareData.sharedGlobal.currentUserDetails.displayName))
         objLumineer.getLumineerCompanyUnReadMessageCounts(param:["cellNumber":GlobalShareData.sharedGlobal.userCellNumber ,"lumineerName":""]) { (json) in
             let strCount = json["unreadCount"]!
-            self.btnInboxCount.setTitle("\(strCount) Count", for: .normal)
+            self.btnInboxCount.setTitle("\(strCount) INBOX", for: .normal)
             try! realm.write({
                 self.objLumineer.unreadCount = (json["unreadCount"]?.intValue)!})
         }
         objLumineer.getLumineerCompanyFollowingCounts(){ (json) in
             let strCount = json["noOfFollowers"]!
-            self.lblFollowers.text = "\(strCount) Followers"
+            self.lblFollowers.text = "\(strCount) FOLLOWERS"
             try! realm.write({
                 self.objLumineer.followersCount = (json["noOfFollowers"]?.intValue)!})
         }
@@ -212,6 +220,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     //
     
     func willExpandLabel(_ label: ExpandableLabel) {
+        lblExpandableDescription.textAlignment = .center
     }
     
     func didExpandLabel(_ label: ExpandableLabel) {
@@ -228,6 +237,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
     func didCollapseLabel(_ label: ExpandableLabel) {
         lblExpandableDescription.shouldCollapse = true
         lblExpandableDescription.numberOfLines = 2
+        lblExpandableDescription.textAlignment = .center
 
     }
 
@@ -277,6 +287,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
             self.objLumineer.setLumineerCompanyRatings(param: param as [String : AnyObject], completionHandler: { (response) in
                 self.objLumineer.getLumineerAllRatings() { (json) in
                     self.ratingVC.rating = Double((json["finalRating"]?.intValue)!)
+                  let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                    hud.mode = .text
+                    hud.label.text = NSLocalizedString("Rating added successfully", comment: "HUD message title")
+                    hud.offset = CGPoint(x: 0.0, y: 120)
+                    hud.hide(animated: true, afterDelay: 3.0)
                 }
             })
             
@@ -303,18 +318,33 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
         btnSupport.isSelected = false
     }
     @IBAction func onBtnAccountsTapped(_ sender: UIButton) {
-        btnAccount.isSelected = !sender.isSelected
-        if btnAccount.isSelected {
-            addMessgePopup(activityType:"Accounts")
-        }else {
-            removeMessgePopup()
+        photoLibrary()
+//        btnAccount.isSelected = !sender.isSelected
+//        if btnAccount.isSelected {
+//            addMessgePopup(activityType:"Accounts")
+//        }else {
+//            removeMessgePopup()
+//        }
+//        btnAccount.isSelected = false
+    }
+    func photoLibrary()
+    {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+            let myPickerController = UIImagePickerController()
+            myPickerController.delegate = self;
+            myPickerController.sourceType = .photoLibrary
+            //myPickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
+            myPickerController.allowsEditing = true
+            myPickerController.delegate = self
+ //self.navigationController?.setNavigationBarHidden(false, animated: true)
+           self.present(myPickerController, animated: true, completion: nil) //self.navigationController?.present(myPickerController, animated: true, completion: nil)
         }
-        btnAccount.isSelected = false
     }
     @IBAction func onBtnInboxCountTapped(_ sender: UIButton) {
-        btnInboxCount.isSelected = !sender.isSelected
+       // btnInboxCount.isSelected = !sender.isSelected
         
-        if btnInboxCount.isSelected {
+        if !isInboxCountSelected {
+            isInboxCountSelected = true
             UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 if self.aryActivityData != nil, (self.aryActivityData.count)>0{
                     self.viewActivityHeights.constant = CGFloat(self.aryActivityData.count * 46) + 30
@@ -325,9 +355,12 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate {
                 self.lblActivity.isHidden = false
                 self.view.layoutIfNeeded()
             }, completion: { (finished: Bool) in
+                self.btnInboxCount.tintColor = UIColor.lightGray
                 self.calculateCurrentHeight()
             })
         }else {
+            isInboxCountSelected = false
+            btnInboxCount.tintColor = UIColor.init(hexString: "DA1913")
             UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 self.viewActivityHeights.constant = 0
                 self.view.layoutIfNeeded()
@@ -614,6 +647,17 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
             print(error.localizedDescription)
         }
     }
+    //MARK: - Delegate methods
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        var chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        dismiss(animated: true, completion: nil)
+    }
+    
+
 }
 
 let botChat: Chat = {
@@ -810,4 +854,3 @@ enum UserDefaultsKeys : String {
     case isAlreadyLogin
 
 }
-

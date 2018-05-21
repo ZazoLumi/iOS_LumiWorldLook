@@ -164,7 +164,7 @@ class TGTextMessageCellLayout: TGBaseMessageCellLayout {
                 timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
                 
                 x += timeLabelWidth + hPadding/2
-                deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                deliveryStatusViewFrame = isOutgoing ? CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
                 
                 bubbleViewHeight = textMargin.top + textLabelHeight + vPadding + timeLabelHeight + textMargin.bottom
                 bubbleViewFrame = isOutgoing ? CGRect(x: width - bubbleViewMargin.right - bubbleViewWidth, y: bubbleViewMargin.top, width: bubbleViewWidth, height: bubbleViewHeight) : CGRect(x: bubbleViewMargin.left, y: bubbleViewMargin.top, width: bubbleViewWidth+15, height: bubbleViewHeight)
@@ -191,7 +191,7 @@ class TGTextMessageCellLayout: TGBaseMessageCellLayout {
                 timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
                 
                 x += timeLabelWidth + hPadding/2
-                deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+                deliveryStatusViewFrame = isOutgoing ? CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
                 
             }
             
@@ -219,7 +219,7 @@ class TGTextMessageCellLayout: TGBaseMessageCellLayout {
             timeLabelFrame = CGRect(x: x, y: y, width: timeLabelWidth, height: timeLabelHeight)
             
             x += timeLabelWidth + hPadding/2
-            deliveryStatusViewFrame = CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight)
+            deliveryStatusViewFrame = isOutgoing ? CGRect(x: x, y: y, width: deliveryStatusWidth, height: deliveryStatusHeight) : CGRect.zero
         }
         
         height = bubbleViewHeight + bubbleViewMargin.top + bubbleViewMargin.bottom

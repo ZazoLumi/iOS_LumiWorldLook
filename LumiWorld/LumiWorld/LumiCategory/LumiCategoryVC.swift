@@ -229,7 +229,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             btnHeaderView?.contentHorizontalAlignment = .left
             btnHeaderView?.setTitleColor(UIColor.init(hexString: "757576"), for: .normal)
             btnHeaderView?.setTitleColor(UIColor.init(hexString: "ff0000"), for: .selected)
-            btnHeaderView?.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 14)
+            btnHeaderView?.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 16)
             btnHeaderView?.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
             btnHeaderView?.isUserInteractionEnabled = false
             btnHeaderView?.tag = kHeaderDataTag + section

@@ -9,7 +9,7 @@ import UIKit
 import Realm
 import MBProgressHUD
 
-class SendAttachmentVC: UIViewController {
+class SendAttachmentVC: UIViewController,UITextFieldDelegate {
     var activityType : String!
     @IBOutlet weak var imgAttach: UIImageView!
     @IBOutlet weak var textField: UITextField!
@@ -21,6 +21,7 @@ class SendAttachmentVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        // showAnimate()
+        self.textField.delegate = self
         if activityType == "Image" {
             imgAttach.image = fileImage
         }
@@ -62,7 +63,9 @@ class SendAttachmentVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
-
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -155,8 +158,13 @@ class SendAttachmentVC: UIViewController {
             
         }
     }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        textField.resignFirstResponder()
+        return true
+    }
 
-
+    
     /*
     // MARK: - Navigation
 

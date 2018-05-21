@@ -35,7 +35,7 @@ class TGBaseMessageCellLayout: NSObject, NOCChatItemCellLayout {
     var message: Message {
         return chatItem as! Message
     }
-    var isOutgoing: Bool {
+    open var isOutgoing: Bool {
         return message.isOutgoing
     }
     

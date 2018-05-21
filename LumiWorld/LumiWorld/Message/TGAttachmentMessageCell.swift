@@ -164,6 +164,7 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
 
             timeLabel.frame = cellLayout.timeLabelFrame
             timeLabel.attributedText = cellLayout.attributedTime
+
             deliveryStatusView.frame = cellLayout.deliveryStatusViewFrame
             deliveryStatusView.deliveryStatus = cellLayout.message.deliveryStatus
         }
