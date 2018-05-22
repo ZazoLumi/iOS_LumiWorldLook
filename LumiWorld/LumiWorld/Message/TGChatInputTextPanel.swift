@@ -244,9 +244,8 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         objSetAttachment = storyBoard.instantiateViewController(withIdentifier: "SendAttachmentVC") as! SendAttachmentVC
         objSetAttachment.activityType = activityType
         objSetAttachment.fileUrl = fileUrl.absoluteString
-        if activityType == "Image" {
-            objSetAttachment.fileImage = image
-        }
+        objSetAttachment.fileImage = image
+
         //self.parentViewController?.navigationController?.pushViewController(objSetAttachment, animated: false)
         
         self.parentViewController?.addChildViewController(self.objSetAttachment)
@@ -262,35 +261,38 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         let alertController = UIAlertController.init()
         
         CameraHandler.shared.isFromchat = true
+        
         let actionCamera = UIAlertAction.init(title: "  Camera", style: .default, image: (UIImage(named: "Asset 1635")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
-            
+            CameraHandler.shared.isVideoCapturing = false
             CameraHandler.shared.showCamera(vc:GlobalShareData.sharedGlobal.getVisibleViewController(self.parentViewController)!)
             CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
                 /* get your image here */
                 self.addMessgePopup(activityType: "Image", image: image, fileUrl : imgUrl!)
             }
-            CameraHandler.shared.didFinishCapturingVideo = { (url) in
-                self.addMessgePopup(activityType: "Video", image: UIImage.init(), fileUrl : url)
+            CameraHandler.shared.didFinishCapturingVideo = { (url,thumbImg) in
+                self.addMessgePopup(activityType: "Video", image: thumbImg, fileUrl : url)
                 /* get your image here */
-                } as ((URL) -> Void)
+                } as ((URL,UIImage) -> Void)
         }
         let actionPhotoVideo = UIAlertAction.init(title: "   Photo & Video Library", style: .default, image:(UIImage(named: "Asset 1636")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+            CameraHandler.shared.isVideoCapturing = true
             CameraHandler.shared.showPhotoLibrary(vc:self.parentViewController!.topMostViewController())
             CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
                 /* get your image here */
                 self.addMessgePopup(activityType: "Image", image: image, fileUrl :imgUrl!)
             }
-            CameraHandler.shared.didFinishCapturingVideo = { (url) in
+            CameraHandler.shared.didFinishCapturingVideo = { (url,thumbImg) in
                 /* get your image here */
-                self.addMessgePopup(activityType: "Video", image: UIImage.init(), fileUrl : url)
-                } as ((URL) -> Void)
+                self.addMessgePopup(activityType: "Video", image: thumbImg, fileUrl : url)
+                } as ((URL,UIImage) -> Void)
 
         }
         
         let actionDocument = UIAlertAction.init(title: "  Document", style: .default, image: (UIImage(named: "Asset 1637")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -3, bottom: 0, right: 0)))!) { (action) in
             if #available(iOS 11.0, *) {
                 let objDocumentVC = DocumentBrowserViewController()
-                self.parentViewController?.navigationController?.pushViewController(objDocumentVC, animated: false)
+        
+                objDocumentVC.isFromChat = true; self.parentViewController?.navigationController?.pushViewController(objDocumentVC, animated: false)
             } else {
                 // Earlier version of iOS
             }

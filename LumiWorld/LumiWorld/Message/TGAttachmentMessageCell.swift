@@ -143,18 +143,25 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
                 imgPlay.image = img
                 imgPlay.frame = CGRect(x: ((attachImageView.frame.size.width+8)-(img?.size.width)!)/2, y: ((attachImageView.frame.size.height+6)-(img?.size.height)!)/2, width: (img?.size.width)!, height: (img?.size.height)!)
                 
-                DispatchQueue.main.async {
                     do {
-                        let thumbnail1 = GlobalShareData.sharedGlobal.createThumbnailOfVideoFromFileURL(videoURL: urlOriginalImage!)
-                        let scalImg = thumbnail1?.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
-                        self.attachImageView.image = scalImg
+                        if let fileName = cellLayout.attachThumbName {
+                            let  fileUrl = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName)
+                        Alamofire.request(fileUrl).responseImage { response in
+                            debugPrint(response)
+                            
+                            if let image = response.result.value {
+                                let scalImg = image.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
+                                self.attachImageView.image = scalImg
+                            }
+                            }
+                        }
                     } catch {
                         print(error)
                     }
-                }
             }
             else if cellLayout.attachType == "Document" {
                 imgPlay.isHidden = true
+                self.attachImageView.image = UIImage.init(named: "docFile")
             }
 
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTapFrom(recognizer:)))
@@ -165,34 +172,21 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
             timeLabel.frame = cellLayout.timeLabelFrame
             timeLabel.attributedText = cellLayout.attributedTime
 
-            deliveryStatusView.frame = cellLayout.deliveryStatusViewFrame
-            deliveryStatusView.deliveryStatus = cellLayout.message.deliveryStatus
+            if cellLayout.deliveryStatusViewFrame != CGRect.zero {
+                deliveryStatusView.checkmark1ImageView.isHidden = false
+                deliveryStatusView.checkmark2ImageView.isHidden = false
+                deliveryStatusView.frame = cellLayout.deliveryStatusViewFrame
+                deliveryStatusView.deliveryStatus = cellLayout.message.deliveryStatus
+                
+            }
+            else {
+                deliveryStatusView.checkmark1ImageView.isHidden = true
+                deliveryStatusView.checkmark2ImageView.isHidden = true
+                deliveryStatusView.deliveryStatus = .Idle
+            }
         }
     }
-    
-    func loadThumbNail(_ urlVideo: URL?) -> UIImage? {
-        var asset: AVURLAsset? = nil
-        if let aVideo = urlVideo {
-            asset = AVURLAsset(url: aVideo, options: nil)
-        }
-        var generate: AVAssetImageGenerator? = nil
-        if let anAsset = asset {
-            generate = AVAssetImageGenerator(asset: anAsset)
-        }
-        generate?.appliesPreferredTrackTransform = true
-        let err: Error? = nil
-        let time: CMTime = CMTimeMake(1, 60)
-        let imgRef = try? generate?.copyCGImage(at: time, actualTime: nil)
-        if let anErr = err, let aRef = imgRef {
-           // print("err==\(anErr), imageRef==\(aRef)")
-        }
-        if let aRef = imgRef {
-            return UIImage(cgImage: aRef!)
-        }
-        return nil
-    }
-
-    
+   
 }
 
 

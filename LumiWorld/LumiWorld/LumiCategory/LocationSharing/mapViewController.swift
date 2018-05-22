@@ -19,6 +19,9 @@ class locationTableViewCell: UITableViewCell {
 }
 
 class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
+    var didFinishCapturingLocations: ((UIImage,Double,Double,String) -> Void)?
+    static let shared = mapViewController()
+
 
     var selectedPin: MKPlacemark?
     var resultSearchController: UISearchController!
@@ -30,7 +33,8 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
     var strLocationAddress : String!
     let locationManager = CLLocationManager()
     let cellReuseIdentifier = "locationTableViewCell"
-    
+    var isFromChat = false
+
     @IBOutlet weak var mapBottomPadding: NSLayoutConstraint!
     // don't forget to hook this up from the storyboard
     @IBOutlet var tableView: UITableView!
@@ -152,37 +156,43 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
         
         do {
             let data = try NSData(contentsOf: url!, options: NSData.ReadingOptions())
-            let img = UIImage(data: data as Data)
-            
-            let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName
-            let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName
-            
-            var nSubjectID : Double? = nil
-            nSubjectID = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId
-            
-            let name = firstName! + " \(lastName as! String)"
-            let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
+            let img = UIImage(data: data as Data) as! UIImage
             
             let objMessage = LumiMessage()
 
-            let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
-            hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
             if data.length > 0 {
                 let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: "location.png")
-                let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
-                hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
-                objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":strLocationAddress as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":selectedLong as AnyObject,"latitude":selectedLat as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
-                    DispatchQueue.main.async {
-                        hud.hide(animated: true)}
-                    if error != nil  {
-                        self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
-                        })
-                    }
-                    DispatchQueue.main.async {
-                    GlobalShareData.sharedGlobal.removeFilefromDocumentDirectory(fileName: strFilePath)
-                        self.navigationController?.popViewController(animated: false)
-                    }
-                })
+                if isFromChat {
+
+                    let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName
+                    let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName
+                    
+                    var nSubjectID : Double? = nil
+                    nSubjectID = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId
+                    
+                    let name = firstName! + " \(lastName as! String)"
+                    let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
+                    
+                    let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                    hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
+                    objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":strLocationAddress as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":selectedLong as AnyObject,"latitude":selectedLat as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
+                        DispatchQueue.main.async {
+                            hud.hide(animated: true)}
+                        if error != nil  {
+                            self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
+                            })
+                        }
+                        DispatchQueue.main.async {
+                            GlobalShareData.sharedGlobal.removeFilefromDocumentDirectory(fileName: strFilePath)
+                            self.navigationController?.popViewController(animated: false)
+                        }
+                    })
+                }
+                else {
+                    self.didFinishCapturingLocations!(img,selectedLat,selectedLong,strFilePath)
+                    self.navigationController?.popViewController(animated: true)
+                }
+
             }
         } catch {
             let img = UIImage()

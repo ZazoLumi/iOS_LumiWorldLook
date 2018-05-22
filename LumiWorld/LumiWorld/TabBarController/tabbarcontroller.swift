@@ -45,16 +45,14 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     let v2 = storyBoard.instantiateViewController(withIdentifier: "LumiCategoryVC") as! LumiCategoryVC
     let v3 = storyBoard.instantiateViewController(withIdentifier: "MyLumiProfileVC") as! MyLumiProfileVC
 
+    v1.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 76xxhdpi"), selectedImage: UIImage(named: "Artboard 76xxhdpi"))
+    v2.tabBarItem = ESTabBarItem.init(ExampleIrregularityContentView(), title: nil, image: UIImage(named: "Artboard 77xxhdpi"), selectedImage: UIImage(named: "Artboard 77xxhdpi"))
+    v3.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 78xxhdpi"), selectedImage: UIImage(named: "Artboard 78xxhdpi"))
+
     let n1 = ExampleNavigationController.init(rootViewController: v1)
     let n2 = ExampleNavigationController.init(rootViewController: v2)
     let n3 = ExampleNavigationController.init(rootViewController: v3)
 
-    
-    n1.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 76xxhdpi"), selectedImage: UIImage(named: "Artboard 76xxhdpi"))
-    n2.tabBarItem = ESTabBarItem.init(ExampleIrregularityContentView(), title: nil, image: UIImage(named: "Artboard 77xxhdpi"), selectedImage: UIImage(named: "Artboard 77xxhdpi"))
-    n3.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 78xxhdpi"), selectedImage: UIImage(named: "Artboard 78xxhdpi"))
-    
-    
     tabBarController.viewControllers = [n1, n2, n3]
     tabBarController.selectedIndex = 1
     let navigationController = ExampleNavigationController.init(rootViewController: tabBarController)
@@ -84,20 +82,20 @@ extension UIApplication {
 }
 
 
-extension UINavigationBar {
-    override open func layoutSubviews() {
-        super.layoutSubviews()
-        
-        subviews.forEach { (view) in
-            if let imageView = view as? UIImageView {
-                if imageView.image == backIndicatorImage || imageView.image == backIndicatorTransitionMaskImage {
-                    view.frame.origin.y = floor((frame.height - view.frame.height) / 2.0)
-                }
-            }
-        }
-    }
-
-}
+//extension UINavigationBar {
+//    override open func layoutSubviews() {
+//        super.layoutSubviews()
+//        
+//        subviews.forEach { (view) in
+//            if let imageView = view as? UIImageView {
+//                if imageView.image == backIndicatorImage || imageView.image == backIndicatorTransitionMaskImage {
+//                    view.frame.origin.y = floor((frame.height - view.frame.height) / 2.0)
+//                }
+//            }
+//        }
+//    }
+//
+//}
 
 class ExampleNavigationController: UINavigationController {
     
@@ -106,8 +104,11 @@ class ExampleNavigationController: UINavigationController {
         super.viewDidLoad()
         let appearance = UIBarButtonItem.appearance()
         appearance.setBackButtonTitlePositionAdjustment(UIOffset.init(horizontal: 0.0, vertical: -60), for: .default)
-        self.navigationBar.isTranslucent = true
+       // self.navigationBar.isTranslucent = true
+        self.hidesBarsOnSwipe = false
+
         self.navigationBar.barTintColor = UIColor.init(red: 250/255.0, green: 250/255.0, blue: 250/255.0, alpha: 0.8)
+        
         #if swift(>=4.0)
             self.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.init(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1.0), NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0)]
         #elseif swift(>=3.0)

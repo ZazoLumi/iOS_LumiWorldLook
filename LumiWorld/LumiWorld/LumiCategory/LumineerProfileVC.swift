@@ -318,14 +318,14 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         btnSupport.isSelected = false
     }
     @IBAction func onBtnAccountsTapped(_ sender: UIButton) {
-        photoLibrary()
-//        btnAccount.isSelected = !sender.isSelected
-//        if btnAccount.isSelected {
-//            addMessgePopup(activityType:"Accounts")
-//        }else {
-//            removeMessgePopup()
-//        }
-//        btnAccount.isSelected = false
+      //  photoLibrary()
+        btnAccount.isSelected = !sender.isSelected
+        if btnAccount.isSelected {
+            addMessgePopup(activityType:"Accounts")
+        }else {
+            removeMessgePopup()
+        }
+        btnAccount.isSelected = false
     }
     func photoLibrary()
     {
@@ -335,8 +335,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             myPickerController.sourceType = .photoLibrary
             //myPickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
             myPickerController.allowsEditing = true
-            myPickerController.delegate = self
- //self.navigationController?.setNavigationBarHidden(false, animated: true)
+//            myPickerController.navigationBar.isTranslucent = false
+            myPickerController.navigationBar.barTintColor = UIColor.blue // Background color
+            myPickerController.navigationBar.tintColor = UIColor.white // Cancel button ~ any UITabBarButton items
+            myPickerController.navigationBar.titleTextAttributes = [
+                kCTForegroundColorAttributeName as NSAttributedStringKey : UIColor.white]
            self.present(myPickerController, animated: true, completion: nil) //self.navigationController?.present(myPickerController, animated: true, completion: nil)
         }
     }
@@ -508,6 +511,11 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
                     }
                 }
             }
+            else if objLumiMessage.contentType == "Document" {
+                let image = UIImage.init(named: "docFile")
+                let scalImg = image?.af_imageScaled(to: CGSize(width: 25, height: 25))
+                cell.imgMessage.image = scalImg
+            }
             else {
                 Alamofire.request(urlOriginalImage!).responseImage { response in
                     debugPrint(response)
@@ -598,7 +606,7 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
         GlobalShareData.sharedGlobal.objCurrentLumiMessage = sectionData[indexPath.row] as LumiMessage
 
-        var chatVC: UIViewController?
+        var chatVC: TGChatViewController?
             chatVC = TGChatViewController(chat: chat)
             //chatVC.
 

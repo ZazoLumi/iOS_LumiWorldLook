@@ -44,6 +44,8 @@ class Message: NSObject, NOCChatItem {
     var text: String? = ""
     var messageId : Int = 0
     var attachmentURL: String? = ""
+    var thumbURL: String? = ""
+
     var latitude : Double = 0
     var longitude : Double = 0
 

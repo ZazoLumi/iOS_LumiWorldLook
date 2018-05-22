@@ -32,8 +32,8 @@ import MBProgressHUD
 class TGChatViewController: NOCChatViewController, UINavigationControllerDelegate, MessageManagerDelegate, TGChatInputTextPanelDelegate, TGTextMessageCellDelegate, TGAttachmentMessageCellDelegate,UIDocumentInteractionControllerDelegate,QLPreviewControllerDataSource {
     
     var docController : UIDocumentInteractionController!
-let quickLookController = QLPreviewController()
-    
+    let quickLookController = QLPreviewController()
+
     var titleView = TGTitleView()
     var avatarButton = TGAvatarButton()
     
@@ -124,7 +124,6 @@ let quickLookController = QLPreviewController()
                 quickLookController.currentPreviewItemIndex = index!;
                 navigationController?.pushViewController(quickLookController, animated: true)
                 quickLookController.navigationController?.navigationItem.addBackButtonOnLeft()
-
             }
         }
     }

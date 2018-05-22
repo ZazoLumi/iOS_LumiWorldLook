@@ -24,6 +24,9 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var textField: NoCopyPasteUITextField!
     @IBOutlet weak var tableView: UITableView!
+    var selectedLat : Double = 0
+    var selectedLong : Double = 0
+
     var currentSubject : [String]!
     var strImgName : String!
     var isSubjectPicked = false
@@ -145,7 +148,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 defer {
                     let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                     hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
-                    objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
+                    objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":selectedLong as AnyObject,"latitude":selectedLat as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
                         DispatchQueue.main.async {
                             hud.hide(animated: true)}
                         if error != nil  {
@@ -177,30 +180,116 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
 
     @IBAction func onBtnAttachmentTapped(_ sender: Any) {
         CameraHandler.shared.isFromchat = false
-        CameraHandler.shared.showActionSheet(vc: self)
-        CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
-            /* get your image here */
-            var imgName : String?
-            if imgUrl != nil
-            { imgName = imgUrl?.lastPathComponent}
-            else {
-                imgName = "test.png"
+        let alertController = UIAlertController.init()
+        
+        CameraHandler.shared.isFromchat = true
+        let actionCamera = UIAlertAction.init(title: "  Camera", style: .default, image: (UIImage(named: "Asset 1635")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+            CameraHandler.shared.isVideoCapturing = false
+            CameraHandler.shared.showCamera(vc:self)
+            CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
+                /* get your image here */
+                var imgName : String?
+                if imgUrl != nil
+                { imgName = imgUrl?.lastPathComponent}
+                else {
+                    imgName = "test.png"
+                }
+                self.isVideoPickup = false
+                self.imgAttach.image = image
+                self.strImgName = imgName
             }
-            self.isVideoPickup = false
-            self.imgAttach.image = image
-            self.strImgName = imgName
+            CameraHandler.shared.didFinishCapturingVideo = { (url,thumbImg) in
+                var _ : String? = url.lastPathComponent
+                self.strFileUrl = url.absoluteString
+                self.isVideoPickup = true
+                DispatchQueue.main.async {
+                    let scalImg = thumbImg.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
+                    self.imgAttach.image = scalImg
+                }
+                /* get your image here */
+                } as ((URL,UIImage) -> Void)
         }
-        CameraHandler.shared.didFinishCapturingVideo = { (url) in
-            var _ : String? = url.lastPathComponent
-            self.strFileUrl = url.absoluteString
-            self.isVideoPickup = true
-            DispatchQueue.main.async {
-                let thumbnail1 = GlobalShareData.sharedGlobal.createThumbnailOfVideoFromFileURL(videoURL: url)
-                let scalImg = thumbnail1?.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
-                self.imgAttach.image = scalImg
+        let actionPhotoVideo = UIAlertAction.init(title: "   Photo & Video Library", style: .default, image:(UIImage(named: "Asset 1636")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+            CameraHandler.shared.isVideoCapturing = true
+            CameraHandler.shared.showPhotoLibrary(vc:self)
+            CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
+                /* get your image here */
+                var imgName : String?
+                if imgUrl != nil
+                { imgName = imgUrl?.lastPathComponent}
+                else {
+                    imgName = "test.png"
+                }
+                self.isVideoPickup = false
+                self.imgAttach.image = image
+                self.strImgName = imgName
             }
-            /* get your image here */
-            } as ((URL) -> Void)
+            CameraHandler.shared.didFinishCapturingVideo = { (url,thumbImg) in
+                /* get your image here */
+                var _ : String? = url.lastPathComponent
+                self.strFileUrl = url.absoluteString
+                self.isVideoPickup = true
+                DispatchQueue.main.async {
+                    let scalImg = thumbImg.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
+                    self.imgAttach.image = scalImg
+                }
+                } as ((URL,UIImage) -> Void)
+            
+        }
+        
+        let actionDocument = UIAlertAction.init(title: "  Document", style: .default, image: (UIImage(named: "Asset 1637")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -3, bottom: 0, right: 0)))!) { (action) in
+            if #available(iOS 11.0, *) {
+                let objDocumentVC = DocumentBrowserViewController()
+                objDocumentVC.isFromChat = false
+                self.navigationController?.pushViewController(objDocumentVC, animated: false)
+                objDocumentVC.didFinishCapturingDocument = { (image, strFilePath) in
+                    let scalImg = image.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
+                    self.imgAttach.image = scalImg
+                    self.strFileUrl = strFilePath
+                    self.isVideoPickup = true
+                }
+            } else {
+                // Earlier version of iOS
+            }
+            
+            
+        }
+        let actionLocation = UIAlertAction.init(title: "   Location", style: .default, image:(UIImage(named: "Asset 1638")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let objMapViewController = storyBoard.instantiateViewController(withIdentifier: "mapViewController") as! mapViewController
+            self.navigationController?.pushViewController(objMapViewController, animated: false)
+            objMapViewController.didFinishCapturingLocations = { (image,lat,long,strFilePath) in
+                let scalImg = image.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
+                self.imgAttach.image = scalImg
+                self.isVideoPickup = true
+                self.selectedLat = lat
+                self.selectedLong = long
+                self.strFileUrl = strFilePath
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title:"Cancel", style:.cancel)
+        actionCamera.setValue(UIColor.lumiGray, forKey: "titleTextColor")
+        actionPhotoVideo.setValue(UIColor.lumiGray, forKey: "titleTextColor")
+        actionDocument.setValue(UIColor.lumiGray, forKey: "titleTextColor")
+        actionLocation.setValue(UIColor.lumiGray, forKey: "titleTextColor")
+        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+        
+        
+        actionCamera.setValue(0, forKey: "titleTextAlignment")
+        actionPhotoVideo.setValue(0, forKey: "titleTextAlignment")
+        actionDocument.setValue(0, forKey: "titleTextAlignment")
+        actionLocation.setValue(0, forKey: "titleTextAlignment")
+        
+        
+        alertController.addAction(actionCamera)
+        alertController.addAction(actionPhotoVideo)
+        alertController.addAction(actionDocument)
+        alertController.addAction(actionLocation)
+        alertController.addAction(cancelAction)
+        alertController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.navigationController?.present(alertController, animated: true, completion: nil)
 
     }
     

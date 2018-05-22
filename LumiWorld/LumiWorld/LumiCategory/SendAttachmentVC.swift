@@ -22,12 +22,9 @@ class SendAttachmentVC: UIViewController,UITextFieldDelegate {
         super.viewDidLoad()
        // showAnimate()
         self.textField.delegate = self
-        if activityType == "Image" {
+        
+        if activityType == "Image" || activityType == "Video"{
             imgAttach.image = fileImage
-        }
-        else if activityType == "Video" {
-            let image = GlobalShareData.sharedGlobal.createThumbnailOfVideoFromFileURL(videoURL:URL.init(string: fileUrl!)!)
-            imgAttach.image = image
         }
 
         self.view.backgroundColor = UIColor.lumiGray

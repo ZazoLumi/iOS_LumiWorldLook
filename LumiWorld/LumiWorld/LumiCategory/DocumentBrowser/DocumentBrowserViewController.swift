@@ -11,7 +11,11 @@ import MBProgressHUD
 
 @available(iOS 11.0, *)
 class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
-    
+    var isFromChat = false
+    static let shared = DocumentBrowserViewController()
+
+    var didFinishCapturingDocument: ((UIImage,String?) -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,7 +24,6 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         self.navigationItem.title = "Select Document"
         allowsDocumentCreation = true
         allowsPickingMultipleItems = false
-        
         // Update the style of the UIDocumentBrowserViewController
         // browserUserInterfaceStyle = .dark
         // view.tintColor = .white
@@ -66,21 +69,14 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     func presentDocument(at documentURL: URL) {
         let destinationFilename = documentURL.lastPathComponent
 
-        let alert = UIAlertController(title: "", message: "Send \(destinationFilename) to \(GlobalShareData.sharedGlobal.objCurrentLumineer.name) ?", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "", message: "Send \(destinationFilename) to \(GlobalShareData.sharedGlobal.objCurrentLumineer.name!) ?", preferredStyle: UIAlertControllerStyle.alert)
 
         let notNowAction = UIAlertAction(title: "Cancel", style: .default)
         notNowAction.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
         alert.addAction(notNowAction)
         
         let submitAction = UIAlertAction(title:"Send", style:.default ) { (action) in
-            let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName
-            let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName
             
-            var nSubjectID : Double? = nil
-            nSubjectID = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId
-            
-            let name = firstName! + " \(lastName as! String)"
-            let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
             
             let objMessage = LumiMessage()
             
@@ -89,31 +85,42 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
                     if let data = NSData(contentsOfFile: documentURL.path) {
                         print(data.length)
                         var _: Error?
-                        let fileManager = FileManager.default
-                        let destinationURL = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(destinationFilename )
+                        _ = FileManager.default
+                        _ = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(destinationFilename )
 
                         let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: destinationFilename)
-//                        do {
-//                            try fileManager.copyItem(atPath: (documentURL.path), toPath: destinationURL.path)
-//                        } catch let error as NSError {
-//                            print("Couldn't copy file to final location! Error:\(error.description)")
-//                        }
 
-                        let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
-                        hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
-                        objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":destinationFilename as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
-                            DispatchQueue.main.async {
-                                hud.hide(animated: true)}
-                            documentURL.stopAccessingSecurityScopedResource()
-                            if error != nil  {
-                                self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
-                                })
-                            }
-                            DispatchQueue.main.async {
-                                GlobalShareData.sharedGlobal.removeFilefromDocumentDirectory(fileName: strFilePath)
-                                self.navigationController?.popViewController(animated: true)
-                            }
-                        })
+                        if self.isFromChat {
+                            let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName
+                            let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName
+                            
+                            var nSubjectID : Double? = nil
+                            nSubjectID = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId
+                            
+                            let name = firstName! + " \(lastName as! String)"
+                            let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
+
+                            let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                            hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
+                            objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":destinationFilename as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
+                                DispatchQueue.main.async {
+                                    hud.hide(animated: true)}
+                                documentURL.stopAccessingSecurityScopedResource()
+                                if error != nil  {
+                                    self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
+                                    })
+                                }
+                                DispatchQueue.main.async {
+                                    GlobalShareData.sharedGlobal.removeFilefromDocumentDirectory(fileName: strFilePath)
+                                    self.navigationController?.popViewController(animated: true)
+                                }
+                            })
+
+                        }
+                        else {
+                            self.didFinishCapturingDocument!(UIImage.init(named: "docFile")!,strFilePath)
+                            self.navigationController?.popViewController(animated: true)
+                        }
                     }
                     
                 }

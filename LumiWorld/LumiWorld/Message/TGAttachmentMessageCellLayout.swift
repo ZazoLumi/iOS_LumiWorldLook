@@ -35,6 +35,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     var highlightBubbleImage: UIImage?
     var attachURL: String?
     var attachType: String?
+    var attachThumbName: String?
     var attachTag: Int?
     var locations : [Double] = []
 
@@ -101,6 +102,9 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
         if attachType == "Location" {
             locations.append(message.latitude)
             locations.append(message.longitude)
+        }
+        if attachType == "Video" {
+            attachThumbName = message.thumbURL
         }
     }
 

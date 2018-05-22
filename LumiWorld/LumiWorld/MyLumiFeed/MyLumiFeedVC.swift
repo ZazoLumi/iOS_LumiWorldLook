@@ -115,7 +115,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
 
                             let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",message.enterpriseID)
                             let lumineer = objsLumineer[0]
-                            let section = ["title":lumineer.name as Any, "message":message as Any,"profileImg":lumineer.enterpriseLogo as Any] as [String : Any]
+                            let section = ["title":lumineer.name as Any, "message":message as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any] as [String : Any]
                             self.aryActivityData.append(section as [String : AnyObject])
                         }
                     }
@@ -207,6 +207,11 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                     }
                 }
             }
+            else if message?.contentType == "Document" {
+                let image = UIImage.init(named: "docFile")
+                let scalImg = image?.af_imageScaled(to: CGSize(width: 25, height: 25))
+                cell.imgMessage.image = scalImg
+            }
             else {
                 Alamofire.request(urlOriginalImage!).responseImage { response in
                     debugPrint(response)
@@ -240,7 +245,8 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         
         let message = objCellData["message"] as? LumiMessage
         GlobalShareData.sharedGlobal.objCurrentLumiMessage = message
-        var chatVC: UIViewController?
+        GlobalShareData.sharedGlobal.objCurrentLumineer = objCellData["lumineer"] as? LumineerList
+        var chatVC: TGChatViewController?
         chatVC = TGChatViewController(chat: chat)
         //chatVC.
         if let vc = chatVC {
@@ -289,7 +295,8 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                         let message = aryLumiMessage[0]
                         let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",message.enterpriseID)
                         let lumineer = objsLumineer[0]
-                        let section = ["title":lumineer.name as Any, "message":message as Any,"profileImg":lumineer.enterpriseLogo as Any] as [String : Any]
+                        let section = ["title":lumineer.name as Any, "message":message as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any] as [String : Any]
+
                         self.arySearchData.append(section as [String : AnyObject])
                     }
                 }

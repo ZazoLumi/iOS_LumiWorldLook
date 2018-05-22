@@ -19,7 +19,6 @@ target 'LumiWorld' do
   pod 'NoChat'
   pod 'YYText'
   pod 'HPGrowingTextView'
-
   # Pods for LumiWorld
 
 end

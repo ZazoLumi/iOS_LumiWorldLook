@@ -11,7 +11,7 @@ import UIKit
 import RealmSwift
 import Realm
 import MBProgressHUD
-
+import YPImagePicker
 class LogInVC: UIViewController,FormDataDelegate {
     
     var customview : CustomTableView!
@@ -59,7 +59,6 @@ class LogInVC: UIViewController,FormDataDelegate {
     @IBAction func onBtnSignInTapped(_ sender: Any) {
 //Static        UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
 //        return
-
         customview.doneAction()
       //  UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
     }

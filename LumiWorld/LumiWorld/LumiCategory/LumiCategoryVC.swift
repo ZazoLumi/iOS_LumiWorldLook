@@ -586,15 +586,15 @@ extension UINavigationBar {
 
 }
 extension UINavigationItem {
-    
     func addSettingButtonOnRight(){
         let btn1 = UIButton(type: .custom)
         let img = UIImage(named: "Artboard 131xxhdpi")
         btn1.setImage(img, for: .normal)
         btn1.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        btn1.contentMode = .right
         btn1.addTarget(self, action:#selector(gotoSettingPage(_:)), for: .touchUpInside)
         let barButton = UIBarButtonItem(customView: btn1)
-        self.rightBarButtonItem = barButton
+        self.rightBarButtonItems = [barButton]
     }
     func addBackButtonOnLeft(){
         let btn1 = UIButton(type: .custom)
@@ -730,10 +730,9 @@ extension UINavigationItem {
     @objc func actionProfileTapped(_ sender: UIButton) {
         let _ :UIButton = sender
     }
-    }
+}
     
 extension UIImage {
-    
     /*
      @brief decode image base64
      */

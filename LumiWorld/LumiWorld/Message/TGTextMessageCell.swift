@@ -82,14 +82,20 @@ class TGTextMessageCell: TGBaseMessageCell {
             
             timeLabel.frame = cellLayout.timeLabelFrame
             timeLabel.attributedText = cellLayout.attributedTime
+
             if cellLayout.deliveryStatusViewFrame != CGRect.zero {
+                deliveryStatusView.checkmark1ImageView.isHidden = false
+                deliveryStatusView.checkmark2ImageView.isHidden = false
                 deliveryStatusView.frame = cellLayout.deliveryStatusViewFrame
+                deliveryStatusView.deliveryStatus = cellLayout.message.deliveryStatus
+
             }
             else {
-            
+                deliveryStatusView.checkmark1ImageView.isHidden = true
+                deliveryStatusView.checkmark2ImageView.isHidden = true
+                deliveryStatusView.deliveryStatus = .Idle
             }
             
-            deliveryStatusView.deliveryStatus = cellLayout.message.deliveryStatus
         }
     }
     

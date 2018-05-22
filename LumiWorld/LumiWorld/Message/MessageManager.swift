@@ -80,6 +80,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                 msg.msgType = obj.contentType!
                 msg.text = obj.newsFeedBody
                 msg.attachmentURL = obj.fileName
+                
                 msg.deliveryStatus = .Delivered
                 msg.date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd HH:mm")
                 msg.messageId = obj.id
@@ -92,6 +93,9 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                 if msg.msgType == "Location" {
                     msg.latitude = obj.latitude
                     msg.longitude = obj.longitude
+                }
+                if msg.msgType == "Video" {
+                    msg.thumbURL = obj.imageURL
                 }
                 
                 if index == 0 {
