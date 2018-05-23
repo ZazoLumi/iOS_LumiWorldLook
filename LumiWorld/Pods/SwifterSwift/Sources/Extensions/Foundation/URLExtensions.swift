@@ -80,7 +80,8 @@ public extension URL {
         let imageGenerator = AVAssetImageGenerator(asset: AVAsset(url: self))
         let time = CMTimeMakeWithSeconds(time, 1)
         var actualTime = CMTimeMake(0, 0)
-        
+        imageGenerator.appliesPreferredTrackTransform = true
+
         guard let cgImage = try? imageGenerator.copyCGImage(at: time, actualTime: &actualTime) else {
             return nil
         }

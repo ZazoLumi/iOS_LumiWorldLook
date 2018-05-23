@@ -147,7 +147,8 @@ class LumiMessage : Object {
                                                 var fileName : String!
                                                 let objLumiMsg = messages[0] as LumiMessage
                                                 if objLumiMsg.contentType == "Video" {
-                                                    let thumbnail1 = GlobalShareData.sharedGlobal.createThumbnailOfVideoFromFileURL(videoURL: url!)
+                                                    var thumbnail1 = url?.thumbnail()
+                                                    thumbnail1 = url?.thumbnail(fromTime: 5)
                                                     if let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
                                                         fileName = url?.lastPathComponent
                                                         fileName = fileName?.deletingPathExtension
@@ -163,6 +164,10 @@ class LumiMessage : Object {
                                                 objLumiMsg.fileName = url?.absoluteString
                                                 objLumiMsg.isFileDownloaded = true
                                                 realm.add(objLumiMsg, update: true)
+                                                    if index == tempArray.count-1 {
+                                                        print("Download post")
+                                                        NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil) }
+
                                             }
                                         }
                                     }

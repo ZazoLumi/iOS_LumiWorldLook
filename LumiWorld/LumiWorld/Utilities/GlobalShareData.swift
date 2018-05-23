@@ -92,19 +92,6 @@ class GlobalShareData {
 
     }
     
-    func createThumbnailOfVideoFromFileURL(videoURL: URL) -> UIImage? {
-        let asset = AVAsset(url: videoURL)
-        let imageGenerator = AVAssetImageGenerator(asset: asset)
-        let time = CMTimeMake(1, 20)
-        do {
-            let imageRef = try! imageGenerator.copyCGImage(at: time, actualTime: nil)
-            let thumbnail1 = UIImage(cgImage:imageRef)
-            return thumbnail1
-        } catch {
-            return UIImage(named: "ico_placeholder")
-        }
-    }
-
     func extractAllFile(atPath path: String, withExtension fileExtension:String) -> [String] {
         var allFiles: [String] = []
         let url = applicationDocumentsDirectory
