@@ -292,7 +292,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         }
         cell.btnFollowUnfollow.addTarget(self, action: #selector(onBtnFollowUnfollowTapped(_:)), for: .touchUpInside)
         cell.btnFollowUnfollow.tag = kFollowDataTag + indexPath.row
-        cell.lblCompanyName.text = objLumineer.name
+        cell.lblCompanyName.text = objLumineer.displayName
         let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgCompanyLogo.frame.size.width, height: cell.imgCompanyLogo.frame.size.height))
         cell.imgCompanyLogo.contentMode = .scaleAspectFit

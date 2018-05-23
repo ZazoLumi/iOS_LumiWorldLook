@@ -14,7 +14,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     var isFromChat = false
     static let shared = DocumentBrowserViewController()
 
-    var didFinishCapturingDocument: ((UIImage,String?) -> Void)?
+    var didFinishCapturingDocument: ((UIImage,String?,String?) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,7 +118,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
 
                         }
                         else {
-                            self.didFinishCapturingDocument!(UIImage.init(named: "docFile")!,strFilePath)
+                            self.didFinishCapturingDocument!(UIImage.init(named: "docFile")!,strFilePath,destinationFilename)
                             self.navigationController?.popViewController(animated: true)
                         }
                     }

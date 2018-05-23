@@ -92,7 +92,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         setupLumineerData()
         self.view.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
-        titleLabel.text = GlobalShareData.sharedGlobal.objCurrentLumineer.name
+        titleLabel.text = GlobalShareData.sharedGlobal.objCurrentLumineer.displayName
         titleLabel.textColor = UIColor.black
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.systemFont(ofSize: 20)
@@ -125,7 +125,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
         self.imgProfilePic.image = scalImg
-        self.lblCompanyName.text = objLumineer.name
+        self.lblCompanyName.text = objLumineer.displayName
         if let data = objLumineer.detailedDescription?.count {
             self.lblExpandableDescription.text = objLumineer.detailedDescription
             lblExpandableDescription.textAlignment = .center

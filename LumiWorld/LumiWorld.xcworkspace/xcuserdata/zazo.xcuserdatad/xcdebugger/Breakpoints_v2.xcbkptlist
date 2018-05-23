@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGTextMessageCellLayout.swift"
-            timestampString = "548531917.147238"
+            timestampString = "548759406.589291"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "94"
@@ -156,7 +156,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGTextMessageCellLayout.swift"
-            timestampString = "548531917.148121"
+            timestampString = "548759406.589991"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "118"
@@ -172,7 +172,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGTextMessageCellLayout.swift"
-            timestampString = "548531917.148399"
+            timestampString = "548759406.590427"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "157"
@@ -412,7 +412,7 @@
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zazo/Desktop/Repository/SourceCode/LumiWorld/LumiWorld/LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
-                  timestampString = "548529720.345384"
+                  timestampString = "548756688.353109"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "23"
@@ -427,7 +427,7 @@
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zazo/Desktop/Repository/SourceCode/LumiWorld/LumiWorld/LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
-                  timestampString = "548529720.347594"
+                  timestampString = "548756688.355814"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "23"
@@ -442,7 +442,7 @@
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zazo/Desktop/Repository/SourceCode/LumiWorld/LumiWorld/LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
-                  timestampString = "548529720.349885"
+                  timestampString = "548756688.358763"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "23"
@@ -457,7 +457,7 @@
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zazo/Desktop/Repository/SourceCode/LumiWorld/LumiWorld/LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
-                  timestampString = "548529720.352019"
+                  timestampString = "548756688.361473"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "23"
@@ -474,7 +474,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGTextMessageCellLayout.swift"
-            timestampString = "548531917.149147"
+            timestampString = "548759406.590968"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "167"
@@ -490,12 +490,76 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGTextMessageCellLayout.swift"
-            timestampString = "548531917.149413"
+            timestampString = "548759406.591271"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "194"
             endingLineNumber = "194"
             landmarkName = "calculate()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/Models/LumiMessage.swift"
+            timestampString = "548758701.713231"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "getLumiMessage(param:nParentId:completionHandler:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LumiWorld.LumiMessage.getLumiMessage(param: Swift.Dictionary&lt;Swift.String, Swift.String&gt;, nParentId: Swift.Int, completionHandler: (LumiWorld.LumineerList) -&gt; ()) -&gt; ()"
+                  moduleName = "LumiWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zazo/Desktop/Repository/SourceCode/LumiWorld/LumiWorld/LumiWorld/Models/LumiMessage.swift"
+                  timestampString = "548756687.702239"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "3064">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (SwiftyJSON.JSON) -&gt; () in LumiWorld.LumiMessage.getLumiMessage(param: Swift.Dictionary&lt;Swift.String, Swift.String&gt;, nParentId: Swift.Int, completionHandler: (LumiWorld.LumineerList) -&gt; ()) -&gt; ()"
+                  moduleName = "LumiWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zazo/Desktop/Repository/SourceCode/LumiWorld/LumiWorld/LumiWorld/Models/LumiMessage.swift"
+                  timestampString = "548756687.704532"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/Models/LumiMessage.swift"
+            timestampString = "548758701.713289"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "getLumiMessage(param:nParentId:completionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

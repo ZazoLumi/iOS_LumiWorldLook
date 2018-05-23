@@ -24,8 +24,8 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var textField: NoCopyPasteUITextField!
     @IBOutlet weak var tableView: UITableView!
-    var selectedLat : Double = 0
-    var selectedLong : Double = 0
+    var selectedLat : Double!
+    var selectedLong : Double!
 
     var currentSubject : [String]!
     var strImgName : String!
@@ -242,11 +242,12 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 let objDocumentVC = DocumentBrowserViewController()
                 objDocumentVC.isFromChat = false
                 self.navigationController?.pushViewController(objDocumentVC, animated: false)
-                objDocumentVC.didFinishCapturingDocument = { (image, strFilePath) in
+                objDocumentVC.didFinishCapturingDocument = { (image, strFilePath,destinationFilename) in
                     let scalImg = image.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
                     self.imgAttach.image = scalImg
                     self.strFileUrl = strFilePath
                     self.isVideoPickup = true
+                    self.tvMessage.text = destinationFilename
                 }
             } else {
                 // Earlier version of iOS
@@ -259,13 +260,14 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let objMapViewController = storyBoard.instantiateViewController(withIdentifier: "mapViewController") as! mapViewController
             self.navigationController?.pushViewController(objMapViewController, animated: false)
-            objMapViewController.didFinishCapturingLocations = { (image,lat,long,strFilePath) in
+            objMapViewController.didFinishCapturingLocations = { (image,lat,long,strFilePath,strLocationAddress) in
                 let scalImg = image.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
                 self.imgAttach.image = scalImg
                 self.isVideoPickup = true
                 self.selectedLat = lat
                 self.selectedLong = long
                 self.strFileUrl = strFilePath
+                self.tvMessage.text =  strLocationAddress
             }
         }
         

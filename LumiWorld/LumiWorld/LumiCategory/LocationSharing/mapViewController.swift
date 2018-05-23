@@ -19,7 +19,7 @@ class locationTableViewCell: UITableViewCell {
 }
 
 class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
-    var didFinishCapturingLocations: ((UIImage,Double,Double,String) -> Void)?
+    var didFinishCapturingLocations: ((UIImage,Double,Double,String,String) -> Void)?
     static let shared = mapViewController()
 
 
@@ -189,7 +189,7 @@ class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSo
                     })
                 }
                 else {
-                    self.didFinishCapturingLocations!(img,selectedLat,selectedLong,strFilePath)
+                    self.didFinishCapturingLocations!(img,selectedLat,selectedLong,strFilePath,strLocationAddress)
                     self.navigationController?.popViewController(animated: true)
                 }
 
