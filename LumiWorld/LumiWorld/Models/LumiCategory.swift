@@ -416,8 +416,6 @@ class LumiCategory : Object{
                     else {
                         GlobalShareData.sharedGlobal.realmManager.saveObjects(objs: newObj)
                     }
-
-
                     aryCategory.append(newObj)
                 }
                 completionHandler(aryCategory)

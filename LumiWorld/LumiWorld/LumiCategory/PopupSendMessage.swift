@@ -109,6 +109,9 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     //
 
     @IBAction func onBtnSendTapped(_ sender: Any) {
+        if tvMessage.text == "Type Message" {
+            tvMessage.text = ""
+        }
         let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName  //Static "Christian"
         let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName  //Static "Nhlabano"
         var subjectID : [Double] = []
@@ -247,6 +250,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                     self.imgAttach.image = scalImg
                     self.strFileUrl = strFilePath
                     self.isVideoPickup = true
+                    self.tvMessage.textColor = UIColor.black
                     self.tvMessage.text = destinationFilename
                 }
             } else {
@@ -267,6 +271,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 self.selectedLat = lat
                 self.selectedLong = long
                 self.strFileUrl = strFilePath
+                self.tvMessage.textColor = UIColor.black
                 self.tvMessage.text =  strLocationAddress
             }
         }

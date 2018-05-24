@@ -60,7 +60,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         self.tableView.rowHeight = UITableViewAutomaticDimension
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
-
+        GlobalShareData.sharedGlobal.objCurretnVC = self
         self.navigationItem.title = "MY LUMI FEED"
 
         searchController.searchResultsUpdater = self
@@ -72,7 +72,6 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         // Setup the Scope Bar
         searchController.searchBar.scopeButtonTitles = []
         searchController.searchBar.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(openAboutPlusTCVC), name: Notification.Name("openAboutPlusTC"), object: nil)
 
     }
     
@@ -81,15 +80,6 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         self.tabBarController?.navigationItem.searchController = nil
     }
 
-    @objc func openAboutPlusTCVC(notification: NSNotification) {
-        if let strUrl = notification.userInfo?["url"] as? String, self.tabBarController?.selectedIndex == 0  {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let objAboutPlusTC = storyBoard.instantiateViewController(withIdentifier: "AboutPlusTC") as! AboutPlusTC
-            objAboutPlusTC.urlToDisplay = URL.init(string: strUrl)
-            objAboutPlusTC.strTitle = notification.userInfo?["title"] as? String
-            self.navigationController?.pushViewController(objAboutPlusTC, animated: true)
-        }
-    }
 
     @objc func getLatestLumiMessages() {
         let objLumiMessage = LumiMessage()

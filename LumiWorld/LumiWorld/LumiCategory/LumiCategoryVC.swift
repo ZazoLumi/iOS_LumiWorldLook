@@ -64,8 +64,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         //Static
         self.tableView.addSubview(self.refreshControl)
         self.tableView!.tableFooterView = UIView()
-        NotificationCenter.default.addObserver(self, selector: #selector(openAboutPlusTCVC), name: Notification.Name("openAboutPlusTC"), object: nil)
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,7 +71,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         self.navigationController?.setToolbarHidden(true, animated: false)
         self.navigationItem.title = "LUMINEER CATEGORIES"
         self.tableView.backgroundView = self.dataMsgLabel;
-        
+        GlobalShareData.sharedGlobal.objCurretnVC = self
         self.getLatestLumiCategories()
         searchController.searchResultsUpdater = self
        // searchController.obscuresBackgroundDuringPresentation = false
@@ -102,15 +100,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         // Dispose of any resources that can be recreated.
     }
     
-    @objc func openAboutPlusTCVC(notification: NSNotification) {
-        if let strUrl = notification.userInfo?["url"] as? String, self.tabBarController?.selectedIndex == 1  {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let objAboutPlusTC = storyBoard.instantiateViewController(withIdentifier: "AboutPlusTC") as! AboutPlusTC
-            objAboutPlusTC.urlToDisplay = URL.init(string: strUrl)
-            objAboutPlusTC.strTitle = notification.userInfo?["title"] as? String
-            self.navigationController?.pushViewController(objAboutPlusTC, animated: true)
-        }
-    }
 
    
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
@@ -708,9 +697,20 @@ extension UINavigationItem {
                     strTitle = "Terms & Conditions"
                 }
                 
-                NotificationCenter.default.post(name: Notification.Name("openAboutPlusTC"), object: nil, userInfo: ["url":strUrl!,"title":strTitle])
+                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let objAboutPlusTC = storyBoard.instantiateViewController(withIdentifier: "AboutPlusTC") as! AboutPlusTC
+                objAboutPlusTC.urlToDisplay = URL.init(string: strUrl)
+                objAboutPlusTC.strTitle = strTitle
+                GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objAboutPlusTC, animated: true)
             }
             else if btnAction.tag == 204 {
+                
+            }
+            else if btnAction.tag == 200 {
+                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let objLumiSupportVC = storyBoard.instantiateViewController(withIdentifier: "LumiSupportVC") as! LumiSupportVC
+                GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objLumiSupportVC, animated: true)
+
             }
             else if btnAction.tag == 205 {
                 GlobalShareData.sharedGlobal.realmManager.deleteDatabase()

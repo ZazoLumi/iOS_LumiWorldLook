@@ -219,7 +219,6 @@ class LumiMessage : Object {
         }else{
             print("Internet Connection not Available!")
         }
-        
     }
     func sendLumiTextMessage(param:[String:AnyObject],completionHandler: @escaping () -> Void) {
         if Reachability.isConnectedToNetwork(){
@@ -317,9 +316,7 @@ class LumiMessage : Object {
         }else{
             print("Internet Connection not Available!")
         }
-        
     }
-    
 }
 
 

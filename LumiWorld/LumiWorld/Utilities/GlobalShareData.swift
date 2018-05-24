@@ -32,7 +32,7 @@ struct Constants {
         static let APISendLumineerTextMessages = ":13004/instantMsg/instantMessagingByLumi"
         static let APISendLumineerAttachmentMessages = ":13004/instantMsg/replyToIMByLumiWithMedia"
         static let APIViewMessagesByLumi = ":13004/instantMsg/viewMessagesByLumi"
-
+        static let APIGetAllSupportMessagesOfLumi = ":13004/lumisupport/getAllSupportMessagesOfLumi"
         
    }
 }
@@ -52,6 +52,8 @@ class GlobalShareData {
     var realmManager = RealmManager()
     var objCurrentLumineer : LumineerList!
     var objCurrentLumiMessage : LumiMessage!
+    var objCurrentSupport : LumiSupport!
+    var objCurretnVC : UIViewController!
     var objCurrentUserDetails = UserData()
     var aryAttachUrls : [URL] = []
     lazy var applicationDocumentsDirectory: URL = {

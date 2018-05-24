@@ -107,6 +107,8 @@
 		09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */; };
 		09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0B2065042B00C74E1F /* AFWrapper.swift */; };
 		09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0F20652D6F00C74E1F /* RealmManager.swift */; };
+		09EAD74520B6B05E00EB37E1 /* LumiSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EAD74420B6B05E00EB37E1 /* LumiSupport.swift */; };
+		09EAD74720B6C55C00EB37E1 /* LumiSupportVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EAD74620B6C55C00EB37E1 /* LumiSupportVC.swift */; };
 		09ECA799209C8230001570EA /* mapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ECA797209C822F001570EA /* mapViewController.swift */; };
 		09ECA79A209C8230001570EA /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ECA798209C8230001570EA /* LocationSearchTable.swift */; };
 		67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */; };
@@ -235,6 +237,8 @@
 		09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupSendMessage.swift; sourceTree = "<group>"; };
 		09D98A0B2065042B00C74E1F /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
 		09D98A0F20652D6F00C74E1F /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		09EAD74420B6B05E00EB37E1 /* LumiSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiSupport.swift; sourceTree = "<group>"; };
+		09EAD74620B6C55C00EB37E1 /* LumiSupportVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiSupportVC.swift; sourceTree = "<group>"; };
 		09ECA797209C822F001570EA /* mapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapViewController.swift; sourceTree = "<group>"; };
 		09ECA798209C8230001570EA /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		1ED9069746B80D308CA990E5 /* Pods-LumiWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LumiWorld.release.xcconfig"; path = "Pods/Target Support Files/Pods-LumiWorld/Pods-LumiWorld.release.xcconfig"; sourceTree = "<group>"; };
@@ -296,6 +300,7 @@
 				093F445D206B715800BC9983 /* UserData.swift */,
 				093F445F206B717F00BC9983 /* LumiCategory.swift */,
 				097A69AE20809569001D273E /* LumiMessage.swift */,
+				09EAD74420B6B05E00EB37E1 /* LumiSupport.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -341,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				0964E6DB2060F981001D6F47 /* MyLumiFeedVC.swift */,
+				09EAD74620B6C55C00EB37E1 /* LumiSupportVC.swift */,
 			);
 			path = MyLumiFeed;
 			sourceTree = "<group>";
@@ -719,6 +725,7 @@
 				09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */,
 				0964E7272060F981001D6F47 /* HexColorRule.swift in Sources */,
 				0964E7182060F981001D6F47 /* tabbarcontroller.swift in Sources */,
+				09EAD74520B6B05E00EB37E1 /* LumiSupport.swift in Sources */,
 				0964E71F2060F981001D6F47 /* AlphaNumericRule.swift in Sources */,
 				0964E7202060F981001D6F47 /* AlphaRule.swift in Sources */,
 				097BF9DC207E052E001F935C /* CameraHandler.swift in Sources */,
@@ -726,6 +733,7 @@
 				0964E7222060F981001D6F47 /* ConfirmRule.swift in Sources */,
 				097BFA48207E3647001F935C /* TGBaseMessageCellLayout.swift in Sources */,
 				0964E7162060F981001D6F47 /* ExampleIrregularityContentView.swift in Sources */,
+				09EAD74720B6C55C00EB37E1 /* LumiSupportVC.swift in Sources */,
 				097BFA51207E3651001F935C /* Chat.swift in Sources */,
 				0964E6D42060F8ED001D6F47 /* ChangePasswordVC.swift in Sources */,
 				0964E6D72060F8ED001D6F47 /* LogInVC.swift in Sources */,

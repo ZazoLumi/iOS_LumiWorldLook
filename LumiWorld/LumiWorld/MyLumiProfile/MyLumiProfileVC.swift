@@ -13,7 +13,6 @@ class MyLumiProfileVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
-        NotificationCenter.default.addObserver(self, selector: #selector(openAboutPlusTCVC), name: Notification.Name("openAboutPlusTC"), object: nil)
 
         // Do any additional setup after loading the view.
     }
@@ -21,16 +20,7 @@ class MyLumiProfileVC: UIViewController {
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         self.navigationItem.title = "Profile"
-
-    }
-    @objc func openAboutPlusTCVC(notification: NSNotification) {
-        if let strUrl = notification.userInfo?["url"] as? String, self.tabBarController?.selectedIndex == 2  {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let objAboutPlusTC = storyBoard.instantiateViewController(withIdentifier: "AboutPlusTC") as! AboutPlusTC
-            objAboutPlusTC.urlToDisplay = URL.init(string: strUrl)
-            objAboutPlusTC.strTitle = notification.userInfo?["title"] as? String
-            self.navigationController?.pushViewController(objAboutPlusTC, animated: true)
-        }
+        GlobalShareData.sharedGlobal.objCurretnVC = self
     }
 
     override func didReceiveMemoryWarning() {

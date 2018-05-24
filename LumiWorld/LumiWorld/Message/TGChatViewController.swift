@@ -106,7 +106,7 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
         DispatchQueue.main.async {
             MBProgressHUD.hide(for: (self.navigationController?.view)!, animated: true)}
-
+        GlobalShareData.sharedGlobal.objCurretnVC = self
         loadMessages()
     }
     override func viewWillDisappear(_ animated: Bool) {
