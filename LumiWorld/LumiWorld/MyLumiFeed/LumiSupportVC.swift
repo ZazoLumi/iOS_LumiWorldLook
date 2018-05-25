@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 
 class supportCell: UITableViewCell {
-    @IBOutlet var lblLumineerTitle: UILabel!
+    @IBOutlet var lblSupportTitle: UILabel!
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -18,9 +18,11 @@ class supportCell: UITableViewCell {
 }
 
 
-class LumiSupportVC: UIViewController {
+class LumiSupportVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tblData : UITableView!
-    var arySupportData: [[String:AnyObject]] = []
+    var arySupportData: [LumiSupport] = []
+    var objPopupSendMessage : PopupSendMessage! = nil
+
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
@@ -33,12 +35,15 @@ class LumiSupportVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.arySupportData = []
         self.navigationItem.addSettingButtonOnRight()
         self.tblData.addSubview(self.refreshControl)
         self.tblData.tableFooterView = UIView()
         self.navigationItem.title = "SUPPORT"
-        self.arySupportData = []
-
+        self.tblData.delegate = self
+        self.tblData.dataSource = self
+        self.navigationItem.addBackButtonOnLeft()
+        NotificationCenter.default.addObserver(self, selector: #selector(getLatestLumiSupportMessages), name: Notification.Name("popupRemoved"), object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -53,32 +58,47 @@ class LumiSupportVC: UIViewController {
     
     @objc func getLatestLumiSupportMessages() {
         let objLumiSupport = LumiSupport()
-       // let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.messageTimeStamp)
-        //let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        objLumiSupport.getLumiSupportMessages(cellNumber: GlobalShareData.sharedGlobal.userCellNumber, completionHandler: { (arySuport) in
+        var originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.supportTimeStamp)
+        if originalString.count > 0 {originalString += ":00" }
+        let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        objLumiSupport.getLumiSupportMessages(cellNumber: GlobalShareData.sharedGlobal.userCellNumber, lastViewDate: escapedString!, completionHandler: { (arySuport) in
             let realm = try! Realm()
-            let distinctTypes = Array(Set(realm.objects(LumiSupport.self).value(forKey: "supportID") as! [Int]))
+            let distinctTypes = Array(Set(realm.objects(LumiSupport.self).value(forKey: "supportId") as! [Int]))
             self.arySupportData = []
             for objUniqueItem in distinctTypes {
-                let result  = realm.objects(LumiSupport.self).filter("supportID == %d",objUniqueItem)
+                let result  = realm.objects(LumiSupport.self).filter("supportId == %d",objUniqueItem)
                 if result.count > 0 {
                     let objSupport = result[0] as LumiSupport
-                    let section = ["title":objSupport.supportMessageSubject as Any, "supportID":objSupport.supportId as Any,"spport":objSupport as Any] as [String : Any]
-                    self.arySupportData.append(section as [String : AnyObject])
+//                    let section = ["title":objSupport.supportMessageSubject as Any, "supportId":objSupport.supportId as Any,"spport":objSupport as Any] as [String : Any]
+                    self.arySupportData.append(objSupport)
                 }
-
             }
+            self.tblData.reloadData()
             defer {
                 self.tblData.reloadData()
             }
         })
         
         
-        self.tblData.reloadData()
     }
     
-    // MARK: - Tableview Methods
+    @IBAction func onBtnNewQueryTapped(_ sender: Any) {
+        self.view.addBlurEffect()
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objPopupSendMessage = storyBoard.instantiateViewController(withIdentifier: "PopupSendMessage") as! PopupSendMessage
+        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
+        self.objPopupSendMessage.view.cornerRadius = 10
+        self.addChildViewController(self.objPopupSendMessage)
+        self.objPopupSendMessage.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-340)/2, width:self.view.frame.size.width , height:340);
+        self.view.addSubview(self.objPopupSendMessage.view)
+        self.objPopupSendMessage.didMove(toParentViewController: self)
+    }
     
+    func removeMessgePopup() {
+        objPopupSendMessage.view.removeFromSuperview()
+    }
+
+    // MARK: - Tableview Methods
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -89,9 +109,9 @@ class LumiSupportVC: UIViewController {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "supportCell", for: indexPath) as! supportCell
-        var objCellData : [String : Any]!
-        objCellData = arySupportData[indexPath.row]
-        cell.lblLumineerTitle.text = objCellData["title"] as? String
+        var objLumiSupport : LumiSupport!
+        objLumiSupport = arySupportData[indexPath.row] as LumiSupport
+        cell.lblSupportTitle?.text = objLumiSupport.supportMessageSubject
         return cell
     }
 
@@ -101,11 +121,10 @@ class LumiSupportVC: UIViewController {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let chat = botChat
-        var objCellData : [String : Any]!
-            objCellData = arySupportData[indexPath.row]
-        
-        let support = objCellData["support"] as? LumiSupport
-        GlobalShareData.sharedGlobal.objCurrentSupport = support
+        var objLumiSupport : LumiSupport!
+        objLumiSupport = arySupportData[indexPath.row] as LumiSupport
+
+        GlobalShareData.sharedGlobal.objCurrentSupport = objLumiSupport
 
         var chatVC: TGChatViewController?
         chatVC = TGChatViewController(chat: chat)
@@ -119,9 +138,6 @@ class LumiSupportVC: UIViewController {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Deleted")
-            
-            //            self.catNames.remove(at: indexPath.row)
-            //            self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
     

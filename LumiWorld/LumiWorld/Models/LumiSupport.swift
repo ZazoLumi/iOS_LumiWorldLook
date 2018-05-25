@@ -13,7 +13,6 @@ import MBProgressHUD
 
 class LumiSupport : Object {
     @objc private(set) dynamic var supportId = 0
-    @objc dynamic var name: String? = nil
     @objc dynamic var messageSubjectId: Double = 0
     @objc dynamic var isArchivedByLumiWorld = false
     @objc dynamic var isDeletedByLumi = false
@@ -43,11 +42,12 @@ class LumiSupport : Object {
     override static func primaryKey() -> String? {
         return "supportId"
     }
-    func getLumiSupportMessages(cellNumber:String,completionHandler: @escaping (_ objData: Results<LumiSupport>) -> Void) {
+    func getLumiSupportMessages(cellNumber:String,lastViewDate:String,completionHandler: @escaping (_ objData: Results<LumiSupport>) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetAllSupportMessagesOfLumi)" + "?cellNumber=\(cellNumber)"
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetAllSupportMessagesOfLumi)" + "?cellNumber=\(cellNumber)" + "&lastViewedDate=\(lastViewDate)"
+
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempArray = json.arrayValue
@@ -60,6 +60,7 @@ class LumiSupport : Object {
                             completionHandler(result)
                         }
                     }
+                    if tempArray.count != 0 {
                     for index in 0...tempArray.count-1 {
                         let aObject = tempArray[index]
                         let realm = try! Realm()
@@ -97,15 +98,13 @@ class LumiSupport : Object {
                         else {
                             GlobalShareData.sharedGlobal.realmManager.saveObjects(objs: objNewLumiSupport)
                         }
-                    }
+                        }
+                                            }
                 }, failure: { (Error) in
                     print(Error.localizedDescription)
                 })
-                
-                
             } catch let jsonError{
                 print(jsonError)
-                
             }
             
         }else{

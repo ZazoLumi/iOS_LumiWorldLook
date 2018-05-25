@@ -54,7 +54,9 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         // Manage tableView visibility via TouchDown in textField
         textField.addTarget(self, action: #selector(textFieldActive), for: UIControlEvents.touchDown)
         let realm = try! Realm()
-        currentSubject = Array(Set(realm.objects(LumiMessage.self).filter("enterpriseID = %@",GlobalShareData.sharedGlobal.objCurrentLumineer.id).filter("messageCategory = %@",activityType).value(forKey: "messageSubject") as! [String]))
+        if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
+            currentSubject = Array(Set(realm.objects(LumiMessage.self).filter("enterpriseID = %@",GlobalShareData.sharedGlobal.objCurrentLumineer.id).filter("messageCategory = %@",activityType).value(forKey: "messageSubject") as! [String]))
+        }
         // Do any additional setup after loading the view.
     }
     override func viewDidLayoutSubviews()
@@ -118,7 +120,6 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         if isSubjectPicked == true {
             let realm = try! Realm()
             subjectID = realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).filter("messageSubject = %@",textField.text!).value(forKey: "messageSubjectId") as! [Double]
-
         }
         var nSubjectID : Double? = nil
         

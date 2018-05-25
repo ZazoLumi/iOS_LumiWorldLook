@@ -13,7 +13,6 @@ class MyLumiProfileVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
-
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {

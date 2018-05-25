@@ -66,7 +66,6 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
         self.navigationItem.addBackButtonOnLeft()
-
         NotificationCenter.default.addObserver(self, selector: #selector(getLatestLumiMessages), name: Notification.Name("popupRemoved"), object: nil)
 
         lblExpandableDescription.delegate = self
@@ -267,6 +266,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objPopupSendMessage = storyBoard.instantiateViewController(withIdentifier: "PopupSendMessage") as! PopupSendMessage
+        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
         objPopupSendMessage.activityType = activityType
         self.objPopupSendMessage.view.cornerRadius = 10
         self.addChildViewController(self.objPopupSendMessage)
@@ -605,6 +605,7 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         let chat = botChat
         let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
         GlobalShareData.sharedGlobal.objCurrentLumiMessage = sectionData[indexPath.row] as LumiMessage
+        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
 
         var chatVC: TGChatViewController?
             chatVC = TGChatViewController(chat: chat)
@@ -858,7 +859,15 @@ extension UserDefaults{
 enum UserDefaultsKeys : String {
     case messageTimeStamp
     case lumineerTimeStamp
+    case supportTimeStamp
     case pendingVerification
     case isAlreadyLogin
 
 }
+
+enum currentScreen : String {
+    case messageThread
+    case supportThread
+   
+}
+

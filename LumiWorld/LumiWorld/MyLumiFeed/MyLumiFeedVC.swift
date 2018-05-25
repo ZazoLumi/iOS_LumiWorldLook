@@ -236,6 +236,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         let message = objCellData["message"] as? LumiMessage
         GlobalShareData.sharedGlobal.objCurrentLumiMessage = message
         GlobalShareData.sharedGlobal.objCurrentLumineer = objCellData["lumineer"] as? LumineerList
+        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
         var chatVC: TGChatViewController?
         chatVC = TGChatViewController(chat: chat)
         //chatVC.

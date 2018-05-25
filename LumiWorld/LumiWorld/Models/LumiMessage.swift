@@ -62,7 +62,6 @@ class LumiMessage : Object {
             let endIndex = param["endIndex"]!
             let lastViewDate = param["lastViewDate"]!
 
-
             let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerMessages)" + "?cellNumber=\(cellNumber)" + "&startIndex=\(startIndex)" + "&endIndex=\(endIndex)" + "&lastViewDate=\(lastViewDate)"
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
@@ -209,13 +208,9 @@ class LumiMessage : Object {
                 }, failure: { (Error) in
                     print(Error.localizedDescription)
                 })
-
-                
             } catch let jsonError{
                 print(jsonError)
-                
             }
-            
         }else{
             print("Internet Connection not Available!")
         }

@@ -32,11 +32,9 @@ struct Constants {
         static let APISendLumineerTextMessages = ":13004/instantMsg/instantMessagingByLumi"
         static let APISendLumineerAttachmentMessages = ":13004/instantMsg/replyToIMByLumiWithMedia"
         static let APIViewMessagesByLumi = ":13004/instantMsg/viewMessagesByLumi"
-        static let APIGetAllSupportMessagesOfLumi = ":13004/lumisupport/getAllSupportMessagesOfLumi"
-        
+        static let APIGetAllSupportMessagesOfLumi = ":13004/lumisupport/getSupportMessagesOfLumiByLastViewedDate"
    }
 }
-
 
 import Foundation
 import RealmSwift
@@ -56,6 +54,7 @@ class GlobalShareData {
     var objCurretnVC : UIViewController!
     var objCurrentUserDetails = UserData()
     var aryAttachUrls : [URL] = []
+    var currentScreenValue : String = currentScreen.messageThread.rawValue
     lazy var applicationDocumentsDirectory: URL = {
         
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)

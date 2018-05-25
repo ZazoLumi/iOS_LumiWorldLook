@@ -709,7 +709,8 @@ extension UINavigationItem {
             else if btnAction.tag == 200 {
                 let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let objLumiSupportVC = storyBoard.instantiateViewController(withIdentifier: "LumiSupportVC") as! LumiSupportVC
-                GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objLumiSupportVC, animated: true)
+                GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.supportThread.rawValue
+ GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objLumiSupportVC, animated: true)
 
             }
             else if btnAction.tag == 205 {
@@ -719,6 +720,7 @@ extension UINavigationItem {
                     DownloadManager.shared().cancelAllPendingDownloadTask()
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.messageTimeStamp.rawValue)
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.lumineerTimeStamp.rawValue)
+                    UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.supportTimeStamp.rawValue)
                     UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.isAlreadyLogin)
                     let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     let objLogInVC = storyBoard.instantiateInitialViewController()
