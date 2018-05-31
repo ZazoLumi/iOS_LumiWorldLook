@@ -115,17 +115,8 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                     self.tableView.reloadData()
                     self.refreshControl.endRefreshing() }
             }
-            if self.aryActivityData.count == 0 {
-                let viewWelcome = Bundle.main.loadNibNamed("WelcomView", owner:
-                    self, options: nil)?.first as? WelcomView
-                // self.view.addSubview(viewWelcome!)
-                viewWelcome?.frame = CGRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.width)
-                viewWelcome?.btnGetStarted.addTarget(self, action:#selector(MyLumiFeedVC.didTapGetStarted), for: .touchUpInside)
-                self.tableView.backgroundView = viewWelcome
-            }
-            else { self.tableView.backgroundView = nil}
         
-            self.tableView.reloadData()
+            //self.tableView.reloadData()
         }
     
     // MARK: - Tableview Methods
@@ -135,8 +126,27 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        self.tableView.backgroundView = nil
         if isFiltering() {
+            if arySearchData.count == 0 {
+                let imgBg = UIImageView.init(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
+                imgBg.image = UIImage.init(named: "Asset 335")
+                imgBg.contentMode = .scaleAspectFit
+                self.tableView.backgroundView = imgBg;
+                return 0
+            }
             return arySearchData.count
+        }
+        else {
+            if self.aryActivityData.count == 0 {
+                let viewWelcome = Bundle.main.loadNibNamed("WelcomView", owner:
+                    self, options: nil)?.first as? WelcomView
+                // self.view.addSubview(viewWelcome!)
+                viewWelcome?.frame = CGRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.width)
+                viewWelcome?.btnGetStarted.addTarget(self, action:#selector(MyLumiFeedVC.didTapGetStarted), for: .touchUpInside)
+                self.tableView.backgroundView = viewWelcome
+            }
+            else { self.tableView.backgroundView = nil}
         }
         strSearchText = ""
         return aryActivityData.count;

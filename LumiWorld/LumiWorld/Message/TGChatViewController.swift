@@ -100,7 +100,58 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         navigationController?.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(loadMessages), name: Notification.Name("attachmentPopupRemoved"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(loadAttachmentPreview), name: Notification.Name("openPreviewData"), object: nil)
+        let saveMenuItem = UIMenuItem(title: "Copy", action: #selector(self.copyTapped(_:)))
+        let deleteMenuItem = UIMenuItem(title: "Forward", action: #selector(self.forwardTapped(_:)))
+        UIMenuController.shared.menuItems = [saveMenuItem, deleteMenuItem]
+
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+        print("performAction")
+    }
+   
+    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        return true
+    }
+    
+//    override var canBecomeFirstResponder: Bool {
+//        return true
+//    }
+    
+
+    
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        print("canPerformAction")
+            // The selector(s) should match your UIMenuItem selector if (action == @selector(customAction:)) { return YES; } return NO; }
+        do {
+            if action == #selector(self.copyTapped(_:)) {
+                return true
+            }
+            if action == #selector(self.forwardTapped(_:)) {
+                return true
+            }
+            return false
+        }
+    }
+    @objc func copyTapped(_ sender: Any?) {
+        if let aSender = sender {
+            print("custom action! \(aSender)")
+        }
+    }
+    @objc func forwardTapped(_ sender: Any?) {
+        if let aSender = sender {
+            print("custom action! \(aSender)")
+        }
+    }
+
+
+    // The selector(s) should match your UIMenuItem selector if (action == @selector(customAction:)) { return YES; } return NO; }
+    // MARK: - Custom Action(s) - (void)customAction:(id)sender { NSLog(@"custom action! %@", sender); }
+    //  %< ------------------------ The converted code is limited to 1 KB ------------------------ %<
     
     override func viewWillAppear(_ animated: Bool) {
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
@@ -173,6 +224,10 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         sendMessage(msg)
     }
     
+
+//
+//    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+//    }
     // MARK: MessageManagerDelegate
     
     func didReceiveMessages(messages: [Message], chatId: String) {

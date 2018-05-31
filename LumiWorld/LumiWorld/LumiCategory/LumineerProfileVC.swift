@@ -473,7 +473,6 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         } else {
             return 0;
         }
-
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -538,6 +537,20 @@ extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
         }
         cell.imgStatus.image = UIImage(named:strImageName)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Deleted")
+            let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
+            let objLumiMessage = sectionData[indexPath.row] as LumiMessage
+            objLumiMessage.setLumiSubjectThreadDelete(enterpriseId: objLumiMessage.enterpriseID, messageSubjectId: objLumiMessage.messageSubjectId, completionHandler: { (result) in
+                if result {
+                    self.getLatestLumiMessages()
+                    self.calculateCurrentHeight()
+                }
+            })
+        }
     }
     
     // MARK: - Expand / Collapse Methods

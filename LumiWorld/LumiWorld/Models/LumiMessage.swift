@@ -373,12 +373,10 @@ class LumiMessage : Object {
                     let result = realmObjects.filter("ANY lumineerList.companyRegistrationNumber = '\(regnNumber)'")
                     if result.count > 0 {
                         let objCategory = result[0] as LumiCategory
-                        for lumineer in objCategory.lumineerList.filter("companyRegistrationNumber = '\(regnNumber)'") {
                             try! realm.write {
-                                realm.delete(lumineer)
+                                realm.delete(objCategory.lumineerList[0].lumiMessages)
                                 completionHandler(true)
                             }
-                        }
                     }
                 }, failure: { (Error) in
                     print(Error.localizedDescription)
@@ -392,11 +390,12 @@ class LumiMessage : Object {
         }
     }
     
-    func setLumiSubjectThreadDelete(enterpriseId:String,messageSubjectId:String,completionHandler: @escaping (_ result: Bool) -> Void) {
+    func setLumiSubjectThreadDelete(enterpriseId:Int,messageSubjectId:Double,completionHandler: @escaping (_ result: Bool) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             do {
-                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIDeleteNewsFeedsOfLumiByMessageSubject)" + "?enterpriseId=\(enterpriseId)" + "&cellNumber=\(GlobalShareData.sharedGlobal.userCellNumber!)" + "&messageSubjectId=\(messageSubjectId)"
+                let nSubId : Int = messageSubjectId.int
+                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIDeleteNewsFeedsOfLumiByMessageSubject)" + "?enterpriseId=\(enterpriseId)" + "&cellNumber=\(GlobalShareData.sharedGlobal.userCellNumber!)" + "&messageSubjectId=\(nSubId)"
                 
                 AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
                     print(json)
@@ -411,7 +410,7 @@ class LumiMessage : Object {
                         return
                     }
                     let objLumineer = result[0] as LumineerList
-                    let lumiMessages = objLumineer.lumiMessages.filter("messageSubjectId = '\(messageSubjectId)'")
+                    let lumiMessages = objLumineer.lumiMessages.filter("messageSubjectId = \(messageSubjectId)")
                     try! realm.write {
                         realm.delete(lumiMessages)
                         completionHandler(true)
