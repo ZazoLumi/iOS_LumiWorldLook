@@ -33,6 +33,17 @@ struct Constants {
         static let APISendLumineerAttachmentMessages = ":13004/instantMsg/replyToIMByLumiWithMedia"
         static let APIViewMessagesByLumi = ":13004/instantMsg/viewMessagesByLumi"
         static let APIGetAllSupportMessagesOfLumi = ":13004/lumisupport/getSupportMessagesOfLumiByLastViewedDate"
+        static let APIReplyToLumiWorldWithMediaByLumi = ":13004/lumisupport/replyToLumiWorldWithMediaByLumi"
+        static let APISendSupportQueryWithMediaByLumi = ":13004/lumisupport/sendSupportQueryWithMediaByLumi"
+        static let APISendSupportQueryToLumiAdmin = ":13004/lumisupport/sendSupportQueryToLumiAdmin"
+        static let APIReplyToLumiWorldByLumin = ":13004/lumisupport/replyToLumiWorldByLumi"
+        static let APIMarkSupportMsgAsReadByLumi = ":13004/lumisupport/markSupportMsgAsReadByLumi"
+        static let APIMarkSupportMsgAsDeletedByLumi = ":13004/lumisupport/markSupportMsgAsDeletedByLumi"
+        static let APIGetDefaultFAQsForLumiumi = ":13004/lumiadmin/getDefaultFAQsForLumi"
+        static let APIDeleteNewsFeedsOfLumiByMessageSubject = ":13004/newsfeed/deleteNewsFeedsOfLumiByMessageSubject"
+        static let APIDeleteNewsFeedsOfLumiAndLumineer = ":13004/newsfeed/deleteNewsFeedsOfLumiAndLumineer"
+        static let APIDeleteNewsFeedByLumi = ":13004/newsfeed/deleteNewsFeedByLumi"
+
    }
 }
 

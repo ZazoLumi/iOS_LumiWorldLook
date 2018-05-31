@@ -104,16 +104,15 @@ class SendAttachmentVC: UIViewController,UITextFieldDelegate {
     }
     
     @IBAction func onBtnSendTapped(_ sender: Any) {
-        let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName
-        let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName
         
         var nSubjectID : Double? = nil
+        if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
             nSubjectID = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId
+        }
+        else {
+            nSubjectID = GlobalShareData.sharedGlobal.objCurrentSupport.supportSubjectId
+        }
 
-        let name = firstName! + " \(lastName as! String)"
-        let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
-        
-        let objMessage = LumiMessage()
         
         if imgAttach.image != nil {
             if let data = UIImageJPEGRepresentation(imgAttach.image!, 0.8) {
@@ -135,6 +134,13 @@ class SendAttachmentVC: UIViewController,UITextFieldDelegate {
                 defer {
                     let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                     hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
+                    if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
+                    let firstName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName
+                    let lastName =  GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName
+                    let name = firstName! + " \(lastName as! String)"
+                    let sentBy: String = GlobalShareData.sharedGlobal.userCellNumber + "-\(name)"
+                    let objMessage = LumiMessage()
+
                     objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":textField.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
                         DispatchQueue.main.async {
                             hud.hide(animated: true)}
@@ -148,7 +154,32 @@ class SendAttachmentVC: UIViewController,UITextFieldDelegate {
                             NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
                             self.removeAnimate()
                         }
-                    })
+                    })}
+                    else {
+                        
+                        let objSupport = LumiSupport()
+                        var urlString = ""
+                        
+                        if nSubjectID != nil {
+                            urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIReplyToLumiWorldWithMediaByLumi)"
+                        }
+                        
+                        objSupport.sendSupportAttachmentMessage(urlString: urlString, param: ["supportMessageBody":textField.text as AnyObject,"supportSubjectId":nSubjectID as AnyObject,"sentBy":GlobalShareData.sharedGlobal.userCellNumber! as AnyObject,"supportMessageSubject":GlobalShareData.sharedGlobal.objCurrentSupport.supportMessageSubject! as AnyObject], filePath: strFilePath) {(error) in
+                            DispatchQueue.main.async {
+                                hud.hide(animated: true)}
+                            if error != nil  {
+                                self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
+                                })
+                            }
+                            DispatchQueue.main.async {
+                                GlobalShareData.sharedGlobal.removeFilefromDocumentDirectory(fileName: strFilePath)
+                                //self.navigationController?.popViewController(animated: false)
+                                NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
+                                self.removeAnimate()
+                            }
+                           
+                        }
+                    }
                 }
 
             }

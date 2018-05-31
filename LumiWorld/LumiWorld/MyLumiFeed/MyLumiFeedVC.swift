@@ -37,6 +37,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     var aryActivityData: [[String:AnyObject]] = []
     var arySearchData: [[String:AnyObject]] = []
     var strSearchText : NSString!
+    let viewWelcome :  WelcomView! = nil
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
@@ -51,7 +52,6 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     override func viewDidLoad() {
         self.navigationItem.addSettingButtonOnRight()
         self.tableView.addSubview(self.refreshControl)
-
     }
     override func viewWillAppear(_ animated: Bool) {
         self.getLatestLumiMessages()
@@ -110,10 +110,21 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                         }
                     }
                 }
+                if self.aryActivityData.count > 0 {
+                    self.tableView.backgroundView = nil }
                     self.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
-                }
+                    self.refreshControl.endRefreshing() }
             }
+            if self.aryActivityData.count == 0 {
+                let viewWelcome = Bundle.main.loadNibNamed("WelcomView", owner:
+                    self, options: nil)?.first as? WelcomView
+                // self.view.addSubview(viewWelcome!)
+                viewWelcome?.frame = CGRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.width)
+                viewWelcome?.btnGetStarted.addTarget(self, action:#selector(MyLumiFeedVC.didTapGetStarted), for: .touchUpInside)
+                self.tableView.backgroundView = viewWelcome
+            }
+            else { self.tableView.backgroundView = nil}
+        
             self.tableView.reloadData()
         }
     
@@ -250,8 +261,20 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         if editingStyle == .delete {
             print("Deleted")
             
-//            self.catNames.remove(at: indexPath.row)
-//            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            var objCellData : [String : Any]!
+            if isFiltering() {
+                objCellData = arySearchData[indexPath.row]
+            }
+            else {
+                objCellData = aryActivityData[indexPath.row]
+            }
+            let lunmineer = objCellData["lumineer"] as? LumineerList
+            let objLumiMessage = LumiMessage()
+            objLumiMessage.setLumineerThreadDelete(regnNumber: (lunmineer?.companyRegistrationNumber)!) { (result) in
+                if result {
+                    self.getLatestLumiMessages()
+                }
+            }
         }
     }
 
@@ -268,6 +291,10 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.getLatestLumiMessages()
+    }
+    
+   @objc func didTapGetStarted() {
+        self.tabBarController?.selectedIndex = 1
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {

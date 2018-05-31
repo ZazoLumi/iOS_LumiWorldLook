@@ -12,7 +12,11 @@
 		093F445E206B715900BC9983 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445D206B715800BC9983 /* UserData.swift */; };
 		093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445F206B717F00BC9983 /* LumiCategory.swift */; };
 		093F4462206B7BC700BC9983 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F4461206B7BC700BC9983 /* Reachability.swift */; };
+		094400E920BE8FC7005995C3 /* WelcomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 094400E820BE8FC7005995C3 /* WelcomView.xib */; };
+		094400EB20BE8FE9005995C3 /* WelcomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094400EA20BE8FE9005995C3 /* WelcomView.swift */; };
 		09559E04208F2D2D003A824C /* UIAlertAction+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09559E03208F2D2C003A824C /* UIAlertAction+Image.swift */; };
+		0956324420BD400000BE8EFB /* FaqVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0956324320BD400000BE8EFB /* FaqVC.swift */; };
+		0956324620BD42E800BE8EFB /* LumiFAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0956324520BD42E800BE8EFB /* LumiFAQ.swift */; };
 		0964E591205FC811007E5924 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E557205FC811007E5924 /* AppDelegate.swift */; };
 		0964E592205FC811007E5924 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0964E558205FC811007E5924 /* Assets.xcassets */; };
 		0964E593205FC811007E5924 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0964E559205FC811007E5924 /* LaunchScreen.storyboard */; };
@@ -142,7 +146,11 @@
 		093F445F206B717F00BC9983 /* LumiCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiCategory.swift; sourceTree = "<group>"; };
 		093F4461206B7BC700BC9983 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		093F4463206B7BE500BC9983 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		094400E820BE8FC7005995C3 /* WelcomView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomView.xib; sourceTree = "<group>"; };
+		094400EA20BE8FE9005995C3 /* WelcomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomView.swift; sourceTree = "<group>"; };
 		09559E03208F2D2C003A824C /* UIAlertAction+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+Image.swift"; sourceTree = "<group>"; };
+		0956324320BD400000BE8EFB /* FaqVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaqVC.swift; sourceTree = "<group>"; };
+		0956324520BD42E800BE8EFB /* LumiFAQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiFAQ.swift; sourceTree = "<group>"; };
 		0964E557205FC811007E5924 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0964E558205FC811007E5924 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0964E55A205FC811007E5924 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -301,6 +309,7 @@
 				093F445F206B717F00BC9983 /* LumiCategory.swift */,
 				097A69AE20809569001D273E /* LumiMessage.swift */,
 				09EAD74420B6B05E00EB37E1 /* LumiSupport.swift */,
+				0956324520BD42E800BE8EFB /* LumiFAQ.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -347,6 +356,9 @@
 			children = (
 				0964E6DB2060F981001D6F47 /* MyLumiFeedVC.swift */,
 				09EAD74620B6C55C00EB37E1 /* LumiSupportVC.swift */,
+				0956324320BD400000BE8EFB /* FaqVC.swift */,
+				094400E820BE8FC7005995C3 /* WelcomView.xib */,
+				094400EA20BE8FE9005995C3 /* WelcomView.swift */,
 			);
 			path = MyLumiFeed;
 			sourceTree = "<group>";
@@ -617,6 +629,7 @@
 				0964E7342060F981001D6F47 /* Info.plist in Resources */,
 				097BFA5E207E3BE0001F935C /* notification.caf in Resources */,
 				0964E592205FC811007E5924 /* Assets.xcassets in Resources */,
+				094400E920BE8FC7005995C3 /* WelcomView.xib in Resources */,
 				0964E71E2060F981001D6F47 /* Info.plist in Resources */,
 				0964E593205FC811007E5924 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -698,6 +711,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				094400EB20BE8FE9005995C3 /* WelcomView.swift in Sources */,
 				097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */,
 				0964E7192060F981001D6F47 /* Validatable.swift in Sources */,
 				0964E71D2060F981001D6F47 /* ValidatorDictionary.swift in Sources */,
@@ -721,6 +735,7 @@
 				7A3BBA432090867900B96750 /* TGAttachmentMessageCell.swift in Sources */,
 				09ECA79A209C8230001570EA /* LocationSearchTable.swift in Sources */,
 				0964E72D2060F981001D6F47 /* PhoneNumberRule.swift in Sources */,
+				0956324620BD42E800BE8EFB /* LumiFAQ.swift in Sources */,
 				097A69AF20809569001D273E /* LumiMessage.swift in Sources */,
 				09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */,
 				0964E7272060F981001D6F47 /* HexColorRule.swift in Sources */,
@@ -748,6 +763,7 @@
 				097BFA49207E3647001F935C /* TGTextMessageCellLayout.swift in Sources */,
 				093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */,
 				0964E7262060F981001D6F47 /* FullNameRule.swift in Sources */,
+				0956324420BD400000BE8EFB /* FaqVC.swift in Sources */,
 				09931B822099F804005D3BE1 /* DownloadManager.m in Sources */,
 				093F4462206B7BC700BC9983 /* Reachability.swift in Sources */,
 				0964E7292060F981001D6F47 /* ISBNRule.swift in Sources */,

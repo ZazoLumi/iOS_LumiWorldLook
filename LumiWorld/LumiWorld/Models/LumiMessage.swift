@@ -276,7 +276,7 @@ class LumiMessage : Object {
             print("Internet Connection not Available!")
         }
     }
-    func setLumineerMessageReadByLumi(strGUID:String,completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
+    func setLumineerMessageReadByLumi(strGUID:String,completionHandler: @escaping (_ result: Bool) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             do {
@@ -290,7 +290,10 @@ class LumiMessage : Object {
                     }
                     let realm = try! Realm()
                     let result = realm.objects(LumineerList.self).filter("id = \(GlobalShareData.sharedGlobal.objCurrentLumineer.id)")
-                    
+                    guard result.count != 0 else {
+                        return
+                    }
+
                     let objLumineer = result[0] as LumineerList
                     let lumiMessages = objLumineer.lumiMessages.filter("guid = '\(strGUID)'")
                     try! realm.write {
@@ -312,6 +315,121 @@ class LumiMessage : Object {
             print("Internet Connection not Available!")
         }
     }
+    func setLumiMessageDelete(strGuid:String,completionHandler: @escaping (_ result: Bool) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            do {
+                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIDeleteNewsFeedByLumi)"
+                let param = ["guid":strGuid, "cellNumber":GlobalShareData.sharedGlobal.userCellNumber]
+
+                AFWrapper.requestPOSTURL(urlString, params:param as [String : AnyObject], headers: nil, success: { (json) in
+                    print(json)
+                    let tempDict = json.dictionary
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        completionHandler(false)
+                        return
+                    }
+                    let realm = try! Realm()
+                    let result = realm.objects(LumineerList.self).filter("id = \(GlobalShareData.sharedGlobal.objCurrentLumineer.id)")
+                    guard result.count != 0 else {
+                        return
+                    }
+                    let objLumineer = result[0] as LumineerList
+                    let lumiMessages = objLumineer.lumiMessages.filter("guid = '\(strGuid)'")
+                    try! realm.write {
+                        let objMessage = lumiMessages[0] as LumiMessage
+                        realm.delete(objMessage)
+                        completionHandler(true)
+                    }
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+                
+            } catch let jsonError{
+                print(jsonError)
+            }
+            
+            
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+    
+    func setLumineerThreadDelete(regnNumber:String,completionHandler: @escaping (_ result: Bool) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            do {
+                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIDeleteNewsFeedsOfLumiAndLumineer)" + "?regnNumber=\(regnNumber)" + "&cellNumber=\(GlobalShareData.sharedGlobal.userCellNumber!)"
+                
+                AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
+                    print(json)
+                    let tempDict = json.dictionary
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        completionHandler(false)
+                        return
+                    }
+                    let realm = try! Realm()
+                    let realmObjects = realm.objects(LumiCategory.self)
+                    let result = realmObjects.filter("ANY lumineerList.companyRegistrationNumber = '\(regnNumber)'")
+                    if result.count > 0 {
+                        let objCategory = result[0] as LumiCategory
+                        for lumineer in objCategory.lumineerList.filter("companyRegistrationNumber = '\(regnNumber)'") {
+                            try! realm.write {
+                                realm.delete(lumineer)
+                                completionHandler(true)
+                            }
+                        }
+                    }
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+                
+            } catch let jsonError{
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+    
+    func setLumiSubjectThreadDelete(enterpriseId:String,messageSubjectId:String,completionHandler: @escaping (_ result: Bool) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            do {
+                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIDeleteNewsFeedsOfLumiByMessageSubject)" + "?enterpriseId=\(enterpriseId)" + "&cellNumber=\(GlobalShareData.sharedGlobal.userCellNumber!)" + "&messageSubjectId=\(messageSubjectId)"
+                
+                AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
+                    print(json)
+                    let tempDict = json.dictionary
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        completionHandler(false)
+                        return
+                    }
+                    let realm = try! Realm()
+                    let result = realm.objects(LumineerList.self).filter("id = \(enterpriseId)")
+                    guard result.count != 0 else {
+                        return
+                    }
+                    let objLumineer = result[0] as LumineerList
+                    let lumiMessages = objLumineer.lumiMessages.filter("messageSubjectId = '\(messageSubjectId)'")
+                    try! realm.write {
+                        realm.delete(lumiMessages)
+                        completionHandler(true)
+                    }
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+                
+            } catch let jsonError{
+                print(jsonError)
+            }
+            
+            
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+
 }
 
 

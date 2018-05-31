@@ -768,7 +768,7 @@ extension Date {
         var timeStamp : String!
         let olderTimestamp = UserDefaults.standard.getStringValue(key: key) as String
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let myString = formatter.string(from: Date())
         UserDefaults.standard.setStringValue(value: myString, key: key)
         timeStamp = olderTimestamp

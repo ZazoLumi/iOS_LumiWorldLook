@@ -704,14 +704,15 @@ extension UINavigationItem {
                 GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objAboutPlusTC, animated: true)
             }
             else if btnAction.tag == 204 {
-                
+                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "FaqVC") as! FaqVC
+                GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objFaqVC, animated: true)
             }
             else if btnAction.tag == 200 {
                 let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let objLumiSupportVC = storyBoard.instantiateViewController(withIdentifier: "LumiSupportVC") as! LumiSupportVC
                 GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.supportThread.rawValue
  GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objLumiSupportVC, animated: true)
-
             }
             else if btnAction.tag == 205 {
                 GlobalShareData.sharedGlobal.realmManager.deleteDatabase()

@@ -57,6 +57,9 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
             currentSubject = Array(Set(realm.objects(LumiMessage.self).filter("enterpriseID = %@",GlobalShareData.sharedGlobal.objCurrentLumineer.id).filter("messageCategory = %@",activityType).value(forKey: "messageSubject") as! [String]))
         }
+        else {
+            currentSubject = Array(Set(realm.objects(LumiSupport.self).filter("isRespReqdFromLumi = %@",NSNumber(value: true)).value(forKey: "supportMessageSubject") as! [String]))
+        }
         // Do any additional setup after loading the view.
     }
     override func viewDidLayoutSubviews()
@@ -97,6 +100,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 self.willMove(toParentViewController: nil)
                 self.view.removeFromSuperview()
                 self.removeFromParentViewController()
+                self.parent?.view.backgroundColor = UIColor.white
             }
         })
     }
@@ -119,7 +123,12 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         var subjectID : [Double] = []
         if isSubjectPicked == true {
             let realm = try! Realm()
-            subjectID = realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).filter("messageSubject = %@",textField.text!).value(forKey: "messageSubjectId") as! [Double]
+            if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
+                subjectID = realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).filter("messageSubject = %@",textField.text!).value(forKey: "messageSubjectId") as! [Double]
+            }
+            else {
+                subjectID = realm.objects(LumiSupport.self).filter("supportMessageSubject = %@",textField.text!).value(forKey: "supportSubjectId") as! [Double]
+            }
         }
         var nSubjectID : Double? = nil
         
@@ -152,6 +161,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 defer {
                     let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                     hud.label.text = NSLocalizedString("Uploading...", comment: "HUD loading title")
+                    if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
                     objMessage.sendLumiAttachmentMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":selectedLong as AnyObject,"latitude":selectedLat as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":nSubjectID as AnyObject],filePath:strFilePath, completionHandler: {(error) in
                         DispatchQueue.main.async {
                             hud.hide(animated: true)}
@@ -165,12 +175,42 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                             NotificationCenter.default.post(name: Notification.Name("popupRemoved"), object: nil)
                             self.removeAnimate()
                         }
-                    })
+                    })}
+                    else {
+                        
+                        let objSupport = LumiSupport()
+                        var urlString = ""
+                        
+                        if nSubjectID != nil {
+                            urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIReplyToLumiWorldWithMediaByLumi)"
+                        }
+                        else {
+                            urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISendSupportQueryWithMediaByLumi)"
+                        }
+                        
+                        objSupport.sendSupportAttachmentMessage(urlString: urlString, param: ["supportMessageBody":tvMessage.text as AnyObject,"supportSubjectId":nSubjectID as AnyObject,"sentBy":GlobalShareData.sharedGlobal.userCellNumber! as AnyObject,"supportMessageSubject":textField.text! as AnyObject], filePath: strFilePath) {(error) in
+                            DispatchQueue.main.async {
+                                hud.hide(animated: true)}
+                            if error != nil  {
+                                self.showCustomAlert(strTitle: "", strDetails: (error?.localizedDescription)!, completion: { (str) in
+                                })
+                            }
+                            DispatchQueue.main.async {
+                                hud.hide(animated: true)
+                                self.view.superview?.removeBlurEffect()
+                                NotificationCenter.default.post(name: Notification.Name("popupRemoved"), object: nil)
+                                self.removeAnimate()
+                            }
+                            
+                        }
+                    }
                 }
         }
         else {
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
+            
+            if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
             objMessage.sendLumiTextMessage(param: ["newsFeedBody":tvMessage.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":activityType as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":textField.text! as AnyObject,"messageSubjectId":nSubjectID as AnyObject], completionHandler: { () in
                 DispatchQueue.main.async {
                     hud.hide(animated: true)
@@ -178,7 +218,28 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                     NotificationCenter.default.post(name: Notification.Name("popupRemoved"), object: nil)
                     self.removeAnimate()
                 }
-            })
+            })}
+            else {
+                let objSupport = LumiSupport()
+                var urlString = ""
+
+                if nSubjectID != nil {
+                    urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIReplyToLumiWorldByLumin)"
+                }
+                else {
+                    urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISendSupportQueryToLumiAdmin)"
+                }
+                
+                objSupport.sendSupportTextMessage(urlString: urlString, param: ["supportMessageBody":tvMessage.text as AnyObject,"supportSubjectId":nSubjectID as AnyObject,"sentBy":GlobalShareData.sharedGlobal.userCellNumber! as AnyObject,"supportMessageSubject":textField.text! as AnyObject]) {
+                    DispatchQueue.main.async {
+                        hud.hide(animated: true)
+                        self.view.superview?.removeBlurEffect()
+                        NotificationCenter.default.post(name: Notification.Name("popupRemoved"), object: nil)
+                        self.removeAnimate()
+                    }
+
+                }
+            }
         }
     }
 
@@ -294,7 +355,8 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         alertController.addAction(actionCamera)
         alertController.addAction(actionPhotoVideo)
         alertController.addAction(actionDocument)
-        alertController.addAction(actionLocation)
+        if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
+            alertController.addAction(actionLocation) }
         alertController.addAction(cancelAction)
         alertController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
         self.navigationController?.present(alertController, animated: true, completion: nil)

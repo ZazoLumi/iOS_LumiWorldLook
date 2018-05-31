@@ -29,6 +29,8 @@ class LumiSupport : Object {
     @objc dynamic var supportMessageBody: String? = nil
     @objc dynamic var supportMessageSubject: String? = nil
     @objc dynamic var supportSubjectId: Double = 0
+    @objc dynamic var isFileDownloaded = false
+    @objc dynamic var imageURL: String? = nil
 
     @objc dynamic var messageStatus: String? = nil
     @objc dynamic var sentDate: String? = nil
@@ -42,6 +44,67 @@ class LumiSupport : Object {
     override static func primaryKey() -> String? {
         return "supportId"
     }
+    func sendSupportTextMessage(urlString:String,param:[String:AnyObject],completionHandler: @escaping () -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
+            let jsonString = String(data: jsonData!, encoding: .utf8)
+            //let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISendSupportQueryToLumiAdmin)"
+            
+            let paramCreateRelationship = ["supportMsgDtls":jsonString!, "url":urlString,"filePath":"","fileName":""]
+            do {
+                let multiAPI : multipartAPI = multipartAPI()
+                multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
+                    guard dict?.count != 0 else {
+                        return
+                    }
+                    
+                    let strResponseCode = dict!["responseCode"] as! Int
+                    guard strResponseCode != 0 else {
+                        DispatchQueue.main.async {
+                            MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
+                        return
+                    }
+                    completionHandler()
+                })
+            } catch let jsonError {
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+    
+    func sendSupportAttachmentMessage(urlString:String,param:[String:AnyObject],filePath:String,completionHandler: @escaping (_ error: Error?) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
+            let jsonString = String(data: jsonData!, encoding: .utf8)
+            
+            let paramCreateRelationship = ["supportMsgDtls":jsonString!, "url":urlString,"filePath":filePath]
+            do {
+                let multiAPI : multipartAPI = multipartAPI()
+                multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
+                    if error != nil {
+                        completionHandler(error!)
+                        return
+                    }
+                    let strResponseCode = dict!["responseCode"] as! Int
+                    guard strResponseCode != 0 else {
+                        DispatchQueue.main.async {
+                            MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
+                        return
+                    }
+                    completionHandler(error)
+                })
+            } catch let jsonError {
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+
     func getLumiSupportMessages(cellNumber:String,lastViewDate:String,completionHandler: @escaping (_ objData: Results<LumiSupport>) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
@@ -97,6 +160,40 @@ class LumiSupport : Object {
                         }
                         else {
                             GlobalShareData.sharedGlobal.realmManager.saveObjects(objs: objNewLumiSupport)
+                            if aObject["supportFilePath"].string != nil, (aObject["supportFilePath"].string?.count)! > 0 {
+                                DownloadManager.shared().startFileDownloads(FileDownloadInfo.init(fileTitle: Int32(objNewLumiSupport.supportId), andDownloadSource: objNewLumiSupport.supportFilePath), withCompletionBlock: { (response,url) in
+                                    DispatchQueue.main.async {
+                                        let messages = realm.objects(LumiSupport.self).filter("supportId = \(response)")
+                                        if messages.count > 0 {
+                                            var fileName : String!
+                                            let objLumiMsg = messages[0] as LumiSupport
+                                            if objLumiMsg.contentType == "Video" {
+                                                var thumbnail1 = url?.thumbnail()
+                                                thumbnail1 = url?.thumbnail(fromTime: 5)
+                                                if let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
+                                                    fileName = url?.lastPathComponent
+                                                    fileName = fileName?.deletingPathExtension
+                                                    fileName = fileName?.appendingPathExtension("png")
+                                                    let _ = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: fileName!)
+                                                }
+                                                
+                                            }
+                                            try! realm.write {
+                                                if objLumiMsg.contentType == "Video" {
+                                                    objLumiMsg.imageURL = fileName
+                                                }
+                                                objLumiMsg.supportFilePath = url?.absoluteString
+                                                objLumiMsg.isFileDownloaded = true
+                                                realm.add(objLumiMsg, update: true)
+                                                if index == tempArray.count-1 {
+                                                    print("Download post")
+                                                    NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil) }
+                                                
+                                            }
+                                        }
+                                    }
+                                })
+                            }
                         }
                         }
                                             }
@@ -111,5 +208,70 @@ class LumiSupport : Object {
             print("Internet Connection not Available!")
         }
 
+    }
+    
+    func setSupportMessageReadByLumi(strSupportID:String,completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            do {
+                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIMarkSupportMsgAsReadByLumi)" + "?supportId=\(strSupportID)"
+                AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
+                    print(json)
+                    let tempDict = json.dictionary
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        return
+                    }
+                    let realm = try! Realm()
+                    let result = realm.objects(LumiSupport.self).filter("supportId = \(strSupportID)")
+                    
+                    let objSupport = result[0] as LumiSupport
+                    try! realm.write {
+                        objSupport.isReadByLumi = true
+                        realm.add(objSupport, update: true)
+                    }
+                    
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+                
+            } catch let jsonError{
+                print(jsonError)
+            }
+            
+            
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+    
+    func setSupportMessageDelete(strSupportID:String,completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            do {
+                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIMarkSupportMsgAsDeletedByLumi)" + "?supportId=\(strSupportID)"
+                AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
+                    print(json)
+                    let tempDict = json.dictionary
+                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        return
+                    }
+                    let realm = try! Realm()
+                    let result = realm.objects(LumiSupport.self).filter("supportId = \(strSupportID)")
+                    
+                    let objSupport = result[0] as LumiSupport
+                    GlobalShareData.sharedGlobal.realmManager.deleteObject(objs: objSupport)
+                    
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+                
+            } catch let jsonError{
+                print(jsonError)
+            }
+            
+            
+        }else{
+            print("Internet Connection not Available!")
+        }
     }
 }

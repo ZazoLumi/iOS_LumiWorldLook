@@ -203,10 +203,15 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     // MARK: Private
     
     private func setupNavigationItems() {
-        titleView.title = GlobalShareData.sharedGlobal.objCurrentLumineer.name
-        let details: String = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory! + " | \(GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject!)"
-
-        titleView.detail = details
+        if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
+            titleView.title = GlobalShareData.sharedGlobal.objCurrentLumineer.name
+            let details: String = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory! + " | \(GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject!)"
+            titleView.detail = details
+        }
+        else {
+            titleView.title = "SUPPORT"
+            titleView.detail = GlobalShareData.sharedGlobal.objCurrentSupport.supportMessageSubject
+        }
         navigationItem.titleView = titleView
         
         let spacerItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)

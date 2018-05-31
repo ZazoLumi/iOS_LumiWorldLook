@@ -327,12 +327,11 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         alertController.addAction(actionCamera)
         alertController.addAction(actionPhotoVideo)
         alertController.addAction(actionDocument)
-        alertController.addAction(actionLocation)
+        if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
+            alertController.addAction(actionLocation) }
         alertController.addAction(cancelAction)
         alertController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
         self.parentViewController?.navigationController?.present(alertController, animated: true, completion: nil)
-
-
     }
     @objc func didTapSendButton(_ sender: UIButton) {
         guard let text = inputField.internalTextView.text else {

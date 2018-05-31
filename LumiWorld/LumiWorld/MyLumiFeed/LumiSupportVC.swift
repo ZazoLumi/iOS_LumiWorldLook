@@ -48,6 +48,7 @@ class LumiSupportVC: UIViewController,UITableViewDelegate,UITableViewDataSource 
     }
     
     override func viewWillAppear(_ animated: Bool) {
+         self.view.backgroundColor = UIColor.white
          getLatestLumiSupportMessages()
     }
 
@@ -57,36 +58,36 @@ class LumiSupportVC: UIViewController,UITableViewDelegate,UITableViewDataSource 
     }
     
     @objc func getLatestLumiSupportMessages() {
+        self.view.backgroundColor = UIColor.white
         let objLumiSupport = LumiSupport()
         var originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.supportTimeStamp)
         if originalString.count > 0 {originalString += ":00" }
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         objLumiSupport.getLumiSupportMessages(cellNumber: GlobalShareData.sharedGlobal.userCellNumber, lastViewDate: escapedString!, completionHandler: { (arySuport) in
             let realm = try! Realm()
-            let distinctTypes = Array(Set(realm.objects(LumiSupport.self).value(forKey: "supportId") as! [Int]))
+            let distinctTypes = Array(Set(realm.objects(LumiSupport.self).value(forKey: "supportSubjectId") as! [Int]))
             self.arySupportData = []
             for objUniqueItem in distinctTypes {
-                let result  = realm.objects(LumiSupport.self).filter("supportId == %d",objUniqueItem)
+                let result  = realm.objects(LumiSupport.self).filter("supportSubjectId == %d",objUniqueItem)
                 if result.count > 0 {
                     let objSupport = result[0] as LumiSupport
 //                    let section = ["title":objSupport.supportMessageSubject as Any, "supportId":objSupport.supportId as Any,"spport":objSupport as Any] as [String : Any]
                     self.arySupportData.append(objSupport)
                 }
             }
+            self.refreshControl.endRefreshing()
             self.tblData.reloadData()
             defer {
                 self.tblData.reloadData()
             }
         })
-        
-        
     }
     
     @IBAction func onBtnNewQueryTapped(_ sender: Any) {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objPopupSendMessage = storyBoard.instantiateViewController(withIdentifier: "PopupSendMessage") as! PopupSendMessage
-        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
+        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.supportThread.rawValue
         self.objPopupSendMessage.view.cornerRadius = 10
         self.addChildViewController(self.objPopupSendMessage)
         self.objPopupSendMessage.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-340)/2, width:self.view.frame.size.width , height:340);
@@ -96,7 +97,9 @@ class LumiSupportVC: UIViewController,UITableViewDelegate,UITableViewDataSource 
     
     func removeMessgePopup() {
         objPopupSendMessage.view.removeFromSuperview()
+        self.view.backgroundColor = UIColor.white
     }
+
 
     // MARK: - Tableview Methods
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -120,10 +123,17 @@ class LumiSupportVC: UIViewController,UITableViewDelegate,UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let chat = botChat
         var objLumiSupport : LumiSupport!
         objLumiSupport = arySupportData[indexPath.row] as LumiSupport
 
+        let chat = Chat()
+        chat.type = "support"
+        chat.targetId = ""
+        chat.chatId = objLumiSupport.supportId.string
+        chat.title = ""
+        chat.detail = ""
+
+        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.supportThread.rawValue
         GlobalShareData.sharedGlobal.objCurrentSupport = objLumiSupport
 
         var chatVC: TGChatViewController?
