@@ -9,6 +9,7 @@
 import Foundation
 import SwiftyJSON
 import  RealmSwift
+import MBProgressHUD
 
 class UserData : Object{
     
@@ -64,5 +65,55 @@ class UserData : Object{
         self.displayName = displayName
         self.emailAddress = emailAddress
 
+    }
+    func updateUserProfileData(param:[String:AnyObject],filePath:String,completionHandler: @escaping (_ result: UserData) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
+            let jsonString = String(data: jsonData!, encoding: .utf8)
+            let urlString: String!
+            
+            if filePath.count > 0 {
+                urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIUpdateUserProfileWithPhoto)"
+            }
+            else {
+                urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIUpdateUserProfile)"
+            }
+            
+            let param = ["userDtls":jsonString!, "url":urlString,"filePath":filePath]
+            do {
+                let multiAPI : multipartAPI = multipartAPI()
+                multiAPI.call(param, withCompletionBlock: { (dict, error) in
+                    
+                    guard dict?.count != 0 else {
+                        return
+                    }
+                    
+                    let strResponseCode = dict?["responseCode"] as? Int
+                    guard strResponseCode != 0 else {
+                        DispatchQueue.main.async {
+                            MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)
+                            let message = dict!["response"] as! String
+                            GlobalShareData.sharedGlobal.objCurretnVC.showCustomAlert(strTitle: "", strDetails: message, completion: { (str) in
+                            })
+
+                        }
+                        return
+                    }
+                    let realm = try! Realm()
+                    let id  = dict?["id"] as? String
+                    let data  = realm.objects(UserData.self).filter("id == %d", Int(id!)!)
+                    let newObj = UserData(id : Int(id!)!, gcmId : dict?["gcmId"] as? String,profilePic : dict?["profilePic"] as? String,token : dict?["token"] as? String,updateDate : dict?["updateDate"] as? String,lastName : dict?["lastName"] as? String,appVersion : dict?["appVersion"] as? String,cell : dict?["cell"] as? String,status : dict?["status"] as? String,password : dict?["password"] as? String,createDate : dict?["createDate"] as? String,displayName : dict?["displayName"] as? String,firstName : dict?["firstName"] as? String,emailAddress: dict?["email"] as? String)
+                    GlobalShareData.sharedGlobal.objCurrentUserDetails = newObj
+                    GlobalShareData.sharedGlobal.userCellNumber = newObj.cell
+
+                    completionHandler(newObj)
+                })
+            } catch let jsonError {
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
     }
 }

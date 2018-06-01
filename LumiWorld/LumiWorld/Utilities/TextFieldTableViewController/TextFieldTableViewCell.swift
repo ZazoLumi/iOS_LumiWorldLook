@@ -52,7 +52,8 @@ open class PaddedTextField: MFTextField {
         }
         set{
             let image = UIImage(named:newValue)
-            if !(self.leftView != nil) {
+            
+            if !(self.leftView != nil) && image != nil {
                 let viewPadding = UIView(frame: CGRect(x: 0, y: 0, width: 40 , height: 32))
                 let imageView = UIImageView (frame:CGRect(x: 0, y: 5, width: (image?.size.width)! , height: (image?.size.height)!))
                 imageView.tag = 100

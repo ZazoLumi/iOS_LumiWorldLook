@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		09028A7C20AEB86B007F85F2 /* AboutPlusTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */; };
+		090B085320C135AD00A05A7E /* LumiProfileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090B085220C135AD00A05A7E /* LumiProfileDetails.swift */; };
 		0916065420871FA400F8E8EC /* multipartAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0916065320871FA400F8E8EC /* multipartAPI.m */; };
 		093F445E206B715900BC9983 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445D206B715800BC9983 /* UserData.swift */; };
 		093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445F206B717F00BC9983 /* LumiCategory.swift */; };
@@ -139,6 +140,7 @@
 /* Begin PBXFileReference section */
 		0900544620591EC700262084 /* LumiWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LumiWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutPlusTC.swift; sourceTree = "<group>"; };
+		090B085220C135AD00A05A7E /* LumiProfileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiProfileDetails.swift; sourceTree = "<group>"; };
 		0916065120871FA300F8E8EC /* LumiWorld-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LumiWorld-Bridging-Header.h"; sourceTree = "<group>"; };
 		0916065220871FA400F8E8EC /* multipartAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multipartAPI.h; sourceTree = "<group>"; };
 		0916065320871FA400F8E8EC /* multipartAPI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = multipartAPI.m; sourceTree = "<group>"; };
@@ -367,6 +369,7 @@
 			isa = PBXGroup;
 			children = (
 				0964E6DD2060F981001D6F47 /* MyLumiProfileVC.swift */,
+				090B085220C135AD00A05A7E /* LumiProfileDetails.swift */,
 			);
 			path = MyLumiProfile;
 			sourceTree = "<group>";
@@ -716,6 +719,7 @@
 				0964E7192060F981001D6F47 /* Validatable.swift in Sources */,
 				0964E71D2060F981001D6F47 /* ValidatorDictionary.swift in Sources */,
 				0916065420871FA400F8E8EC /* multipartAPI.m in Sources */,
+				090B085320C135AD00A05A7E /* LumiProfileDetails.swift in Sources */,
 				0964E6D52060F8ED001D6F47 /* CreateAccountVC.swift in Sources */,
 				0964E72C2060F981001D6F47 /* PasswordRule.swift in Sources */,
 				0964E71B2060F981001D6F47 /* ValidationError.swift in Sources */,

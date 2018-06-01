@@ -15,7 +15,7 @@ protocol FormDataDelegate {
 
 class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,ValidationDelegate {
     var formDelegate: FormDataDelegate?
-
+    var isTopTitle = false
     func validationSuccessful() {
         var dict =  Dictionary<String, String>()
         for (index, element) in texts[0].enumerated() {
@@ -136,6 +136,8 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
         else {
             textField.placeholder = self.placeholders[indexPath.section][indexPath.row]
         }
+        if isTopTitle { textField.animatesPlaceholder = true}
+        
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
         let dicRules = self.rules[indexPath.row] as [String: [Rule]]
         var arrRules = dicRules["rule"]
@@ -154,6 +156,11 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
             arrRules?.remove(at: 1)
             arrRules?.append(ConfirmationRule(confirmField: compareField as! ValidatableField) as Rule)
         }
+        
+        if fieldType[indexPath.section][indexPath.row] == 1 && isTopTitle {
+            textField.isUserInteractionEnabled = false
+        }
+
 
         validator.registerField(textField , errorLabel: label , rules:arrRules!)
 

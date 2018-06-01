@@ -13,12 +13,12 @@ class MyLumiProfileVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
+        self.navigationItem.title = GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!.uppercased() + "'S LUMI PROFILE"
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
-        self.navigationItem.title = "Profile"
         GlobalShareData.sharedGlobal.objCurretnVC = self
     }
 

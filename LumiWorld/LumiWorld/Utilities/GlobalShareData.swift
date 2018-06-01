@@ -43,7 +43,8 @@ struct Constants {
         static let APIDeleteNewsFeedsOfLumiByMessageSubject = ":13004/newsfeed/deleteNewsFeedsOfLumiByMessageSubject"
         static let APIDeleteNewsFeedsOfLumiAndLumineer = ":13004/newsfeed/deleteNewsFeedsOfLumiAndLumineer"
         static let APIDeleteNewsFeedByLumi = ":13004/newsfeed/deleteNewsFeedByLumi"
-
+        static let APIUpdateUserProfileWithPhoto = ":13004/pushNotif/updateUserProfileWithPhoto";
+        static let APIUpdateUserProfile = ":13004/pushNotif/updateUserProfile"
    }
 }
 

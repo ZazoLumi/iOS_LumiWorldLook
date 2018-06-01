@@ -616,7 +616,7 @@ extension UINavigationItem {
             imgProfile.layer.cornerRadius = imgProfile.bounds.size.height * 0.50
             imgProfile.contentMode = .scaleAspectFit
             imgProfile.layer.borderWidth = 0.5;
-            imgProfile.layer.borderColor = UIColor.black.cgColor;
+            imgProfile.layer.borderColor = UIColor(red: 110, green: 187, blue: 171)?.cgColor
 
             view.addSubview(imgProfile)
 
@@ -624,7 +624,7 @@ extension UINavigationItem {
             let btnProfile = UIButton.init(type: .custom)
             btnProfile.frame = CGRect.init(x: 10, y: 10, width: Int(view.frame.size.width), height:115)
             btnProfile.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 18)
-            btnProfile.setTitle("Test User Data for multiple line support with some other stuff", for: .normal)
+            btnProfile.setTitle(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName, for: .normal)
             btnProfile.backgroundColor = UIColor.clear
             btnProfile.contentHorizontalAlignment = .left
             btnProfile.titleLabel?.lineBreakMode = .byWordWrapping
@@ -640,7 +640,7 @@ extension UINavigationItem {
             actionSheet.view.addSubview(view1)
             
             var yPos = 0
-            let arrSheetData  = [["title":"Support","img":"Asset 2186"],["title":"Terms & Conditions","img":"Asset 2185"],["title":"Lumi World Messages","img":"Asset 2181"],["title":"About","img":"Asset 2184"],["title":"How To Use","img":"Asset 2182"],["title":"Logout","img":"Asset 2183"]]
+            let arrSheetData  = [["title":"Support","img":"Asset 2186"],["title":"Terms & Conditions","img":"Asset 2185"],["title":"Lumi World Messages","img":"Asset 2181"],["title":"About","img":"Asset 2184"],["title":"FAQ","img":"Asset 2182"],["title":"Logout","img":"Asset 2183"]]
             for  i in 0...5 {
                 let btnAction = UIButton.init(type: .custom)
                 btnAction.frame = CGRect.init(x: 0, y: yPos, width: Int(view1.frame.size.width), height:55)
@@ -669,6 +669,8 @@ extension UINavigationItem {
             actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
             actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
             actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
+            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
+            
             let cancelAction = UIAlertAction(title:"Cancel", style:.cancel)
             cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
             actionSheet.addAction(cancelAction)
@@ -732,6 +734,12 @@ extension UINavigationItem {
     }
     @objc func actionProfileTapped(_ sender: UIButton) {
         let _ :UIButton = sender
+        sender.superview?.parentViewController?.dismiss(animated: true, completion: {
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let objLumiProfileDetails = storyBoard.instantiateViewController(withIdentifier: "LumiProfileDetails") as! LumiProfileDetails
+            GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objLumiProfileDetails, animated: true)
+ })
+
     }
 }
     
@@ -811,3 +819,19 @@ extension UIColor {
 
 }
 
+extension UIScreen {
+    
+    enum SizeType: CGFloat {
+        case Unknown = 0.0
+        case iPhone4 = 960.0
+        case iPhone5 = 1136.0
+        case iPhone6 = 1334.0
+        case iPhone6Plus = 1920.0
+    }
+    
+    var sizeType: SizeType {
+        let height = nativeBounds.height
+        guard let sizeType = SizeType(rawValue: height) else { return .Unknown }
+        return sizeType
+    }
+}

@@ -16,6 +16,7 @@ class CameraHandler: NSObject{
     static let shared = CameraHandler()
     var isFromchat = false
     var isVideoCapturing = false
+    var isFromProfile = false
     fileprivate var currentVC: UIViewController!
     
     //MARK: Internal Properties
@@ -97,7 +98,11 @@ class CameraHandler: NSObject{
         //
         //        /// Defines which screens are shown at launch, and their order.
         //        /// Default value is `[.library, .photo]`
-        config.screens = [.library, .photo, .video]
+        if isFromProfile {
+            config.screens = [.library,.photo]
+        }
+        else {
+            config.screens = [.library, .photo, .video] }
         //
         //        /// Defines the time limit for recording videos.
         //        /// Default is 30 seconds.
@@ -170,6 +175,32 @@ class CameraHandler: NSObject{
     func showPhotoLibrary(vc: UIViewController) {
         currentVC = vc
         self.showPicker()
+    }
+    func showProfileActionSheet(vc: UIViewController,withDeletePhoto :Bool) {
+        currentVC = vc
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        if withDeletePhoto {
+        let deleteAction = UIAlertAction(title: "Delete Photo", style: .default) { (alert:UIAlertAction!) -> Void in
+            self.didFinishCapturingImage?(UIImage.init(), URL.init(string: ""))
+        }
+        deleteAction.setValue(UIColor.red, forKey: "titleTextColor")
+        actionSheet.addAction(deleteAction)
+        }
+        actionSheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+            self.showCamera(vc: vc)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+            self.showPhotoLibrary(vc: vc)
+        }))
+        
+        let cancelAction = UIAlertAction(title:"Cancel", style:.cancel)
+        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+        
+        actionSheet.addAction(cancelAction)
+        
+        vc.present(actionSheet, animated: true, completion: nil)
     }
 
     func showActionSheet(vc: UIViewController) {
