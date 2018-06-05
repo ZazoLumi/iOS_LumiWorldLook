@@ -85,15 +85,15 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         let objLumiMessage = LumiMessage()
         let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.messageTimeStamp)
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        self.aryActivityData = []
         objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!], nParentId:-1) { (objLumineer) in
             let realm = try! Realm()
-            let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "enterpriseID") as! [Int]))
-            self.aryActivityData = []
+            let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageSubjectId") as! [Int]))
             for objUniqueItem in distinctTypes {
                let result  = realm.objects(LumiCategory.self)
                 for objCategory in result  {
                     for objNLumineer in objCategory.lumineerList {
-                        var aryLumiMessage = objNLumineer.lumiMessages.filter("enterpriseID = %@",objUniqueItem)
+                        var aryLumiMessage = objNLumineer.lumiMessages.filter("messageSubjectId = %@",objUniqueItem)
                         if aryLumiMessage.count > 0 {
                             aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "id", ascending: false)
                             let message = aryLumiMessage[0]
@@ -110,13 +110,25 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                         }
                     }
                 }
+            }
                 if self.aryActivityData.count > 0 {
-                    self.tableView.backgroundView = nil }
+                    self.tableView.backgroundView = nil
+                    let sorted = self.aryActivityData.sorted { left, right -> Bool in
+                        guard let rightKey = right["message"]?.createdTime else { return true }
+                        guard let leftKey = left["message"]?.createdTime else { return true }
+                        return leftKey > rightKey
+                    }
+                    self.aryActivityData.removeAll()
+                    self.aryActivityData.append(contentsOf: sorted)
+                }
+                else {
+
+            }
                     self.tableView.reloadData()
-                    self.refreshControl.endRefreshing() }
+                    self.refreshControl.endRefreshing()
             }
         
-            //self.tableView.reloadData()
+            self.tableView.reloadData()
         }
     
     // MARK: - Tableview Methods
@@ -311,12 +323,12 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         strSearchText = searchText as NSString
         arySearchData = []
         let realm = try! Realm()
-        let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "enterpriseID") as! [Int]))
+        let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageSubjectId") as! [Int]))
         for objUniqueItem in distinctTypes {
             let result  = realm.objects(LumiCategory.self)
             for objCategory in result  {
                 for objNLumineer in objCategory.lumineerList {
-                    var aryLumiMessage = objNLumineer.lumiMessages.filter("enterpriseID = %@",objUniqueItem).filter("newsFeedBody CONTAINS[c] '\(searchText)'")
+                    var aryLumiMessage = objNLumineer.lumiMessages.filter("messageSubjectId = %@",objUniqueItem).filter("newsFeedBody CONTAINS[c] '\(searchText)'")
                     
                     if aryLumiMessage.count > 0 {
                         aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "id", ascending: false)
@@ -329,6 +341,9 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                     }
                 }
             }
+            self.tableView.reloadData()
+        }
+        if self.arySearchData.count == 0 {
             self.tableView.reloadData()
         }
     }

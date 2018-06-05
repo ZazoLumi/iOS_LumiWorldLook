@@ -52,7 +52,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     var expandedSectionHeader: UITableViewHeaderFooterView!
     var aryCategory: [LumiCategory] = []
     var arySearchLumineer: [LumineerList] = []
-
     var dataMsgLabel : UILabel!
     var imgBg : UIImageView!
     override func viewDidLoad() {
@@ -613,14 +612,32 @@ extension UINavigationItem {
             let imgProfile =  UIImageView.init(frame: CGRect.init(x: 10, y: 25, width: 80, height:80))
             imgProfile.image = UIImage(named: "Asset 2187")
             imgProfile.backgroundColor = UIColor.clear
-            imgProfile.layer.cornerRadius = imgProfile.bounds.size.height * 0.50
-            imgProfile.contentMode = .scaleAspectFit
+            //imgProfile.contentMode = .scaleAspectFit
             imgProfile.layer.borderWidth = 0.5;
             imgProfile.layer.borderColor = UIColor(red: 110, green: 187, blue: 171)?.cgColor
-
-            view.addSubview(imgProfile)
-
             
+            let urlOriginalImage : URL!
+            if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())!
+            {
+                urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic!)
+            }
+            else {
+                let fileName = GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.lastPathComponent
+                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+            }
+
+            Alamofire.request(urlOriginalImage!).responseImage { response in
+                debugPrint(response)
+                if let image = response.result.value {
+                    let scalImg = image.af_imageScaled(to: CGSize(width:imgProfile.frame.size.width, height: imgProfile.frame.size.height))
+                    imgProfile.image = scalImg
+                }
+            }
+            imgProfile.contentMode = .scaleToFill
+            view.addSubview(imgProfile)
+            imgProfile.layer.cornerRadius = imgProfile.bounds.size.height/2
+            imgProfile.clipsToBounds = true;
+
             let btnProfile = UIButton.init(type: .custom)
             btnProfile.frame = CGRect.init(x: 10, y: 10, width: Int(view.frame.size.width), height:115)
             btnProfile.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 18)
@@ -747,6 +764,43 @@ extension UIImage {
     /*
      @brief decode image base64
      */
+    func imageByMakingWhiteBackgroundTransparent() -> UIImage? {
+        if let rawImageRef = self.cgImage {
+            //TODO: eliminate alpha channel if exsists
+            let colorMasking: [CGFloat] = [200, 255, 200, 255, 200, 255]
+            UIGraphicsBeginImageContext(self.size)
+            if let maskedImageRef = rawImageRef.copy(maskingColorComponents: colorMasking) {
+                UIGraphicsGetCurrentContext()?.translateBy(x: 0.0, y: 100)
+                UIGraphicsGetCurrentContext()?.scaleBy(x: 1.0, y: -1.0)
+                UIGraphicsGetCurrentContext()?.draw(maskedImageRef, in: CGRect(x: 0, y: 0, width: 100, height: 100))
+                let result = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                return result
+            }
+        }
+        return nil
+    }
+
+    static func changeWhiteColorTransparent(_ image: UIImage?) -> UIImage? {
+        let rawImageRef = image?.cgImage
+        
+        let colorMasking: [CGFloat] = [200, 255, 200, 255, 200, 255]
+
+//        let colorMasking = [222, 255, 222, 255, 222, 255]
+        UIGraphicsBeginImageContext((image?.size)!)
+        let maskedImageRef = rawImageRef?.copy(maskingColorComponents: colorMasking)
+        do {
+            //if in iphone
+            UIGraphicsGetCurrentContext()?.translateBy(x: 0.0, y: (image?.size.height)!)
+            UIGraphicsGetCurrentContext()?.scaleBy(x: 1.0, y: -1.0)
+        }
+        UIGraphicsGetCurrentContext()?.draw(maskedImageRef!, in: CGRect(x: 0, y: 0, width: image?.size.width ?? 0.0, height: image?.size.height ?? 0.0))
+        let result: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return result
+    }
+
+
     static func decodeBase64(strEncodeData: String!) -> UIImage {
       var newEncodeData = strEncodeData.replacingOccurrences(of: "data:image/png;base64,", with: "")
         newEncodeData = strEncodeData.replacingOccurrences(of: "data:image/jpeg;base64,", with: "")

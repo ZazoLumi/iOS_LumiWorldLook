@@ -182,7 +182,11 @@ class CameraHandler: NSObject{
         
         if withDeletePhoto {
         let deleteAction = UIAlertAction(title: "Delete Photo", style: .default) { (alert:UIAlertAction!) -> Void in
-            self.didFinishCapturingImage?(UIImage.init(), URL.init(string: ""))
+            let img = UIImage.init(named: "whiteBG")
+            if let data = UIImageJPEGRepresentation(img!, 0.8) {
+                let path = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: "whiteBG.png")
+                self.didFinishCapturingImage?(img!, URL.init(string: path))
+            }
         }
         deleteAction.setValue(UIColor.red, forKey: "titleTextColor")
         actionSheet.addAction(deleteAction)

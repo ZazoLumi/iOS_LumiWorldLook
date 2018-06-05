@@ -68,51 +68,21 @@ class LogInVC: UIViewController,FormDataDelegate {
     @IBAction func onBtnSignUpTapped(_ sender: Any) {
     }
     func processedFormData(formData: Dictionary<String, String>) {
-        let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APILogin)"
         do {
+            let objUser = UserData()
             var strUser : String  = formData["0"]!
             strUser = strUser.replacingOccurrences(of: "+", with:"")
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
-
             let param = ["cellNumber": strUser, "password":formData["1"],"deviceToken":"123456789"]
-            AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
-//                let userObj = UserData(json:json)
-                let tempDict = json.dictionary
-                hud.hide(animated: true)
-                guard let code = tempDict!["responsCode"]?.intValue, code != 0 else {
-                    let message = tempDict!["response"]?.string
-                    self.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
-                    })
-                    return
-                }
-                let realm = try! Realm()
-                let id : Int = json["id"].intValue
-                let data  = realm.objects(UserData.self).filter("id == %d", id)
-                let newObj = UserData(id : id , gcmId : json["gcmId"].string,profilePic : json["profilePic"].string,token : json["token"].string,updateDate : json["updateDate"].string,lastName : json["lastName"].string,appVersion : json["appVersion"].string,cell : json["cell"].string,status : json["status"].string,password : json["password"].string,createDate : json["createDate"].string,displayName : json["displayName"].string,firstName : json["firstName"].string,emailAddress: json["email"].string)
-
-                GlobalShareData.sharedGlobal.objCurrentUserDetails = newObj
-                GlobalShareData.sharedGlobal.userCellNumber = newObj.cell
-                if data.count>0 {
-                    GlobalShareData.sharedGlobal.realmManager.editObjects(objs: newObj)
-                }
-                else {
-                    GlobalShareData.sharedGlobal.realmManager.saveObjects(objs: newObj)
-                }
-
+            objUser.loginUserDetails(param: param as [String : AnyObject]) { (userData) in
                 UserDefaults.standard.setBoolValue(value: true, key: UserDefaultsKeys.isAlreadyLogin)
                 if #available(iOS 11.0, *) {
                     UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
                 } else {
                     // Fallback on earlier versions
                 }
-                print(json)
-            }, failure: { (Error) in
-                hud.hide(animated: true)
-                self.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
-                    print(Error.localizedDescription)
-                })
-            })
+            }
         } catch let jsonError{
             print(jsonError)
 

@@ -28,11 +28,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.153494"
+            timestampString = "549812941.386235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "550"
-            endingLineNumber = "550"
+            startingLineNumber = "549"
+            endingLineNumber = "549"
             landmarkName = "LumiCategoryVC"
             landmarkType = "3">
          </BreakpointContent>
@@ -44,11 +44,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.153599"
+            timestampString = "549812941.386427"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "527"
-            endingLineNumber = "527"
+            startingLineNumber = "526"
+            endingLineNumber = "526"
             landmarkName = "tableViewExpandSection(_:imageView:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -60,11 +60,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.153686"
+            timestampString = "549812941.386519"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "491"
-            endingLineNumber = "491"
+            startingLineNumber = "490"
+            endingLineNumber = "490"
             landmarkName = "tableViewCollapeSection(_:imageView:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -76,11 +76,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.153766"
+            timestampString = "549812941.386606"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "460"
-            endingLineNumber = "460"
+            startingLineNumber = "459"
+            endingLineNumber = "459"
             landmarkName = "sectionHeaderWasTouched(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -92,11 +92,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.153842"
+            timestampString = "549812941.386691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
             landmarkName = "tableView(_:numberOfRowsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -108,11 +108,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.153917"
+            timestampString = "549812941.38678"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "404"
-            endingLineNumber = "404"
+            startingLineNumber = "403"
+            endingLineNumber = "403"
             landmarkName = "filterContentForSearchText(_:scope:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -124,11 +124,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.153991"
+            timestampString = "549812941.386862"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
             landmarkName = "tableView(_:numberOfRowsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -140,11 +140,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.154065"
+            timestampString = "549812941.386934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "443"
-            endingLineNumber = "443"
+            startingLineNumber = "442"
+            endingLineNumber = "442"
             landmarkName = "isFiltering()"
             landmarkType = "7">
          </BreakpointContent>
@@ -156,11 +156,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.154137"
+            timestampString = "549812941.387056"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "411"
-            endingLineNumber = "411"
+            startingLineNumber = "410"
+            endingLineNumber = "410"
             landmarkName = "filterContentForSearchText(_:scope:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -204,11 +204,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.154299"
+            timestampString = "549812941.387468"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
+            startingLineNumber = "296"
+            endingLineNumber = "296"
             landmarkName = "tableView(_:didDeselectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -236,7 +236,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.299094"
+            timestampString = "549786160.155275"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "119"
@@ -396,7 +396,7 @@
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/Message/TGChatInputTextPanel.swift"
-                  timestampString = "549553115.048527"
+                  timestampString = "549877925.0046411"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "230"
@@ -411,7 +411,7 @@
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/Message/TGChatInputTextPanel.swift"
-                  timestampString = "549553115.051425"
+                  timestampString = "549877925.008054"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "231"
@@ -460,7 +460,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGChatViewController.swift"
-            timestampString = "549467210.299613"
+            timestampString = "549810331.644044"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "197"
@@ -476,7 +476,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGChatViewController.swift"
-            timestampString = "549467210.299695"
+            timestampString = "549810331.644155"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "286"
@@ -492,7 +492,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGChatViewController.swift"
-            timestampString = "549467210.299765"
+            timestampString = "549810331.6442569"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "304"
@@ -508,7 +508,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.299836"
+            timestampString = "549786160.155702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "777"
@@ -524,7 +524,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.299906"
+            timestampString = "549786160.155759"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "509"
@@ -540,7 +540,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.299973"
+            timestampString = "549786160.155815"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "105"
@@ -556,7 +556,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.30004"
+            timestampString = "549786160.15587"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "153"
@@ -572,7 +572,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.300106"
+            timestampString = "549786160.155925"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "159"
@@ -588,7 +588,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.684155"
+            timestampString = "549807815.195581"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "125"
@@ -620,7 +620,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.6842591"
+            timestampString = "549807815.1956789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "229"
@@ -632,7 +632,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Utilities/multipartAPI.m"
@@ -748,7 +748,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.301288"
+            timestampString = "549786160.156189"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "171"
@@ -764,7 +764,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.301356"
+            timestampString = "549786160.1562459"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "183"
@@ -780,7 +780,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.301421"
+            timestampString = "549786160.156302"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "176"
@@ -796,7 +796,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.684552"
+            timestampString = "549807815.195977"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "67"
@@ -844,7 +844,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.6846139"
+            timestampString = "549807815.1960371"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "252"
@@ -876,11 +876,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Utilities/GlobalShareData.swift"
-            timestampString = "549553114.155744"
+            timestampString = "549812941.389654"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
             landmarkName = "storeGenericfileinDocumentDirectory(fileContent:fileName:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -892,7 +892,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.684765"
+            timestampString = "549807815.196185"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "86"
@@ -908,7 +908,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.684823"
+            timestampString = "549807815.196243"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "81"
@@ -924,7 +924,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.684881"
+            timestampString = "549807815.1963"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "89"
@@ -940,11 +940,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.155938"
+            timestampString = "549812941.3898979"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "405"
-            endingLineNumber = "405"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
             landmarkName = "filterContentForSearchText(_:scope:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -988,7 +988,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGChatViewController.swift"
-            timestampString = "549467210.303345"
+            timestampString = "549810331.64586"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "298"
@@ -1020,7 +1020,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.303465"
+            timestampString = "549786160.156715"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "804"
@@ -1036,7 +1036,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.685149"
+            timestampString = "549807815.196579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "75"
@@ -1164,7 +1164,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/AppDelegate.swift"
-            timestampString = "549548220.407694"
+            timestampString = "549786160.156985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "28"
@@ -1180,7 +1180,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.304213"
+            timestampString = "549786160.157367"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "817"
@@ -1196,7 +1196,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.304279"
+            timestampString = "549786160.157424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "818"
@@ -1212,7 +1212,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "549467210.304343"
+            timestampString = "549786160.15748"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "820"
@@ -1228,7 +1228,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/AppDelegate.swift"
-            timestampString = "549548220.408235"
+            timestampString = "549786160.157535"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "30"
@@ -1292,7 +1292,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.685707"
+            timestampString = "549807815.197077"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "234"
@@ -1308,7 +1308,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.685789"
+            timestampString = "549807815.197136"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "242"
@@ -1324,7 +1324,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.685863"
+            timestampString = "549807815.197192"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "241"
@@ -1484,7 +1484,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGChatViewController.swift"
-            timestampString = "549467210.305697"
+            timestampString = "549810331.647052"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "98"
@@ -1500,7 +1500,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.686107"
+            timestampString = "549807815.197428"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "134"
@@ -1516,7 +1516,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.686168"
+            timestampString = "549807815.197486"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "133"
@@ -1564,7 +1564,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.686227"
+            timestampString = "549807815.197543"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "132"
@@ -1612,7 +1612,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.686286"
+            timestampString = "549807815.1976"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "137"
@@ -1628,7 +1628,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGAttachmentMessageCell.swift"
-            timestampString = "549553114.1571209"
+            timestampString = "549804683.624795"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "118"
@@ -1676,7 +1676,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.686375"
+            timestampString = "549807815.19769"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "131"
@@ -1964,7 +1964,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.686867"
+            timestampString = "549807815.1982"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "250"
@@ -2044,7 +2044,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.687048"
+            timestampString = "549807815.19838"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "275"
@@ -2060,7 +2060,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.687108"
+            timestampString = "549807815.198439"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "277"
@@ -2092,7 +2092,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Utilities/CameraHandler.swift"
-            timestampString = "549553114.157938"
+            timestampString = "549812941.392707"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "51"
@@ -2140,11 +2140,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.158062"
+            timestampString = "549812941.392885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "455"
-            endingLineNumber = "455"
+            startingLineNumber = "454"
+            endingLineNumber = "454"
             landmarkName = "sectionHeaderWasTouched(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2188,11 +2188,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.1581891"
+            timestampString = "549812941.393062"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
             landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2204,11 +2204,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.1582561"
+            timestampString = "549812941.393167"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2252,13 +2252,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
-            timestampString = "549467210.311656"
+            timestampString = "549897292.7442729"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "358"
-            endingLineNumber = "358"
-            landmarkName = "updateSearchResults(for:)"
-            landmarkType = "7">
+            startingLineNumber = "370"
+            endingLineNumber = "370"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2268,7 +2268,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.687621"
+            timestampString = "549807815.19907"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "70"
@@ -2284,7 +2284,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.6877019"
+            timestampString = "549807815.199129"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "160"
@@ -2300,11 +2300,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.158464"
+            timestampString = "549812941.394384"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
             landmarkName = "getLatestLumiCategories()"
             landmarkType = "7">
             <Locations>
@@ -2380,11 +2380,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
-            timestampString = "549467210.312552"
+            timestampString = "549897292.74516"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
+            startingLineNumber = "273"
+            endingLineNumber = "273"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2396,7 +2396,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGChatViewController.swift"
-            timestampString = "549467210.312616"
+            timestampString = "549810331.649321"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "270"
@@ -2444,7 +2444,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGAttachmentMessageCell.swift"
-            timestampString = "549553114.158707"
+            timestampString = "549804683.627329"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "162"
@@ -2460,11 +2460,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
-            timestampString = "549467210.312904"
+            timestampString = "549897292.745575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
+            startingLineNumber = "236"
+            endingLineNumber = "236"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
             <Locations>
@@ -2508,11 +2508,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
-            timestampString = "549467210.312978"
+            timestampString = "549897292.745924"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2524,7 +2524,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Utilities/CameraHandler.swift"
-            timestampString = "549553114.158868"
+            timestampString = "549812941.396754"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "41"
@@ -2540,7 +2540,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.158926"
+            timestampString = "549812941.396841"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "723"
+            endingLineNumber = "723"
+            landmarkName = "actionItemTapped(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
+            timestampString = "549812941.396927"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "706"
@@ -2556,27 +2572,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.158991"
+            timestampString = "549812941.397007"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "689"
-            endingLineNumber = "689"
-            landmarkName = "actionItemTapped(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.159055"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "687"
-            endingLineNumber = "687"
+            startingLineNumber = "704"
+            endingLineNumber = "704"
             landmarkName = "actionItemTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2620,7 +2620,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiSupport.swift"
-            timestampString = "549464729.143877"
+            timestampString = "549800167.951157"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "114"
@@ -2700,7 +2700,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiSupport.swift"
-            timestampString = "549464729.144009"
+            timestampString = "549800167.951282"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "130"
@@ -2716,7 +2716,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiSupport.swift"
-            timestampString = "549464729.144063"
+            timestampString = "549800167.951341"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "157"
@@ -2796,7 +2796,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiSupport.swift"
-            timestampString = "549464729.144259"
+            timestampString = "549800167.95152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "50"
@@ -2812,7 +2812,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiSupport.swift"
-            timestampString = "549464729.1443141"
+            timestampString = "549800167.951575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "58"
@@ -2860,7 +2860,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiSupport.swift"
-            timestampString = "549464729.144438"
+            timestampString = "549800167.9516881"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "88"
@@ -2908,7 +2908,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGChatViewController.swift"
-            timestampString = "549467210.31382"
+            timestampString = "549810331.650547"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "169"
@@ -2924,7 +2924,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiSupport.swift"
-            timestampString = "549464729.144637"
+            timestampString = "549800167.951831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "164"
@@ -2988,7 +2988,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiSupport.swift"
-            timestampString = "549464729.1447279"
+            timestampString = "549800167.9519171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "170"
@@ -3004,7 +3004,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiSupport.swift"
-            timestampString = "549464729.1447819"
+            timestampString = "549800167.951973"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "171"
@@ -3020,7 +3020,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiSupport.swift"
-            timestampString = "549464729.144847"
+            timestampString = "549800167.952026"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "181"
@@ -3068,7 +3068,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Message/TGAttachmentMessageCell.swift"
-            timestampString = "549553114.159881"
+            timestampString = "549804683.629056"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "147"
@@ -3084,7 +3084,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.68901"
+            timestampString = "549807815.200516"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "364"
@@ -3132,7 +3132,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.689072"
+            timestampString = "549807815.200575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "366"
@@ -3144,43 +3144,11 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
-            timestampString = "549467210.314801"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "getLatestLumiMessages()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
-            timestampString = "549467210.3148611"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "getLatestLumiMessages()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Models/LumiMessage.swift"
-            timestampString = "549549713.68919"
+            timestampString = "549807815.200693"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "414"
@@ -3196,7 +3164,7 @@
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/Models/LumiMessage.swift"
-                  timestampString = "549553115.169329"
+                  timestampString = "549877925.2165509"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "414"
@@ -3211,7 +3179,7 @@
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/Models/LumiMessage.swift"
-                  timestampString = "549553115.171917"
+                  timestampString = "549877925.220009"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "415"
@@ -3228,11 +3196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.1602269"
+            timestampString = "549812941.398751"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "720"
-            endingLineNumber = "720"
+            startingLineNumber = "737"
+            endingLineNumber = "737"
             landmarkName = "actionItemTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3244,11 +3212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.160291"
+            timestampString = "549812941.398864"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "742"
-            endingLineNumber = "742"
+            startingLineNumber = "759"
+            endingLineNumber = "759"
             landmarkName = "actionProfileTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3260,11 +3228,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumiCategoryVC.swift"
-            timestampString = "549553114.160351"
+            timestampString = "549812941.398966"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "741"
-            endingLineNumber = "741"
+            startingLineNumber = "758"
+            endingLineNumber = "758"
             landmarkName = "actionProfileTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3275,12 +3243,28 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LumiWorld/Models/UserData.swift"
-            timestampString = "549553114.1604151"
+            filePath = "LumiWorld/MyLumiProfile/LumiProfileDetails.swift"
+            timestampString = "549812941.399231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "onBtnEditTapped(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/Models/UserData.swift"
+            timestampString = "549812941.399318"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "updateUserProfileData(param:filePath:completionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3291,44 +3275,267 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LumiWorld/MyLumiProfile/LumiProfileDetails.swift"
-            timestampString = "549553114.160486"
+            filePath = "LumiWorld/Models/UserData.swift"
+            timestampString = "549812941.39941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "processedFormData(formData:)"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
+            landmarkName = "downloadNewProfilePic(newObj:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/Models/UserData.swift"
+            timestampString = "549812941.399485"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
+            landmarkName = "downloadNewProfilePic(newObj:)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "LumiWorld.LumiProfileDetails.processedFormData(formData: Swift.Dictionary&lt;Swift.String, Swift.String&gt;) -&gt; ()"
+                  symbolName = "LumiWorld.UserData.donwloadNewProfilePic(newObj: LumiWorld.UserData) -&gt; ()"
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/MyLumiProfile/LumiProfileDetails.swift"
-                  timestampString = "549553115.178695"
+                  urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/Models/UserData.swift"
+                  timestampString = "549800168.671275"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "83"
-                  endingLineNumber = "83"
-                  offsetFromSymbolStart = "2828">
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
+                  offsetFromSymbolStart = "22">
                </Location>
                <Location
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (LumiWorld.UserData) -&gt; () in LumiWorld.LumiProfileDetails.processedFormData(formData: Swift.Dictionary&lt;Swift.String, Swift.String&gt;) -&gt; ()"
+                  symbolName = "closure #1 (Swift.Int32, Swift.Optional&lt;Foundation.URL&gt;) -&gt; () in LumiWorld.UserData.donwloadNewProfilePic(newObj: LumiWorld.UserData) -&gt; ()"
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/MyLumiProfile/LumiProfileDetails.swift"
-                  timestampString = "549553115.181321"
+                  urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/Models/UserData.swift"
+                  timestampString = "549800168.6741509"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "84"
-                  endingLineNumber = "84"
-                  offsetFromSymbolStart = "21">
+                  startingLineNumber = "163"
+                  endingLineNumber = "163"
+                  offsetFromSymbolStart = "24">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/Models/UserData.swift"
+            timestampString = "549812941.399559"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "downloadNewProfilePic(newObj:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/Models/UserData.swift"
+            timestampString = "549812941.399634"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "downloadNewProfilePic(newObj:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/Models/UserData.swift"
+            timestampString = "549812941.399708"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "updateUserProfileData(param:filePath:completionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/Models/UserData.swift"
+            timestampString = "549812941.399776"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "updateUserProfileData(param:filePath:completionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/Utilities/multipartAPI.m"
+            timestampString = "549806612.815318"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "-callMultipartAPI:withCompletionBlock:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[multipartAPI callMultipartAPI:withCompletionBlock:]"
+                  moduleName = "LumiWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/Utilities/multipartAPI.m"
+                  timestampString = "549877925.25234"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "843">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__53-[multipartAPI callMultipartAPI:withCompletionBlock:]_block_invoke"
+                  moduleName = "LumiWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/Utilities/multipartAPI.m"
+                  timestampString = "549877925.255787"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "44"
+                  endingLineNumber = "44"
+                  offsetFromSymbolStart = "109">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_"
+                  moduleName = "LumiWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/Utilities/multipartAPI.m"
+                  timestampString = "549877925.258986"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
+            timestampString = "549897292.74789"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
+            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
+            timestampString = "549897292.748468"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
+            landmarkName = "MyLumiFeedVC"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
+            timestampString = "549897292.748859"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "getLatestLumiMessages()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (LumiWorld.LumineerList) -&gt; () in LumiWorld.MyLumiFeedVC.getLatestLumiMessages() -&gt; ()"
+                  moduleName = "LumiWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
+                  timestampString = "549812015.5187761"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "2395">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 (LumiWorld.LumineerList) -&gt; () in LumiWorld.MyLumiFeedVC.getLatestLumiMessages() -&gt; ()"
+                  moduleName = "LumiWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/AshishPatel/Desktop/Repository/LumiWorld/SoruceCode/LumiWorld/LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
+                  timestampString = "549812015.521654"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "101"
+                  endingLineNumber = "101"
+                  offsetFromSymbolStart = "15">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -3339,13 +3546,61 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LumiWorld/Models/UserData.swift"
-            timestampString = "549553187.820121"
+            filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
+            timestampString = "549897292.749199"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
-            landmarkName = "updateUserProfileData(param:filePath:completionHandler:)"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
+            landmarkName = "tableView(_:commit:forRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
+            timestampString = "549897292.749507"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
+            landmarkName = "tableView(_:commit:forRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
+            timestampString = "549897292.749905"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
+            landmarkName = "getLatestLumiMessages()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/MyLumiFeed/MyLumiFeedVC.swift"
+            timestampString = "549897292.750211"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
+            landmarkName = "getLatestLumiMessages()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

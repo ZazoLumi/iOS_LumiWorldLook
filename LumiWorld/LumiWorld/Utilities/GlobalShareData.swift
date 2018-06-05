@@ -67,6 +67,8 @@ class GlobalShareData {
     var objCurrentUserDetails = UserData()
     var aryAttachUrls : [URL] = []
     var currentScreenValue : String = currentScreen.messageThread.rawValue
+    var strImagePath : String = ""
+
     lazy var applicationDocumentsDirectory: URL = {
         
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)

@@ -13,6 +13,7 @@
 		093F445E206B715900BC9983 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445D206B715800BC9983 /* UserData.swift */; };
 		093F4460206B717F00BC9983 /* LumiCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445F206B717F00BC9983 /* LumiCategory.swift */; };
 		093F4462206B7BC700BC9983 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F4461206B7BC700BC9983 /* Reachability.swift */; };
+		0941EDB620C5131200941037 /* viewProfileImgVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0941EDB520C5131200941037 /* viewProfileImgVC.swift */; };
 		094400E920BE8FC7005995C3 /* WelcomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 094400E820BE8FC7005995C3 /* WelcomView.xib */; };
 		094400EB20BE8FE9005995C3 /* WelcomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094400EA20BE8FE9005995C3 /* WelcomView.swift */; };
 		09559E04208F2D2D003A824C /* UIAlertAction+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09559E03208F2D2C003A824C /* UIAlertAction+Image.swift */; };
@@ -148,6 +149,7 @@
 		093F445F206B717F00BC9983 /* LumiCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiCategory.swift; sourceTree = "<group>"; };
 		093F4461206B7BC700BC9983 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		093F4463206B7BE500BC9983 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0941EDB520C5131200941037 /* viewProfileImgVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = viewProfileImgVC.swift; sourceTree = "<group>"; };
 		094400E820BE8FC7005995C3 /* WelcomView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomView.xib; sourceTree = "<group>"; };
 		094400EA20BE8FE9005995C3 /* WelcomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomView.swift; sourceTree = "<group>"; };
 		09559E03208F2D2C003A824C /* UIAlertAction+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+Image.swift"; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 			children = (
 				0964E6DD2060F981001D6F47 /* MyLumiProfileVC.swift */,
 				090B085220C135AD00A05A7E /* LumiProfileDetails.swift */,
+				0941EDB520C5131200941037 /* viewProfileImgVC.swift */,
 			);
 			path = MyLumiProfile;
 			sourceTree = "<group>";
@@ -740,6 +743,7 @@
 				09ECA79A209C8230001570EA /* LocationSearchTable.swift in Sources */,
 				0964E72D2060F981001D6F47 /* PhoneNumberRule.swift in Sources */,
 				0956324620BD42E800BE8EFB /* LumiFAQ.swift in Sources */,
+				0941EDB620C5131200941037 /* viewProfileImgVC.swift in Sources */,
 				097A69AF20809569001D273E /* LumiMessage.swift in Sources */,
 				09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */,
 				0964E7272060F981001D6F47 /* HexColorRule.swift in Sources */,

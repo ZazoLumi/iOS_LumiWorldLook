@@ -10,6 +10,13 @@ import UIKit
 
 class MyLumiProfileVC: UIViewController {
 
+    @IBOutlet weak var lblFCount: UILabel!
+    @IBOutlet weak var lblDCount: UILabel!
+    @IBOutlet weak var lblACount: UILabel!
+    @IBOutlet weak var lblCCount: UILabel!
+
+    @IBOutlet weak var lblDisplayName: UILabel!
+    @IBOutlet weak var imgProfilePic: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
@@ -28,6 +35,14 @@ class MyLumiProfileVC: UIViewController {
     }
     
 
+    @IBAction func onBtnYonOHaveTapped(_ sender: Any) {
+    }
+    @IBAction func onBtnMessageTapped(_ sender: Any) {
+    }
+    @IBAction func onBtnSuggestLumineerTapped(_ sender: Any) {
+    }
+    @IBAction func onBtnInviteFriendsTapped(_ sender: Any) {
+    }
     /*
     // MARK: - Navigation
 

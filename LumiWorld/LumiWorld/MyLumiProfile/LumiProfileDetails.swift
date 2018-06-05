@@ -9,8 +9,10 @@
 import UIKit
 import RealmSwift
 import Alamofire
+import MBProgressHUD
 class LumiProfileDetails: UIViewController,FormDataDelegate {
     var customview : CustomTableView!
+    var isImgChanged = false
 
     @IBOutlet weak var txtDisplayName: UITextField!
     @IBOutlet weak var txtLastName: UITextField!
@@ -18,7 +20,6 @@ class LumiProfileDetails: UIViewController,FormDataDelegate {
     @IBOutlet weak var btnImgProfilePic: UIButton!
     @IBOutlet weak var viewProfileTbl1: UIView!
     @IBOutlet weak var viewProfileTbl: UIView!
-    var strImagePath : String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
@@ -47,16 +48,34 @@ class LumiProfileDetails: UIViewController,FormDataDelegate {
         customview.formDelegate = self
         customview.isTopTitle = true
         viewProfileTbl1.addSubview(customview)
-        let urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic!)
+        let urlOriginalImage : URL!
+        if GlobalShareData.sharedGlobal.strImagePath.count > 0{
+            urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.strImagePath)
+            self.isImgChanged = true
+        }
+        else {
+            if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())!
+            {
+                urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic!)
+            }
+            else {
+                let fileName = GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.lastPathComponent
+                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                GlobalShareData.sharedGlobal.strImagePath = urlOriginalImage.absoluteString
+            }
+        }
         Alamofire.request(urlOriginalImage!).responseImage { response in
             debugPrint(response)
             if let image = response.result.value {
                 let scalImg = image.af_imageScaled(to: CGSize(width:self.btnImgProfilePic.frame.size.width, height: self.btnImgProfilePic.frame.size.height))
                 self.btnImgProfilePic.setImage(scalImg, for: .normal)
             }
-
         }
     }
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
     @IBAction func onBtnDoneTapped(_ sender: Any) {
         customview.doneAction()
     }
@@ -65,12 +84,21 @@ class LumiProfileDetails: UIViewController,FormDataDelegate {
             CameraHandler.shared.showProfileActionSheet(vc: self,withDeletePhoto:false)
             CameraHandler.shared.isFromProfile = true
             CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
-                self.strImagePath = (imgUrl?.absoluteString)!
+                GlobalShareData.sharedGlobal.strImagePath = (imgUrl?.absoluteString)!
                 self.btnImgProfilePic.setImage(image, for: .normal)
+                self.isImgChanged = true
             }
         }
+        else {
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let objviewProfileImgVC = storyBoard.instantiateViewController(withIdentifier: "viewProfileImgVC") as! viewProfileImgVC
+            self.navigationController?.pushViewController(objviewProfileImgVC, animated: true)
+        }
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        GlobalShareData.sharedGlobal.strImagePath = ""
+    }
     @IBAction func onBtnCancelTapped(_ sender: Any) {
         self.navigationController?.popViewController()
     }
@@ -78,10 +106,17 @@ class LumiProfileDetails: UIViewController,FormDataDelegate {
         do {
             var strUser : String  = formData["0"]!
             strUser = strUser.replacingOccurrences(of: "+", with:"")
-            let param = ["cell": strUser,"firstName":txtFirstName?.text,"lastName":txtLastName?.text,"displayName":txtDisplayName?.text,"email":txtFirstName?.text]
+            let param = ["cell": strUser,"firstName":txtFirstName?.text,"lastName":txtLastName?.text,"displayName":txtDisplayName?.text,"email":formData["1"]]
             let objUserData = UserData()
-            objUserData.updateUserProfileData(param: param as [String : AnyObject], filePath: strImagePath) { (objUsr) in
+            let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+            hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
+            var filePath = ""
+            if isImgChanged {
+                filePath = GlobalShareData.sharedGlobal.strImagePath
+            }
+            objUserData.updateUserProfileData(param: param as [String : AnyObject], filePath:filePath ) { (objUsr) in
                 DispatchQueue.main.async {
+                    hud.hide(animated: true, afterDelay: 0)
                     self.showCustomAlert(strTitle: "", strDetails: "Profile data is updated successfully.", completion: { (str) in
                         let realm = try! Realm()
                             try! realm.write {
@@ -90,7 +125,6 @@ class LumiProfileDetails: UIViewController,FormDataDelegate {
                         self.navigationController?.popViewController()
                     })
                 }
-
             }
         } catch let jsonError{
             print(jsonError)
