@@ -167,10 +167,17 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        self.tableView.backgroundView = nil
         if isFiltering() {
+            if arySearchLumineer.count == 0 && !searchBarIsEmpty() {
+                let imgBg = UIImageView.init(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
+                imgBg.image = UIImage.init(named: "Asset 335")
+                imgBg.contentMode = .scaleAspectFit
+                self.tableView.backgroundView = imgBg;
+                return 0
+            }
             return arySearchLumineer.count
         }
-
         if (self.expandedSectionHeaderNumber == section) {
             let arrayOfItems = self.aryCategory[section].lumineerList
             return arrayOfItems.count;
@@ -601,12 +608,12 @@ extension UINavigationItem {
     }
         @objc func gotoSettingPage(_ sender: UIButton){
             let actionSheet = UIAlertController(title: "\n\n\n\n\n\n", message: nil, preferredStyle: .actionSheet)
+            
             let firstSubview = actionSheet.view.subviews.first
             let alertContentView: UIView? = firstSubview?.subviews.first
 
             let view = UIView(frame: CGRect(x: 5, y: 2, width: actionSheet.view.bounds.size.width - 7 * 4.5, height:125))
             view.backgroundColor = UIColor.init(red: 240, green: 240, blue: 237)
-            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
             actionSheet.view.addSubview(view)
             
             let imgProfile =  UIImageView.init(frame: CGRect.init(x: 10, y: 25, width: 80, height:80))
@@ -652,22 +659,23 @@ extension UINavigationItem {
             view.addSubview(btnProfile)
             
             
-            let view1 = UIView(frame: CGRect(x: 5, y: 130, width: actionSheet.view.bounds.size.width - 7 * 4.5, height: 330))
+           /* let view1 = UIView(frame: CGRect(x: 5, y: 130, width: actionSheet.view.bounds.size.width - 7 * 4.5, height: 330))
             view1.backgroundColor = UIColor.clear
-            actionSheet.view.addSubview(view1)
+           // actionSheet.view.addSubview(view1)
             
             var yPos = 0
-            let arrSheetData  = [["title":"Support","img":"Asset 2186"],["title":"Terms & Conditions","img":"Asset 2185"],["title":"Lumi World Messages","img":"Asset 2181"],["title":"About","img":"Asset 2184"],["title":"FAQ","img":"Asset 2182"],["title":"Logout","img":"Asset 2183"]]
+            let arrSheetData = [["title":"Support","img":"Asset 2186"],["title":"Terms & Conditions","img":"Asset 2185"],["title":"Lumi World Messages","img":"Asset 2181"],["title":"About","img":"Asset 2184"],["title":"FAQ","img":"Asset 2182"],["title":"Logout","img":"Asset 2183"]]
             for  i in 0...5 {
                 let btnAction = UIButton.init(type: .custom)
                 btnAction.frame = CGRect.init(x: 0, y: yPos, width: Int(view1.frame.size.width), height:55)
                 btnAction.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 18)
-                btnAction.tag = 200+i
+                index = 200+i
                 btnAction.setTitle(arrSheetData[i]["title"], for: .normal)
                 let btnImg = UIImage(named: arrSheetData[i]["img"]!)
                 btnAction.setImage(btnImg, for: .normal)
                 btnAction.backgroundColor = UIColor.clear
                 btnAction.contentHorizontalAlignment = .left
+                btnAction.contentVerticalAlignment = .bottom
                 btnAction.setTitleColor(.lumiGreen, for: .normal)
                 btnAction.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
                 btnAction.addTarget(self, action:#selector(actionItemTapped(_:)), for: .touchUpInside)
@@ -680,14 +688,66 @@ extension UINavigationItem {
                    yPos -= 3
                 }
             }
+            */
+            let actionSupport = UIAlertAction.init(title: " Support", style: .default, image: (UIImage(named: "Asset 2186")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+                self.actionItemTapped(index: 200)
+                actionSheet.dismiss(animated: true, completion: {
+                })
+                //(UIEdgeInsets(top: 0, left: -(GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.visibleViewController?.view.frame.size.width)!+80, bottom: 0, right: 0))
+            }
+            actionSupport.setValue(0, forKey: "titleTextAlignment")
+            actionSupport.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+            actionSheet.addAction(actionSupport)
+           
+            let actionTerms = UIAlertAction.init(title: " Terms & Conditions", style: .default, image: (UIImage(named: "Asset 2185")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+                self.actionItemTapped(index: 201)
+                actionSheet.dismiss(animated: true, completion: {
+                })
+
+            }
+            actionTerms.setValue(0, forKey: "titleTextAlignment")
+            actionTerms.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+            actionSheet.addAction(actionTerms)
+
+            let actionLumiMsg = UIAlertAction.init(title: " Lumi World Messages", style: .default, image: (UIImage(named: "Asset 2181")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+                self.actionItemTapped(index: 202)
+                actionSheet.dismiss(animated: true, completion: {
+                })
+            }
+            actionLumiMsg.setValue(0, forKey: "titleTextAlignment")
+            actionLumiMsg.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+            actionSheet.addAction(actionLumiMsg)
+          
+            let actionAbout = UIAlertAction.init(title: " About", style: .default, image: (UIImage(named: "Asset 2184")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+                self.actionItemTapped(index: 203)
+                actionSheet.dismiss(animated: true, completion: {
+                })
+
+            }
+            actionAbout.setValue(0, forKey: "titleTextAlignment")
+            actionAbout.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+            actionSheet.addAction(actionAbout)
             
-            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
-            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
-            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
-            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
-            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
-            actionSheet.addAction(UIAlertAction(title: "", style: .default, handler: nil))
+            let actionFAQ = UIAlertAction.init(title: " FAQ", style: .default, image: (UIImage(named: "Asset 2182")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+                self.actionItemTapped(index: 204)
+                actionSheet.dismiss(animated: true, completion: {
+                })
+            }
+            actionFAQ.setValue(0, forKey: "titleTextAlignment")
+            actionFAQ.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+            actionSheet.addAction(actionFAQ)
+
             
+           
+            let actionLogout = UIAlertAction.init(title: " Logout", style: .default, image: (UIImage(named: "Asset 2183")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+                self.actionItemTapped(index: 205)
+                actionSheet.dismiss(animated: true, completion: {
+                })
+            }
+            actionLogout.setValue(0, forKey: "titleTextAlignment")
+            actionLogout.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+            actionSheet.addAction(actionLogout)
+
             let cancelAction = UIAlertAction(title:"Cancel", style:.cancel)
             cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
             actionSheet.addAction(cancelAction)
@@ -700,14 +760,12 @@ extension UINavigationItem {
             }
 
         }
-    @objc func actionItemTapped(_ sender: UIButton) {
-        let btnAction :UIButton = sender
-        sender.superview?.parentViewController?.dismiss(animated: true, completion: {
-            if btnAction.tag == 203 || btnAction.tag == 201 {
+    @objc func actionItemTapped(index: Int) {
+            if index == 203 || index == 201 {
                 var strUrl : String!
                 var strTitle : String!
 
-                if btnAction.tag == 203 {
+                if index == 203 {
                     strUrl = "http://196.223.97.152/portal/About-Lumi-World_191217.html"
                     strTitle = "About"
                 }
@@ -722,18 +780,18 @@ extension UINavigationItem {
                 objAboutPlusTC.strTitle = strTitle
                 GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objAboutPlusTC, animated: true)
             }
-            else if btnAction.tag == 204 {
+            else if index == 204 {
                 let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "FaqVC") as! FaqVC
                 GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objFaqVC, animated: true)
             }
-            else if btnAction.tag == 200 {
+            else if index == 200 {
                 let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let objLumiSupportVC = storyBoard.instantiateViewController(withIdentifier: "LumiSupportVC") as! LumiSupportVC
                 GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.supportThread.rawValue
  GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objLumiSupportVC, animated: true)
             }
-            else if btnAction.tag == 205 {
+            else if index == 205 {
                 GlobalShareData.sharedGlobal.realmManager.deleteDatabase()
                 defer {
                     GlobalShareData.sharedGlobal.clearDiskCache()
@@ -746,9 +804,9 @@ extension UINavigationItem {
                     let objLogInVC = storyBoard.instantiateInitialViewController()
                     UIApplication.shared.keyWindow?.rootViewController = objLogInVC }
             }
-        })
-        print(btnAction.tag)
+        print(index)
     }
+    
     @objc func actionProfileTapped(_ sender: UIButton) {
         let _ :UIButton = sender
         sender.superview?.parentViewController?.dismiss(animated: true, completion: {

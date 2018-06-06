@@ -52,19 +52,21 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     override func viewDidLoad() {
         self.navigationItem.addSettingButtonOnRight()
         self.tableView.addSubview(self.refreshControl)
+        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        self.navigationController?.navigationBar.titleTextAttributes = attributes
+        self.tableView!.tableFooterView = UIView()
     }
     override func viewWillAppear(_ animated: Bool) {
-        self.getLatestLumiMessages()
+        self.navigationController?.setToolbarHidden(true, animated: false)
         self.tableView.tableFooterView = UIView()
         self.tableView.estimatedRowHeight = 64
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
-        self.navigationController?.navigationBar.titleTextAttributes = attributes
+        self.getLatestLumiMessages()
         GlobalShareData.sharedGlobal.objCurretnVC = self
         self.navigationItem.title = "MY LUMI FEED"
 
         searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = true
         searchController.searchBar.placeholder = "Search Feed"
         self.navigationItem.searchController = searchController
         definesPresentationContext = true
@@ -140,7 +142,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         self.tableView.backgroundView = nil
         if isFiltering() {
-            if arySearchData.count == 0 {
+            if arySearchData.count == 0 && !searchBarIsEmpty() {
                 let imgBg = UIImageView.init(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
                 imgBg.image = UIImage.init(named: "Asset 335")
                 imgBg.contentMode = .scaleAspectFit
@@ -321,6 +323,11 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         strSearchText = searchText as NSString
+        guard strSearchText.length != 0 else {
+            arySearchData = aryActivityData
+            self.tableView.reloadData()
+            return
+        }
         arySearchData = []
         let realm = try! Realm()
         let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageSubjectId") as! [Int]))
