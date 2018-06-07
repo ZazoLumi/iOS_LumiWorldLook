@@ -91,5 +91,7 @@
 	<array>
 		<dict/>
 	</array>
+	<key>NSContactsUsageDescription</key>
+	<string>Lumi World need to access your contacts.</string>
 </dict>
 </plist>

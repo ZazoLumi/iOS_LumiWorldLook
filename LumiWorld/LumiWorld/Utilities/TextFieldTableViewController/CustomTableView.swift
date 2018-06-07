@@ -13,7 +13,7 @@ protocol FormDataDelegate {
     func processedFormData(formData: Dictionary<String, String>)
 }
 
-class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,ValidationDelegate {
+class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,ValidationDelegate, EPPickerDelegate {
     var formDelegate: FormDataDelegate?
     var isTopTitle = false
     func validationSuccessful() {
@@ -38,7 +38,7 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
     var tableView: UITableView!
     var compareField : UITextField!
     let validator = Validator()
-
+    var isFromProfile = false
     public init(placeholders: [[String]], texts: [[String]], images: [[String]], frame:CGRect, rrules: [[String: [Rule]]], fieldType:[[NSNumber]]) {
         self.placeholders = placeholders
         self.texts = texts
@@ -47,8 +47,6 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
         self.fieldType = fieldType
         
         tableView = UITableView(frame: frame)
-        
-        tableView.rowHeight = 68
         tableView.separatorStyle = .none
         tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: String(describing: TextFieldTableViewCell.self))
 
@@ -105,7 +103,15 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
     open func numberOfSections(in tableView: UITableView) -> Int {
         return texts.count
     }
-    
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if isFromProfile{
+            return 48
+        }
+        else {
+            return 68 }
+        return 68
+    }
+
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return texts[section].count
     }
@@ -138,6 +144,25 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
         }
         if isTopTitle { textField.animatesPlaceholder = true}
         
+        if isFromProfile {
+            let imgView = textField.leftView?.viewWithTag(100) as! UIImageView
+            imgView.frame = CGRect(x: (imgView.frame.origin.x), y: 15, width: (imgView.frame.size.width), height: (imgView.frame.size.height))
+            if !(textField.rightView != nil) && fieldType[indexPath.section][indexPath.row] == 1 {
+                let image = UIImage.init(named: "Asset 2477")
+                let viewPadding = UIView(frame: CGRect(x: 0, y: 0, width: 40 , height: 32))
+                let button = UIButton.init(type: .custom)
+                button.frame = CGRect(x: 0, y: 20, width: (image?.size.width)! , height: (image?.size.height)!)
+                button.backgroundColor = UIColor.clear
+                button.setTitle("", for: .normal)
+                button.tag = 200
+                button.setImage(image, for: .normal)
+                button.addTarget(self, action: #selector(onBtnContactListTapped), for: .touchUpInside)
+                viewPadding .addSubview(button)
+                textField.rightView = viewPadding
+                textField.rightViewMode = .always
+            }
+        }
+        
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
         let dicRules = self.rules[indexPath.row] as [String: [Rule]]
         var arrRules = dicRules["rule"]
@@ -165,7 +190,51 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
         validator.registerField(textField , errorLabel: label , rules:arrRules!)
 
     }
+    @objc func onBtnContactListTapped(sender: UIButton!) {
+        let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:false, subtitleCellType: SubtitleCellValue.email)
+        let navigationController = UINavigationController(rootViewController: contactPickerScene)
+        self.parentViewController?.present(navigationController, animated: true, completion: nil)
+
+        print("Button tapped")
+    }
+    //MARK: EPContactsPicker delegates
+    func epContactPicker(_: EPContactsPicker, didContactFetchFailed error : NSError)
+    {
+        print("Failed with error \(error.description)")
+    }
     
+    func epContactPicker(_: EPContactsPicker, didSelectContact contact : EPContact)
+    {
+        print("Contact \(contact.displayName()) has been selected")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            for (index, element) in self.fieldType[0].enumerated() {
+                if index == 0 {
+                    self.texts[0][index] = contact.firstName
+                }
+                else if index == 1 {
+                    self.texts[0][index] = contact.lastName}
+                else if index == 2 {
+                    self.texts[0][index] = contact.phoneNumbers[0].phoneNumber}
+                
+                print("Item \(index): \(element)")
+                // dict.updateValue("\(element)", forKey: "\(index)")
+            }
+            self.tableView.reloadData()
+        }
+    }
+    
+    func epContactPicker(_: EPContactsPicker, didCancel error : NSError)
+    {
+        print("User canceled the selection");
+    }
+    
+    func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) {
+        print("The following contacts are selected")
+        for contact in contacts {
+            print("\(contact.displayName())")
+        }
+    }
+
     // MARK: - UITextFieldDelegate
    @objc func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,

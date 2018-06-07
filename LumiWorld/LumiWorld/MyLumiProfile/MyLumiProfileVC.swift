@@ -11,6 +11,7 @@ import Alamofire
 import  RealmSwift
 class MyLumiProfileVC: UIViewController {
 
+    var objInviteFriendVC : inviteFriendVC!
     @IBOutlet weak var lblFCount: UILabel!
     @IBOutlet weak var lblDCount: UILabel!
     @IBOutlet weak var lblACount: UILabel!
@@ -84,7 +85,14 @@ class MyLumiProfileVC: UIViewController {
         
     }
     @IBAction func onBtnInviteFriendsTapped(_ sender: Any) {
-        
+        self.view.addBlurEffect()
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objInviteFriendVC = storyBoard.instantiateViewController(withIdentifier: "inviteFriendVC") as! inviteFriendVC
+        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
+        self.addChildViewController(self.objInviteFriendVC)
+        self.objInviteFriendVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width , height:450);
+        self.view.addSubview(self.objInviteFriendVC.view)
+        self.objInviteFriendVC.didMove(toParentViewController: self)
     }
     /*
     // MARK: - Navigation

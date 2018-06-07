@@ -15,7 +15,9 @@ public class PhoneNumberRule: RegexRule {
     
     /// Phone number regular express string to be used in validation.
     //static let regex = "^\\d{10}$"
-    static let regex = "^((\\+)|(00))[0-9]{6,14}$"
+    //static let regex = "(\\+\\d{2}\\s*(\\(\\d{2}\\))|(\\(\\d{2}\\)))?\\s*\\d{4,5}\\-?\\d{4}"
+    static let regex = "([+]?1+[-]?)?+([(]?+([0-9]{3})?+[)]?)?+[-]?+[0-9]{3}+[-]?+[0-9]{4}";
+
 //    let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
 //    let result =  phoneTest.evaluate(with: value)
     
