@@ -9,9 +9,15 @@
 import UIKit
 import Alamofire
 import  RealmSwift
+
 class MyLumiProfileVC: UIViewController {
 
     var objInviteFriendVC : inviteFriendVC!
+    var objSendMessageTo : sendMessageTo!
+    var objSuggestACompany : suggestCompany!
+    var objsuggestALumineer : suggestALumineer!
+
+    
     @IBOutlet weak var lblFCount: UILabel!
     @IBOutlet weak var lblDCount: UILabel!
     @IBOutlet weak var lblACount: UILabel!
@@ -76,21 +82,42 @@ class MyLumiProfileVC: UIViewController {
         self.navigationController?.pushViewController(objLumiProfileDetails, animated: true)
     }
     @IBAction func onBtnYonOHaveTapped(_ sender: Any) {
-        
+        self.view.addBlurEffect()
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objsuggestALumineer = storyBoard.instantiateViewController(withIdentifier: "suggestALumineer") as! suggestALumineer
+        self.addChildViewController(self.objsuggestALumineer)
+        self.objsuggestALumineer.view.frame = CGRect(x: 30, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width-60 , height:440);
+        self.view.addSubview(self.objsuggestALumineer.view)
+        self.objsuggestALumineer
+            .didMove(toParentViewController: self)
     }
+    
     @IBAction func onBtnMessageTapped(_ sender: Any) {
-        
+        self.view.addBlurEffect()
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objSendMessageTo = storyBoard.instantiateViewController(withIdentifier: "sendMessageTo") as! sendMessageTo
+        self.addChildViewController(self.objSendMessageTo)
+        self.objSendMessageTo.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-230)/2, width:self.view.frame.size.width , height:300);
+        self.view.addSubview(self.objSendMessageTo.view)
+        self.objSendMessageTo.didMove(toParentViewController: self)
+
     }
     @IBAction func onBtnSuggestLumineerTapped(_ sender: Any) {
-        
+        self.view.addBlurEffect()
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objSuggestACompany = storyBoard.instantiateViewController(withIdentifier: "suggestCompany") as! suggestCompany
+        self.addChildViewController(self.objSuggestACompany)
+        self.objSuggestACompany.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width , height:430);
+        self.view.addSubview(self.objSuggestACompany.view)
+        self.objSuggestACompany.didMove(toParentViewController: self)
+
     }
     @IBAction func onBtnInviteFriendsTapped(_ sender: Any) {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objInviteFriendVC = storyBoard.instantiateViewController(withIdentifier: "inviteFriendVC") as! inviteFriendVC
-        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
         self.addChildViewController(self.objInviteFriendVC)
-        self.objInviteFriendVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width , height:450);
+        self.objInviteFriendVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:450);
         self.view.addSubview(self.objInviteFriendVC.view)
         self.objInviteFriendVC.didMove(toParentViewController: self)
     }

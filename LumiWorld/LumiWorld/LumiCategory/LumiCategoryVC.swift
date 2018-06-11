@@ -22,7 +22,7 @@ class LumineerCompanyCell: UITableViewCell {
         super.layoutSubviews()
         self.imgCompanyLogo.layer.cornerRadius = self.imgCompanyLogo.bounds.size.height * 0.50
         self.imgCompanyLogo.layer.borderWidth = 0.5;
-        self.imgCompanyLogo.layer.borderColor = UIColor.black.cgColor;
+        self.imgCompanyLogo.layer.borderColor = UIColor.lumiGreen?.cgColor;
 
     }
 
@@ -861,7 +861,7 @@ extension UIImage {
 
     static func decodeBase64(strEncodeData: String!) -> UIImage {
       var newEncodeData = strEncodeData.replacingOccurrences(of: "data:image/png;base64,", with: "")
-        newEncodeData = strEncodeData.replacingOccurrences(of: "data:image/jpeg;base64,", with: "")
+        newEncodeData = newEncodeData.replacingOccurrences(of: "data:image/jpeg;base64,", with: "")
         if let decData = Data(base64Encoded: newEncodeData, options: .ignoreUnknownCharacters), newEncodeData.characters.count > 0 {
             return UIImage(data: decData)!
         }

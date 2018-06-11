@@ -9,30 +9,27 @@
 import UIKit
 import MBProgressHUD
 
-class inviteFriendVC: UIViewController,FormDataDelegate {
+class suggestCompany: UIViewController,FormDataDelegate {
     var customview : CustomTableView!
     @IBOutlet weak var viewTblData: UIView!
     @IBOutlet weak var lblUserName : UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         showAnimate()
-        lblUserName.text = "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!)"
 
         // Do any additional setup after loading the view.
     }
     override func viewDidAppear(_ animated: Bool) {
-        if !GlobalShareData.sharedGlobal.isContactPicked {
-            let dict: [Rule] = [RequiredRule(), MinLengthRule()]
-            let dict1: [Rule] = [RequiredRule(), MinLengthRule()]
-            let dict2: [Rule] = [RequiredRule(), PhoneNumberRule()]
-            
-            customview = CustomTableView(placeholders: [["Name","Surname","Mobile Number"]], texts: [["","",""]], images:[["Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 71xxxhdpi"]], frame:CGRect(x: 0
-                , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1],["rule":dict2]],fieldType:[[4,5,1]])
-            customview.formDelegate = self
-            customview.isFromProfile = true
-            viewTblData.addSubview(customview)
-        }
-        GlobalShareData.sharedGlobal.isContactPicked = false
+        let dict: [Rule] = [RequiredRule(), MinLengthRule()]
+        let dict1: [Rule] = [RequiredRule(), MinLengthRule()]
+        let dict2: [Rule] = []
+        let dict3: [Rule] = [RequiredRule(), MinLengthRule()]
+        
+        customview = CustomTableView(placeholders: [["Name the Business, Service Provider, Content Creator Or Special Interest Group ","What do they do?","Reach out via","I would like you to join because"]], texts: [["","","",""]], images:[["Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 71xxxhdpi","Asset 3179"]], frame:CGRect(x: 0
+            , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1],["rule":dict2],["rule":dict3]],fieldType:[[4,5,4,4]])
+        customview.formDelegate = self
+        customview.isFromProfile = true
+        viewTblData.addSubview(customview)
     }
     
     override func didReceiveMemoryWarning() {
@@ -82,15 +79,23 @@ class inviteFriendVC: UIViewController,FormDataDelegate {
     }
     func processedFormData(formData: Dictionary<String, String>) {
         do {
-            let strUserName : String  = formData["0"]!
-            let strUserSurname : String  = formData["1"]!
-            var strUserMobile : String  = formData["0"]!
-            strUserMobile = strUserMobile.replacingOccurrences(of: "+", with:"")
+            let strCompanyDtl : String  = formData["0"]!
+            let strCompanyPfl : String  = formData["1"]!
+            var strReachoutVia : String  = formData["2"]!
+            var strReachoutDetails : String  = ""
+            var strReasonInvite : String  = ""
+            if strReachoutVia.count > 0 {
+                strReachoutDetails = formData["3"]!
+                strReasonInvite = formData["4"]!
+            }
+            else {
+                strReasonInvite = formData["3"]!
+            }
             
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
-            let param = ["lumiFirstName": GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName,"lumiLastName": GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName, "lumiMobile":GlobalShareData.sharedGlobal.objCurrentUserDetails.cell,"lumineerName":"","friendFirstName":strUserName,"friendLastName":strUserSurname,"friendMobile":strUserMobile,"inviteMsg":""]
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIInviteAFriendToLumiWorld)"
+            let param = ["lumiFirstName": GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName,"lumiLastName": GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName, "lumiMobile":GlobalShareData.sharedGlobal.objCurrentUserDetails.cell,"companyDetails":strCompanyDtl,"companyProfile":strCompanyPfl,"inviteMessage":"","reachOutVia":strReachoutVia,"reachOutDtls":strReachoutDetails,"reasonForInvite":strReasonInvite]
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISuggestACompany)"
             AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
                 //                let userObj = UserData(json:json)
                 let tempDict = json.dictionary
@@ -101,7 +106,7 @@ class inviteFriendVC: UIViewController,FormDataDelegate {
                     })
                     return
                 }
-                self.navigationController?.showCustomAlert(strTitle: self.lblUserName.text!, strDetails: "Thank you  for suggesting Lumi World to \(strUserName) \n We will be contacting \(strUserName) shortly. \n Team Lumi World", completion: { (str) in
+                self.navigationController?.showCustomAlert(strTitle: "", strDetails: "Suggestion sent successfully.", completion: { (str) in
                     self.onBtnClosePopupTapped((Any).self)
                 })
 

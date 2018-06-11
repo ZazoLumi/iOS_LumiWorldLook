@@ -46,8 +46,7 @@ struct Constants {
         static let APIUpdateUserProfileWithPhoto = ":13004/pushNotif/updateUserProfileWithPhoto";
         static let APIUpdateUserProfile = ":13004/pushNotif/updateUserProfile"
         static let APIInviteAFriendToLumiWorld = ":13004/invite/inviteAFriendToLumiWorld"
-
-        
+        static let APISuggestACompany = ":13004/invite/suggestACompany"
    }
 }
 
@@ -60,7 +59,7 @@ class GlobalShareData {
     
     // Now Global.sharedGlobal is your singleton, no need to use nested or other classes
     static let sharedGlobal = GlobalShareData()
-    
+    var isContactPicked = false
     var userCellNumber: String! //for debugging
     var realmManager = RealmManager()
     var objCurrentLumineer : LumineerList!

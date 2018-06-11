@@ -27,9 +27,8 @@ class lumiFeedCell: UITableViewCell {
         super.layoutSubviews()
         self.imgLumineerProfile.layer.cornerRadius = self.imgLumineerProfile.bounds.size.height/2
         self.imgLumineerProfile.layer.borderWidth = 0.5;
-        self.imgLumineerProfile.layer.borderColor = UIColor.clear.cgColor;
+        self.imgLumineerProfile.layer.borderColor = UIColor.lumiGreen?.cgColor;
     }
-
 }
 
 class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{

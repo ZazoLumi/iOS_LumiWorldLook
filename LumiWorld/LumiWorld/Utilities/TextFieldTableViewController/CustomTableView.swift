@@ -13,9 +13,14 @@ protocol FormDataDelegate {
     func processedFormData(formData: Dictionary<String, String>)
 }
 
-class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,ValidationDelegate, EPPickerDelegate {
+class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,ValidationDelegate, EPPickerDelegate,UIPickerViewDataSource, UIPickerViewDelegate {
+    
+    
     var formDelegate: FormDataDelegate?
     var isTopTitle = false
+    var pickOption = ["Email Address", "Facebook", "Instagram", "LinkedIn", "Twiteer"]
+    var isItemPicked = false
+
     func validationSuccessful() {
         var dict =  Dictionary<String, String>()
         for (index, element) in texts[0].enumerated() {
@@ -29,12 +34,12 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
         
     }
     
-    open let placeholders: [[String]]
+    open var placeholders: [[String]]
     open var texts: [[String]]
     open var images: [[String]]
     open var rules: [[String: [Rule]]]
     open var fieldType: [[NSNumber]]
-
+    var pickerTextField = UITextField()
     var tableView: UITableView!
     var compareField : UITextField!
     let validator = Validator()
@@ -72,7 +77,6 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
                 textField.layer.borderColor = UIColor.red.cgColor
                 self.tableView.reloadData()
             }
-
         })
 
     }
@@ -147,16 +151,27 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
         if isFromProfile {
             let imgView = textField.leftView?.viewWithTag(100) as! UIImageView
             imgView.frame = CGRect(x: (imgView.frame.origin.x), y: 15, width: (imgView.frame.size.width), height: (imgView.frame.size.height))
-            if !(textField.rightView != nil) && fieldType[indexPath.section][indexPath.row] == 1 {
-                let image = UIImage.init(named: "Asset 2477")
+            if !(textField.rightView != nil) && (fieldType[indexPath.section][indexPath.row] == 1 || placeholders[indexPath.section][indexPath.row] == "Reach out via") {
+                var image = UIImage.init(named: "Asset 2477")
                 let viewPadding = UIView(frame: CGRect(x: 0, y: 0, width: 40 , height: 32))
                 let button = UIButton.init(type: .custom)
                 button.frame = CGRect(x: 0, y: 20, width: (image?.size.width)! , height: (image?.size.height)!)
                 button.backgroundColor = UIColor.clear
                 button.setTitle("", for: .normal)
                 button.tag = 200
+                if placeholders[indexPath.section][indexPath.row] == "Reach out via" {
+                    image = UIImage.init(named: "Chevron-Dn-Wht")
+                    button.contentHorizontalAlignment = .right
+                    var pickerView = UIPickerView()
+                    
+                    pickerView.delegate = self
+                    pickerTextField = textField
+                    pickerTextField.inputView = pickerView
+
+                }
+                else {
+                    button.addTarget(self, action: #selector(onBtnContactListTapped), for: .touchUpInside) }
                 button.setImage(image, for: .normal)
-                button.addTarget(self, action: #selector(onBtnContactListTapped), for: .touchUpInside)
                 viewPadding .addSubview(button)
                 textField.rightView = viewPadding
                 textField.rightViewMode = .always
@@ -193,6 +208,7 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
     @objc func onBtnContactListTapped(sender: UIButton!) {
         let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:false, subtitleCellType: SubtitleCellValue.email)
         let navigationController = UINavigationController(rootViewController: contactPickerScene)
+        GlobalShareData.sharedGlobal.isContactPicked = true
         self.parentViewController?.present(navigationController, animated: true, completion: nil)
 
         print("Button tapped")
@@ -214,7 +230,9 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
                 else if index == 1 {
                     self.texts[0][index] = contact.lastName}
                 else if index == 2 {
-                    self.texts[0][index] = contact.phoneNumbers[0].phoneNumber}
+                    var phoneNumber = contact.phoneNumbers[0].phoneNumber
+                    phoneNumber = phoneNumber.replacingOccurrences(of: "-", with:"")
+                    self.texts[0][index] = phoneNumber}
                 
                 print("Item \(index): \(element)")
                 // dict.updateValue("\(element)", forKey: "\(index)")
@@ -236,6 +254,14 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
     }
 
     // MARK: - UITextFieldDelegate
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        let indexPath = tableView.indexPath(for: textField)!
+        if placeholders[indexPath.section][indexPath.row] == "Reach out via" {
+            
+        }
+        return true
+    }
    @objc func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
@@ -258,7 +284,7 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
     open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let indexPath = tableView.indexPath(for: textField)!
         var nextIndexPath: IndexPath
-
+        
         if !isLastRow(indexPath.row, inSection: indexPath.section) {
             nextIndexPath = IndexPath(row: indexPath.row+1, section: indexPath.section)
         } else if !isLastSection(indexPath.section) {
@@ -292,6 +318,38 @@ class CustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIText
     private func isLastIndexPath(_ indexPath: IndexPath) -> Bool {
         return isLastSection(indexPath.section) && isLastRow(indexPath.row, inSection: indexPath.section)
     }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickOption.count
+    }
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickOption[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        pickerTextField.text = pickOption[row]
+        self.texts[0][2] = pickerTextField.text!
+        if !isItemPicked {
+            isItemPicked = true
+        self.texts[0].insert("", at: 3)
+        self.placeholders[0].insert("Enter contact details here", at: 3)
+        self.images[0].insert("", at: 3)
+        let dict1: [Rule] = [RequiredRule(), MinLengthRule()]
+      //  self.rules[0].in(["rule":dict1], at: 3)
+        self.rules.append(["rule":dict1])
+        self.fieldType[0].insert(4, at: 3)
+            tableView.reloadData() }
+    }
+    
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        return 1
+//    }
+    
+    
 
 }
 

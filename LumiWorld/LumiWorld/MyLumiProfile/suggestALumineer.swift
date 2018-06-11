@@ -8,24 +8,35 @@
 
 import UIKit
 import MBProgressHUD
-
-class inviteFriendVC: UIViewController,FormDataDelegate {
+class addLumineerCell: UITableViewCell {
+    @IBOutlet weak var btnAddLumineer: UIButton!
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+//        btnAddLumineer.layer.cornerRadius = btnAddLumineer.bounds.size.height/2
+//        btnAddLumineer.layer.borderWidth = 0.5;
+//        btnAddLumineer.layer.borderColor = UIColor.lumiGreen?.cgColor;
+    }
+}
+class suggestALumineer: UIViewController,FormDataDelegate,UITableViewDelegate,UITableViewDataSource {
     var customview : CustomTableView!
+    @IBOutlet weak var lumineerDataHeight: NSLayoutConstraint!
+    @IBOutlet weak var tblLumineerData: UITableView!
     @IBOutlet weak var viewTblData: UIView!
     @IBOutlet weak var lblUserName : UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         showAnimate()
+        self.tblLumineerData.register(addLumineerCell.self, forCellReuseIdentifier: "addLumineerCell")
         lblUserName.text = "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!)"
-
         // Do any additional setup after loading the view.
     }
+
     override func viewDidAppear(_ animated: Bool) {
         if !GlobalShareData.sharedGlobal.isContactPicked {
             let dict: [Rule] = [RequiredRule(), MinLengthRule()]
             let dict1: [Rule] = [RequiredRule(), MinLengthRule()]
             let dict2: [Rule] = [RequiredRule(), PhoneNumberRule()]
-            
             customview = CustomTableView(placeholders: [["Name","Surname","Mobile Number"]], texts: [["","",""]], images:[["Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 71xxxhdpi"]], frame:CGRect(x: 0
                 , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1],["rule":dict2]],fieldType:[[4,5,1]])
             customview.formDelegate = self
@@ -42,8 +53,7 @@ class inviteFriendVC: UIViewController,FormDataDelegate {
     override func viewWillDisappear(_ animated: Bool) {
        // customview.isFromProfile = false
     }
-    func showAnimate()
-    {
+    func showAnimate() {
         self.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         self.view.alpha = 0.0
         UIView.animate(withDuration: 0.25, animations: {
@@ -57,6 +67,7 @@ class inviteFriendVC: UIViewController,FormDataDelegate {
         self.view.superview?.removeBlurEffect()
         removeAnimate()
     }
+    
     func removeAnimate()
     {
         UIView.animate(withDuration: 0.25, animations: {
@@ -117,6 +128,25 @@ class inviteFriendVC: UIViewController,FormDataDelegate {
             
         }
     }
+    
+    open func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 32
+    }
+    
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "addLumineerCell", for: indexPath) as! addLumineerCell
+
+        
+        return cell
+    }
+
 
     /*
     // MARK: - Navigation
