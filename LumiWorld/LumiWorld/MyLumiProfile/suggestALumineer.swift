@@ -8,7 +8,9 @@
 
 import UIKit
 import MBProgressHUD
-class addLumineerCell: UITableViewCell {
+import RealmSwift
+import ActionSheetPicker_3_0
+class suggestLumineerCell: UITableViewCell {
     @IBOutlet weak var btnAddLumineer: UIButton!
     
     override func layoutSubviews() {
@@ -19,16 +21,27 @@ class addLumineerCell: UITableViewCell {
     }
 }
 class suggestALumineer: UIViewController,FormDataDelegate,UITableViewDelegate,UITableViewDataSource {
+    
+    @IBOutlet weak var btnSubmit: UIButton!
     var customview : CustomTableView!
     @IBOutlet weak var lumineerDataHeight: NSLayoutConstraint!
     @IBOutlet weak var tblLumineerData: UITableView!
     @IBOutlet weak var viewTblData: UIView!
     @IBOutlet weak var lblUserName : UILabel!
+    var pickerView : UIPickerView!
+    var arySelectedLumineer : [[String: String]] = [[:]]
+    var aryLumineers : [String]!
     override func viewDidLoad() {
         super.viewDidLoad()
         showAnimate()
-        self.tblLumineerData.register(addLumineerCell.self, forCellReuseIdentifier: "addLumineerCell")
+       // self.tblLumineerData.register(addLumineerCell.self, forCellReuseIdentifier: "addLumineerCell")
         lblUserName.text = "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!)"
+        getAllLuminners()
+        self.btnSubmit.isEnabled = false
+        self.tblLumineerData!.tableFooterView = UIView()
+        arySelectedLumineer = [["key":"1","value":"","isSelected":"false"],["key":"2","value":"","isSelected":"false"]]
+        self.tblLumineerData.reloadData()
+
         // Do any additional setup after loading the view.
     }
 
@@ -95,34 +108,58 @@ class suggestALumineer: UIViewController,FormDataDelegate,UITableViewDelegate,UI
         do {
             let strUserName : String  = formData["0"]!
             let strUserSurname : String  = formData["1"]!
-            var strUserMobile : String  = formData["0"]!
+            var strUserMobile : String  = formData["2"]!
             strUserMobile = strUserMobile.replacingOccurrences(of: "+", with:"")
             
             let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
             hud.label.text = NSLocalizedString("Loading...", comment: "HUD loading title")
-            let param = ["lumiFirstName": GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName,"lumiLastName": GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName, "lumiMobile":GlobalShareData.sharedGlobal.objCurrentUserDetails.cell,"lumineerName":"","friendFirstName":strUserName,"friendLastName":strUserSurname,"friendMobile":strUserMobile,"inviteMsg":""]
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIInviteAFriendToLumiWorld)"
-            AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
-                //                let userObj = UserData(json:json)
-                let tempDict = json.dictionary
-                MBProgressHUD.hide(for: (self.navigationController?.view)!, animated: true)
-                guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
-                    let message = tempDict!["response"]?.string
-                    self.navigationController?.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
-                    })
-                    return
+            var strLumineerNames = ""
+            for dict in arySelectedLumineer {
+                if (dict["value"]?.count)! > 0 {
+                    if strLumineerNames.count > 0{
+                        strLumineerNames.append(", ")
+                    }
+                    strLumineerNames.append(dict["value"]!)
                 }
-                self.navigationController?.showCustomAlert(strTitle: self.lblUserName.text!, strDetails: "Thank you  for suggesting Lumi World to \(strUserName) \n We will be contacting \(strUserName) shortly. \n Team Lumi World", completion: { (str) in
-                    self.onBtnClosePopupTapped((Any).self)
-                })
+            }
+            let param = ["lumiFirstName": GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName,"lumiLastName": GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName, "lumiMobile":GlobalShareData.sharedGlobal.objCurrentUserDetails.cell,"lumineerNames":strLumineerNames,"lumiOrFrenFirstName":strUserName,"lumiOrFrenLastName":strUserSurname,"lumiOrFrenMobile":strUserMobile,"inviteMessage":""]
+            let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
+            let jsonString = String(data: jsonData!, encoding: .utf8)
+            
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APISuggestALumineer)"
+            
+            let paramCreateRelationship = ["requestDtls":jsonString!, "url":urlString,"filePath":"","fileName":""]
+            do {
+                let multiAPI : multipartAPI = multipartAPI()
+                multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
+                    DispatchQueue.main.async {
 
-                print(json)
-            }, failure: { (Error) in
-                MBProgressHUD.hide(for: (self.navigationController?.view)!, animated: true)
-                self.navigationController?.showCustomAlert(strTitle: "", strDetails: Error.localizedDescription, completion: { (str) in
-                    print(Error.localizedDescription)
+                    MBProgressHUD.hide(for: (self.navigationController?.view)!, animated: true)
+
+                    guard dict?.count != 0 else {
+                        return
+                    }
+                    
+                    let strResponseCode = dict!["responseCode"] as! Int
+                    guard strResponseCode != 0 else {
+                        DispatchQueue.main.async {
+                            let message = dict!["response"] as! String
+                            self.navigationController?.showCustomAlert(strTitle: "", strDetails: message, completion: { (str) in
+                            })
+                        }
+                        return
+                    }
+
+                    self.navigationController?.showCustomAlert(strTitle: self.lblUserName.text!, strDetails: "Thank you  for suggesting Lumi World to \(strUserName) \n We will be contacting \(strUserName) shortly. \n Team Lumi World", completion: { (str) in
+                        self.onBtnClosePopupTapped((Any).self)
+                    }) }
+
                 })
-            })
+            } catch let jsonError {
+                print(jsonError)
+            }
+
+            
         } catch let jsonError{
             print(jsonError)
             
@@ -133,20 +170,75 @@ class suggestALumineer: UIViewController,FormDataDelegate,UITableViewDelegate,UI
         return 1
     }
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 32
+        return 38
     }
     
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return arySelectedLumineer.count
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "addLumineerCell", for: indexPath) as! addLumineerCell
-
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "suggestLumineerCell", for: indexPath) as! suggestLumineerCell
+        cell.btnAddLumineer.tag = indexPath.row + 100
+        if arySelectedLumineer.count == 3 && arySelectedLumineer.count-1 == indexPath.row && (arySelectedLumineer[indexPath.row-1]["value"]?.count)! > 0 {
+            cell.btnAddLumineer.isEnabled = true
+            cell.btnAddLumineer.addTarget(self, action: #selector(btnTapAddLumineer(_:)), for: .touchUpInside)
+            if (arySelectedLumineer[indexPath.row]["value"]?.count)! > 0 {
+                cell.btnAddLumineer.setTitle(arySelectedLumineer[indexPath.row]["value"], for: .normal)
+                cell.btnAddLumineer.setImage(UIImage.init(), for: .normal)
+            }
+        }
+       else if arySelectedLumineer.count == 2 && arySelectedLumineer.count-1 == indexPath.row && (arySelectedLumineer[indexPath.row-1]["value"]?.count)! > 0 {
+            cell.btnAddLumineer.isEnabled = true
+            cell.btnAddLumineer.addTarget(self, action: #selector(btnTapAddLumineer(_:)), for: .touchUpInside)
+            if (arySelectedLumineer[indexPath.row]["value"]?.count)! > 0 {
+                cell.btnAddLumineer.setTitle(arySelectedLumineer[indexPath.row]["value"], for: .normal)
+                cell.btnAddLumineer.setImage(UIImage.init(), for: .normal)
+            }
+        }
+        else if arySelectedLumineer.count-1 == indexPath.row {
+            cell.btnAddLumineer.isEnabled = false
+        }
+        else {
+            cell.btnAddLumineer.isEnabled = true
+            cell.btnAddLumineer.addTarget(self, action: #selector(btnTapAddLumineer(_:)), for: .touchUpInside)
+            if (arySelectedLumineer[indexPath.row]["value"]?.count)! > 0 {
+                cell.btnAddLumineer.setTitle(arySelectedLumineer[indexPath.row]["value"], for: .normal)
+                cell.btnAddLumineer.setImage(UIImage.init(), for: .normal)
+            }
+        }
         return cell
     }
+    @objc func btnTapAddLumineer(_ sender: UIButton) {
+        let cellIndex = sender.tag-100
+        ActionSheetStringPicker.show(withTitle: "Select Lumineers", rows: aryLumineers, initialSelection: 0, doneBlock: { (picker, index,sender) in
+            self.arySelectedLumineer[cellIndex]["value"] = self.aryLumineers[index]
+            if self.arySelectedLumineer.count == 2 {
+                self.arySelectedLumineer.append(["key":"3","value":"","isSelected":"false"])
+            }
+            if (self.arySelectedLumineer[0]["value"]?.count)! > 0 {
+                self.btnSubmit.isEnabled = true
+            }
+            self.tblLumineerData.reloadData()
+        }, cancel: { (picker) in
+            
+        }, origin: sender)
 
+    }
+    func getAllLuminners() {
+        aryLumineers = []
+        let realm = try! Realm()
+        let realmObjects = realm.objects(LumiCategory.self)
+        if realmObjects.count > 0 {
+            for objCategory in realmObjects{
+                for lumineer in objCategory.lumineerList {
+                    let  objLumineer = lumineer as LumineerList
+                    aryLumineers.append(objLumineer.displayName!)
+                }
+            }
+        }
+        
+    }
 
     /*
     // MARK: - Navigation

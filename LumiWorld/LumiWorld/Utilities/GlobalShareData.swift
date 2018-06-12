@@ -47,6 +47,8 @@ struct Constants {
         static let APIUpdateUserProfile = ":13004/pushNotif/updateUserProfile"
         static let APIInviteAFriendToLumiWorld = ":13004/invite/inviteAFriendToLumiWorld"
         static let APISuggestACompany = ":13004/invite/suggestACompany"
+        static let APISuggestALumineer = ":13004/invite/suggestLumineerToLumi"
+
    }
 }
 

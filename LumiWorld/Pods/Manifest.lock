@@ -1,4 +1,5 @@
 PODS:
+  - ActionSheetPicker-3.0 (2.3.0)
   - Alamofire (4.7.0)
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
@@ -43,6 +44,7 @@ PODS:
   - YYText (1.0.7)
 
 DEPENDENCIES:
+  - ActionSheetPicker-3.0
   - Alamofire
   - AlamofireImage
   - ESTabBarController-swift
@@ -61,6 +63,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - ActionSheetPicker-3.0
     - Alamofire
     - AlamofireImage
     - ESTabBarController-swift
@@ -79,6 +82,7 @@ SPEC REPOS:
     - YYText
 
 SPEC CHECKSUMS:
+  ActionSheetPicker-3.0: eef157d75e151f255c5333d26656c7fbfe905a51
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   ESTabBarController-swift: 1e629e60bc6a87c1ea92a5309489b9f8dde15fa2
@@ -96,6 +100,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 1aa870d91a5a650730bf0a3ef0316ee45add35e8
+PODFILE CHECKSUM: b9ba60cb44509513e9af1a23a9002e91cfefda26
 
 COCOAPODS: 1.5.0
