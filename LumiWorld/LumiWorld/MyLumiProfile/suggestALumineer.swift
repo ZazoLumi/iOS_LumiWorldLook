@@ -41,7 +41,7 @@ class suggestALumineer: UIViewController,FormDataDelegate,UITableViewDelegate,UI
         self.tblLumineerData!.tableFooterView = UIView()
         arySelectedLumineer = [["key":"1","value":"","isSelected":"false"],["key":"2","value":"","isSelected":"false"]]
         self.tblLumineerData.reloadData()
-
+        lumineerDataHeight.constant = 76
         // Do any additional setup after loading the view.
     }
 
@@ -215,6 +215,7 @@ class suggestALumineer: UIViewController,FormDataDelegate,UITableViewDelegate,UI
             self.arySelectedLumineer[cellIndex]["value"] = self.aryLumineers[index]
             if self.arySelectedLumineer.count == 2 {
                 self.arySelectedLumineer.append(["key":"3","value":"","isSelected":"false"])
+                self.lumineerDataHeight.constant = 114
             }
             if (self.arySelectedLumineer[0]["value"]?.count)! > 0 {
                 self.btnSubmit.isEnabled = true
