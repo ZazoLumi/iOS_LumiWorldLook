@@ -319,10 +319,12 @@ class LumiMessage : Object {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             do {
-                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIDeleteNewsFeedByLumi)"
-                let param = ["guid":strGuid, "cellNumber":GlobalShareData.sharedGlobal.userCellNumber]
+                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIDeleteNewsFeedByLumi)" + "?guid=\(guid!)" + "&cellNumber=\(GlobalShareData.sharedGlobal.userCellNumber!)"
+//                let param = ["guid":strGuid, "cellNumber":GlobalShareData.sharedGlobal.userCellNumber]
+//
 
-                AFWrapper.requestPOSTURL(urlString, params:param as [String : AnyObject], headers: nil, success: { (json) in
+
+                AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
                     print(json)
                     let tempDict = json.dictionary
                     guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {

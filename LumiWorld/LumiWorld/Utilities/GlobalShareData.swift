@@ -56,6 +56,8 @@ import Foundation
 import RealmSwift
 import Realm
 import AVKit
+import Zip
+import MBProgressHUD
 
 class GlobalShareData {
     
@@ -87,6 +89,21 @@ class GlobalShareData {
         }
         return dbDirectoryURL
     }()
+    
+    lazy var exportDocumentsDirectory: URL = {
+        
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentDirectoryURL = urls[urls.count - 1] as URL
+        let dbDirectoryURL = documentDirectoryURL.appendingPathComponent("Export")
+        if FileManager.default.fileExists(atPath: dbDirectoryURL.path) == false{
+            do{
+                try FileManager.default.createDirectory(at: dbDirectoryURL, withIntermediateDirectories: false, attributes: nil)
+            }catch{
+            }
+        }
+        return dbDirectoryURL
+    }()
+
 
     
     func isDebug() -> Bool {
@@ -111,15 +128,14 @@ class GlobalShareData {
 
     }
     
-    func extractAllFile(atPath path: String, withExtension fileExtension:String) -> [String] {
-        var allFiles: [String] = []
-        let url = applicationDocumentsDirectory
+    func extractAllFile(atPath path: String,url: URL, withExtension fileExtension:String) -> [URL] {
+        var allFiles: [URL] = []
         
         let fileManager = FileManager.default
         let enumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(atPath: url.path)!
         while let element = enumerator.nextObject() as? String {
             // do something
-            allFiles.append(element)
+            allFiles.append(URL.init(string: url.path.appendingPathComponent(element))!)
             
         }
         return allFiles
@@ -171,6 +187,121 @@ class GlobalShareData {
         }
         return nil
     }
+    
+    func handleChatActionsheet(lumiMessageID:Int) {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let lumiMessage = objCurrentLumineer.lumiMessages.filter("id = \(lumiMessageID)")
+        var objLumiMessage = LumiMessage()
+
+        if lumiMessage.count > 0 {
+            objLumiMessage = lumiMessage[0] as LumiMessage
+        }
+        let deleteAction = UIAlertAction(title: "Delete Message", style: .default) { (action) in
+            objLumiMessage.setLumiMessageDelete(strGuid: objLumiMessage.guid!, completionHandler: { (result) in
+                if result {
+                    NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
+                }
+            })
+        }
+        deleteAction.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+
+        let deleteAllAction = UIAlertAction(title: "Delete All Messages", style: .default) { (action) in
+            objLumiMessage.setLumiSubjectThreadDelete(enterpriseId: objLumiMessage.enterpriseID, messageSubjectId: objLumiMessage.messageSubjectId, completionHandler: { (result) in
+                if result {
+                    NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil) 
+                }
+            })
+        }
+        deleteAllAction.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+
+        let exportAction = UIAlertAction(title: "Export Messages", style: .default) { (action) in
+            self.exportChatDataFile(messageSubjectId: objLumiMessage.messageSubjectId)
+        }
+        exportAction.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+
+        let cancelAction = UIAlertAction(title:"Cancel", style:.cancel)
+        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+        
+        actionSheet.addAction(deleteAction)
+        actionSheet.addAction(deleteAllAction)
+        actionSheet.addAction(exportAction)
+        actionSheet.addAction(cancelAction)
+
+        objCurretnVC.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func exportChatDataFile(messageSubjectId: Double) {
+        let filemgr = FileManager.default
+        let hud = MBProgressHUD.showAdded(to: (objCurretnVC.navigationController?.view)!, animated: true)
+        hud.label.text = NSLocalizedString("Exporting...", comment: "Exporting chat")
+
+        let lumiMessages = objCurrentLumineer.lumiMessages.filter("messageSubjectId = \(messageSubjectId)")
+        var content = ""
+        for objLumiMessage in lumiMessages {
+            if content.count > 0 {
+                content.append("\n")
+            }
+            var messageCont = ""
+            if objLumiMessage.newsFeedBody != nil {
+                messageCont = objLumiMessage.newsFeedBody!
+            }
+            let stringData = "[\(objLumiMessage.newsfeedPostedTime!)] " + "\(objLumiMessage.sentBy!):" + "\(messageCont)"
+            content.append(stringData)
+            
+            if objLumiMessage.contentType == "Image" ||  objLumiMessage.contentType == "Video" || objLumiMessage.contentType == "Location"{
+                do {
+                    let fileName = objLumiMessage.fileName?.lastPathComponent
+                    let url = applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                    let destUrl = exportDocumentsDirectory.appendingPathComponent(fileName!)
+
+                    if !filemgr.fileExists(atPath: destUrl.path ) {
+                        try filemgr.copyItem(atPath: url.path, toPath: destUrl.path)
+                    }
+
+                }catch{
+                    hud.hide(animated: true)
+                    print("Error for file write123")
+                }
+            }
+        }
+        defer {
+            let filePath = exportDocumentsDirectory.appendingPathComponent("chat.txt")
+
+        //    let filePath = exportDocumentsDirectory.absoluteString.appendingPathComponent("chat.txt")
+            print(content)
+            do{
+                try content.write(toFile: filePath.path, atomically: false, encoding: String.Encoding.utf8)
+            }catch _ {
+                hud.hide(animated: true)
+                print("Error for file write")
+            }
+            
+            do{
+
+                let zipFilePath = applicationDocumentsDirectory.appendingPathComponent("lumiWorld.zip")
+                if filemgr.fileExists(atPath: zipFilePath.path ) {
+                    if zipFilePath.isFileURL {
+                        try? filemgr.removeItem(at: zipFilePath)
+                    }
+                }
+                var isZipPrepared = false
+                let filesPath = extractAllFile(atPath: "", url: exportDocumentsDirectory, withExtension: "")
+                try Zip.zipFiles(paths: filesPath, zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
+                    if progress == 1.0 && !isZipPrepared {
+                        hud.hide(animated: true)
+                        isZipPrepared = true
+                        NotificationCenter.default.post(name: Notification.Name("openDocumentInterationController"), object: nil, userInfo: ["url":zipFilePath])
+
+                    }
+                    print(progress)
+                })
+            }catch _ {
+                hud.hide(animated: true)
+                print("Error for zip files")
+            }
+        }
+    }
+
     
 }
 

@@ -42,6 +42,7 @@ PODS:
   - SwifterSwift/UIKit (4.2.0)
   - SwiftyJSON (4.0.0)
   - YYText (1.0.7)
+  - Zip (1.1.0)
 
 DEPENDENCIES:
   - ActionSheetPicker-3.0
@@ -60,6 +61,7 @@ DEPENDENCIES:
   - SwifterSwift
   - SwiftyJSON
   - YYText
+  - Zip (~> 1.1)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -80,6 +82,7 @@ SPEC REPOS:
     - SwifterSwift
     - SwiftyJSON
     - YYText
+    - Zip
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: eef157d75e151f255c5333d26656c7fbfe905a51
@@ -99,7 +102,8 @@ SPEC CHECKSUMS:
   SwifterSwift: 1d101dcfb0c3123226900f3b4d220d57fb60d546
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
+  Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: b9ba60cb44509513e9af1a23a9002e91cfefda26
+PODFILE CHECKSUM: 03d8f9bebc2b5fc02ebf757efe9b527f80d812de
 
 COCOAPODS: 1.5.0

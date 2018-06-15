@@ -38,7 +38,8 @@ class TGTextMessageCellLayout: TGBaseMessageCellLayout {
     var textLayout: YYTextLayout?
     var timeLabelFrame = CGRect.zero
     var deliveryStatusViewFrame = CGRect.zero
-    
+    var attachTag: Int?
+
     private var attributedText: NSMutableAttributedString?
     
     required init(chatItem: NOCChatItem, cellWidth width: CGFloat) {
@@ -69,7 +70,8 @@ class TGTextMessageCellLayout: TGBaseMessageCellLayout {
             
             attributedText.yy_setTextHighlight(highlight, range: attributedText.yy_rangeOfAll())
         }
-        
+        attachTag = message.messageId
+
         self.attributedText = attributedText
     }
     

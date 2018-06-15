@@ -88,8 +88,6 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
             NotificationCenter.default.post(name: Notification.Name("openPreviewData"), object: nil, userInfo: ["url":cellLayout.attachURL!])
             }
         }
-
-
     }
     
 
@@ -171,6 +169,14 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
 
             timeLabel.frame = cellLayout.timeLabelFrame
             timeLabel.attributedText = cellLayout.attributedTime
+            
+            let longTapGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleMessageOperationTapFrom(recognizer:)))
+            longTapGestureRecognizer.minimumPressDuration = 0.5
+            longTapGestureRecognizer.delaysTouchesBegan = true
+            self.bubbleImageView.tag = cellLayout.attachTag!
+            self.bubbleImageView.addGestureRecognizer(longTapGestureRecognizer)
+            self.bubbleImageView.isUserInteractionEnabled = true
+
 
             if cellLayout.deliveryStatusViewFrame != CGRect.zero {
                 deliveryStatusView.checkmark1ImageView.isHidden = false
@@ -186,7 +192,14 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
             }
         }
     }
-   
+    
+    @objc func handleMessageOperationTapFrom(recognizer : UITapGestureRecognizer)
+    {
+        guard let cellLayout = layout as? TGAttachmentMessageCellLayout else {
+            fatalError("invalid layout type")
+        }
+        GlobalShareData.sharedGlobal.handleChatActionsheet(lumiMessageID:cellLayout.attachTag!)
+    }
 }
 
 
@@ -194,7 +207,7 @@ protocol TGAttachmentMessageCellDelegate: NOCChatItemCellDelegate {
     func didTapLink(cell: TGAttachmentMessageCell, linkInfo: [AnyHashable: Any])
 }
 
-extension String{
+extension String {
     
     func hasUrlPrefix()->Bool{
         

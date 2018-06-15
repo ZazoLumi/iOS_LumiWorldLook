@@ -51,7 +51,7 @@ class TGTitleView: UIView {
     }
     
     private var titleLabel = UILabel()
-    private var detailLabel = UIButton()
+    var detailLabel = UIButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,7 +68,7 @@ class TGTitleView: UIView {
         detailLabel.setImage(UIImage(named: "Asset 3352"), for: .normal)
         detailLabel.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0)
         addSubview(detailLabel)
-        
+
         updateLayouts()
     }
     
@@ -79,6 +79,7 @@ class TGTitleView: UIView {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         updateLayouts()
     }
+    
     
     private func updateLayouts() {
         if self.traitCollection.verticalSizeClass == .compact {

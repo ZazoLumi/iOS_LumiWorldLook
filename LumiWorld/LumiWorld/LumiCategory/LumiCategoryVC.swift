@@ -592,13 +592,38 @@ extension UINavigationItem {
         self.rightBarButtonItems = [barButton]
     }
     func addBackButtonOnLeft(){
+        let viewContent = UIView.init(frame: CGRect(x: -60, y: 0, width: 40, height: 30))
         let btn1 = UIButton(type: .custom)
         let img = UIImage(named: "Artboard 142xxxhdpi")
         btn1.setImage(img, for: .normal)
-        btn1.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        btn1.frame = CGRect(x: -15, y: 0, width: 30, height: 30)
         btn1.addTarget(self, action:#selector(gotoBackPage(_:)), for: .touchUpInside)
-        let barButton = UIBarButtonItem(customView: btn1)
+        btn1.backgroundColor = UIColor.clear
+       // btn1.imageEdgeInsets = UIEdgeInsets(top: 0, left:  -30, bottom: 0, right:0)
+        viewContent.backgroundColor = UIColor.clear
+        viewContent.addSubview(btn1)
+        if GlobalShareData.sharedGlobal.objCurretnVC != nil &&  GlobalShareData.sharedGlobal.objCurretnVC.isKind(of: TGChatViewController.self) {
+        let btn2 = UIButton(type: .custom)
+        let imgThumb = UIImage.decodeBase64(strEncodeData:GlobalShareData.sharedGlobal.objCurrentLumineer.enterpriseLogo)
+        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: 30, height: 30))
+        btn2.frame = CGRect(x: 15, y: 0, width: 30, height: 30)
+        btn2.cornerRadius = 15
+        btn2.setImage(scalImg, for: .normal)
+        btn2.addTarget(self, action:#selector(goBackToLumineerPage(_:)), for: .touchUpInside)
+            //btn2.imageEdgeInsets = UIEdgeInsets(top: 0, left:  -30, bottom: 0, right:0)
+            btn2.backgroundColor = UIColor.clear
+            viewContent.addSubview(btn2)
+        }
+        else {
+            btn1.frame = CGRect(x: -10, y: 0, width: 30, height: 30)
+        }
+        let barButton = UIBarButtonItem(customView: viewContent)
         self.leftBarButtonItem = barButton
+    }
+
+    @objc func goBackToLumineerPage(_ sender: UIButton){
+        GlobalShareData.sharedGlobal.objCurretnVC.tabBarController?.selectedIndex = 1
+        
     }
 
     @objc func gotoBackPage(_ sender: UIButton){

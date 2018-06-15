@@ -20,7 +20,7 @@ target 'LumiWorld' do
   pod 'YYText'
   pod 'HPGrowingTextView'
   pod 'ActionSheetPicker-3.0'
-
+  pod 'Zip', '~> 1.1'
   # Pods for LumiWorld
 
 end

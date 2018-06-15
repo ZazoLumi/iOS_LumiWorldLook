@@ -29,9 +29,9 @@ import IQKeyboardManagerSwift
 import QuickLook
 import MBProgressHUD
 
-class TGChatViewController: NOCChatViewController, UINavigationControllerDelegate, MessageManagerDelegate, TGChatInputTextPanelDelegate, TGTextMessageCellDelegate, TGAttachmentMessageCellDelegate,UIDocumentInteractionControllerDelegate,QLPreviewControllerDataSource {
+class TGChatViewController: NOCChatViewController, UINavigationControllerDelegate, MessageManagerDelegate, TGChatInputTextPanelDelegate, TGTextMessageCellDelegate, TGAttachmentMessageCellDelegate,QLPreviewControllerDataSource {
     
-    var docController : UIDocumentInteractionController!
+    fileprivate var documentInteractionController = UIDocumentInteractionController()
     let quickLookController = QLPreviewController()
 
     var titleView = TGTitleView()
@@ -100,6 +100,9 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         navigationController?.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(loadMessages), name: Notification.Name("attachmentPopupRemoved"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(loadAttachmentPreview), name: Notification.Name("openPreviewData"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(openDocumentInterationController), name: Notification.Name("openDocumentInterationController"), object: nil)
+
+        
         let saveMenuItem = UIMenuItem(title: "Copy", action: #selector(self.copyTapped(_:)))
         let deleteMenuItem = UIMenuItem(title: "Forward", action: #selector(self.forwardTapped(_:)))
         UIMenuController.shared.menuItems = [saveMenuItem, deleteMenuItem]
@@ -187,14 +190,33 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         return GlobalShareData.sharedGlobal.aryAttachUrls[index] as QLPreviewItem
     }
 
-    private func documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) -> UIViewController {
-        return self
-    }
-    private func documentInteractionControllerDidEndPreview(controller: UIDocumentInteractionController) {
-        docController = nil
-    }
-    
+//    private func documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) -> UIViewController {
+//        return self
+//    }
+//    private func documentInteractionControllerDidEndPreview(controller: UIDocumentInteractionController) {
+//        docController = nil
+//    }
+//
+//    private func documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController!) -> UIViewController! {
+//        return self
+//    }
+//
+//    func documentInteractionControllerViewForPreview(_ controller: UIDocumentInteractionController) -> UIView? {
+//        return self.view
+//    }
+//
+//    func documentInteractionControllerRectForPreview(_ controller: UIDocumentInteractionController) -> CGRect {
+//        return self.view.frame
+//    }
 
+    
+    @objc func openDocumentInterationController(notification: NSNotification) {
+        if let url = notification.userInfo?["url"] as? URL {
+            documentInteractionController.delegate = self
+            documentInteractionController.url = url
+            documentInteractionController.presentPreview(animated: true)
+        }
+    }
 
     // MARK: TGChatInputTextPanelDelegate
     
@@ -258,10 +280,17 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     // MARK: Private
     
     private func setupNavigationItems() {
+        GlobalShareData.sharedGlobal.objCurretnVC = self
+
         if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
             titleView.title = GlobalShareData.sharedGlobal.objCurrentLumineer.name
             let details: String = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory! + " | \(GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject!)"
             titleView.detail = details
+//            let imgThumb = UIImage.decodeBase64(strEncodeData:GlobalShareData.sharedGlobal.objCurrentLumineer.enterpriseLogo)
+//            let scalImg = imgThumb.af_imageScaled(to: CGSize(width: 30, height: 30))
+//    titleView.detailLabel.setImage(scalImg, for: .normal)
+//            titleView.detailLabel.addTarget(self, action: #selector(didTapLumineerBtn(_:)), for: .touchUpInside)
+
         }
         else {
             titleView.title = "SUPPORT"
@@ -289,6 +318,9 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         }
     }
     
+    @objc func didTapLumineerBtn(_ sender: UIButton) {
+    }
+
     private func sendMessage(_ message: Message) {
         message.isOutgoing = true
         message.senderId = User.currentUser.userId
@@ -407,6 +439,13 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         }
         
         return (itemIndex, itemOriginY, itemOffset, itemHeight)
+    }
+    
+}
+extension TGChatViewController: UIDocumentInteractionControllerDelegate {
+    
+    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+        return self
     }
     
 }

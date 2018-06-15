@@ -76,10 +76,8 @@ class TGTextMessageCell: TGBaseMessageCell {
             
             bubbleImageView.frame = cellLayout.bubbleImageViewFrame
             bubbleImageView.image = isHighlight ? cellLayout.highlightBubbleImage : cellLayout.bubbleImage
-            
             textLabel.frame = cellLayout.textLableFrame
             textLabel.textLayout = cellLayout.textLayout
-            
             timeLabel.frame = cellLayout.timeLabelFrame
             timeLabel.attributedText = cellLayout.attributedTime
 
@@ -88,17 +86,28 @@ class TGTextMessageCell: TGBaseMessageCell {
                 deliveryStatusView.checkmark2ImageView.isHidden = false
                 deliveryStatusView.frame = cellLayout.deliveryStatusViewFrame
                 deliveryStatusView.deliveryStatus = cellLayout.message.deliveryStatus
-
             }
             else {
                 deliveryStatusView.checkmark1ImageView.isHidden = true
                 deliveryStatusView.checkmark2ImageView.isHidden = true
                 deliveryStatusView.deliveryStatus = .Idle
             }
-            
+            let tapGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleMessageOperationTapFrom(recognizer:)))
+            tapGestureRecognizer.minimumPressDuration = 0.5
+            tapGestureRecognizer.delaysTouchesBegan = true
+            self.bubbleImageView.tag = cellLayout.attachTag!
+            self.bubbleImageView.addGestureRecognizer(tapGestureRecognizer)
+            self.bubbleImageView.isUserInteractionEnabled = true
         }
     }
     
+    @objc func handleMessageOperationTapFrom(recognizer : UITapGestureRecognizer)
+    {
+        guard let cellLayout = layout as? TGTextMessageCellLayout else {
+            fatalError("invalid layout type")
+        }
+        GlobalShareData.sharedGlobal.handleChatActionsheet(lumiMessageID:cellLayout.attachTag!)
+    }
 }
 
 protocol TGTextMessageCellDelegate: NOCChatItemCellDelegate {

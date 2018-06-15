@@ -20,15 +20,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zxc-NN-6o1">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zxc-NN-6o1">
                                 <rect key="frame" x="24" y="436" width="366" height="34"/>
                                 <color key="backgroundColor" red="0.43137254901960786" green="0.72941176470588232" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="nrb-Fd-FEH"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="SIGN IN">
                                     <color key="titleColor" red="0.8901960784313725" green="0.94117647058823528" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onBtnSignInTapped:" destination="wYg-Uo-97Q" eventType="touchUpInside" id="Km6-lv-Cbb"/>
                                 </connections>
@@ -170,7 +177,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="25A-Of-S5l">
-                                                        <rect key="frame" x="238.33333333333334" y="0.0" width="91.666666666666657" height="43.333333333333336"/>
+                                                        <rect key="frame" x="238.33333333333334" y="0.0" width="91.666666666666657" height="43"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="25A-Of-S5l" secondAttribute="height" multiplier="89:42" id="ILj-z2-pYF"/>
                                                         </constraints>
@@ -731,15 +738,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v34-9g-wU0">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v34-9g-wU0">
                                 <rect key="frame" x="24" y="320" width="374" height="34"/>
                                 <color key="backgroundColor" red="0.43137254899999999" green="0.72941176470000002" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="dMr-25-H8T"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                 <state key="normal" title="RESET PASSWORD">
                                     <color key="titleColor" red="0.89019607840000003" green="0.94117647059999998" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onBtnResetPasswordTapped:" destination="gPP-y5-Try" eventType="touchUpInside" id="vOB-en-KPQ"/>
                                 </connections>
@@ -1158,10 +1171,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g44-wj-Qhe">
-                                <rect key="frame" x="0.0" y="636" width="414" height="80"/>
+                                <rect key="frame" x="15" y="636" width="384" height="80"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hd1-NU-bng">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="384" height="1"/>
                                         <color key="backgroundColor" red="0.86125496229999998" green="0.86125496229999998" blue="0.86125496229999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="3Y3-EI-gia"/>
@@ -1171,31 +1184,31 @@
                                         <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="9fB-xD-nSn">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="384" height="80"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mc4-a5-hdD">
-                                                <rect key="frame" x="0.0" y="0.0" width="103.66666666666667" height="80"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="96" height="80"/>
                                                 <state key="normal" image="Asset 19"/>
                                                 <connections>
                                                     <action selector="onBtnInviteFriendsTapped:" destination="X0O-Jw-A3m" eventType="touchUpInside" id="RKL-B3-NWl"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZYC-bU-FgI">
-                                                <rect key="frame" x="103.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
+                                                <rect key="frame" x="96" y="0.0" width="96" height="80"/>
                                                 <state key="normal" image="Asset 20"/>
                                                 <connections>
                                                     <action selector="onBtnSuggestLumineerTapped:" destination="X0O-Jw-A3m" eventType="touchUpInside" id="CO0-a5-e19"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fmg-Se-qHj">
-                                                <rect key="frame" x="206.99999999999997" y="0.0" width="103.66666666666666" height="80"/>
+                                                <rect key="frame" x="192" y="0.0" width="96" height="80"/>
                                                 <state key="normal" image="Asset 21"/>
                                                 <connections>
                                                     <action selector="onBtnYonOHaveTapped:" destination="X0O-Jw-A3m" eventType="touchUpInside" id="BcS-L0-yjp"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fmL-8F-czv">
-                                                <rect key="frame" x="310.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
+                                                <rect key="frame" x="288" y="0.0" width="96" height="80"/>
                                                 <state key="normal" image="Asset 22"/>
                                                 <connections>
                                                     <action selector="onBtnMessageTapped:" destination="X0O-Jw-A3m" eventType="touchUpInside" id="oy5-So-5wb"/>
@@ -1234,8 +1247,8 @@
                             <constraint firstItem="a5z-I1-VPy" firstAttribute="trailing" secondItem="EYe-Bv-dW9" secondAttribute="trailing" id="Fad-04-ji3"/>
                             <constraint firstItem="EYe-Bv-dW9" firstAttribute="trailing" secondItem="3nF-oZ-Q6B" secondAttribute="trailing" constant="36" id="QtU-qt-ebB"/>
                             <constraint firstItem="g44-wj-Qhe" firstAttribute="bottom" secondItem="EYe-Bv-dW9" secondAttribute="bottom" constant="-20" id="fbt-vm-4ES"/>
-                            <constraint firstAttribute="trailing" secondItem="g44-wj-Qhe" secondAttribute="trailing" id="gAe-Tu-h0l"/>
-                            <constraint firstItem="g44-wj-Qhe" firstAttribute="leading" secondItem="mS5-7v-xlc" secondAttribute="leading" id="kfW-Ey-MAK"/>
+                            <constraint firstAttribute="trailing" secondItem="g44-wj-Qhe" secondAttribute="trailing" constant="15" id="gAe-Tu-h0l"/>
+                            <constraint firstItem="g44-wj-Qhe" firstAttribute="leading" secondItem="mS5-7v-xlc" secondAttribute="leading" constant="15" id="kfW-Ey-MAK"/>
                             <constraint firstItem="EYe-Bv-dW9" firstAttribute="trailing" secondItem="es7-le-FoG" secondAttribute="trailing" id="xl2-Ty-BE0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="EYe-Bv-dW9"/>
@@ -1577,15 +1590,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wwb-Q3-r9f">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wwb-Q3-r9f">
                                 <rect key="frame" x="24" y="406" width="374" height="34"/>
                                 <color key="backgroundColor" red="0.43137254899999999" green="0.72941176470000002" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="l6P-V2-ffU"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                 <state key="normal" title="SIGN IN">
                                     <color key="titleColor" red="0.89019607840000003" green="0.94117647059999998" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onBtnSignInTapped:" destination="GEx-GY-WLL" eventType="touchUpInside" id="vRH-RV-fll"/>
                                 </connections>
@@ -1769,15 +1788,21 @@
                                     <action selector="onBtnTermAndConditionTapped:" destination="8Hm-PX-Sg2" eventType="touchUpInside" id="332-fY-LBB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cno-lW-czM">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cno-lW-czM">
                                 <rect key="frame" x="24" y="672" width="374" height="34"/>
                                 <color key="backgroundColor" red="0.43137254899999999" green="0.72941176470000002" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="Ihy-Pf-3k4"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                 <state key="normal" title="CHANGE PASSWORD">
                                     <color key="titleColor" red="0.89019607840000003" green="0.94117647059999998" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onBtnChangePasswordTapped:" destination="8Hm-PX-Sg2" eventType="touchUpInside" id="5cE-GV-jLD"/>
                                 </connections>
@@ -1823,15 +1848,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jr4-7H-JMP">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jr4-7H-JMP">
                                 <rect key="frame" x="24" y="340" width="374" height="34"/>
                                 <color key="backgroundColor" red="0.43137254899999999" green="0.72941176470000002" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="FhT-fn-ayf"/>
                                 </constraints>
-                                <state key="normal" title="VERIFY MY ACCOUNT.">
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                <state key="normal" title="VERIFY MY ACCOUNT">
                                     <color key="titleColor" red="0.89019607840000003" green="0.94117647059999998" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onBtnVerifyMyAccountTapped:" destination="3hb-HA-hke" eventType="touchUpInside" id="m6o-cb-KMu"/>
                                 </connections>
@@ -1997,15 +2028,21 @@
                                     <action selector="onBtnTermAndConditionTapped:" destination="QeH-f6-NaC" eventType="touchUpInside" id="onM-kn-skR"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sa5-Mn-WSo">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sa5-Mn-WSo">
                                 <rect key="frame" x="24" y="672" width="374" height="34"/>
                                 <color key="backgroundColor" red="0.43137254899999999" green="0.72941176470000002" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="OnP-bh-nku"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                 <state key="normal" title="CREATE ACCOUNT">
                                     <color key="titleColor" red="0.89019607840000003" green="0.94117647059999998" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onBtnCreateAccountTapped:" destination="QeH-f6-NaC" eventType="touchUpInside" id="n2F-R3-Lwy"/>
                                 </connections>
@@ -2062,7 +2099,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type Message" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KSz-wN-RU8" customClass="NoCopyPasteUITextField" customModule="LumiWorld" customModuleProvider="target">
-                                <rect key="frame" x="20" y="706" width="344" height="30"/>
+                                <rect key="frame" x="19.999999999999986" y="312.66666666666663" width="111.00000000000001" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="TB7-NB-YiT"/>
                                 </constraints>
@@ -2079,14 +2116,14 @@
                                 </connections>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2sc-O3-3gd">
-                                <rect key="frame" x="0.0" y="20" width="414" height="686"/>
+                                <rect key="frame" x="0.0" y="20" width="181" height="292.66666666666669"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="2sc-O3-3gd" secondAttribute="height" multiplier="160:259" id="G8k-eU-D3M"/>
                                     <constraint firstAttribute="height" constant="617" id="nxG-HJ-3yi"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPd-fG-ugi">
-                                <rect key="frame" x="389" y="20" width="25" height="25"/>
+                                <rect key="frame" x="156" y="20" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="BPd-fG-ugi" secondAttribute="height" multiplier="1:1" id="jbP-rZ-HMN"/>
                                 </constraints>
@@ -2109,7 +2146,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBG-1Z-TYa">
-                                <rect key="frame" x="372" y="710" width="22" height="22"/>
+                                <rect key="frame" x="139" y="316.66666666666674" width="22" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="wBG-1Z-TYa" secondAttribute="height" multiplier="1:1" id="B5D-ml-agx"/>
                                 </constraints>
@@ -2342,10 +2379,15 @@
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HNh-94-gKS">
                                 <rect key="frame" x="55" y="690" width="304" height="36"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                 <state key="normal" title="NEW QUERY" backgroundImage="Artboard 135xxhdpi">
                                     <color key="titleColor" red="1" green="1" blue="0.99607843139999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onBtnNewQueryTapped:" destination="FLF-hV-N8E" eventType="touchUpInside" id="Mv9-OS-fJi"/>
                                 </connections>
@@ -2544,10 +2586,10 @@
                                             <constraint firstAttribute="height" constant="157" id="vnj-zV-EC1"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wTP-Ze-VnR">
-                                        <rect key="frame" x="20" y="383" width="220" height="27"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wTP-Ze-VnR">
+                                        <rect key="frame" x="20" y="383" width="220" height="29"/>
                                         <color key="backgroundColor" red="0.43137254899999999" green="0.72941176470000002" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                         <state key="normal" title="Submit">
                                             <color key="titleColor" red="0.89019607840000003" green="0.94117647059999998" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
@@ -2556,7 +2598,7 @@
                                                 <real key="value" value="0.0"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="10"/>
+                                                <real key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -2743,10 +2785,10 @@
                                             <constraint firstAttribute="height" constant="264" id="yo9-5N-sHO"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="707-NI-ReF">
-                                        <rect key="frame" x="20" y="394" width="220" height="27"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="707-NI-ReF">
+                                        <rect key="frame" x="20" y="394" width="220" height="29"/>
                                         <color key="backgroundColor" red="0.43137254899999999" green="0.72941176470000002" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                         <state key="normal" title="Submit">
                                             <color key="titleColor" red="0.89019607840000003" green="0.94117647059999998" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
@@ -2755,7 +2797,7 @@
                                                 <real key="value" value="0.0"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="10"/>
+                                                <real key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -2939,13 +2981,13 @@
                                                     <constraint firstAttribute="height" constant="157" id="qPs-M7-J6f"/>
                                                 </constraints>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6yG-fb-Die">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6yG-fb-Die">
                                                 <rect key="frame" x="20" y="532.66666666666663" width="280" height="27"/>
                                                 <color key="backgroundColor" red="0.43137254899999999" green="0.72941176470000002" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="27" id="agx-KH-Moe"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                                 <state key="normal" title="Submit">
                                                     <color key="titleColor" red="0.89019607840000003" green="0.94117647059999998" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
@@ -2954,7 +2996,7 @@
                                                         <real key="value" value="0.0"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                        <real key="value" value="10"/>
+                                                        <real key="value" value="5"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
@@ -3077,6 +3119,6 @@
         <image name="nazish_passport_size" width="211" height="212"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bcw-54-L7N"/>
+        <segue reference="pnt-Xu-Aqh"/>
     </inferredMetricsTieBreakers>
 </document>

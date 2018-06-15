@@ -65,6 +65,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
             let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
             var aryUnreadMessage : [String] = []
             objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!], nParentId: GlobalShareData.sharedGlobal.objCurrentLumineer.parentid) { (objLumineer) in
+                if objLumineer.lumiMessages.count > 0 {
                 var aryLumiMessage = objLumineer.lumiMessages.filter("messageSubjectId = %ld",GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId)
                 aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "createdTime", ascending: true)
                 var date : Date!
@@ -130,6 +131,10 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                     }
                 }
                 handler(arr)
+            }
+                else {
+                    handler([])
+                }
                 
             }
 
