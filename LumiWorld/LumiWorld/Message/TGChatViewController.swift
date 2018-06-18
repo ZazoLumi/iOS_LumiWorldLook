@@ -286,11 +286,9 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
             titleView.title = GlobalShareData.sharedGlobal.objCurrentLumineer.name
             let details: String = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory! + " | \(GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject!)"
             titleView.detail = details
-//            let imgThumb = UIImage.decodeBase64(strEncodeData:GlobalShareData.sharedGlobal.objCurrentLumineer.enterpriseLogo)
-//            let scalImg = imgThumb.af_imageScaled(to: CGSize(width: 30, height: 30))
-//    titleView.detailLabel.setImage(scalImg, for: .normal)
-//            titleView.detailLabel.addTarget(self, action: #selector(didTapLumineerBtn(_:)), for: .touchUpInside)
-
+        }
+       else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.lumiMessages.rawValue {
+            titleView.title = "Lumi World Messages"
         }
         else {
             titleView.title = "SUPPORT"

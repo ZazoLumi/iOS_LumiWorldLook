@@ -881,6 +881,9 @@ enum UserDefaultsKeys : String {
 enum currentScreen : String {
     case messageThread
     case supportThread
-   
+    case lumiFeed
+    case lumiMessages
+    case none
+
 }
 

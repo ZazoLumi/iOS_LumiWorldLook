@@ -71,25 +71,27 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         self.navigationItem.title = "LUMINEER CATEGORIES"
         self.tableView.backgroundView = self.dataMsgLabel;
         GlobalShareData.sharedGlobal.objCurretnVC = self
-        self.getLatestLumiCategories()
-        searchController.searchResultsUpdater = self
-       // searchController.obscuresBackgroundDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Lumineer"
-        self.navigationItem.searchController = searchController
-        
-        definesPresentationContext = true
-        
-        // Setup the Scope Bar
-        searchController.searchBar.scopeButtonTitles = ["All", "My"]
-        searchController.searchBar.delegate = self
-       // self.tableView.tableHeaderView = self.searchController.searchBar;
-
+        if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.lumiFeed.rawValue {
+            navigateToLumineerProfile(currentLumineer: GlobalShareData.sharedGlobal.objCurrentLumineer,delaytime: 0)
+        }
+        else {
+            self.getLatestLumiCategories()
+            searchController.searchResultsUpdater = self
+           // searchController.obscuresBackgroundDuringPresentation = false
+            searchController.dimsBackgroundDuringPresentation = false
+            searchController.searchBar.placeholder = "Search Lumineer"
+            self.navigationItem.searchController = searchController
+            definesPresentationContext = true
+            // Setup the Scope Bar
+            searchController.searchBar.scopeButtonTitles = ["All", "My"]
+            searchController.searchBar.delegate = self
+        }
 
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         searchController.isActive = false
+        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
         self.tabBarController?.navigationItem.searchController = nil
         
     }
@@ -324,15 +326,18 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
 
         }
         searchController.isActive = false
-
+        navigateToLumineerProfile(currentLumineer: objLumineer,delaytime: delaytime)
+        defer {             }
+    }
+    
+    func navigateToLumineerProfile(currentLumineer:LumineerList,delaytime:Double) {
         DispatchQueue.main.asyncAfter(deadline: .now() + delaytime) {
             // your code here
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let objLumineerProfileVC = storyBoard.instantiateViewController(withIdentifier: "LumineerProfileVC") as! LumineerProfileVC
-            GlobalShareData.sharedGlobal.objCurrentLumineer = objLumineer
+            GlobalShareData.sharedGlobal.objCurrentLumineer = currentLumineer
             self.navigationController?.pushViewController(objLumineerProfileVC, animated: false)
         }
-        defer {             }
     }
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        if let indexPath = tableView.indexPathForSelectedRow{
@@ -602,12 +607,14 @@ extension UINavigationItem {
        // btn1.imageEdgeInsets = UIEdgeInsets(top: 0, left:  -30, bottom: 0, right:0)
         viewContent.backgroundColor = UIColor.clear
         viewContent.addSubview(btn1)
-        if GlobalShareData.sharedGlobal.objCurretnVC != nil &&  GlobalShareData.sharedGlobal.objCurretnVC.isKind(of: TGChatViewController.self) {
+        if GlobalShareData.sharedGlobal.objCurretnVC != nil &&  GlobalShareData.sharedGlobal.objCurretnVC.isKind(of: TGChatViewController.self) && GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
         let btn2 = UIButton(type: .custom)
         let imgThumb = UIImage.decodeBase64(strEncodeData:GlobalShareData.sharedGlobal.objCurrentLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: 30, height: 30))
         btn2.frame = CGRect(x: 15, y: 0, width: 30, height: 30)
         btn2.cornerRadius = 15
+        btn2.borderColor = UIColor.lumiGreen
+        btn2.borderWidth = 1
         btn2.setImage(scalImg, for: .normal)
         btn2.addTarget(self, action:#selector(goBackToLumineerPage(_:)), for: .touchUpInside)
             //btn2.imageEdgeInsets = UIEdgeInsets(top: 0, left:  -30, bottom: 0, right:0)
@@ -622,6 +629,7 @@ extension UINavigationItem {
     }
 
     @objc func goBackToLumineerPage(_ sender: UIButton){
+        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.lumiFeed.rawValue
         GlobalShareData.sharedGlobal.objCurretnVC.tabBarController?.selectedIndex = 1
         
     }
@@ -829,6 +837,24 @@ extension UINavigationItem {
                     let objLogInVC = storyBoard.instantiateInitialViewController()
                     UIApplication.shared.keyWindow?.rootViewController = objLogInVC }
             }
+            else if index == 202 {
+                let chat = Chat()
+                chat.type = "lumiMessage"
+                chat.targetId = ""
+                chat.chatId = ""
+                chat.title = ""
+                chat.detail = ""
+                
+                GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.lumiMessages.rawValue
+                
+                var chatVC: TGChatViewController?
+                chatVC = TGChatViewController(chat: chat)
+                //chatVC.
+                if let vc = chatVC {
+                    GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(vc, animated: true)
+                }
+
+        }
         print(index)
     }
     

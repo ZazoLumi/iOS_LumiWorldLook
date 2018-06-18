@@ -139,6 +139,9 @@ class MessageManager: NSObject{//, NOCClientDelegate {
             }
 
         }
+        else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.lumiMessages.rawValue {
+        }
+
         else {
             let objLumiSupport = LumiSupport()
             var originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.supportTimeStamp)
