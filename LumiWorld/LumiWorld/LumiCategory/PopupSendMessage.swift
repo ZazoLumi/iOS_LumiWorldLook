@@ -57,7 +57,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
             currentSubject = Array(Set(realm.objects(LumiMessage.self).filter("enterpriseID = %@",GlobalShareData.sharedGlobal.objCurrentLumineer.id).filter("messageCategory = %@",activityType).value(forKey: "messageSubject") as! [String]))
         }
-        else {
+        else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.supportThread.rawValue{
             currentSubject = Array(Set(realm.objects(LumiSupport.self).filter("isRespReqdFromLumi = %@",NSNumber(value: true)).value(forKey: "supportMessageSubject") as! [String]))
         }
         // Do any additional setup after loading the view.
@@ -126,7 +126,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
             if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
                 subjectID = realm.objects(LumiMessage.self).filter("messageCategory = %@",activityType).filter("messageSubject = %@",textField.text!).value(forKey: "messageSubjectId") as! [Double]
             }
-            else {
+            else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.supportThread.rawValue{
                 subjectID = realm.objects(LumiSupport.self).filter("supportMessageSubject = %@",textField.text!).value(forKey: "supportSubjectId") as! [Double]
             }
         }
@@ -176,7 +176,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                             self.removeAnimate()
                         }
                     })}
-                    else {
+                    else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.supportThread.rawValue{
                         
                         let objSupport = LumiSupport()
                         var urlString = ""
@@ -219,7 +219,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                     self.removeAnimate()
                 }
             })}
-            else {
+            else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.supportThread.rawValue{
                 let objSupport = LumiSupport()
                 var urlString = ""
 

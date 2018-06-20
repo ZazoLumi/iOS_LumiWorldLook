@@ -24,9 +24,9 @@ class SubjectCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.imgMessage.layer.cornerRadius = self.imgMessage.bounds.size.height * 0.50
-        self.imgMessage.layer.borderWidth = 0.5;
-        self.imgMessage.layer.borderColor = UIColor.clear.cgColor;
+//        self.imgMessage.layer.cornerRadius = self.imgMessage.bounds.size.height * 0.50
+//        self.imgMessage.layer.borderWidth = 0.5;
+//        self.imgMessage.layer.borderColor = UIColor.clear.cgColor;
         
     }
     
@@ -134,6 +134,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             lblExpandableDescription.textAlignment = .center
         }
         if objLumineer.status == 1 {
+            btnFollowLumineer.bringSubview(toFront: imgProfilePic)
             btnFollowLumineer.isSelected = true
         }
         else {
@@ -374,20 +375,20 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         }
     }
     @IBAction func onBtnFollowTapped(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        let companyRegistrationNumber = objLumineer.companyRegistrationNumber!
-        var strUniqueID: String = GlobalShareData.sharedGlobal.userCellNumber!
-        strUniqueID += "_"
-        strUniqueID += companyRegistrationNumber
-        let strStatus : String = sender.isSelected ? "1":"0"
-        let objLumiList = LumineerList()
-        DispatchQueue.global(qos: .userInitiated).async {
-            objLumiList.setLumineerCompanyFollowUnFollowData(id:GlobalShareData.sharedGlobal.userCellNumber,companyregistrationnumber:companyRegistrationNumber,uniqueID: strUniqueID, status:strStatus , completionHandler: { (List) in
-            })
+        if !sender.isSelected {
+            sender.isSelected = !sender.isSelected
+            let companyRegistrationNumber = objLumineer.companyRegistrationNumber!
+            var strUniqueID: String = GlobalShareData.sharedGlobal.userCellNumber!
+            strUniqueID += "_"
+            strUniqueID += companyRegistrationNumber
+            let strStatus : String = sender.isSelected ? "1":"0"
+            let objLumiList = LumineerList()
+            DispatchQueue.global(qos: .userInitiated).async {
+                objLumiList.setLumineerCompanyFollowUnFollowData(id:GlobalShareData.sharedGlobal.userCellNumber,companyregistrationnumber:companyRegistrationNumber,uniqueID: strUniqueID, status:strStatus , completionHandler: { (List) in
+                })
+            }
         }
-        
     }
-
 }
 
 //

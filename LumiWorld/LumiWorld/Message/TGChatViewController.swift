@@ -290,7 +290,7 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
        else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.lumiMessages.rawValue {
             titleView.title = "Lumi World Messages"
         }
-        else {
+        else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.supportThread.rawValue {
             titleView.title = "SUPPORT"
             titleView.detail = GlobalShareData.sharedGlobal.objCurrentSupport.supportMessageSubject
         }

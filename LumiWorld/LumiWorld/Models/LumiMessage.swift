@@ -430,7 +430,20 @@ class LumiMessage : Object {
             print("Internet Connection not Available!")
         }
     }
-
+    
+    func getLatestUnreladMessageCount() {
+        let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetAllUnreadMsgCountOfLumi)" + "?cellNumber=\(GlobalShareData.sharedGlobal.userCellNumber)"
+        do {
+            AFWrapper.requestGETURL(urlString, success: { (json) in
+                
+            }, failure: { (Error) in
+                print(Error.localizedDescription)
+            })
+        }
+        catch let jsonError{
+            print(jsonError)
+        }
+    }
 }
 
 

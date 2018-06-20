@@ -142,7 +142,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
         else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.lumiMessages.rawValue {
         }
 
-        else {
+        else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.supportThread.rawValue{
             let objLumiSupport = LumiSupport()
             var originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.supportTimeStamp)
             if originalString.count > 0 {originalString += ":00" }
@@ -239,7 +239,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
             objMessage.sendLumiTextMessage(param: ["newsFeedBody":message.text as AnyObject,"enterpriseName":GlobalShareData.sharedGlobal.objCurrentLumineer.name! as AnyObject,"enterpriseRegnNmbr":GlobalShareData.sharedGlobal.objCurrentLumineer.companyRegistrationNumber! as AnyObject,"messageCategory":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageCategory as AnyObject,"messageType":"1" as AnyObject,"sentBy":sentBy as AnyObject,"imageURL":"" as AnyObject,"longitude":"" as AnyObject,"latitude":"" as AnyObject,"messageSubject":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubject as AnyObject,"messageSubjectId":GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId as AnyObject], completionHandler: { () in
             })
     }
-            else{
+            else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.supportThread.rawValue {
                 let objSupport = LumiSupport()
             let urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIReplyToLumiWorldByLumin)"
                 objSupport.sendSupportTextMessage(urlString: urlString, param: ["supportMessageBody":message.text as AnyObject,"supportSubjectId":GlobalShareData.sharedGlobal.objCurrentSupport.supportSubjectId as AnyObject,"sentBy":GlobalShareData.sharedGlobal.userCellNumber! as AnyObject,"supportMessageSubject":GlobalShareData.sharedGlobal.objCurrentSupport.supportMessageSubject! as AnyObject]) {

@@ -50,7 +50,6 @@ struct Constants {
         static let APISuggestALumineer = ":13004/invite/suggestLumineerToLumi"
         static let APIGetAllLumiWorldMessagesOfLumi = ":13004/invite/getAllLumiWorldMessagesOfLumi"
         static let APIGetAllUnreadMsgCountOfLumi = ":13004/instantMsg/getAllUnreadMsgCountOfLumi"
-
    }
 }
 
@@ -105,6 +104,19 @@ class GlobalShareData {
         }
         return dbDirectoryURL
     }()
+    
+    func updateExportedDocumentDirectory() {
+        let urls = exportDocumentsDirectory
+        if FileManager.default.fileExists(atPath: urls.path){
+            try? FileManager.default.removeItem(at:urls)
+        }
+        do{
+            try FileManager.default.createDirectory(at: exportDocumentsDirectory, withIntermediateDirectories: false, attributes: nil)
+        }catch{
+        }
+
+    }
+
 
 
     
@@ -210,7 +222,16 @@ class GlobalShareData {
         let deleteAllAction = UIAlertAction(title: "Delete All Messages", style: .default) { (action) in
             objLumiMessage.setLumiSubjectThreadDelete(enterpriseId: objLumiMessage.enterpriseID, messageSubjectId: objLumiMessage.messageSubjectId, completionHandler: { (result) in
                 if result {
-                    NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil) 
+                    let hud = MBProgressHUD.showAdded(to: (self.objCurretnVC.navigationController?.view)!, animated: true)
+                    hud.mode = .text
+                    hud.label.text = NSLocalizedString("All messages are deleted successfully.", comment: "HUD message title")
+                    hud.label.font = UIFont.init(name: "HelveticaNeue", size: 14)
+
+                    hud.offset = CGPoint(x: 0.0, y: 120)
+                    hud.hide(animated: true, afterDelay: 2.0)
+
+                    NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
+                    self.objCurretnVC.navigationController?.popViewController()
                 }
             })
         }
@@ -236,7 +257,7 @@ class GlobalShareData {
         let filemgr = FileManager.default
         let hud = MBProgressHUD.showAdded(to: (objCurretnVC.navigationController?.view)!, animated: true)
         hud.label.text = NSLocalizedString("Exporting...", comment: "Exporting chat")
-
+        updateExportedDocumentDirectory()
         let lumiMessages = objCurrentLumineer.lumiMessages.filter("messageSubjectId = \(messageSubjectId)")
         var content = ""
         for objLumiMessage in lumiMessages {

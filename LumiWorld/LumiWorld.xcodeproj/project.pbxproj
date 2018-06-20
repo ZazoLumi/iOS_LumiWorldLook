@@ -119,6 +119,7 @@
 		09B6B66220B40ABD0060CDB5 /* YPImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 09B6B66020B40ABC0060CDB5 /* YPImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		09B6B66520B40B030060CDB5 /* Stevia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09B6B66420B40B030060CDB5 /* Stevia.framework */; };
 		09B6B66620B40B030060CDB5 /* Stevia.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 09B6B66420B40B030060CDB5 /* Stevia.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		09D012C120D92CCF00935B05 /* LumiWorldMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D012C020D92CCF00935B05 /* LumiWorldMessages.swift */; };
 		09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */; };
 		09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0B2065042B00C74E1F /* AFWrapper.swift */; };
 		09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0F20652D6F00C74E1F /* RealmManager.swift */; };
@@ -265,6 +266,7 @@
 		09B6B65E20B409890060CDB5 /* YPImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YPImagePicker.framework; path = "../../../../../Downloads/YPImagePicker-2.8.1/Carthage 2/Build/iOS/YPImagePicker.framework"; sourceTree = "<group>"; };
 		09B6B66020B40ABC0060CDB5 /* YPImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YPImagePicker.framework; sourceTree = "<group>"; };
 		09B6B66420B40B030060CDB5 /* Stevia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stevia.framework; sourceTree = "<group>"; };
+		09D012C020D92CCF00935B05 /* LumiWorldMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiWorldMessages.swift; sourceTree = "<group>"; };
 		09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupSendMessage.swift; sourceTree = "<group>"; };
 		09D98A0B2065042B00C74E1F /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
 		09D98A0F20652D6F00C74E1F /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				097A69AE20809569001D273E /* LumiMessage.swift */,
 				09EAD74420B6B05E00EB37E1 /* LumiSupport.swift */,
 				0956324520BD42E800BE8EFB /* LumiFAQ.swift */,
+				09D012C020D92CCF00935B05 /* LumiWorldMessages.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -762,6 +765,7 @@
 			files = (
 				094400EB20BE8FE9005995C3 /* WelcomView.swift in Sources */,
 				097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */,
+				09D012C120D92CCF00935B05 /* LumiWorldMessages.swift in Sources */,
 				0964E7192060F981001D6F47 /* Validatable.swift in Sources */,
 				0964E71D2060F981001D6F47 /* ValidatorDictionary.swift in Sources */,
 				0916065420871FA400F8E8EC /* multipartAPI.m in Sources */,
@@ -1007,7 +1011,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Zazo Communications PTY Ltd (J323ZHWH83)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = J323ZHWH83;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1019,8 +1023,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworld.zazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "510147dc-b366-4b45-998f-c4551ad6bc5f";
-				PROVISIONING_PROFILE_SPECIFIER = 19April_DevLumi;
+				PROVISIONING_PROFILE = "8384e58f-dd24-4364-92d4-63919beb5b73";
+				PROVISIONING_PROFILE_SPECIFIER = 20June_AppStore_LumiWorld;
 				SWIFT_OBJC_BRIDGING_HEADER = "LumiWorld/Utilities/LumiWorld-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -1035,7 +1039,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Zazo Communications PTY Ltd (J323ZHWH83)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = J323ZHWH83;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1047,8 +1051,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworld.zazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "510147dc-b366-4b45-998f-c4551ad6bc5f";
-				PROVISIONING_PROFILE_SPECIFIER = 19April_DevLumi;
+				PROVISIONING_PROFILE = "8384e58f-dd24-4364-92d4-63919beb5b73";
+				PROVISIONING_PROFILE_SPECIFIER = 20June_AppStore_LumiWorld;
 				SWIFT_OBJC_BRIDGING_HEADER = "LumiWorld/Utilities/LumiWorld-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;

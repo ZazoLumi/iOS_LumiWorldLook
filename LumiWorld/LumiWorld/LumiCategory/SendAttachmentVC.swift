@@ -109,7 +109,7 @@ class SendAttachmentVC: UIViewController,UITextFieldDelegate {
         if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
             nSubjectID = GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId
         }
-        else {
+        else if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.supportThread.rawValue{
             nSubjectID = GlobalShareData.sharedGlobal.objCurrentSupport.supportSubjectId
         }
 

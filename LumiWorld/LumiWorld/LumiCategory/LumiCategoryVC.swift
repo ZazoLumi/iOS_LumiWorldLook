@@ -86,7 +86,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             searchController.searchBar.scopeButtonTitles = ["All", "My"]
             searchController.searchBar.delegate = self
         }
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {

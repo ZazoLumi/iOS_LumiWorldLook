@@ -18,6 +18,7 @@ class MyLumiProfileVC: UIViewController {
     var objsuggestALumineer : suggestALumineer!
 
     
+    @IBOutlet weak var scrlAdvertiseView: UIScrollView!
     @IBOutlet weak var lblFCount: UILabel!
     @IBOutlet weak var lblDCount: UILabel!
     @IBOutlet weak var lblACount: UILabel!

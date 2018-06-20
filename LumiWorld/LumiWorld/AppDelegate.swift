@@ -9,9 +9,10 @@
 import UIKit
 import SwifterSwift
 import IQKeyboardManagerSwift
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
      var backgroundTransferCompletionHandler: (() -> Void)?
@@ -26,11 +27,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.statusBarStyle = .lightContent
         UISearchBar.appearance().tintColor = .lumiGreen
         IQKeyboardManager.sharedManager().enable = true
+
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+            
+            guard error == nil else {
+                return
+            }
+            
+            if granted {
+                DispatchQueue.main.async {
+                    application.registerForRemoteNotifications()
+                }
+            }
+            else {
+                //Handle user denying permissions..
+            }
+        }
+        //Register for remote notifications.. If permission above is NOT granted, all notifications are delivered silently to AppDelegate.
+        application.registerForRemoteNotifications()
+
         return true
     }
     
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         backgroundTransferCompletionHandler = completionHandler
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        print(deviceTokenString)
+    }
+
+    // Called when APNs failed to register the device for push notifications
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // Print the error to console (you should alert the user that registration failed)
+        print("APNs registration failed: \(error)")
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        completionHandler(UIBackgroundFetchResult.noData)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
