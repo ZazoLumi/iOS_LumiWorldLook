@@ -9,16 +9,16 @@
 import UIKit
 import Alamofire
 import  RealmSwift
-
+import MediaPlayer
+import AVKit
 class MyLumiProfileVC: UIViewController {
-
+    var player : AVPlayer! = nil
     var objInviteFriendVC : inviteFriendVC!
     var objSendMessageTo : sendMessageTo!
     var objSuggestACompany : suggestCompany!
     var objsuggestALumineer : suggestALumineer!
-
     
-    @IBOutlet weak var scrlAdvertiseView: UIScrollView!
+    @IBOutlet weak var scrlAdvertiseView: UIView!
     @IBOutlet weak var lblFCount: UILabel!
     @IBOutlet weak var lblDCount: UILabel!
     @IBOutlet weak var lblACount: UILabel!
@@ -36,6 +36,14 @@ class MyLumiProfileVC: UIViewController {
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         setupProfileData()
+        playVideo()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        for view in scrlAdvertiseView.subviews {
+            view.removeSubviews()
+        }
+
+        player.pause()
     }
     
     func setupProfileData() {
@@ -122,6 +130,56 @@ class MyLumiProfileVC: UIViewController {
         self.view.addSubview(self.objInviteFriendVC.view)
         self.objInviteFriendVC.didMove(toParentViewController: self)
     }
+    private func playVideo() {
+//        guard let filepath = Bundle.main.path(forResource: "LumiWorldWelcom", ofType:"mp4") else {
+//            debugPrint("video.m4v not found")
+//            return
+//        }
+//        let fileURL = URL.init(string: filepath);
+//        let moviePlayerController = MPMoviePlayerController(contentURL: fileURL)
+//
+//        moviePlayerController?.shouldAutoplay = true
+//        moviePlayerController?.movieSourceType = MPMovieSourceType.file
+//
+//
+//        moviePlayerController?.view.frame = scrlAdvertiseView.frame
+//
+//
+//
+//        scrlAdvertiseView.addSubview((moviePlayerController?.view)!)
+//
+//        moviePlayerController?.prepareToPlay()
+//        moviePlayerController?.play()
+        
+        guard let path = Bundle.main.path(forResource: "LumiWorldWelcom", ofType:"mp4") else {
+            debugPrint("video.m4v not found")
+            return
+        }
+
+         let url = URL(fileURLWithPath: path)
+            let playerItem = AVPlayerItem(url: url)
+            player = AVPlayer(playerItem: playerItem)
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame=CGRect(x: 0, y: 0, width:scrlAdvertiseView.frame.size.width , height:scrlAdvertiseView.frame.size.height)
+            scrlAdvertiseView.layer.addSublayer(playerLayer)
+            player.play()
+
+
+        
+//        guard let path = Bundle.main.path(forResource: "LumiWorldWelcom", ofType:"mp4") else {
+//            debugPrint("video.m4v not found")
+//            return
+//        }
+//        let player = AVPlayer(url: URL(fileURLWithPath: path))
+//        let playerController = AVPlayerViewController()
+//        playerController.player = player
+//        scrlAdvertiseView.addSubview((playerController.view)!)
+//        player.play()
+
+//        present(playerController, animated: true) {
+//        }
+    }
+
     /*
     // MARK: - Navigation
 

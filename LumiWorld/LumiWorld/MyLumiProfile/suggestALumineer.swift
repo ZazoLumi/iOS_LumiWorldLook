@@ -170,7 +170,7 @@ class suggestALumineer: UIViewController,FormDataDelegate,UITableViewDelegate,UI
         return 1
     }
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 38
+        return 40
     }
     
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

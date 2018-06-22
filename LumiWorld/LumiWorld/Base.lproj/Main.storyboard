@@ -144,13 +144,13 @@
                                                         </constraints>
                                                     </imageView>
                                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XZf-Ef-dkG">
-                                                        <rect key="frame" x="0.0" y="0.0" width="91.666666666666671" height="43.666666666666664"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="92" height="43.666666666666664"/>
                                                         <connections>
                                                             <action selector="onBtnFacebookTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gWp-oD-cKc"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nvi-xt-HZF">
-                                                        <rect key="frame" x="91.666666666666671" y="0.0" width="49.000000000000014" height="43.666666666666664"/>
+                                                        <rect key="frame" x="92" y="0.0" width="48.666666666666657" height="43.666666666666664"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="nvi-xt-HZF" secondAttribute="height" multiplier="8:7" id="x3W-vK-Icq"/>
                                                         </constraints>
@@ -168,7 +168,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cw4-I8-CnH">
-                                                        <rect key="frame" x="189.66666666666666" y="0.0" width="47.666666666666657" height="43.666666666666664"/>
+                                                        <rect key="frame" x="189.66666666666666" y="0.0" width="48.666666666666657" height="43.666666666666664"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="Cw4-I8-CnH" secondAttribute="height" multiplier="47:42" id="MPV-dq-dRL"/>
                                                         </constraints>
@@ -177,7 +177,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="25A-Of-S5l">
-                                                        <rect key="frame" x="237.33333333333334" y="0.0" width="92.666666666666657" height="43.333333333333336"/>
+                                                        <rect key="frame" x="238.33333333333334" y="0.0" width="91.666666666666657" height="43.333333333333336"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="25A-Of-S5l" secondAttribute="height" multiplier="89:42" id="ILj-z2-pYF"/>
                                                         </constraints>
@@ -1246,18 +1246,7 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uW6-TX-Npe">
                                 <rect key="frame" x="0.0" y="155" width="414" height="481"/>
-                                <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0I5-vn-O3J">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="481"/>
-                                    </scrollView>
-                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="0I5-vn-O3J" firstAttribute="leading" secondItem="uW6-TX-Npe" secondAttribute="leading" id="0pe-Nb-sfg"/>
-                                    <constraint firstAttribute="trailing" secondItem="0I5-vn-O3J" secondAttribute="trailing" id="CIE-sz-z8J"/>
-                                    <constraint firstItem="0I5-vn-O3J" firstAttribute="top" secondItem="uW6-TX-Npe" secondAttribute="top" id="EBn-v3-bIz"/>
-                                    <constraint firstAttribute="bottom" secondItem="0I5-vn-O3J" secondAttribute="bottom" id="d8I-nS-31k"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1295,7 +1284,7 @@
                         <outlet property="lblDCount" destination="fgy-Q9-oMm" id="6eT-K4-Y3A"/>
                         <outlet property="lblDisplayName" destination="xTo-9o-GRn" id="WfB-OR-M8N"/>
                         <outlet property="lblFCount" destination="YPs-eL-VuP" id="ZJf-WK-Mzy"/>
-                        <outlet property="scrlAdvertiseView" destination="0I5-vn-O3J" id="ezp-Lp-Xsm"/>
+                        <outlet property="scrlAdvertiseView" destination="uW6-TX-Npe" id="RaO-wu-uEV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vaF-on-58D" userLabel="First Responder" sceneMemberID="firstResponder"/>

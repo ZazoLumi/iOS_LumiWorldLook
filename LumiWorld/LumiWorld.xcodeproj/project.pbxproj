@@ -83,6 +83,7 @@
 		0964E7372060F981001D6F47 /* TextFieldTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70C2060F981001D6F47 /* TextFieldTableViewController.swift */; };
 		0964E7382060F981001D6F47 /* LumiCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */; };
 		0965F16620A07CE60017CA71 /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0965F16520A07CE60017CA71 /* DocumentBrowserViewController.swift */; };
+		096BBF9F20DCD2C90017EBA8 /* LumiWorldWelcom.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 096BBF9E20DCD2C80017EBA8 /* LumiWorldWelcom.mp4 */; };
 		096C2EF92064E28E0015C0A9 /* GlobalShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */; };
 		096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */; };
 		096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */; };
@@ -231,6 +232,7 @@
 		0964E70C2060F981001D6F47 /* TextFieldTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewController.swift; sourceTree = "<group>"; };
 		0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LumiCategoryVC.swift; sourceTree = "<group>"; };
 		0965F16520A07CE60017CA71 /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
+		096BBF9E20DCD2C80017EBA8 /* LumiWorldWelcom.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LumiWorldWelcom.mp4; sourceTree = "<group>"; };
 		096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShareData.swift; sourceTree = "<group>"; };
 		096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerProfileVC.swift; sourceTree = "<group>"; };
 		096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 				0964E6CD2060F8ED001D6F47 /* UserModule */,
 				0964E557205FC811007E5924 /* AppDelegate.swift */,
 				0964E558205FC811007E5924 /* Assets.xcassets */,
+				096BBF9E20DCD2C80017EBA8 /* LumiWorldWelcom.mp4 */,
 				097BFA5C207E3BDE001F935C /* notification.caf */,
 				097BFA5D207E3BDF001F935C /* sent.caf */,
 				0964E559205FC811007E5924 /* LaunchScreen.storyboard */,
@@ -675,6 +678,7 @@
 				0964E594205FC811007E5924 /* Main.storyboard in Resources */,
 				097BFA5F207E3BE0001F935C /* sent.caf in Resources */,
 				0964E7342060F981001D6F47 /* Info.plist in Resources */,
+				096BBF9F20DCD2C90017EBA8 /* LumiWorldWelcom.mp4 in Resources */,
 				097BFA5E207E3BE0001F935C /* notification.caf in Resources */,
 				0964E592205FC811007E5924 /* Assets.xcassets in Resources */,
 				094400E920BE8FC7005995C3 /* WelcomView.xib in Resources */,

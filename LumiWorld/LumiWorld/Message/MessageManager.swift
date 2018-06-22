@@ -103,7 +103,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                         date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
                         let msg2 = Message()
                         msg2.msgType = "System"
-                        msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input `/start` to play!"
+                        msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input your message."
                         
                         let msg1 = Message()
                         msg1.msgType = "Date"
@@ -188,7 +188,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                             date = Date().getDateFromString(string: obj.sentDate!, formatter: "yyyy-MM-dd")
                             let msg2 = Message()
                             msg2.msgType = "System"
-                            msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input `/start` to play!"
+                            msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input your message."
                             
                             let msg1 = Message()
                             msg1.msgType = "Date"
