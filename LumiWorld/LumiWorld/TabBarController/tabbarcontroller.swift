@@ -27,6 +27,7 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
         [weak tabBarController] tabbarController, viewController, index in
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            
             //tabBarController?.selectedIndex = 1
 
 //            let alertController = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -59,7 +60,7 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     
     navigationController.navigationItem.addSettingButtonOnRight()
     navigationController.navigationItem.addBackButtonOnLeft()
-
+    
     return navigationController
     }
 }

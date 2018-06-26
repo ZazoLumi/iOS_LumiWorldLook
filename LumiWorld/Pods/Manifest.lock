@@ -25,6 +25,7 @@ PODS:
   - RealmSwift (3.1.1):
     - Realm (= 3.1.1)
   - SCLAlertView (0.8)
+  - SnapKit (4.0.0)
   - SwifterSwift (4.2.0):
     - SwifterSwift/AppKit (= 4.2.0)
     - SwifterSwift/CoreGraphics (= 4.2.0)
@@ -41,6 +42,8 @@ PODS:
   - SwifterSwift/SwiftStdlib (4.2.0)
   - SwifterSwift/UIKit (4.2.0)
   - SwiftyJSON (4.0.0)
+  - VGPlayer (0.2.0):
+    - SnapKit (~> 4.0.0)
   - YYText (1.0.7)
   - Zip (1.1.0)
 
@@ -60,6 +63,7 @@ DEPENDENCIES:
   - SCLAlertView
   - SwifterSwift
   - SwiftyJSON
+  - VGPlayer (~> 0.2.0)
   - YYText
   - Zip (~> 1.1)
 
@@ -79,8 +83,10 @@ SPEC REPOS:
     - Realm
     - RealmSwift
     - SCLAlertView
+    - SnapKit
     - SwifterSwift
     - SwiftyJSON
+    - VGPlayer
     - YYText
     - Zip
 
@@ -99,11 +105,13 @@ SPEC CHECKSUMS:
   Realm: 42d1c38a5b1bbcc828b48a7ce702cb86fc68adf4
   RealmSwift: d31937ca6a6ee54acde64ec839523c0a3c04924b
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SwifterSwift: 1d101dcfb0c3123226900f3b4d220d57fb60d546
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  VGPlayer: a1787135559aa3b9201ebdc733ee283315492289
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
   Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: 03d8f9bebc2b5fc02ebf757efe9b527f80d812de
+PODFILE CHECKSUM: ae6f8cd4372d4963d22f58b45f8f4673e9d13bfe
 
 COCOAPODS: 1.5.0

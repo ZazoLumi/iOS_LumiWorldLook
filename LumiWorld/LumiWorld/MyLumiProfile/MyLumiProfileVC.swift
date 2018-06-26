@@ -9,10 +9,13 @@
 import UIKit
 import Alamofire
 import  RealmSwift
-import MediaPlayer
 import AVKit
+import VGPlayer
+import SnapKit
+
 class MyLumiProfileVC: UIViewController {
-    var player : AVPlayer! = nil
+    var player = VGPlayer()
+    var url1 : URL?
     var objInviteFriendVC : inviteFriendVC!
     var objSendMessageTo : sendMessageTo!
     var objSuggestACompany : suggestCompany!
@@ -28,22 +31,24 @@ class MyLumiProfileVC: UIViewController {
     @IBOutlet weak var imgProfilePic: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.navigationItem.addSettingButtonOnRight()
         self.navigationItem.title = GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!.uppercased() + "'S LUMI PROFILE"
+        self.url1 = URL(fileURLWithPath: Bundle.main.path(forResource: "LumiWorldWelcom", ofType: "mp4")!)
+        playVideo()
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         setupProfileData()
-        playVideo()
+        self.player.play()
     }
     override func viewWillDisappear(_ animated: Bool) {
         for view in scrlAdvertiseView.subviews {
             view.removeSubviews()
         }
-
-        player.pause()
+        self.player.pause()
     }
     
     func setupProfileData() {
@@ -131,53 +136,22 @@ class MyLumiProfileVC: UIViewController {
         self.objInviteFriendVC.didMove(toParentViewController: self)
     }
     private func playVideo() {
-//        guard let filepath = Bundle.main.path(forResource: "LumiWorldWelcom", ofType:"mp4") else {
-//            debugPrint("video.m4v not found")
-//            return
-//        }
-//        let fileURL = URL.init(string: filepath);
-//        let moviePlayerController = MPMoviePlayerController(contentURL: fileURL)
-//
-//        moviePlayerController?.shouldAutoplay = true
-//        moviePlayerController?.movieSourceType = MPMovieSourceType.file
-//
-//
-//        moviePlayerController?.view.frame = scrlAdvertiseView.frame
-//
-//
-//
-//        scrlAdvertiseView.addSubview((moviePlayerController?.view)!)
-//
-//        moviePlayerController?.prepareToPlay()
-//        moviePlayerController?.play()
-        
-        guard let path = Bundle.main.path(forResource: "LumiWorldWelcom", ofType:"mp4") else {
-            debugPrint("video.m4v not found")
-            return
+        self.player.replaceVideo(url1!)
+        scrlAdvertiseView.addSubview(self.player.displayView)
+        self.player.play()
+        self.player.backgroundMode = .proceed
+        self.player.delegate = self
+        self.player.displayView.delegate = self
+        self.player.displayView.titleLabel.text = ""
+        self.player.displayView.snp.makeConstraints { [weak self] (make) in
+            guard let strongSelf = scrlAdvertiseView else { return }
+            make.top.equalTo(strongSelf.snp.top)
+            make.bottom.equalTo(strongSelf.snp.bottom)
+            make.left.equalTo(strongSelf.snp.left)
+            make.right.equalTo(strongSelf.snp.right)
+            //make.height.equalTo(strongSelf.snp.width).multipliedBy(3.0/4.0) // you can 9.0/16.0
         }
 
-         let url = URL(fileURLWithPath: path)
-            let playerItem = AVPlayerItem(url: url)
-            player = AVPlayer(playerItem: playerItem)
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame=CGRect(x: 0, y: 0, width:scrlAdvertiseView.frame.size.width , height:scrlAdvertiseView.frame.size.height)
-            scrlAdvertiseView.layer.addSublayer(playerLayer)
-            player.play()
-
-
-        
-//        guard let path = Bundle.main.path(forResource: "LumiWorldWelcom", ofType:"mp4") else {
-//            debugPrint("video.m4v not found")
-//            return
-//        }
-//        let player = AVPlayer(url: URL(fileURLWithPath: path))
-//        let playerController = AVPlayerViewController()
-//        playerController.player = player
-//        scrlAdvertiseView.addSubview((playerController.view)!)
-//        player.play()
-
-//        present(playerController, animated: true) {
-//        }
     }
 
     /*
@@ -190,4 +164,35 @@ class MyLumiProfileVC: UIViewController {
     }
     */
 
+}
+
+extension MyLumiProfileVC: VGPlayerDelegate {
+    func vgPlayer(_ player: VGPlayer, playerFailed error: VGPlayerError) {
+        print(error)
+    }
+    func vgPlayer(_ player: VGPlayer, stateDidChange state: VGPlayerState) {
+        print("player State ",state)
+    }
+    func vgPlayer(_ player: VGPlayer, bufferStateDidChange state: VGPlayerBufferstate) {
+        print("buffer State", state)
+    }
+    
+}
+
+extension MyLumiProfileVC: VGPlayerViewDelegate {
+    
+    func vgPlayerView(_ playerView: VGPlayerView, willFullscreen fullscreen: Bool) {
+        
+    }
+    func vgPlayerView(didTappedClose playerView: VGPlayerView) {
+        if playerView.isFullScreen {
+           // playerView.exitFullscreen()
+        } else {
+          //  self.navigationController?.popViewController(animated: true)
+        }
+        
+    }
+    func vgPlayerView(didDisplayControl playerView: VGPlayerView) {
+      //  UIApplication.shared.setStatusBarHidden(!playerView.isDisplayControl, with: .fade)
+    }
 }

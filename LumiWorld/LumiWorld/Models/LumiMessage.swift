@@ -431,11 +431,18 @@ class LumiMessage : Object {
         }
     }
     
-    func getLatestUnreladMessageCount() {
-        let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetAllUnreadMsgCountOfLumi)" + "?cellNumber=\(GlobalShareData.sharedGlobal.userCellNumber)"
+    func getLatestUnreladMessageCount(completionHandler: @escaping (_ count: Int) -> Void) {
+        let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetAllUnreadMsgCountOfLumi)" + "?cellNumber=\(GlobalShareData.sharedGlobal.userCellNumber!)"
         do {
             AFWrapper.requestGETURL(urlString, success: { (json) in
-                
+                let tempDict = json.dictionary
+                guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    completionHandler(0)
+                    return
+                }
+                let count = tempDict!["unreadCount"]?.intValue
+                completionHandler(count!)
+
             }, failure: { (Error) in
                 print(Error.localizedDescription)
             })

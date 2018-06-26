@@ -72,7 +72,9 @@ class CameraHandler: NSObject{
         //        config.libraryTargetImageSize = .cappedTo(size: 1024)
         //
         //        /// Enables videos within the library. Defaults to false
-        config.showsVideoInLibrary = true
+       // config.library.mediaType = YPlibraryMediaType.video
+        config.library.mediaType = .photoAndVideo
+
         //
         //        /// Enables selecting the front camera by default, useful for avatars. Defaults to false
         //        config.usesFrontCamera = true
@@ -85,7 +87,7 @@ class CameraHandler: NSObject{
         //        config.shouldSaveNewPicturesToAlbum = false
         //
         //        /// Choose the videoCompression.  Defaults to AVAssetExportPresetHighestQuality
-                config.videoCompression = AVAssetExportPreset640x480
+        config.video.compression = AVAssetExportPreset640x480
         //
         //        /// Defines the name of the album when saving pictures in the user's photo library.
         //        /// In general that would be your App name. Defaults to "DefaultYPImagePickerAlbumName"
@@ -106,11 +108,11 @@ class CameraHandler: NSObject{
         //
         //        /// Defines the time limit for recording videos.
         //        /// Default is 30 seconds.
-                config.videoRecordingTimeLimit = 15.0
+        config.video.recordingTimeLimit = 15.0
         //
         //        /// Defines the time limit for videos from the library.
         //        /// Defaults to 60 seconds.
-        //        config.videoFromLibraryTimeLimit = 10.0
+        config.video.libraryTimeLimit = 600.0
         //
         //        /// Adds a Crop step in the photo taking process, after filters.  Defaults to .none
       //  config.showsCrop = .rectangle(ratio: (10/8))
@@ -137,25 +139,54 @@ class CameraHandler: NSObject{
         let picker = YPImagePicker(configuration: config)
         
         // unowned is Mandatory since it would create a retain cycle otherwise :)
-        picker.didSelectImage = { [unowned picker] img in
-            // image picked
-            print(img.size)
-            if let data = UIImageJPEGRepresentation(img, 1.0) {
-                let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName:"temp.png")
-                self.didFinishCapturingImage?(img, URL.init(string: strFilePath))
+
+//        picker.didSelectImage = { [unowned picker] img in
+//            // image picked
+//            print(img.size)
+//            if let data = UIImageJPEGRepresentation(img, 1.0) {
+//                let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName:"temp.png")
+//                self.didFinishCapturingImage?(img, URL.init(string: strFilePath))
+//            }
+//
+//           // self.imageView.image = img
+//            picker.dismiss(animated: true, completion: nil)
+//        }
+//        picker.didSelectVideo = { [unowned picker] videoData, videoThumbnailImage, url in
+//            // video picked
+//           // self.imageView.image = videoThumbnailImage
+//            self.didFinishCapturingVideo?(url,videoThumbnailImage)
+//            picker.dismiss(animated: true, completion: nil)
+//        }
+        
+
+        picker.didFinishPicking { [unowned picker] items, cancelled in
+            if let photo = items.singlePhoto {
+                if let data = UIImageJPEGRepresentation(photo.image, 1.0) {
+                    let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName:"temp.png")
+                    if !self.checkFileSize(strFilePath: strFilePath) {
+                        return
+                    }
+
+                    self.didFinishCapturingImage?(photo.image, URL.init(string: strFilePath))
+                }
             }
 
-           // self.imageView.image = img
+           else if let video = items.singleVideo {
+                print(video.fromCamera)
+                print(video.thumbnail)
+                print(video.url)
+                let fileUrl = video.url.absoluteString.replacingOccurrences(of: "file://", with: "")
+                if !self.checkFileSize(strFilePath: fileUrl) {
+                    return
+                }
+                
+                self.didFinishCapturingVideo?(video.url,video.thumbnail)
+            }
+
+           else if cancelled {
+                print("Picker was canceled")
+            }
             picker.dismiss(animated: true, completion: nil)
-        }
-        picker.didSelectVideo = { [unowned picker] videoData, videoThumbnailImage, url in
-            // video picked
-           // self.imageView.image = videoThumbnailImage
-            self.didFinishCapturingVideo?(url,videoThumbnailImage)
-            picker.dismiss(animated: true, completion: nil)
-        }
-        picker.didCancel = {
-            print("Did Cancel")
         }
         picker.navigationItem.addBackButtonOnLeft()
         picker.navigationBar.tintColor = UIColor.lumiGreen
@@ -225,6 +256,26 @@ class CameraHandler: NSObject{
         actionSheet.addAction(cancelAction)
 
         vc.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func checkFileSize(strFilePath : String) -> Bool {
+        do {
+            let fileSize = try (FileManager.default.attributesOfItem(atPath: strFilePath) as NSDictionary).fileSize() as NSNumber
+            let totalSpace = fileSize.uint64Value
+            print("Total MB \((totalSpace/1024)/1024)")
+            let sizeInMB = (totalSpace/1024)/1024
+            if sizeInMB > 10 {
+                let actionSheet = UIAlertController(title: "File size", message: "The file size must be less then 10MB", preferredStyle: .actionSheet)
+                actionSheet.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+                }))
+                currentVC.present(actionSheet, animated: true, completion: nil)
+                return false
+            }
+        }
+         catch let error {
+            print(error)
+        }
+        return true
     }
 }
 

@@ -86,6 +86,11 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             searchController.searchBar.scopeButtonTitles = ["All", "My"]
             searchController.searchBar.delegate = self
         }
+        let objLumimessage = LumiMessage()
+        objLumimessage.getLatestUnreladMessageCount(completionHandler: { (count) in
+            
+        })
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -610,7 +615,7 @@ extension UINavigationItem {
         let btn2 = UIButton(type: .custom)
         let imgThumb = UIImage.decodeBase64(strEncodeData:GlobalShareData.sharedGlobal.objCurrentLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: 30, height: 30))
-        btn2.frame = CGRect(x: 15, y: 0, width: 30, height: 30)
+        btn2.frame = CGRect(x: 20, y: 0, width: 30, height: 30)
         btn2.cornerRadius = 15
         btn2.borderColor = UIColor.lumiGreen
         btn2.borderWidth = 1

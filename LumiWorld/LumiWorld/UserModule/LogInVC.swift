@@ -11,7 +11,6 @@ import UIKit
 import RealmSwift
 import Realm
 import MBProgressHUD
-import YPImagePicker
 class LogInVC: UIViewController,FormDataDelegate {
     
     var customview : CustomTableView!
@@ -37,7 +36,7 @@ class LogInVC: UIViewController,FormDataDelegate {
         let dict: [Rule] = [RequiredRule(), PhoneNumberRule()]
         let dict1: [Rule] = [RequiredRule(), MinLengthRule()]
         
-        customview = CustomTableView(placeholders: [["Mobile Number","Password"]], texts: [["+27655547209","Ashish123#"]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
+        customview = CustomTableView(placeholders: [["Mobile Number","Password"]], texts: [["",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1]],fieldType:[[1,2]])
         customview.formDelegate = self
         viewTblData.addSubview(customview)

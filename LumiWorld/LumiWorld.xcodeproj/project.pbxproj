@@ -84,6 +84,12 @@
 		0964E7382060F981001D6F47 /* LumiCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */; };
 		0965F16620A07CE60017CA71 /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0965F16520A07CE60017CA71 /* DocumentBrowserViewController.swift */; };
 		096BBF9F20DCD2C90017EBA8 /* LumiWorldWelcom.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 096BBF9E20DCD2C80017EBA8 /* LumiWorldWelcom.mp4 */; };
+		096BBFB620E0CDD00017EBA8 /* Stevia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFB420E0CDCE0017EBA8 /* Stevia.framework */; };
+		096BBFB720E0CDD00017EBA8 /* Stevia.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFB420E0CDCE0017EBA8 /* Stevia.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		096BBFB820E0CDD00017EBA8 /* YPImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFB520E0CDCF0017EBA8 /* YPImagePicker.framework */; };
+		096BBFB920E0CDD00017EBA8 /* YPImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFB520E0CDCF0017EBA8 /* YPImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		096BBFBB20E0CF680017EBA8 /* PryntTrimmerView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */; };
+		096BBFBC20E0CF680017EBA8 /* PryntTrimmerView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		096C2EF92064E28E0015C0A9 /* GlobalShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */; };
 		096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */; };
 		096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */; };
@@ -115,11 +121,6 @@
 		097BFA5E207E3BE0001F935C /* notification.caf in Resources */ = {isa = PBXBuildFile; fileRef = 097BFA5C207E3BDE001F935C /* notification.caf */; };
 		097BFA5F207E3BE0001F935C /* sent.caf in Resources */ = {isa = PBXBuildFile; fileRef = 097BFA5D207E3BDF001F935C /* sent.caf */; };
 		09931B822099F804005D3BE1 /* DownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 09931B812099F804005D3BE1 /* DownloadManager.m */; };
-		09B6B65F20B409890060CDB5 /* YPImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09B6B65E20B409890060CDB5 /* YPImagePicker.framework */; };
-		09B6B66120B40ABD0060CDB5 /* YPImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09B6B66020B40ABC0060CDB5 /* YPImagePicker.framework */; };
-		09B6B66220B40ABD0060CDB5 /* YPImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 09B6B66020B40ABC0060CDB5 /* YPImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		09B6B66520B40B030060CDB5 /* Stevia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09B6B66420B40B030060CDB5 /* Stevia.framework */; };
-		09B6B66620B40B030060CDB5 /* Stevia.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 09B6B66420B40B030060CDB5 /* Stevia.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		09D012C120D92CCF00935B05 /* LumiWorldMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D012C020D92CCF00935B05 /* LumiWorldMessages.swift */; };
 		09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */; };
 		09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0B2065042B00C74E1F /* AFWrapper.swift */; };
@@ -142,8 +143,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				09B6B66620B40B030060CDB5 /* Stevia.framework in Embed Frameworks */,
-				09B6B66220B40ABD0060CDB5 /* YPImagePicker.framework in Embed Frameworks */,
+				096BBFBC20E0CF680017EBA8 /* PryntTrimmerView.framework in Embed Frameworks */,
+				096BBFB720E0CDD00017EBA8 /* Stevia.framework in Embed Frameworks */,
+				096BBFB920E0CDD00017EBA8 /* YPImagePicker.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -233,6 +235,11 @@
 		0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LumiCategoryVC.swift; sourceTree = "<group>"; };
 		0965F16520A07CE60017CA71 /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
 		096BBF9E20DCD2C80017EBA8 /* LumiWorldWelcom.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LumiWorldWelcom.mp4; sourceTree = "<group>"; };
+		096BBFA020E0C0610017EBA8 /* YPImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YPImagePicker.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/YPImagePicker-cfcfoizzwswlixehvkggwxqthbrj/Build/Products/Debug-iphoneos/YPImagePicker.framework"; sourceTree = "<group>"; };
+		096BBFB420E0CDCE0017EBA8 /* Stevia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stevia.framework; sourceTree = "<group>"; };
+		096BBFB520E0CDCF0017EBA8 /* YPImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YPImagePicker.framework; sourceTree = "<group>"; };
+		096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PryntTrimmerView.framework; sourceTree = "<group>"; };
+		096BBFBD20E0E6FA0017EBA8 /* LumiWorld.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LumiWorld.entitlements; sourceTree = "<group>"; };
 		096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShareData.swift; sourceTree = "<group>"; };
 		096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerProfileVC.swift; sourceTree = "<group>"; };
 		096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
@@ -266,8 +273,6 @@
 		09931B802099F804005D3BE1 /* DownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownloadManager.h; sourceTree = "<group>"; };
 		09931B812099F804005D3BE1 /* DownloadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownloadManager.m; sourceTree = "<group>"; };
 		09B6B65E20B409890060CDB5 /* YPImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YPImagePicker.framework; path = "../../../../../Downloads/YPImagePicker-2.8.1/Carthage 2/Build/iOS/YPImagePicker.framework"; sourceTree = "<group>"; };
-		09B6B66020B40ABC0060CDB5 /* YPImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YPImagePicker.framework; sourceTree = "<group>"; };
-		09B6B66420B40B030060CDB5 /* Stevia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stevia.framework; sourceTree = "<group>"; };
 		09D012C020D92CCF00935B05 /* LumiWorldMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiWorldMessages.swift; sourceTree = "<group>"; };
 		09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupSendMessage.swift; sourceTree = "<group>"; };
 		09D98A0B2065042B00C74E1F /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
@@ -292,10 +297,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09B6B66520B40B030060CDB5 /* Stevia.framework in Frameworks */,
-				09B6B66120B40ABD0060CDB5 /* YPImagePicker.framework in Frameworks */,
+				096BBFB820E0CDD00017EBA8 /* YPImagePicker.framework in Frameworks */,
+				096BBFB620E0CDD00017EBA8 /* Stevia.framework in Frameworks */,
+				096BBFBB20E0CF680017EBA8 /* PryntTrimmerView.framework in Frameworks */,
 				67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */,
-				09B6B65F20B409890060CDB5 /* YPImagePicker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,8 +310,9 @@
 		0900543D20591EC700262084 = {
 			isa = PBXGroup;
 			children = (
-				09B6B66420B40B030060CDB5 /* Stevia.framework */,
-				09B6B66020B40ABC0060CDB5 /* YPImagePicker.framework */,
+				096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */,
+				096BBFB420E0CDCE0017EBA8 /* Stevia.framework */,
+				096BBFB520E0CDCF0017EBA8 /* YPImagePicker.framework */,
 				0964E556205FC811007E5924 /* LumiWorld */,
 				0900544720591EC700262084 /* Products */,
 				B6393628CC4CD6B70DE3677E /* Frameworks */,
@@ -359,6 +365,7 @@
 		0964E556205FC811007E5924 /* LumiWorld */ = {
 			isa = PBXGroup;
 			children = (
+				096BBFBD20E0E6FA0017EBA8 /* LumiWorld.entitlements */,
 				09028A7A20AEB7F9007F85F2 /* LumiMenu */,
 				097BF9DE207E35D2001F935C /* Message */,
 				093F445C206B715800BC9983 /* Models */,
@@ -604,6 +611,7 @@
 			isa = PBXGroup;
 			children = (
 				09B6B65E20B409890060CDB5 /* YPImagePicker.framework */,
+				096BBFA020E0C0610017EBA8 /* YPImagePicker.framework */,
 				093F4463206B7BE500BC9983 /* SystemConfiguration.framework */,
 				B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */,
 			);
@@ -623,6 +631,7 @@
 				0900544420591EC700262084 /* Resources */,
 				2860A662A2D0255E7026B6EE /* [CP] Embed Pods Frameworks */,
 				09B6B66320B40ABD0060CDB5 /* Embed Frameworks */,
+				096BBFBF20E1075B0017EBA8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -647,6 +656,14 @@
 						CreatedOnToolsVersion = 9.1;
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -708,6 +725,19 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		096BBFBF20E1075B0017EBA8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "    ";
+		};
 		2860A662A2D0255E7026B6EE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -728,8 +758,10 @@
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SCLAlertView/SCLAlertView.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/VGPlayer/VGPlayer.framework",
 				"${BUILT_PRODUCTS_DIR}/YYText/YYText.framework",
 				"${BUILT_PRODUCTS_DIR}/Zip/Zip.framework",
 				"${BUILT_PRODUCTS_DIR}/pop/pop.framework",
@@ -749,8 +781,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCLAlertView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VGPlayer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYText.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Zip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/pop.framework",
@@ -1015,7 +1049,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Zazo Communications PTY Ltd (J323ZHWH83)";
+				CODE_SIGN_ENTITLEMENTS = LumiWorld/LumiWorld.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Rajesh Gajalla (6N7UY42ZHD)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = J323ZHWH83;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1027,8 +1062,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworld.zazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8384e58f-dd24-4364-92d4-63919beb5b73";
-				PROVISIONING_PROFILE_SPECIFIER = 20June_AppStore_LumiWorld;
+				PROVISIONING_PROFILE = "510147dc-b366-4b45-998f-c4551ad6bc5f";
+				PROVISIONING_PROFILE_SPECIFIER = 19April_DevLumi;
 				SWIFT_OBJC_BRIDGING_HEADER = "LumiWorld/Utilities/LumiWorld-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -1043,7 +1078,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Zazo Communications PTY Ltd (J323ZHWH83)";
+				CODE_SIGN_ENTITLEMENTS = LumiWorld/LumiWorld.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Rajesh Gajalla (6N7UY42ZHD)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = J323ZHWH83;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1055,8 +1091,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworld.zazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8384e58f-dd24-4364-92d4-63919beb5b73";
-				PROVISIONING_PROFILE_SPECIFIER = 20June_AppStore_LumiWorld;
+				PROVISIONING_PROFILE = "510147dc-b366-4b45-998f-c4551ad6bc5f";
+				PROVISIONING_PROFILE_SPECIFIER = 19April_DevLumi;
 				SWIFT_OBJC_BRIDGING_HEADER = "LumiWorld/Utilities/LumiWorld-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
