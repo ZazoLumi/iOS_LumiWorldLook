@@ -54,6 +54,10 @@ class LumiProfileDetails: UIViewController,FormDataDelegate {
             self.isImgChanged = true
         }
         else {
+            guard GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic != nil else {
+                return
+            }
+
             if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())!
             {
                 urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic!)

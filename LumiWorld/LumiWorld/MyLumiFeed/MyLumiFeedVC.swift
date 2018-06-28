@@ -73,7 +73,6 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         // Setup the Scope Bar
         searchController.searchBar.scopeButtonTitles = []
         searchController.searchBar.delegate = self
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {

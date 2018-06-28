@@ -21,6 +21,11 @@ class viewProfileImgVC: UIViewController {
         self.navigationController?.navigationBar.tintColor = .lumiGray
 
         self.navigationItem.rightBarButtonItem = rightButton
+        guard GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic != nil else {
+            return
+        }
+//no due + authorization + passport +27825529622
+
         let urlOriginalImage : URL!
         if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())!
         {

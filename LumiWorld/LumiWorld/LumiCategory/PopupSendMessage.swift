@@ -325,7 +325,9 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let objMapViewController = storyBoard.instantiateViewController(withIdentifier: "mapViewController") as! mapViewController
+            objMapViewController.isFromChat = false;
             self.navigationController?.pushViewController(objMapViewController, animated: false)
+            
             objMapViewController.didFinishCapturingLocations = { (image,lat,long,strFilePath,strLocationAddress) in
                 let scalImg = image.af_imageScaled(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
                 self.imgAttach.image = scalImg

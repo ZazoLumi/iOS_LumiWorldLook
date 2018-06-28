@@ -13,6 +13,7 @@ import Realm
 import MBProgressHUD
 class LogInVC: UIViewController,FormDataDelegate {
     
+    @IBOutlet weak var constLogoTopSpace: NSLayoutConstraint!
     var customview : CustomTableView!
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -30,18 +31,20 @@ class LogInVC: UIViewController,FormDataDelegate {
 
             UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
         }
+        if self.view.frame.size.height == 960 {
+            constLogoTopSpace.constant = 30
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         let dict: [Rule] = [RequiredRule(), PhoneNumberRule()]
         let dict1: [Rule] = [RequiredRule(), MinLengthRule()]
         
-        customview = CustomTableView(placeholders: [["Mobile Number","Password"]], texts: [["",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
+        customview = CustomTableView(placeholders: [["Mobile Number","Password"]], texts: [["+27",""]], images:[["Artboard 71xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1]],fieldType:[[1,2]])
         customview.formDelegate = self
         viewTblData.addSubview(customview)
         self.checkPendingVerification()
-
     }
     
     func checkPendingVerification() {
@@ -86,7 +89,6 @@ class LogInVC: UIViewController,FormDataDelegate {
             print(jsonError)
 
         }
-
     }
 }
 

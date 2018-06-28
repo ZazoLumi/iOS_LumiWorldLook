@@ -303,6 +303,7 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
            let objMapViewController = storyBoard.instantiateViewController(withIdentifier: "mapViewController") as! mapViewController
+             objMapViewController.isFromChat = true;
  self.parentViewController?.navigationController?.pushViewController(objMapViewController, animated: false)
 
             

@@ -80,6 +80,8 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
            objMapViewController.currentLat = cellLayout.locations[1]
             objMapViewController.currentLong = cellLayout.locations[0];
             objMapViewController.strLocationAddress = cellLayout.attributedText?.string
+            objMapViewController.isFromChat = false;
+
             self.parentViewController?.navigationController?.pushViewController(objMapViewController, animated: false)
 
         }
@@ -210,7 +212,9 @@ protocol TGAttachmentMessageCellDelegate: NOCChatItemCellDelegate {
 extension String {
     
     func hasUrlPrefix()->Bool{
-        
+        guard self != nil, self.count != 0 else {
+            return false
+        }
         if(self.hasPrefix("http") || self.hasPrefix("https")){
             return true
         }

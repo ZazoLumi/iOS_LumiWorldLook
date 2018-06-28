@@ -19,7 +19,7 @@ class locationTableViewCell: UITableViewCell {
 }
 
 class mapViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
-    var didFinishCapturingLocations: ((UIImage,Double,Double,String,String) -> Void)?
+    var didFinishCapturingLocations: ((UIImage,Double?,Double?,String?,String?) -> Void)?
     static let shared = mapViewController()
 
 

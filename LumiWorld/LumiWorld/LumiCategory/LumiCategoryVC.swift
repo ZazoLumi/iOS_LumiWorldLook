@@ -88,7 +88,15 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         }
         let objLumimessage = LumiMessage()
         objLumimessage.getLatestUnreladMessageCount(completionHandler: { (count) in
+            //self.tabBarController?.viewControllers?.first?.navigationController?.tabBarItem.badgeValue = "0"
+            self.navigationController?.tabBarController?.viewControllers?.first?.tabBarItem.badgeValue = nil
             
+            if count > 0 {
+                
+                self.navigationController?.tabBarController?.viewControllers?.first?.tabBarItem.badgeValue = "\(count)"
+                //self.navigationController!.tabBarItem.badgeValue = "\(count)"
+                
+            }
         })
 
     }
@@ -661,6 +669,8 @@ extension UINavigationItem {
             imgProfile.layer.borderColor = UIColor(red: 110, green: 187, blue: 171)?.cgColor
             
             let urlOriginalImage : URL!
+            if GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic != nil {
+
             if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())!
             {
                 urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic!)
@@ -675,6 +685,7 @@ extension UINavigationItem {
                 if let image = response.result.value {
                     let scalImg = image.af_imageScaled(to: CGSize(width:imgProfile.frame.size.width, height: imgProfile.frame.size.height))
                     imgProfile.image = scalImg
+                }
                 }
             }
             imgProfile.contentMode = .scaleToFill

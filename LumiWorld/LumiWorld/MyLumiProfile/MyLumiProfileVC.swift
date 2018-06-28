@@ -35,19 +35,22 @@ class MyLumiProfileVC: UIViewController {
         self.navigationItem.addSettingButtonOnRight()
         self.navigationItem.title = GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!.uppercased() + "'S LUMI PROFILE"
         self.url1 = URL(fileURLWithPath: Bundle.main.path(forResource: "LumiWorldWelcom", ofType: "mp4")!)
-        playVideo()
         // Do any additional setup after loading the view.
+        playVideo()
+
     }
     override func viewWillAppear(_ animated: Bool) {
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         setupProfileData()
+        //self.player.replaceVideo(url1!)
         self.player.play()
+
     }
     override func viewWillDisappear(_ animated: Bool) {
-        for view in scrlAdvertiseView.subviews {
-            view.removeSubviews()
-        }
+//        for view in scrlAdvertiseView.subviews {
+//            view.removeSubviews()
+//        }
         self.player.pause()
     }
     
@@ -55,6 +58,7 @@ class MyLumiProfileVC: UIViewController {
         GlobalShareData.sharedGlobal.objCurretnVC = self
         lblDisplayName.text = GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName
         let urlOriginalImage : URL!
+        if GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic != nil {
         if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())!
         {
             urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic!)
@@ -68,6 +72,7 @@ class MyLumiProfileVC: UIViewController {
             if let image = response.result.value {
                 let scalImg = image.af_imageScaled(to: CGSize(width:self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
                 self.imgProfilePic.image = scalImg
+            }
             }
         }
         let realm = try! Realm()
