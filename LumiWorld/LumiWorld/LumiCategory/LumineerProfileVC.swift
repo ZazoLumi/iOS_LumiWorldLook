@@ -83,7 +83,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         self.ratingVC.isUserInteractionEnabled = true
         viewActivityHeights.constant = 0
         lblActivity.isHidden = true
-        lblLumiProfileTxt.text =  "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!), how can we help you?"
+        lblLumiProfileTxt.text =  "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!), how can we help you?"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -120,10 +120,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     }
     
     func setupLumineerData() {
+        var strBaseDataLogo : String? = ""
         objLumineer = GlobalShareData.sharedGlobal.objCurrentLumineer
-        let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
-        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
-        self.imgProfilePic.image = scalImg
         self.lblCompanyName.text = objLumineer.displayName
         if let data = objLumineer.detailedDescription?.count {
             self.lblExpandableDescription.text = objLumineer.detailedDescription
@@ -134,12 +132,19 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             lblExpandableDescription.textAlignment = .center
         }
         if objLumineer.status == 1 {
-            btnFollowLumineer.bringSubview(toFront: imgProfilePic)
+            strBaseDataLogo = objLumineer.enterpriseLogo
             btnFollowLumineer.isSelected = true
         }
         else {
+            strBaseDataLogo = objLumineer.enterpriseLogoOpt
             btnFollowLumineer.isSelected = false
         }
+        let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
+       // let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
+        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
+
+        self.imgProfilePic.image = scalImg
+       // self.imgProfilePic.contentMode = .scaleAspectFill
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style:.plain, target: nil, action: nil)
         
         
@@ -385,6 +390,10 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             let objLumiList = LumineerList()
             DispatchQueue.global(qos: .userInitiated).async {
                 objLumiList.setLumineerCompanyFollowUnFollowData(id:GlobalShareData.sharedGlobal.userCellNumber,companyregistrationnumber:companyRegistrationNumber,uniqueID: strUniqueID, status:strStatus , completionHandler: { (List) in
+                    let imgThumb = UIImage.decodeBase64(strEncodeData:self.objLumineer.enterpriseLogo)
+                    let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
+                    self.imgProfilePic.image = scalImg
+
                 })
             }
         }

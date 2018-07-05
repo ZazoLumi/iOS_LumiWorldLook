@@ -217,38 +217,30 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DtE-Lu-0ay">
                                                 <rect key="frame" x="-5" y="35.5" width="325" height="814.5"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A0b-KN-nFk">
-                                                        <rect key="frame" x="111.5" y="20" width="101.5" height="101"/>
-                                                        <state key="normal" image="Artboard106"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="image" keyPath="imageForNormal" value="Artboard106"/>
-                                                            <userDefinedRuntimeAttribute type="image" keyPath="imageForSelected" value="Artboard105"/>
-                                                        </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="onBtnFollowTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ajc-Ij-0lR"/>
-                                                        </connections>
-                                                    </button>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nazish_passport_size" translatesAutoresizingMaskIntoConstraints="NO" id="287-9c-Ybl">
-                                                        <rect key="frame" x="112" y="20" width="101" height="101"/>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nazish_passport_size" translatesAutoresizingMaskIntoConstraints="NO" id="287-9c-Ybl">
+                                                        <rect key="frame" x="112" y="19.5" width="101" height="101"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="101" id="1DS-ZU-fLb"/>
-                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="101" id="IpR-Wx-A7D"/>
+                                                            <constraint firstAttribute="width" priority="750" constant="101" id="IpR-Wx-A7D"/>
                                                             <constraint firstAttribute="width" secondItem="287-9c-Ybl" secondAttribute="height" multiplier="1:1" id="WI6-0S-a9O"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="48"/>
+                                                                <real key="value" value="0.0"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                <color key="value" red="0.41960784309999999" green="0.77647058820000003" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A0b-KN-nFk">
+                                                        <rect key="frame" x="111.5" y="20" width="101.5" height="101"/>
+                                                        <connections>
+                                                            <action selector="onBtnFollowTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ajc-Ij-0lR"/>
+                                                        </connections>
+                                                    </button>
                                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RCh-tP-Q1t">
-                                                        <rect key="frame" x="243.5" y="54" width="58" height="34"/>
+                                                        <rect key="frame" x="243.5" y="53" width="58" height="34"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="34" id="ieJ-SQ-Atn"/>
                                                         </constraints>
@@ -265,7 +257,7 @@
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 FOLLOWERS" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="voc-XI-V39">
-                                                        <rect key="frame" x="14.5" y="54" width="75" height="34"/>
+                                                        <rect key="frame" x="14.5" y="53" width="75" height="34"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="34" id="NQ3-lO-YFL"/>
                                                             <constraint firstAttribute="width" constant="75" id="eKc-Wk-YK2"/>
@@ -2127,7 +2119,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type Message" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KSz-wN-RU8" customClass="NoCopyPasteUITextField" customModule="LumiWorld" customModuleProvider="target">
-                                <rect key="frame" x="20" y="313" width="111" height="30"/>
+                                <rect key="frame" x="20" y="538" width="250" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="TB7-NB-YiT"/>
                                 </constraints>
@@ -2144,14 +2136,14 @@
                                 </connections>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2sc-O3-3gd">
-                                <rect key="frame" x="0.0" y="20" width="181" height="293"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="518"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="2sc-O3-3gd" secondAttribute="height" multiplier="160:259" id="G8k-eU-D3M"/>
                                     <constraint firstAttribute="height" constant="617" id="nxG-HJ-3yi"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPd-fG-ugi">
-                                <rect key="frame" x="156" y="20" width="25" height="25"/>
+                                <rect key="frame" x="295" y="20" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="BPd-fG-ugi" secondAttribute="height" multiplier="1:1" id="jbP-rZ-HMN"/>
                                 </constraints>
@@ -2174,7 +2166,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBG-1Z-TYa">
-                                <rect key="frame" x="139" y="317" width="22" height="22"/>
+                                <rect key="frame" x="278" y="542" width="22" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="wBG-1Z-TYa" secondAttribute="height" multiplier="1:1" id="B5D-ml-agx"/>
                                 </constraints>
@@ -3117,8 +3109,6 @@
         <image name="Artboard 93xxhdpi" width="11" height="9"/>
         <image name="Artboard 94xxhdpi" width="13" height="24"/>
         <image name="Artboard104xxhdpi" width="57" height="41"/>
-        <image name="Artboard105" width="105" height="106"/>
-        <image name="Artboard106" width="111" height="107"/>
         <image name="Artboard_69" width="97" height="68"/>
         <image name="Artboard_72" width="51" height="67"/>
         <image name="Asset 19" width="56" height="52"/>
@@ -3147,6 +3137,6 @@
         <image name="nazish_passport_size" width="316" height="318"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bcw-54-L7N"/>
+        <segue reference="pnt-Xu-Aqh"/>
     </inferredMetricsTieBreakers>
 </document>

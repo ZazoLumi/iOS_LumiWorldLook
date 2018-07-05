@@ -19,7 +19,7 @@ class ForgotPasswordVC: UIViewController,FormDataDelegate {
     override func viewDidAppear(_ animated: Bool) {
         let dict: [Rule] = [RequiredRule(), PhoneNumberRule()]
         
-         customview = CustomTableView(placeholders: [["Mobile Number"]], texts: [[""]], images:[["Artboard 71xxxhdpi"]], frame:CGRect(x: 0
+         customview = CustomTableView(placeholders: [["Mobile Number"]], texts: [["+27"]], images:[["Artboard 71xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict]],fieldType:[[1]])
         customview.formDelegate = self
         viewTblData.addSubview(customview)

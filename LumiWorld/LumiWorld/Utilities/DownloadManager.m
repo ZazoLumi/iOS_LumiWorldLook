@@ -115,6 +115,8 @@
         NSFileManager *fileManager = [NSFileManager defaultManager];
         
         NSString *destinationFilename = downloadTask.originalRequest.URL.lastPathComponent;
+        destinationFilename = [destinationFilename stringByReplacingOccurrencesOfString: @" " withString:@"-"];
+
         NSURL *destinationURL = [self.docDirectoryURL URLByAppendingPathComponent:destinationFilename];
     
         if ([fileManager fileExistsAtPath:[destinationURL path]]) {

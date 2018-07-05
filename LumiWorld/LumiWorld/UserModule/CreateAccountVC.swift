@@ -33,7 +33,7 @@ class CreateAccountVC: UIViewController,FormDataDelegate {
         let dict4: [Rule] = [RequiredRule(), PasswordRule()]
         let dict5: [Rule] = [RequiredRule(), PasswordRule()]
         
-        customview = CustomTableView(placeholders: [["Name","Surname","My Lumi Profile Name","Mobile Number","Email Address","Password","Repeat New Password"]], texts: [["","","","","","",""]], images:[["Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 71xxxhdpi","emailIcon","Artboard 72xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
+        customview = CustomTableView(placeholders: [["Name","Surname","My Lumi Profile Name","Mobile Number","Email Address","Password","Repeat New Password"]], texts: [["","","","+27","","",""]], images:[["Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 70xxxhdpi","Artboard 71xxxhdpi","emailIcon","Artboard 72xxxhdpi","Artboard 72xxxhdpi"]], frame:CGRect(x: 0
             , y: 0, width: viewTblData.frame.size.width, height: viewTblData.frame.size.height),rrules:[["rule":dict],["rule":dict1],["rule":dict2],["rule":dict3],["rule":dict6],["rule":dict4],["rule":dict5]],fieldType:[[4,5,7,1,8,2,3]])
         customview.formDelegate = self
         viewTblData.addSubview(customview)

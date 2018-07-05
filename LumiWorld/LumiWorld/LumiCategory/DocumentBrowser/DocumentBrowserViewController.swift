@@ -82,7 +82,10 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
             
             if documentURL.isFileURL {
                 if documentURL.startAccessingSecurityScopedResource() {
-                    if let data = NSData(contentsOfFile: documentURL.path) {
+                    var filePath = documentURL.absoluteString
+                    filePath = filePath.removingPercentEncoding!
+                    filePath = filePath.replacingOccurrences(of: "file://", with: "")
+                    if let data = NSData(contentsOfFile: filePath) {
                         print(data.length)
                         var _: Error?
                         _ = FileManager.default

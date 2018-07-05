@@ -85,7 +85,6 @@ class VerifyAccoutVC: UIViewController,FormDataDelegate {
             print(jsonError)
             
         }
-
     }
 
 }

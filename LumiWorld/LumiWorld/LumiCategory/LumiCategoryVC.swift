@@ -20,9 +20,9 @@ class LumineerCompanyCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.imgCompanyLogo.layer.cornerRadius = self.imgCompanyLogo.bounds.size.height * 0.50
-        self.imgCompanyLogo.layer.borderWidth = 0.5;
-        self.imgCompanyLogo.layer.borderColor = UIColor.lumiGreen?.cgColor;
+//        self.imgCompanyLogo.layer.cornerRadius = self.imgCompanyLogo.bounds.size.height * 0.50
+//        self.imgCompanyLogo.layer.borderWidth = 0.5;
+//        self.imgCompanyLogo.layer.borderColor = UIColor.lumiGreen?.cgColor;
 
     }
 
@@ -405,15 +405,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             let objLumiList = LumineerList()
             DispatchQueue.global(qos: .userInitiated).async {
                 objLumiList.setLumineerCompanyFollowUnFollowData(id:GlobalShareData.sharedGlobal.userCellNumber,companyregistrationnumber:companyRegistrationNumber,uniqueID: strUniqueID, status:strStatus , completionHandler: { (List) in
-                    self.aryCategory = [LumiCategory]()
-                    for element in List {
-                        if let category = element as? LumiCategory {
-                            self.aryCategory.append(category)
-                        }
-                    }
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
                 })
             }
 
@@ -625,8 +616,8 @@ extension UINavigationItem {
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: 30, height: 30))
         btn2.frame = CGRect(x: 20, y: 0, width: 30, height: 30)
         btn2.cornerRadius = 15
-        btn2.borderColor = UIColor.lumiGreen
-        btn2.borderWidth = 1
+      //  btn2.borderColor = UIColor.lumiGreen
+        btn2.borderWidth = 0
         btn2.setImage(scalImg, for: .normal)
         btn2.addTarget(self, action:#selector(goBackToLumineerPage(_:)), for: .touchUpInside)
             //btn2.imageEdgeInsets = UIEdgeInsets(top: 0, left:  -30, bottom: 0, right:0)
@@ -926,6 +917,9 @@ extension UIImage {
 
 
     static func decodeBase64(strEncodeData: String!) -> UIImage {
+        guard strEncodeData != nil else {
+            return UIImage()
+        }
       var newEncodeData = strEncodeData.replacingOccurrences(of: "data:image/png;base64,", with: "")
         newEncodeData = newEncodeData.replacingOccurrences(of: "data:image/jpeg;base64,", with: "")
         if let decData = Data(base64Encoded: newEncodeData, options: .ignoreUnknownCharacters), newEncodeData.characters.count > 0 {

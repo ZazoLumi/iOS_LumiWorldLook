@@ -52,7 +52,6 @@ class LogInVC: UIViewController,FormDataDelegate {
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let firstVC = storyBoard.instantiateViewController(withIdentifier: "CreateAccountVC") as! CreateAccountVC
             let objVerifyAccoutVC = storyBoard.instantiateViewController(withIdentifier: "VerifyAccoutVC") as! VerifyAccoutVC
-            UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.pendingVerification)
             self.navigationController?.pushViewController(firstVC, animated: false);
             self.navigationController?.pushViewController(objVerifyAccoutVC, animated: true);
         }

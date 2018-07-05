@@ -160,7 +160,7 @@ class LumiMessage : Object {
                                                     if objLumiMsg.contentType == "Video" {
                                                         objLumiMsg.imageURL = fileName
                                                     }
-                                                objLumiMsg.fileName = url?.absoluteString
+                                                objLumiMsg.fileName = url?.absoluteString.removingPercentEncoding
                                                 objLumiMsg.isFileDownloaded = true
                                                 realm.add(objLumiMsg, update: true)
                                                     if index == tempArray.count-1 {
@@ -261,11 +261,13 @@ class LumiMessage : Object {
                         completionHandler(error!)
                         return
                     }
-                    let strResponseCode = dict!["responseCode"] as! Int
-                    guard strResponseCode != 0 else {
-                        DispatchQueue.main.async {
-                            MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
-                        return
+                    if (dict?.keys.contains("responseCode"))! {
+                        let strResponseCode = dict!["responseCode"] as! Int
+                        guard strResponseCode != 0 else {
+                            DispatchQueue.main.async {
+                                MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
+                            return
+                        }
                     }
                     completionHandler(error)
                 })
@@ -341,6 +343,7 @@ class LumiMessage : Object {
                     try! realm.write {
                         let objMessage = lumiMessages[0] as LumiMessage
                         realm.delete(objMessage)
+                        try! realm.commitWrite()
                         completionHandler(true)
                     }
                 }, failure: { (Error) in

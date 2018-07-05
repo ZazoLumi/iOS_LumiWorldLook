@@ -213,7 +213,14 @@ class GlobalShareData {
         let deleteAction = UIAlertAction(title: "Delete Message", style: .default) { (action) in
             objLumiMessage.setLumiMessageDelete(strGuid: objLumiMessage.guid!, completionHandler: { (result) in
                 if result {
-                    NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
+                    let realm = try! Realm()
+                    let result = realm.objects(LumineerList.self).filter("id = \(self.objCurrentLumineer.id)").filter("ANY lumiMessages.id > 0")
+                    if  result.count > 0{
+                        NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
+                    }
+                    else {
+                        self.objCurretnVC.navigationController?.popViewController()
+                    }
                 }
             })
         }
@@ -230,7 +237,7 @@ class GlobalShareData {
                     hud.offset = CGPoint(x: 0.0, y: 120)
                     hud.hide(animated: true, afterDelay: 2.0)
 
-                    NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
+                    //NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil)
                     self.objCurretnVC.navigationController?.popViewController()
                 }
             })

@@ -76,7 +76,7 @@
             continue;
         }
         NSString *filename  = [path lastPathComponent];
-        NSData   *data      = [NSData dataWithContentsOfURL:[NSURL URLWithString:path]];
+        NSData   *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:path]];
         NSString *mimetype  = [self mimeTypeForPath:path];
         
         [httpBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];

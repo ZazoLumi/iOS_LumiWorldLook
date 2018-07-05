@@ -119,6 +119,9 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
             else {
                 let fileName = cellLayout.attachURL?.lastPathComponent
                 urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+//                let filePath = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!).absoluteString.removingPercentEncoding
+//
+//                urlOriginalImage = URL(string: filePath!)
             }
             imgPlay.isHidden = true
             if cellLayout.attachType == "Image" || cellLayout.attachType == "Location" {

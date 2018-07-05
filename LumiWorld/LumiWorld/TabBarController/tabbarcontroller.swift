@@ -58,8 +58,8 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     tabBarController.selectedIndex = 1
     let navigationController = ExampleNavigationController.init(rootViewController: tabBarController)
     
-    navigationController.navigationItem.addSettingButtonOnRight()
-    navigationController.navigationItem.addBackButtonOnLeft()
+//    navigationController.navigationItem.addSettingButtonOnRight()
+//    navigationController.navigationItem.addBackButtonOnLeft()
     
     return navigationController
     }

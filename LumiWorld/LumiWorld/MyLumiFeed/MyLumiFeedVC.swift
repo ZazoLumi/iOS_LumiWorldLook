@@ -25,9 +25,9 @@ class lumiFeedCell: UITableViewCell {
     @IBOutlet weak var constImgHeight: NSLayoutConstraint!
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.imgLumineerProfile.layer.cornerRadius = self.imgLumineerProfile.bounds.size.height/2
-        self.imgLumineerProfile.layer.borderWidth = 0.5;
-        self.imgLumineerProfile.layer.borderColor = UIColor.lumiGreen?.cgColor;
+//        self.imgLumineerProfile.layer.cornerRadius = self.imgLumineerProfile.bounds.size.height/2
+//        self.imgLumineerProfile.layer.borderWidth = 0.5;
+//        self.imgLumineerProfile.layer.borderColor = UIColor.lumiGreen?.cgColor;
     }
 }
 

@@ -24,6 +24,7 @@ class LumineerList : Object {
     @objc dynamic var firstName : String? = nil
     @objc dynamic var surname : String? = nil
     @objc dynamic var enterpriseLogo : String? = nil
+    @objc dynamic var enterpriseLogoOpt : String? = nil
     @objc dynamic var enterpriseCoverPage : String? = nil
     @objc dynamic var displayName : String? = nil
     @objc dynamic var logoURL : String? = nil
@@ -95,6 +96,7 @@ class LumineerList : Object {
                             newLumineerObj.firstName = aObject["firstName"].string
                             newLumineerObj.surname = aObject["surname"].string
                             newLumineerObj.enterpriseLogo = aObject["enterpriseLogo"].string
+                            newLumineerObj.enterpriseLogoOpt = aObject["enterpriseLogoOpt"].string
                             newLumineerObj.enterpriseCoverPage = aObject["enterpriseCoverPage"].string
                             newLumineerObj.displayName = aObject["displayName"].string
                             newLumineerObj.logoURL = aObject["logoURL"].string
@@ -161,7 +163,7 @@ class LumineerList : Object {
         }
     }
     
-    func setLumineerCompanyFollowUnFollowData(id:String,companyregistrationnumber: String,uniqueID:String,status:String,completionHandler: @escaping (_ objData: Results<Object>) -> Void) {
+    func setLumineerCompanyFollowUnFollowData(id:String,companyregistrationnumber: String,uniqueID:String,status:String,completionHandler: @escaping (_ objData: LumineerList) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             do {
@@ -225,6 +227,7 @@ class LumineerList : Object {
                             try! realm.write {
                                 let  objLumineer = lumineer as LumineerList
                                 objLumineer.status = Int(status)!
+                                completionHandler(objLumineer)
                             }
                             // do something with your vegan meal
                         }
