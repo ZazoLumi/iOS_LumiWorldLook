@@ -73,6 +73,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         // Setup the Scope Bar
         searchController.searchBar.scopeButtonTitles = []
         searchController.searchBar.delegate = self
+        self.tableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -85,9 +86,9 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         let objLumiMessage = LumiMessage()
         let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.messageTimeStamp)
         let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        self.aryActivityData = []
         objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!], nParentId:-1) { (objLumineer) in
             let realm = try! Realm()
+            self.aryActivityData = []
             let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageSubjectId") as! [Int]))
             for objUniqueItem in distinctTypes {
                let result  = realm.objects(LumiCategory.self)
