@@ -880,6 +880,7 @@ extension UserDefaults{
     
 }
 enum UserDefaultsKeys : String {
+    case advertiseTimeStamp
     case messageTimeStamp
     case lumineerTimeStamp
     case supportTimeStamp

@@ -50,6 +50,11 @@ struct Constants {
         static let APISuggestALumineer = ":13004/invite/suggestLumineerToLumi"
         static let APIGetAllLumiWorldMessagesOfLumi = ":13004/invite/getAllLumiWorldMessagesOfLumi"
         static let APIGetAllUnreadMsgCountOfLumi = ":13004/instantMsg/getAllUnreadMsgCountOfLumi/v2"
+        
+        static let APIGetAllAdsPostedToLumiByALumineer = ":13004/adposting/getAllAdsPostedToLumiByALumineer"
+        static let APIGetAllAdsPostedToLumi = ":13004/adposting/getAllAdsPostedToLumi"
+
+
    }
 }
 

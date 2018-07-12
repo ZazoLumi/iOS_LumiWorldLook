@@ -63,6 +63,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         //Static
         self.tableView.addSubview(self.refreshControl)
         self.tableView!.tableFooterView = UIView()
+        getAllLumineerAdvertise()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -149,6 +150,14 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                     }
                 })
             }
+        }
+    }
+    
+    func getAllLumineerAdvertise() {
+        let objAdv = AdvertiseData()
+        
+        objAdv.getLumineerAdvertise(param: ["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
+            
         }
     }
 

@@ -21,6 +21,7 @@
 		0940F96320C952EE00CCF3E1 /* EPContactsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0940F95D20C952ED00CCF3E1 /* EPContactsPicker.swift */; };
 		0940F96420C952EE00CCF3E1 /* EPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0940F95E20C952ED00CCF3E1 /* EPExtensions.swift */; };
 		0941EDB620C5131200941037 /* viewProfileImgVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0941EDB520C5131200941037 /* viewProfileImgVC.swift */; };
+		0943CAD820F729D100BF4A51 /* AdvertiseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0943CAD720F729D100BF4A51 /* AdvertiseData.swift */; };
 		094400E920BE8FC7005995C3 /* WelcomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 094400E820BE8FC7005995C3 /* WelcomView.xib */; };
 		094400EB20BE8FE9005995C3 /* WelcomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094400EA20BE8FE9005995C3 /* WelcomView.swift */; };
 		094801CE20F5ED49001B061B /* AdvertiseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094801CD20F5ED49001B061B /* AdvertiseVC.swift */; };
@@ -176,6 +177,7 @@
 		0940F95D20C952ED00CCF3E1 /* EPContactsPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EPContactsPicker.swift; sourceTree = "<group>"; };
 		0940F95E20C952ED00CCF3E1 /* EPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EPExtensions.swift; sourceTree = "<group>"; };
 		0941EDB520C5131200941037 /* viewProfileImgVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = viewProfileImgVC.swift; sourceTree = "<group>"; };
+		0943CAD720F729D100BF4A51 /* AdvertiseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertiseData.swift; sourceTree = "<group>"; };
 		094400E820BE8FC7005995C3 /* WelcomView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomView.xib; sourceTree = "<group>"; };
 		094400EA20BE8FE9005995C3 /* WelcomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomView.swift; sourceTree = "<group>"; };
 		094801CD20F5ED49001B061B /* AdvertiseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertiseVC.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 				09EAD74420B6B05E00EB37E1 /* LumiSupport.swift */,
 				0956324520BD42E800BE8EFB /* LumiFAQ.swift */,
 				09D012C020D92CCF00935B05 /* LumiWorldMessages.swift */,
+				0943CAD720F729D100BF4A51 /* AdvertiseData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -852,6 +855,7 @@
 				09ECA79A209C8230001570EA /* LocationSearchTable.swift in Sources */,
 				0964E72D2060F981001D6F47 /* PhoneNumberRule.swift in Sources */,
 				0956324620BD42E800BE8EFB /* LumiFAQ.swift in Sources */,
+				0943CAD820F729D100BF4A51 /* AdvertiseData.swift in Sources */,
 				0941EDB620C5131200941037 /* viewProfileImgVC.swift in Sources */,
 				09578AF920F4AD930048E07A /* TNTrackLayer.swift in Sources */,
 				097A69AF20809569001D273E /* LumiMessage.swift in Sources */,
