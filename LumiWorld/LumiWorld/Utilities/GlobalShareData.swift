@@ -73,6 +73,7 @@ class GlobalShareData {
     var userCellNumber: String! //for debugging
     var realmManager = RealmManager()
     var objCurrentLumineer : LumineerList!
+    var objCurrentAdv : AdvertiseData!
     var objCurrentLumiMessage : LumiMessage!
     var objCurrentSupport : LumiSupport!
     var objCurretnVC : UIViewController!

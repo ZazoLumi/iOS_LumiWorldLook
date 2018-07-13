@@ -51,6 +51,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     @IBOutlet weak var lblFollowers: UILabel!
     var aryActivityData: [[String:AnyObject]]!
     var objLumineer : LumineerList!
+    var objAdvertiseVC : AdvertiseVC!
     var isInboxCountSelected = false
     
     @IBOutlet weak var lblActivity: UIView!
@@ -96,6 +97,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.systemFont(ofSize: 20)
         navigationItem.titleView = titleLabel
+        displayAdvertiseContent()
     }
     
     override func didReceiveMemoryWarning() {
@@ -397,6 +399,18 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
                 })
             }
         }
+    }
+    
+    func displayAdvertiseContent() {
+        
+        self.view.addBlurEffect()
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
+        self.addChildViewController(self.objAdvertiseVC)
+        self.objAdvertiseVC.view.frame = CGRect(x: 30, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width-60 , height:440);
+        self.view.addSubview(self.objAdvertiseVC.view)
+        self.objAdvertiseVC
+            .didMove(toParentViewController: self)
     }
 }
 

@@ -19,7 +19,7 @@ class advCommentCell: UITableViewCell {
         //        self.imgLumineerProfile.layer.borderColor = UIColor.lumiGreen?.cgColor;
     }
 }
-class AdvertiseVC: UIViewController {
+class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
     @IBOutlet weak var tblCommentData: UITableView!
     @IBOutlet weak var btnLike: UIButton!
@@ -42,7 +42,31 @@ class AdvertiseVC: UIViewController {
 
         // Do any additional setup after loading the view.
     }
+    
+    func displayAdvertiseContent() {
+        var strBaseDataLogo : String? = ""
+      let objLumineer = GlobalShareData.sharedGlobal.objCurrentLumineer
+        self.lblLumineerName.text = objLumineer?.displayName
 
+        strBaseDataLogo = objLumineer?.enterpriseLogo
+        let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
+        self.imgLumineerProfile.image = imgThumb
+       // self.lblAdvTitle.text = GlobalShareData.sharedGlobal.objCurrentAdv.contentTitle
+//        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
+//            
+//        }
+//        else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
+//            
+//        }
+//        else {
+//            
+//        }
+        
+    }
+    override func viewDidAppear(_ animated: Bool) {
+       // self.view.frame = CGRect(x: 30, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width-60 , height:240);
+        displayAdvertiseContent()
+    }
     @IBAction func onBtnCommentsTapped(_ sender: Any) {
     }
     override func didReceiveMemoryWarning() {
@@ -61,14 +85,26 @@ class AdvertiseVC: UIViewController {
     }
     @IBAction func onBtnLikeTapped(_ sender: Any) {
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // MARK: - Tableview Methods
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
-    */
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 0;
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "advCommentCell", for: indexPath)
+//        var objLumineer : LumineerList!
+//        objLumineer = aryLumineers[indexPath.row] as LumineerList
+//        cell.textLabel?.text = objLumineer.displayName
+        return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 
 }
