@@ -402,12 +402,18 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     }
     
     func displayAdvertiseContent() {
-        
+        //todo
+        let realm = try! Realm()
+        let result  = realm.objects(AdvertiseData.self).filter("contentType == 'Video'")
+        if result.count > 0 {
+            GlobalShareData.sharedGlobal.objCurrentAdv = result[0]
+        }
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
         self.addChildViewController(self.objAdvertiseVC)
-        self.objAdvertiseVC.view.frame = CGRect(x: 30, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width-60 , height:440);
+        let height = objAdvertiseVC.setupInitialConstraints()
+        self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:CGFloat(height));
         self.view.addSubview(self.objAdvertiseVC.view)
         self.objAdvertiseVC
             .didMove(toParentViewController: self)

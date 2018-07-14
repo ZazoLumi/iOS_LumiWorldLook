@@ -42,6 +42,7 @@ PODS:
   - SwifterSwift/SwiftStdlib (4.2.0)
   - SwifterSwift/UIKit (4.2.0)
   - SwiftyJSON (4.0.0)
+  - TNSlider (0.2.1)
   - VGPlayer (0.2.0):
     - SnapKit (~> 4.0.0)
   - YYText (1.0.7)
@@ -63,12 +64,13 @@ DEPENDENCIES:
   - SCLAlertView
   - SwifterSwift
   - SwiftyJSON
+  - TNSlider
   - VGPlayer (~> 0.2.0)
   - YYText
   - Zip (~> 1.1)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - ActionSheetPicker-3.0
     - Alamofire
     - AlamofireImage
@@ -86,6 +88,7 @@ SPEC REPOS:
     - SnapKit
     - SwifterSwift
     - SwiftyJSON
+    - TNSlider
     - VGPlayer
     - YYText
     - Zip
@@ -108,10 +111,11 @@ SPEC CHECKSUMS:
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SwifterSwift: 1d101dcfb0c3123226900f3b4d220d57fb60d546
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  TNSlider: 745753a2e99b9bf66ad05928f3f4856d4cf4845e
   VGPlayer: a1787135559aa3b9201ebdc733ee283315492289
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
   Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: ae6f8cd4372d4963d22f58b45f8f4673e9d13bfe
+PODFILE CHECKSUM: 6e5205f6311da52c21d16363bde6caf1fa150709
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

@@ -30,10 +30,6 @@
 		09559E04208F2D2D003A824C /* UIAlertAction+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09559E03208F2D2C003A824C /* UIAlertAction+Image.swift */; };
 		0956324420BD400000BE8EFB /* FaqVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0956324320BD400000BE8EFB /* FaqVC.swift */; };
 		0956324620BD42E800BE8EFB /* LumiFAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0956324520BD42E800BE8EFB /* LumiFAQ.swift */; };
-		09578AF620F4AD930048E07A /* TNConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09578AF220F4AD930048E07A /* TNConstants.swift */; };
-		09578AF720F4AD930048E07A /* TNSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09578AF320F4AD930048E07A /* TNSlider.swift */; };
-		09578AF820F4AD930048E07A /* TNTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09578AF420F4AD930048E07A /* TNTextLayer.swift */; };
-		09578AF920F4AD930048E07A /* TNTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09578AF520F4AD930048E07A /* TNTrackLayer.swift */; };
 		0964E591205FC811007E5924 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E557205FC811007E5924 /* AppDelegate.swift */; };
 		0964E592205FC811007E5924 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0964E558205FC811007E5924 /* Assets.xcassets */; };
 		0964E593205FC811007E5924 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0964E559205FC811007E5924 /* LaunchScreen.storyboard */; };
@@ -139,6 +135,7 @@
 		67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */; };
 		7A3BBA422090867900B96750 /* TGAttachmentMessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3BBA402090867700B96750 /* TGAttachmentMessageCellLayout.swift */; };
 		7A3BBA432090867900B96750 /* TGAttachmentMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3BBA412090867800B96750 /* TGAttachmentMessageCell.swift */; };
+		7A94EEC820FA33A400977853 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A94EEC720FA33A300977853 /* Player.swift */; };
 		7ABBEA3020948A55004EC13C /* SendAttachmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABBEA2F20948A55004EC13C /* SendAttachmentVC.swift */; };
 /* End PBXBuildFile section */
 
@@ -186,10 +183,6 @@
 		09559E03208F2D2C003A824C /* UIAlertAction+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+Image.swift"; sourceTree = "<group>"; };
 		0956324320BD400000BE8EFB /* FaqVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaqVC.swift; sourceTree = "<group>"; };
 		0956324520BD42E800BE8EFB /* LumiFAQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiFAQ.swift; sourceTree = "<group>"; };
-		09578AF220F4AD930048E07A /* TNConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNConstants.swift; sourceTree = "<group>"; };
-		09578AF320F4AD930048E07A /* TNSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNSlider.swift; sourceTree = "<group>"; };
-		09578AF420F4AD930048E07A /* TNTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNTextLayer.swift; sourceTree = "<group>"; };
-		09578AF520F4AD930048E07A /* TNTrackLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNTrackLayer.swift; sourceTree = "<group>"; };
 		0964E557205FC811007E5924 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0964E558205FC811007E5924 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0964E55A205FC811007E5924 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -298,6 +291,7 @@
 		6FEF0ECD00478AAAF31FB7D6 /* Pods-testSVG.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testSVG.debug.xcconfig"; path = "Pods/Target Support Files/Pods-testSVG/Pods-testSVG.debug.xcconfig"; sourceTree = "<group>"; };
 		7A3BBA402090867700B96750 /* TGAttachmentMessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGAttachmentMessageCellLayout.swift; sourceTree = "<group>"; };
 		7A3BBA412090867800B96750 /* TGAttachmentMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGAttachmentMessageCell.swift; sourceTree = "<group>"; };
+		7A94EEC720FA33A300977853 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		7ABBEA2F20948A55004EC13C /* SendAttachmentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendAttachmentVC.swift; sourceTree = "<group>"; };
 		9F02ED078EDE7A7BA7E9DE02 /* Pods-testSVG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testSVG.release.xcconfig"; path = "Pods/Target Support Files/Pods-testSVG/Pods-testSVG.release.xcconfig"; sourceTree = "<group>"; };
 		B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LumiWorld.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -373,17 +367,6 @@
 				0940F95E20C952ED00CCF3E1 /* EPExtensions.swift */,
 			);
 			path = EPContact;
-			sourceTree = "<group>";
-		};
-		09578AF120F4AD930048E07A /* TNSlider */ = {
-			isa = PBXGroup;
-			children = (
-				09578AF220F4AD930048E07A /* TNConstants.swift */,
-				09578AF320F4AD930048E07A /* TNSlider.swift */,
-				09578AF420F4AD930048E07A /* TNTextLayer.swift */,
-				09578AF520F4AD930048E07A /* TNTrackLayer.swift */,
-			);
-			path = TNSlider;
 			sourceTree = "<group>";
 		};
 		0964E556205FC811007E5924 /* LumiWorld */ = {
@@ -478,7 +461,7 @@
 		0964E6E82060F981001D6F47 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				09578AF120F4AD930048E07A /* TNSlider */,
+				7A94EEC720FA33A300977853 /* Player.swift */,
 				0940F95820C952ED00CCF3E1 /* EPContact */,
 				09931B802099F804005D3BE1 /* DownloadManager.h */,
 				09931B812099F804005D3BE1 /* DownloadManager.m */,
@@ -787,6 +770,7 @@
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TNSlider/TNSlider.framework",
 				"${BUILT_PRODUCTS_DIR}/VGPlayer/VGPlayer.framework",
 				"${BUILT_PRODUCTS_DIR}/YYText/YYText.framework",
 				"${BUILT_PRODUCTS_DIR}/Zip/Zip.framework",
@@ -810,6 +794,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TNSlider.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VGPlayer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYText.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Zip.framework",
@@ -831,6 +816,7 @@
 				097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */,
 				09D012C120D92CCF00935B05 /* LumiWorldMessages.swift in Sources */,
 				0964E7192060F981001D6F47 /* Validatable.swift in Sources */,
+				7A94EEC820FA33A400977853 /* Player.swift in Sources */,
 				0964E71D2060F981001D6F47 /* ValidatorDictionary.swift in Sources */,
 				0916065420871FA400F8E8EC /* multipartAPI.m in Sources */,
 				090B085320C135AD00A05A7E /* LumiProfileDetails.swift in Sources */,
@@ -857,11 +843,9 @@
 				0956324620BD42E800BE8EFB /* LumiFAQ.swift in Sources */,
 				0943CAD820F729D100BF4A51 /* AdvertiseData.swift in Sources */,
 				0941EDB620C5131200941037 /* viewProfileImgVC.swift in Sources */,
-				09578AF920F4AD930048E07A /* TNTrackLayer.swift in Sources */,
 				097A69AF20809569001D273E /* LumiMessage.swift in Sources */,
 				0940F96120C952EE00CCF3E1 /* EPContactCell.swift in Sources */,
 				09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */,
-				09578AF820F4AD930048E07A /* TNTextLayer.swift in Sources */,
 				0949921020CA7B9C005B53C8 /* suggestCompany.swift in Sources */,
 				0964E7272060F981001D6F47 /* HexColorRule.swift in Sources */,
 				0964E7182060F981001D6F47 /* tabbarcontroller.swift in Sources */,
@@ -880,7 +864,6 @@
 				0964E6D42060F8ED001D6F47 /* ChangePasswordVC.swift in Sources */,
 				0964E6D72060F8ED001D6F47 /* LogInVC.swift in Sources */,
 				0964E7362060F981001D6F47 /* TextFieldTableViewCell.swift in Sources */,
-				09578AF720F4AD930048E07A /* TNSlider.swift in Sources */,
 				093F445E206B715900BC9983 /* UserData.swift in Sources */,
 				097BFA4A207E3647001F935C /* TGDateMessageCell.swift in Sources */,
 				0964E5C2205FC811007E5924 /* ViewController.swift in Sources */,
@@ -929,7 +912,6 @@
 				097BFA47207E3647001F935C /* TGSystemMessageCellLayout.swift in Sources */,
 				09ECA799209C8230001570EA /* mapViewController.swift in Sources */,
 				09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */,
-				09578AF620F4AD930048E07A /* TNConstants.swift in Sources */,
 				0964E72A2060F981001D6F47 /* MaxLengthRule.swift in Sources */,
 				0964E7102060F981001D6F47 /* MyLumiProfileVC.swift in Sources */,
 				0964E7302060F981001D6F47 /* Rule.swift in Sources */,
