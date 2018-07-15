@@ -2946,7 +2946,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Afx-nT-OL2" secondAttribute="trailing" id="E4o-1H-WI8"/>
                                     <constraint firstAttribute="height" constant="250" id="OCN-cH-Z2y"/>
@@ -2991,6 +2991,9 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="sliderValueChanged:" destination="Bo1-ju-eTi" eventType="valueChanged" id="iyI-IM-3Ch"/>
+                                            <action selector="timeSliderTouchDownWithSender:" destination="Bo1-ju-eTi" eventType="touchDown" id="EfL-az-Grj"/>
+                                            <action selector="timeSliderTouchUpOutsideWithSender:" destination="Bo1-ju-eTi" eventType="touchUpOutside" id="si4-Fe-cMm"/>
+                                            <action selector="timeSliderTouchUpWithSender:" destination="Bo1-ju-eTi" eventType="touchUpInside" id="etU-fN-c5A"/>
                                         </connections>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="36f-sz-zi9">
@@ -3208,6 +3211,7 @@
                                             <outlet property="imgLumineerProfile" destination="JrM-Dq-Ve2" id="c8o-W5-3uR"/>
                                             <outlet property="lblLumineerTitle" destination="uFi-bT-z04" id="rhi-RM-Mrx"/>
                                             <outlet property="lblMessageDetails" destination="XA6-Li-esI" id="R9k-Lt-WMs"/>
+                                            <outlet property="lblMessageTime" destination="FdL-Wh-oCb" id="hmp-wm-zEh"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

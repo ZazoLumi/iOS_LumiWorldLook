@@ -9,6 +9,7 @@
 import UIKit
 import AVKit
 import TNSlider
+import Alamofire
 
 class advCommentCell: UITableViewCell {
     @IBOutlet var imgLumineerProfile: UIImageView!
@@ -44,6 +45,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     @IBOutlet weak var imgAdvType: UIImageView!
     @IBOutlet weak var lblLumineerName: UILabel!
     @IBOutlet weak var imgLumineerProfile: UIImageView!
+    var aryCommentsData : Result<AdvComments>!
     var nhours : String!
     var nminutes : String!
     var nseconds : String!
@@ -54,6 +56,17 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     //var player:AVPlayer?
    // var playerItem:AVPlayerItem?
     fileprivate var player = Player()
+    let timeFormatter = NumberFormatter()
+    
+    var audioPlayer: AVAudioPlayer?     // holds an audio player instance. This is an optional!
+    var audioTimer: Timer?            // holds a timer instance
+    var isDraggingTimeSlider = false    // Keep track of when the time slide is being dragged
+    
+    var isPlaying = false {             // keep track of when the player is playing
+        didSet {                        // This is a computed property. Changing the value
+            playPauseAudio()
+        }
+    }
 
     deinit {
         self.player.willMove(toParentViewController: self)
@@ -70,19 +83,47 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     override func viewWillAppear(_ animated: Bool) {
         let dimAlphaRedColor =  UIColor.lumiGreen?.withAlphaComponent(0.5)
         viewAdvTimer.backgroundColor =  dimAlphaRedColor
+        setupInitialConstraints()
     }
     
     func displayAdvertiseContent() {
         var strBaseDataLogo : String? = ""
       let objLumineer = GlobalShareData.sharedGlobal.objCurrentLumineer
         self.lblLumineerName.text = objLumineer?.displayName
-
+        self.tblCommentData!.tableFooterView = UIView()
         strBaseDataLogo = objLumineer?.enterpriseLogo
         let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
         self.imgLumineerProfile.image = imgThumb
         self.lblAdvTitle.text = GlobalShareData.sharedGlobal.objCurrentAdv.contentTitle
+        if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
+            let count = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count
+            btnComments.setTitle("\(count) Comments", for: .normal)
+            btnComments.setTitle("\(count) Comments", for: .selected)
+        }
+        if GlobalShareData.sharedGlobal.objCurrentAdv.likeCount > 0 {
+            let count = Int(GlobalShareData.sharedGlobal.objCurrentAdv.likeCount)
+            btnLike.setTitle("\(count)", for: .normal)
+            btnLike.setTitle("\(count)", for: .selected)
+        }
+
         if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
-            
+            self.imgAdvType.image = UIImage(named:"Asset106")
+            var imageView : UIImageView
+            imageView  = UIImageView(frame:CGRect(x: 0, y: 0, width:Int(self.viewAdvContent.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)));
+            self.viewAdvContent.addSubview(imageView)
+            imageView.contentMode = .scaleAspectFill
+            let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
+            let urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+            Alamofire.request(urlOriginalImage).responseImage { response in
+                debugPrint(response)
+                if let image = response.result.value {
+                    let scalImg = image.af_imageScaled(to: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
+                    imageView.image = scalImg
+                    self.runTimer()
+                    self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
+
+                }
+            }
         }
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
             self.imgAdvType.image = UIImage(named:"Asset102")
@@ -109,22 +150,42 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
 //           // self.player.view.addGestureRecognizer(tapGestureRecognizer)
         }
         else {
+            self.imgAdvType.image = UIImage(named:"Asset104")
+            timeFormatter.minimumIntegerDigits = 2
+            timeFormatter.minimumFractionDigits = 0
+            timeFormatter.roundingMode = .down
             
+            // Load the sound and set up the timer.
+            
+            queueSound()
+            makeTimer()
+            self.runTimer()
+            isPlaying = true
+            audioPlayer?.play()
         }
         
     }
     
-    func setupInitialConstraints() -> Int {
-        var totalHeight = 390
+    func setupInitialConstraints()  {
+        var totalHeight = 350
         constCommentsHeight.constant = 0
+        viewFileProgress.isHidden = false
         if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
             constFileProgressHeight.constant = 0
+            viewFileProgress.isHidden = true
         }
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
             constAdvContainerHeight.constant = 60
-            totalHeight -= 190
+            totalHeight -= 180
         }
-        return totalHeight
+        if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 && btnComments.isSelected {
+            constCommentsHeight.constant = 100
+            totalHeight += 100
+        }
+
+        let yPos = (Int(UIScreen.main.bounds.height) - totalHeight)/2
+        self.view.frame = CGRect(x: 0, y: yPos, width:Int(self.view.frame.size.width), height:totalHeight);
+
     }
     func slider(_ slider: TNSlider, displayTextForValue value: Float) -> String {
         let seconds : Int64 = Int64(value)
@@ -138,27 +199,38 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     
     @IBAction func sliderValueChanged(_ playbackSlider: TNSlider) {
         print(playbackSlider.value)
+        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
+            guard let audioPlayer = audioPlayer else {
+                return
+            }
+            audioPlayer.currentTime = audioPlayer.duration * Double(playbackSlider.value)
+        }
 
     }
     
     @IBAction func playButtonTapped(_ sender:UIButton)
     {
         btnPlayPause.isSelected = !sender.isSelected
-        if btnPlayPause.isSelected {
-            self.player.pause()
-        }else {
-            self.player.playFromCurrentTime()
+        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
+            if btnPlayPause.isSelected {
+                self.player.pause()
+            }else {
+                self.player.playFromCurrentTime()
+            }
         }
-
+        else {
+            isPlaying = !isPlaying
+        }
     }
     override func viewDidAppear(_ animated: Bool) {
        // self.view.frame = CGRect(x: 30, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width-60 , height:240);
         displayAdvertiseContent()
     }
-    @IBAction func onBtnCommentsTapped(_ sender: Any) {
-        if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count == 0 {
-            constCommentsHeight.constant = 178
-        }
+    @IBAction func onBtnCommentsTapped(_ sender: UIButton) {
+        btnComments.isSelected = !sender.isSelected
+        setupInitialConstraints()
+        tblCommentData.reloadData()
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -174,7 +246,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     @IBAction func onBtnShareTapped(_ sender: Any) {
     }
-    @IBAction func onBtnLikeTapped(_ sender: Any) {
+    @IBAction func onBtnLikeTapped(_ sender: UIButton) {
+        btnLike.isSelected = !sender.isSelected
     }
     // MARK: - Tableview Methods
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -182,30 +255,56 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0;
+        if btnComments.isSelected {
+            return GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count; }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "advCommentCell", for: indexPath)
-//        var objLumineer : LumineerList!
-//        objLumineer = aryLumineers[indexPath.row] as LumineerList
-//        cell.textLabel?.text = objLumineer.displayName
+        let cell = tableView.dequeueReusableCell(withIdentifier: "advCommentCell", for: indexPath) as! advCommentCell
+        var objComment : AdvComments!
+        objComment = GlobalShareData.sharedGlobal.objCurrentAdv.advComments[indexPath.row] as AdvComments
+        if objComment.isPostedByLumi {
+            let urlOriginalImage : URL!
+            if GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic != nil {
+                if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())!
+                {
+                    urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic!)
+                }
+                else {
+                    let fileName = GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.lastPathComponent
+                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                }
+                Alamofire.request(urlOriginalImage!).responseImage { response in
+                    debugPrint(response)
+                    if let image = response.result.value {
+                        let scalImg = image.af_imageScaled(to: CGSize(width:self.imgLumineerProfile.frame.size.width, height: self.imgLumineerProfile.frame.size.height))
+                        cell.imgLumineerProfile.image = scalImg
+                    }
+                }
+            }
+
+        }
+        else {
+            let objLumineer = GlobalShareData.sharedGlobal.objCurrentLumineer
+            cell.lblLumineerTitle.text = objLumineer?.displayName
+            let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer?.enterpriseLogo)
+            cell.imgLumineerProfile.image = imgThumb
+        }
+        cell.lblMessageTime.text = objComment?.strCommentPostedDate
+        cell.lblMessageDetails.text = objComment?.comments
         return cell
     }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
     func hmsFrom(seconds: Int, completion: @escaping (_ hours: Int, _ minutes: Int, _ seconds: Int)->()) {
-        
         completion(seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
-        
     }
     
     func getStringFrom(seconds: Int) -> String {
-        
         return seconds < 10 ? "0\(seconds)" : "\(seconds)"
     }
 
@@ -248,6 +347,103 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             }
         })
     }
+    
+    
+    func playPauseAudio() {
+        // audioPlayer is optional use guard to check it before using it.
+        guard let audioPlayer = audioPlayer else {
+            return
+        }
+        
+        // Check is playing then play or pause
+        if isPlaying {
+            audioPlayer.play()
+        } else {
+            audioPlayer.pause()
+        }
+    }
+    
+    
+    
+    func queueSound() {
+        // Use this methid to load up the sound.
+        let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
+        let contentURL = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+
+        // TODO: Use catch here and check for errors.
+        audioPlayer = try! AVAudioPlayer(contentsOf: contentURL as URL)
+    }
+    
+    
+    func makeTimer() {
+        // This function sets up the timer.
+        if audioTimer != nil {
+            audioTimer!.invalidate()
+        }
+        
+        // audioTimer = Timer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.onTimer(_:)), userInfo: nil, repeats: true)
+        audioPlayer?.volume = 10
+        audioTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(onTimer(timer:)), userInfo: nil, repeats: true)
+        
+        fileProgressSlider!.maximum = Float((self.audioPlayer?.duration)!)
+        fileProgressSlider!.continuous = false
+        fileProgressSlider!.tintColor = UIColor.green
+        hmsFrom(seconds: Int((self.audioPlayer?.duration)!)) { hours, minutes, seconds in
+            self.nhours = self.getStringFrom(seconds: hours)
+            self.nminutes = self.getStringFrom(seconds: minutes)
+            self.nseconds = self.getStringFrom(seconds: seconds)
+            //            print("\(self.nhours):\(minutes):\(seconds)")
+        }
+
+    }
+    
+    @objc func onTimer(timer: Timer) {
+        // Check the audioPlayer, it's optinal remember. Get the current time and duration
+        guard let currentTime = audioPlayer?.currentTime, let duration = audioPlayer?.duration else {
+            return
+        }
+        
+        // Calculate minutes, seconds, and percent completed
+        let mins = currentTime / 60
+        // let secs = currentTime % 60
+        let secs = currentTime.truncatingRemainder(dividingBy: 60)
+        let percentCompleted = currentTime / duration
+        // Use the number formatter, it might return nil so guard
+        //    guard let minsStr = timeFormatter.stringFromNumber(NSNumber(mins)), let secsStr = timeFormatter.stringFromNumber(NSNumber(secs)) else {
+        //      return
+        //    }
+        
+        guard let minsStr = timeFormatter.string(from: NSNumber(value: mins)), let secsStr = timeFormatter.string(from: NSNumber(value: secs)) else {
+            return
+        }
+        
+        
+        // Everything is cool so update the timeLabel and progress bar
+        self.lblFileDuration.text = "\(minsStr):\(secsStr) / \(self.nminutes!):\(self.nseconds!)"
+
+        // Check that we aren't dragging the time slider before updating it
+        if !isDraggingTimeSlider {
+            print(percentCompleted)
+            fileProgressSlider.value = Float(currentTime)
+        }
+        if percentCompleted == 0.0 {
+            audioTimer?.invalidate()
+            btnPlayPause.isSelected = true
+            onBtnCloseAdvertise((Any).self)
+        }
+    }
+    @IBAction func timeSliderTouchDown(sender: TNSlider) {
+        isDraggingTimeSlider = true
+    }
+    
+    @IBAction func timeSliderTouchUp(sender: TNSlider) {
+        isDraggingTimeSlider = false
+    }
+    
+    @IBAction func timeSliderTouchUpOutside(sender: TNSlider) {
+        isDraggingTimeSlider = false
+    }
+
 
 }
 
@@ -346,4 +542,5 @@ extension AdvertiseVC:PlayerPlaybackDelegate {
     }
     
 }
+
 
