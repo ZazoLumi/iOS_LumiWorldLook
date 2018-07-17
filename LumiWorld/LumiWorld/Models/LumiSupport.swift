@@ -55,12 +55,7 @@ class LumiSupport : Object {
             do {
                 let multiAPI : multipartAPI = multipartAPI()
                 multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
-                    guard dict?.count != 0 else {
-                        return
-                    }
-                    
-                    let strResponseCode = dict!["responseCode"] as! Int
-                    guard strResponseCode != 0 else {
+                    guard dict?.count != 0, (dict?.keys.contains("responseCode"))!, dict!["responseCode"] as! Int != 0 else {
                         DispatchQueue.main.async {
                             MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
                         return
@@ -89,8 +84,7 @@ class LumiSupport : Object {
                         completionHandler(error!)
                         return
                     }
-                    let strResponseCode = dict!["responseCode"] as! Int
-                    guard strResponseCode != 0 else {
+                    guard dict?.count != 0, (dict?.keys.contains("responseCode"))!, dict!["responseCode"] as! Int != 0 else {
                         DispatchQueue.main.async {
                             MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
                         return
@@ -218,7 +212,7 @@ class LumiSupport : Object {
                 AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
                     print(json)
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         return
                     }
                     let realm = try! Realm()
@@ -252,7 +246,7 @@ class LumiSupport : Object {
                 AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
                     print(json)
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         return
                     }
                     let realm = try! Realm()

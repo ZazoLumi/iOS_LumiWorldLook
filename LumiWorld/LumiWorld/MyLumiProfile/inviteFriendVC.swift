@@ -95,7 +95,7 @@ class inviteFriendVC: UIViewController,FormDataDelegate {
                 //                let userObj = UserData(json:json)
                 let tempDict = json.dictionary
                 MBProgressHUD.hide(for: (self.navigationController?.view)!, animated: true)
-                guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                     let message = tempDict!["response"]?.string
                     self.navigationController?.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
                     })

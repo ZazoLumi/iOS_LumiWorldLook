@@ -215,7 +215,8 @@ class LumineerList : Object {
                 AFWrapper.requestPOSTURL(urlString, params:["cellNumber":id as AnyObject,"regnNumber":companyregistrationnumber as AnyObject,"status":status as AnyObject], headers: nil, success: { (json) in
                     print(json)
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                        
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         return
                     }
                     let realm = try! Realm()
@@ -255,7 +256,7 @@ class LumineerList : Object {
                 AFWrapper.requestPOSTURL(urlString, params: param as [String : AnyObject], headers: nil, success: { (json) in
                     print(json)
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         return
                     }
                     completionHandler(tempDict!)
@@ -279,7 +280,7 @@ class LumineerList : Object {
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         return
                     }
                     completionHandler(tempDict!)
@@ -303,7 +304,7 @@ class LumineerList : Object {
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         return
                     }
                     completionHandler(tempDict!)
@@ -349,7 +350,7 @@ class LumineerList : Object {
                 //todo
                 AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         return
                     }
                    completionHandler(tempDict!)

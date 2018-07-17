@@ -2119,7 +2119,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type Message" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KSz-wN-RU8" customClass="NoCopyPasteUITextField" customModule="LumiWorld" customModuleProvider="target">
-                                <rect key="frame" x="20" y="313" width="111" height="30"/>
+                                <rect key="frame" x="20" y="538" width="250" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="TB7-NB-YiT"/>
                                 </constraints>
@@ -2136,14 +2136,14 @@
                                 </connections>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2sc-O3-3gd">
-                                <rect key="frame" x="0.0" y="20" width="181" height="293"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="518"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="2sc-O3-3gd" secondAttribute="height" multiplier="160:259" id="G8k-eU-D3M"/>
                                     <constraint firstAttribute="height" constant="617" id="nxG-HJ-3yi"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPd-fG-ugi">
-                                <rect key="frame" x="156" y="20" width="25" height="25"/>
+                                <rect key="frame" x="295" y="20" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="BPd-fG-ugi" secondAttribute="height" multiplier="1:1" id="jbP-rZ-HMN"/>
                                 </constraints>
@@ -2166,7 +2166,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBG-1Z-TYa">
-                                <rect key="frame" x="139" y="317" width="22" height="22"/>
+                                <rect key="frame" x="278" y="542" width="22" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="wBG-1Z-TYa" secondAttribute="height" multiplier="1:1" id="B5D-ml-agx"/>
                                 </constraints>
@@ -2965,7 +2965,7 @@
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                <real key="value" value="5"/>
+                                                <real key="value" value="0.0"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="minimum">
                                                 <real key="value" value="0.0"/>
@@ -3540,7 +3540,7 @@
         <image name="Asset116" width="14" height="11"/>
         <image name="Asset117" width="14" height="14"/>
         <image name="Asset130" width="180" height="15"/>
-        <image name="Asset130-1" width="5" height="5"/>
+        <image name="Asset130-1" width="10" height="9"/>
         <image name="Asset714" width="10" height="10"/>
         <image name="Background2" width="325" height="60"/>
         <image name="Background3" width="280" height="50"/>

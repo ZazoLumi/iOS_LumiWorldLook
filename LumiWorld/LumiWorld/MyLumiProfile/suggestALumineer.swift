@@ -136,12 +136,7 @@ class suggestALumineer: UIViewController,FormDataDelegate,UITableViewDelegate,UI
 
                     MBProgressHUD.hide(for: (self.navigationController?.view)!, animated: true)
 
-                    guard dict?.count != 0 else {
-                        return
-                    }
-                    
-                    let strResponseCode = dict!["responseCode"] as! Int
-                    guard strResponseCode != 0 else {
+                        guard dict?.count != 0, (dict?.keys.contains("responseCode"))!, dict!["responseCode"] as! Int != 0 else {
                         DispatchQueue.main.async {
                             let message = dict!["response"] as! String
                             self.navigationController?.showCustomAlert(strTitle: "", strDetails: message, completion: { (str) in

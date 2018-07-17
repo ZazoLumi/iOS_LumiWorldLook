@@ -226,16 +226,13 @@ class LumiMessage : Object {
             do {
                 let multiAPI : multipartAPI = multipartAPI()
                 multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
-                    guard dict?.count != 0 else {
+                    guard dict?.count != 0, (dict?.keys.contains("responseCode"))!, dict!["responseCode"] as! Int != 0 else {
+                        DispatchQueue.main.async {
+                            MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
+
                         return
                     }
 
-                    let strResponseCode = dict!["responseCode"] as! Int
-                    guard strResponseCode != 0 else {
-                        DispatchQueue.main.async {
-                            MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
-                        return
-                    }
                     completionHandler()
                 })
             } catch let jsonError {
@@ -261,14 +258,11 @@ class LumiMessage : Object {
                         completionHandler(error!)
                         return
                     }
-                    if (dict?.keys.contains("responseCode"))! {
-                        let strResponseCode = dict!["responseCode"] as! Int
-                        guard strResponseCode != 0 else {
+                    guard dict?.count != 0, (dict?.keys.contains("responseCode"))!, dict!["responseCode"] as! Int != 0 else {
                             DispatchQueue.main.async {
                                 MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
                             return
                         }
-                    }
                     completionHandler(error)
                 })
             } catch let jsonError {
@@ -287,7 +281,7 @@ class LumiMessage : Object {
                 AFWrapper.requestPOSTURL(urlString, params:["cellNumber":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"guid":strGUID as AnyObject], headers: nil, success: { (json) in
                     print(json)
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         return
                     }
                     let realm = try! Realm()
@@ -329,7 +323,7 @@ class LumiMessage : Object {
                 AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
                     print(json)
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         completionHandler(false)
                         return
                     }
@@ -369,7 +363,7 @@ class LumiMessage : Object {
                 AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
                     print(json)
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         completionHandler(false)
                         return
                     }
@@ -405,7 +399,7 @@ class LumiMessage : Object {
                 AFWrapper.requestPOSTURL(urlString, params:[:], headers: nil, success: { (json) in
                     print(json)
                     let tempDict = json.dictionary
-                    guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                    guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                         completionHandler(false)
                         return
                     }
@@ -439,7 +433,7 @@ class LumiMessage : Object {
         do {
             AFWrapper.requestGETURL(urlString, success: { (json) in
                 let tempDict = json.dictionary
-                guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                     completionHandler(0)
                     return
                 }

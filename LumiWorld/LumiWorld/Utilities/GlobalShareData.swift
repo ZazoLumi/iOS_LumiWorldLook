@@ -53,7 +53,8 @@ struct Constants {
         
         static let APIGetAllAdsPostedToLumiByALumineer = ":13004/adposting/getAllAdsPostedToLumiByALumineer"
         static let APIGetAllAdsPostedToLumi = ":13004/adposting/getAllAdsPostedToLumi"
-
+        static let APIPOSTAdvertiseComments = ":13004/adposting/postCommentsToLumineerAdByLumi"
+        static let APIPOSTAdvertiseLike = ":13004/adposting/likeOrDislikeLumineerAd"
 
    }
 }

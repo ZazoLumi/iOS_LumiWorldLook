@@ -192,6 +192,11 @@ class AdvertiseData: Object {
                                     })
                                 }
                             }
+                            else {
+                                try! realm.write {
+                                    realm.add(newAdvertiseData, update: true)
+                                }
+                        }
                     }
                     
                     //                    if result.count > 0 {
@@ -210,6 +215,69 @@ class AdvertiseData: Object {
             print("Internet Connection not Available!")
         }
     }
+    
+    func sendAdvertiseComments(param:[String:AnyObject],completionHandler: @escaping (_ result:Bool) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
+            let jsonString = String(data: jsonData!, encoding: .utf8)
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIPOSTAdvertiseComments)"
+            
+            let paramCreateRelationship = ["commentDtls":jsonString!, "url":urlString,"filePath":"","fileName":""]
+            do {
+                let multiAPI : multipartAPI = multipartAPI()
+                multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
+                    guard dict?.count != 0, (dict?.keys.contains("responseCode"))!, dict!["responseCode"] as! Int != 0 else {
+                        DispatchQueue.main.async {
+                            MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
+                        completionHandler(false)
+                        return
+                    }
+                    completionHandler(true)
+                })
+            } catch let jsonError {
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+    
+    func setLikeAdvertiseByLumi(param:[String:AnyObject],completionHandler: @escaping (_ result: Bool) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            do {
+                let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
+                let jsonString = String(data: jsonData!, encoding: .utf8)
+                let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIPOSTAdvertiseLike)"
+                
+                let paramCreateRelationship = ["likeDislikeDtls":jsonString!, "url":urlString,"filePath":"","fileName":""]
+                do {
+                    let multiAPI : multipartAPI = multipartAPI()
+                    multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
+                        guard dict?.count != 0, (dict?.keys.contains("responseCode"))!, dict!["responseCode"] as! Int != 0 else {
+                            DispatchQueue.main.async {
+                                MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
+                            completionHandler(false)
+                            return
+                        }
+                        completionHandler(true)
+                    })
+                } catch let jsonError {
+                    print(jsonError)
+                }
+
+            } catch let jsonError{
+                print(jsonError)
+            }
+            
+            
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+
+
 }
 
 class AdvComments : Object {

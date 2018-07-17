@@ -127,8 +127,8 @@ class UserData : Object{
                         completionHandler(UserData())
                         return
                     }
-                    let strResponseCode = dict?["responseCode"] as? Int
-                    guard strResponseCode != 0 else {
+                    
+                    guard (dict?.keys.contains("responseCode"))!, dict?.count != 0 , dict!["responseCode"] as! Int != 0 else {
                         DispatchQueue.main.async {
                             let message = dict!["response"] as! String
                             GlobalShareData.sharedGlobal.objCurretnVC.showCustomAlert(strTitle: "", strDetails: message, completion: { (str) in
@@ -136,7 +136,7 @@ class UserData : Object{
                         }
                         completionHandler(UserData())
                         return
-                    }
+                        }
                     let realm = try! Realm()
                     let id  = dict?["id"] as? String
                     let data  = realm.objects(UserData.self).filter("id == %d", Int(id!)!)

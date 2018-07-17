@@ -71,7 +71,7 @@ class ForgotPasswordVC: UIViewController,FormDataDelegate {
                 print(json)
                 hud.hide(animated: true)
                 let tempDict = json.dictionary
-                guard let code = tempDict!["responseCode"]?.intValue, code != 0 else {
+                guard tempDict?.count != 0, (tempDict?.keys.contains("responseCode"))!, let code = tempDict!["responseCode"]?.intValue, code != 0 else {
                     let message = tempDict!["responseText"]?.string
                     self.showCustomAlert(strTitle: "", strDetails: message!, completion: { (str) in
                     })

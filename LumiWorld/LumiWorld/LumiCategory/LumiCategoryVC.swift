@@ -847,6 +847,7 @@ extension UINavigationItem {
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.messageTimeStamp.rawValue)
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.lumineerTimeStamp.rawValue)
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.supportTimeStamp.rawValue)
+                    UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.advertiseTimeStamp.rawValue)
                     UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.isAlreadyLogin)
                     let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     let objLogInVC = storyBoard.instantiateInitialViewController()

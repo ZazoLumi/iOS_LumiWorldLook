@@ -10,6 +10,7 @@ import UIKit
 import AVKit
 import TNSlider
 import Alamofire
+import MBProgressHUD
 
 class advCommentCell: UITableViewCell {
     @IBOutlet var imgLumineerProfile: UIImageView!
@@ -23,9 +24,12 @@ class advCommentCell: UITableViewCell {
         //        self.imgLumineerProfile.layer.borderColor = UIColor.lumiGreen?.cgColor;
     }
 }
-class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TNSliderDelegate {
+class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TNSliderDelegate,UITextViewDelegate {
     
 
+      var inputTV: UITextView!
+      var bottomView: UIView!
+    
     @IBOutlet weak var tblCommentData: UITableView!
     @IBOutlet weak var btnLike: UIButton!
     @IBOutlet weak var btnComments: UIButton!
@@ -51,6 +55,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     var nseconds : String!
     var seconds = 10
     var timer = Timer()
+    let h = UIScreen.main.bounds.height
+    let w = UIScreen.main.bounds.width
+    var submitButton : UIButton!
 
     @IBOutlet weak var btnCloseAdv: UIButton!
     //var player:AVPlayer?
@@ -77,6 +84,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+
         // Do any additional setup after loading the view.
     }
     
@@ -84,6 +94,58 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let dimAlphaRedColor =  UIColor.lumiGreen?.withAlphaComponent(0.5)
         viewAdvTimer.backgroundColor =  dimAlphaRedColor
         setupInitialConstraints()
+    }
+    var keyboardHeight = 0
+    @objc func keyboardWillShow(_ n: Notification?) {
+        if let keyboardSize = (n?.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            keyboardHeight = Int(keyboardSize.height)
+            print(keyboardHeight)
+            textViewDidChange(inputTV)
+        }
+    }
+    @objc func keyboardWillHide(_ n: Notification?) {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+            self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) + 44), width:Int(self.w), height: Int(44))
+            self.inputTV.frame = CGRect(x: 10, y: 8, width:Int( self.w - 64), height: 44)
+            self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(0), width: 60, height: 44)
+            self.tabBarController?.tabBar.isHidden = false
+
+        }) { finished in
+            //default disable scroll here to avoid bouncing
+        }
+
+    }
+
+    func textViewDidChange(_ textView: UITextView) {
+        //1. letters and submit button vars
+        //3. set height vars
+        inputTV.isScrollEnabled = true
+        //7. special case if you want to limit the frame size of the input TV to a specific number of lines
+        let shouldEnableScroll = false
+        //8. adjust frames of views
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+            self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) - self.keyboardHeight), width:Int(self.w), height: Int(44))
+            self.inputTV.frame = CGRect(x: 10, y: 8, width:Int( self.w - 64), height: 44)
+            self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(0), width: 60, height: 44)
+            self.tabBarController?.tabBar.isHidden = true
+
+        }) { finished in
+            self.inputTV.isScrollEnabled = shouldEnableScroll
+            //default disable scroll here to avoid bouncing
+        }
+    }
+    @objc func onBtnSendComments(_ sender: Any) {
+        let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+        hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
+        let objAdvData = AdvertiseData()
+        objAdvData.sendAdvertiseComments(param: ["lumineerId":GlobalShareData.sharedGlobal.objCurrentLumineer.id as AnyObject,"comments":inputTV.text as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]) { (success) in
+            if success {
+              hud.hide(animated: true)
+            }
+        }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
     }
     
     func displayAdvertiseContent() {
@@ -163,7 +225,6 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             isPlaying = true
             audioPlayer?.play()
         }
-        
     }
     
     func setupInitialConstraints()  {
@@ -178,13 +239,14 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             constAdvContainerHeight.constant = 60
             totalHeight -= 180
         }
-        if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 && btnComments.isSelected {
+        if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
             constCommentsHeight.constant = 100
             totalHeight += 100
         }
-
+        setupBottomView()
         let yPos = (Int(UIScreen.main.bounds.height) - totalHeight)/2
         self.view.frame = CGRect(x: 0, y: yPos, width:Int(self.view.frame.size.width), height:totalHeight);
+        tblCommentData.reloadData()
 
     }
     func slider(_ slider: TNSlider, displayTextForValue value: Float) -> String {
@@ -228,8 +290,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     @IBAction func onBtnCommentsTapped(_ sender: UIButton) {
         btnComments.isSelected = !sender.isSelected
-        setupInitialConstraints()
-        tblCommentData.reloadData()
+//        setupInitialConstraints()
+        inputTV.becomeFirstResponder()
+
         
     }
     override func didReceiveMemoryWarning() {
@@ -255,9 +318,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if btnComments.isSelected {
-            return GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count; }
-        return 0
+            return GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -330,6 +391,12 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         self.parent?.view.backgroundColor = UIColor.white
         self.view.superview?.removeBlurEffect()
         removeAnimate()
+        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
+            audioPlayer?.stop()}
+        else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
+            player.stop()
+        }
+        inputTV.resignFirstResponder()
     }
     
     func removeAnimate()
@@ -429,9 +496,12 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         if percentCompleted == 0.0 {
             audioTimer?.invalidate()
             btnPlayPause.isSelected = true
+            audioPlayer?.stop()
+            inputTV.resignFirstResponder()
             onBtnCloseAdvertise((Any).self)
         }
     }
+    
     @IBAction func timeSliderTouchDown(sender: TNSlider) {
         isDraggingTimeSlider = true
     }
@@ -442,6 +512,30 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     
     @IBAction func timeSliderTouchUpOutside(sender: TNSlider) {
         isDraggingTimeSlider = false
+    }
+    
+    func setupBottomView() {
+        bottomView = UIView.init(frame: CGRect(x: 0, y: h + 34, width: w, height: 34))
+        bottomView.backgroundColor = .white
+        view.addSubview(bottomView)
+        
+        inputTV = UITextView()
+        inputTV.font = UIFont.systemFont(ofSize: 14.0)
+        inputTV.frame = CGRect(x: 5, y: 0, width: w - 64, height: (inputTV.font?.lineHeight)!)
+        inputTV.backgroundColor = UIColor.clear
+        inputTV.delegate = self
+        inputTV.autocorrectionType = .no
+        inputTV.textContainer.lineFragmentPadding = 0
+        inputTV.textContainerInset = .zero
+        bottomView.addSubview(inputTV)
+        
+        submitButton = UIButton.init(type: .custom)
+        submitButton.frame = CGRect(x: w - 60, y: 0, width: 60, height: 60)
+        submitButton.addTarget(self, action: #selector(self.onBtnSendComments), for: .touchUpInside)
+        submitButton.setImage(UIImage.init(named: "Artboard 134xxhdpi"), for: .normal)
+        submitButton.contentHorizontalAlignment = .center
+        submitButton.isUserInteractionEnabled = true
+        bottomView.addSubview(submitButton)
     }
 
 
@@ -468,6 +562,7 @@ extension AdvertiseVC {
             break
         }
     }
+    
     
 }
 
@@ -536,7 +631,7 @@ extension AdvertiseVC:PlayerPlaybackDelegate {
     }
     
     func playerPlaybackWillLoop(_ player: Player) {
-        self.player.pause()
+        self.player.stop()
         btnPlayPause.isSelected = true
         onBtnCloseAdvertise((Any).self)
     }
