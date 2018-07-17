@@ -3209,9 +3209,9 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="imgLumineerProfile" destination="JrM-Dq-Ve2" id="c8o-W5-3uR"/>
-                                            <outlet property="lblLumineerTitle" destination="uFi-bT-z04" id="rhi-RM-Mrx"/>
+                                            <outlet property="lblLumineerTitle" destination="FdL-Wh-oCb" id="qaL-sx-7A3"/>
                                             <outlet property="lblMessageDetails" destination="XA6-Li-esI" id="R9k-Lt-WMs"/>
-                                            <outlet property="lblMessageTime" destination="FdL-Wh-oCb" id="hmp-wm-zEh"/>
+                                            <outlet property="lblMessageTime" destination="uFi-bT-z04" id="18N-uu-lth"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -11,6 +11,7 @@ import AVKit
 import TNSlider
 import Alamofire
 import MBProgressHUD
+import IQKeyboardManagerSwift
 
 class advCommentCell: UITableViewCell {
     @IBOutlet var imgLumineerProfile: UIImageView!
@@ -98,15 +99,17 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     var keyboardHeight = 0
     @objc func keyboardWillShow(_ n: Notification?) {
         if let keyboardSize = (n?.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = Int(keyboardSize.height)
+            keyboardHeight = Int(keyboardSize.height)-35
+            IQKeyboardManager.sharedManager().enableAutoToolbar = false
             print(keyboardHeight)
             textViewDidChange(inputTV)
         }
     }
     @objc func keyboardWillHide(_ n: Notification?) {
         UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+            IQKeyboardManager.sharedManager().enableAutoToolbar = true
             self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) + 44), width:Int(self.w), height: Int(44))
-            self.inputTV.frame = CGRect(x: 10, y: 8, width:Int( self.w - 64), height: 44)
+            self.inputTV.frame = CGRect(x: 10, y: 0, width:Int( self.w - 64), height: 44)
             self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(0), width: 60, height: 44)
             self.tabBarController?.tabBar.isHidden = false
 
@@ -120,17 +123,13 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         //1. letters and submit button vars
         //3. set height vars
         inputTV.isScrollEnabled = true
-        //7. special case if you want to limit the frame size of the input TV to a specific number of lines
-        let shouldEnableScroll = false
-        //8. adjust frames of views
         UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
             self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) - self.keyboardHeight), width:Int(self.w), height: Int(44))
-            self.inputTV.frame = CGRect(x: 10, y: 8, width:Int( self.w - 64), height: 44)
-            self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(0), width: 60, height: 44)
+            self.inputTV.frame = CGRect(x: 10, y: 18, width:Int( self.w - 64), height: 34)
+            self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(18), width: 60, height: 34)
             self.tabBarController?.tabBar.isHidden = true
 
         }) { finished in
-            self.inputTV.isScrollEnabled = shouldEnableScroll
             //default disable scroll here to avoid bouncing
         }
     }
@@ -140,7 +139,10 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let objAdvData = AdvertiseData()
         objAdvData.sendAdvertiseComments(param: ["lumineerId":GlobalShareData.sharedGlobal.objCurrentLumineer.id as AnyObject,"comments":inputTV.text as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]) { (success) in
             if success {
-              hud.hide(animated: true)
+                DispatchQueue.main.async {
+                    hud.hide(animated: true)
+                    self.inputTV.resignFirstResponder()
+                }
             }
         }
     }
@@ -311,6 +313,12 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     @IBAction func onBtnLikeTapped(_ sender: UIButton) {
         btnLike.isSelected = !sender.isSelected
+        let objAdvData = AdvertiseData()
+        objAdvData.setLikeAdvertiseByLumi(param: ["isLike":!sender.isSelected as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]) { (success) in
+            if success {
+            }
+        }
+
     }
     // MARK: - Tableview Methods
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -344,6 +352,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     }
                 }
             }
+            cell.lblLumineerTitle.text = GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName
 
         }
         else {
@@ -516,17 +525,19 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     
     func setupBottomView() {
         bottomView = UIView.init(frame: CGRect(x: 0, y: h + 34, width: w, height: 34))
-        bottomView.backgroundColor = .white
+        bottomView.backgroundColor = .clear
         view.addSubview(bottomView)
         
         inputTV = UITextView()
         inputTV.font = UIFont.systemFont(ofSize: 14.0)
         inputTV.frame = CGRect(x: 5, y: 0, width: w - 64, height: (inputTV.font?.lineHeight)!)
-        inputTV.backgroundColor = UIColor.clear
         inputTV.delegate = self
         inputTV.autocorrectionType = .no
-        inputTV.textContainer.lineFragmentPadding = 0
-        inputTV.textContainerInset = .zero
+//        inputTV.textContainer.lineFragmentPadding = 0
+//        inputTV.textContainerInset = .zero
+        inputTV.cornerRadius = 10
+        inputTV.borderWidth = 2
+        inputTV.borderColor = UIColor.lumiGreen
         bottomView.addSubview(inputTV)
         
         submitButton = UIButton.init(type: .custom)
@@ -536,6 +547,13 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         submitButton.contentHorizontalAlignment = .center
         submitButton.isUserInteractionEnabled = true
         bottomView.addSubview(submitButton)
+    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
     }
 
 
