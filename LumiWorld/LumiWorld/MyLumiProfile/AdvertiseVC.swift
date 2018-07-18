@@ -51,9 +51,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     @IBOutlet weak var lblLumineerName: UILabel!
     @IBOutlet weak var imgLumineerProfile: UIImageView!
     var aryCommentsData : Result<AdvComments>!
-    var nhours : String!
-    var nminutes : String!
-    var nseconds : String!
+    var nhours : String = "00"
+    var nminutes : String = "00"
+    var nseconds : String = "00"
     var seconds = 10
     var timer = Timer()
     let h = UIScreen.main.bounds.height
@@ -495,7 +495,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         
         
         // Everything is cool so update the timeLabel and progress bar
-        self.lblFileDuration.text = "\(minsStr):\(secsStr) / \(self.nminutes!):\(self.nseconds!)"
+        self.lblFileDuration.text = "\(minsStr):\(secsStr) / \(self.nminutes):\(self.nseconds)"
 
         // Check that we aren't dragging the time slider before updating it
         if !isDraggingTimeSlider {
@@ -595,10 +595,10 @@ extension AdvertiseVC:PlayerDelegate {
              self.nseconds = self.getStringFrom(seconds: seconds)
             
             if hours != 0 {
-                self.lblFileDuration.text = "00:00:00 / \(self.nhours!):\(self.nminutes!):\(self.nseconds!)"
+                self.lblFileDuration.text = "00:00:00 / \(self.nhours):\(self.nminutes):\(self.nseconds)"
             }
             else {
-                self.lblFileDuration.text = "00:00 / \(self.nminutes!):\(self.nseconds!)"
+                self.lblFileDuration.text = "00:00 / \(self.nminutes):\(self.nseconds)"
             }
 //            print("\(self.nhours):\(minutes):\(seconds)")
         }
@@ -631,10 +631,10 @@ extension AdvertiseVC:PlayerPlaybackDelegate {
             let seconds = self.getStringFrom(seconds: seconds)
             
             if hours != 0 {
-                self.lblFileDuration.text = "\(newhours):\(minutes):\(seconds) / \(self.nhours!):\(self.nminutes!):\(self.nseconds!)"
+                self.lblFileDuration.text = "\(newhours):\(minutes):\(seconds) / \(self.nhours):\(self.nminutes):\(self.nseconds)"
             }
             else {
-                self.lblFileDuration.text = "\(minutes):\(seconds) / \(self.nminutes!):\(self.nseconds!)"
+                self.lblFileDuration.text = "\(minutes):\(seconds) / \(self.nminutes):\(self.nseconds)"
             }
         }
     }

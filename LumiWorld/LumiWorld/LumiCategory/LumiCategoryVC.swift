@@ -63,7 +63,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         //Static
         self.tableView.addSubview(self.refreshControl)
         self.tableView!.tableFooterView = UIView()
-        getAllLumineerAdvertise()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,7 +98,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 
             }
         })
-
+        getAllLumineerAdvertise()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
