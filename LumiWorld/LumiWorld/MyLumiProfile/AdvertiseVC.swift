@@ -176,8 +176,16 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             imageView  = UIImageView(frame:CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)));
             self.viewAdvContent.addSubview(imageView)
             imageView.contentMode = .scaleAspectFit
-            let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
-            let urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+            let urlOriginalImage : URL!
+            if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
+                if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
+                {
+                    urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
+                }
+                else {
+                    let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
+                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                }
             Alamofire.request(urlOriginalImage).responseImage { response in
                 debugPrint(response)
                 if let image = response.result.value {
@@ -188,12 +196,21 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
 
                 }
             }
+            }
+
         }
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
             self.imgAdvType.image = UIImage(named:"Asset102")
-            let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
-           let urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-
+            let urlOriginalImage : URL!
+            if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
+                if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
+                {
+                    urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
+                }
+                else {
+                    let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
+                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                }
             
             self.player.playerDelegate = self
             self.player.playbackDelegate = self
@@ -208,6 +225,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             self.player.playbackLoops = true
             
             self.player.fillMode = PlayerFillMode.resizeAspectFit.avFoundationType
+            }
 
 //            let tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGestureRecognizer(_:)))
 //            tapGestureRecognizer.numberOfTapsRequired = 1
@@ -443,11 +461,23 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     
     func queueSound() {
         // Use this methid to load up the sound.
-        let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
-        let contentURL = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+        let urlOriginalImage : URL!
+        if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
+            if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
+            {
+                urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
+            }
+            else {
+                let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
+                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+            }
+            audioPlayer = try! AVAudioPlayer(contentsOf: urlOriginalImage as URL)
+        }
+
+//        let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
+//        let contentURL = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
 
         // TODO: Use catch here and check for errors.
-        audioPlayer = try! AVAudioPlayer(contentsOf: contentURL as URL)
     }
     
     
