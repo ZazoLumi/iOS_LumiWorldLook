@@ -173,9 +173,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
             self.imgAdvType.image = UIImage(named:"Asset106")
             var imageView : UIImageView
-            imageView  = UIImageView(frame:CGRect(x: 0, y: 0, width:Int(self.viewAdvContent.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)));
+            imageView  = UIImageView(frame:CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)));
             self.viewAdvContent.addSubview(imageView)
-            imageView.contentMode = .scaleAspectFill
+            imageView.contentMode = .scaleAspectFit
             let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
             let urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
             Alamofire.request(urlOriginalImage).responseImage { response in
@@ -197,7 +197,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             
             self.player.playerDelegate = self
             self.player.playbackDelegate = self
-            self.player.view.frame = self.viewAdvContent.bounds
+            self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
             
            // self.addChildViewController(self.player)
             self.viewAdvContent.addSubview(self.player.view)
