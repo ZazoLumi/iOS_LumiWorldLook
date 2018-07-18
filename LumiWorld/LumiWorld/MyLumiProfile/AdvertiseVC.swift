@@ -99,7 +99,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     var keyboardHeight = 0
     @objc func keyboardWillShow(_ n: Notification?) {
         if let keyboardSize = (n?.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = Int(keyboardSize.height)-35
+            keyboardHeight = Int(keyboardSize.height)
             IQKeyboardManager.sharedManager().enableAutoToolbar = false
             print(keyboardHeight)
             textViewDidChange(inputTV)
@@ -532,7 +532,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         inputTV.font = UIFont.systemFont(ofSize: 14.0)
         inputTV.frame = CGRect(x: 5, y: 0, width: w - 64, height: (inputTV.font?.lineHeight)!)
         inputTV.delegate = self
-        inputTV.autocorrectionType = .no
+       // inputTV.autocorrectionType = .no
         inputTV.cornerRadius = 10
         inputTV.borderWidth = 1
         inputTV.borderColor = UIColor.lumiGreen
