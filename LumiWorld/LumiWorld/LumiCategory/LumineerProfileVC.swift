@@ -404,17 +404,34 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     func displayAdvertiseContent() {
         //todo
         let realm = try! Realm()
-        let result  = realm.objects(AdvertiseData.self).filter("contentType == 'Image'")
+        let result  = realm.objects(AdvertiseData.self).filter("lumineerId = \(GlobalShareData.sharedGlobal.objCurrentLumineer.id)")
         if result.count > 0 {
-            GlobalShareData.sharedGlobal.objCurrentAdv = result[0]
-            self.view.addBlurEffect()
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
-            self.addChildViewController(self.objAdvertiseVC)
-            self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
-            self.view.addSubview(self.objAdvertiseVC.view)
-            self.objAdvertiseVC
-                .didMove(toParentViewController: self)
+            let currentDate = Date()
+            
+
+            for objAdv in result {
+                let creteatedData = objAdv.strAdvertiseDate
+                let cDate = Date().getCurrentUpdtedDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let date1 = currentDate
+                let date2 = cDate
+                let calendar = Calendar.current
+                let dateComponents = calendar.dateComponents([.minute], from: date1, to: date2)
+                print("Difference between times since midnight is", dateComponents.minute as Any)
+                let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
+                if dateComponents.minute! <= allowMinuntes! {
+                    GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
+                    self.view.addBlurEffect()
+                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
+                    self.addChildViewController(self.objAdvertiseVC)
+                    self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
+                    self.view.addSubview(self.objAdvertiseVC.view)
+                    self.objAdvertiseVC
+                        .didMove(toParentViewController: self)
+                    break
+                }
+            }
+
 
         }
     }
@@ -854,6 +871,31 @@ extension Date {
 
         return dateFormatterGet.date(from:strDate)!
     }
+    
+    func getCurrentUpdtedDateFromString(string: String , formatter:String) -> Date {
+        let cDate = Date()
+        let tempformatter = DateFormatter()
+        tempformatter.dateFormat = "yyyy-MM-dd"
+        let result = tempformatter.string(from: cDate)
+        
+        let arycom = string.components(separatedBy: " ")
+        if arycom.count == 2 {
+            let newString = "\(result) \(arycom.last!)"
+            
+            var dateFormatterGet = DateFormatter()
+            dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm"
+            let date = dateFormatterGet.date(from:newString)!
+            
+            dateFormatterGet = DateFormatter()
+            dateFormatterGet.dateFormat = formatter
+            let strDate = dateFormatterGet.string(from: date)
+            return dateFormatterGet.date(from:strDate)!
+        }
+        return Date()
+    }
+
+    
+    
 }
 
 
@@ -916,5 +958,23 @@ enum currentScreen : String {
     case lumiMessages
     case none
 
+}
+extension Date {
+    func secondsFromBeginningOfTheDay() -> TimeInterval {
+        let calendar = Calendar.current
+        // omitting fractions of seconds for simplicity
+        let dateComponents = calendar.dateComponents([.hour, .minute, .second], from: self)
+        
+        let dateSeconds = dateComponents.hour! * 3600 + dateComponents.minute! * 60 + dateComponents.second!
+        
+        return TimeInterval(dateSeconds)
+    }
+    
+    // Interval between two times of the day in seconds
+    func timeOfDayInterval(toDate date: Date) -> TimeInterval {
+        let date1Seconds = self.secondsFromBeginningOfTheDay()
+        let date2Seconds = date.secondsFromBeginningOfTheDay()
+        return date2Seconds - date1Seconds
+    }
 }
 

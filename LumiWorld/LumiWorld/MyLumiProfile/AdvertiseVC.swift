@@ -533,10 +533,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         inputTV.frame = CGRect(x: 5, y: 0, width: w - 64, height: (inputTV.font?.lineHeight)!)
         inputTV.delegate = self
         inputTV.autocorrectionType = .no
-//        inputTV.textContainer.lineFragmentPadding = 0
-//        inputTV.textContainerInset = .zero
         inputTV.cornerRadius = 10
-        inputTV.borderWidth = 2
+        inputTV.borderWidth = 1
         inputTV.borderColor = UIColor.lumiGreen
         bottomView.addSubview(inputTV)
         
@@ -548,6 +546,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         submitButton.isUserInteractionEnabled = true
         bottomView.addSubview(submitButton)
     }
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
@@ -555,7 +554,6 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         }
         return true
     }
-
 
 }
 
