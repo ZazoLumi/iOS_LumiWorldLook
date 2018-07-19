@@ -156,7 +156,10 @@ class AdvertiseData: Object {
                                     realm.add(newAdvertiseData, update: true)
                                 }
                                 if aObject["adFileName"].string != nil, (aObject["adFileName"].string?.count)! > 0 {
-                                    DownloadManager.shared().startFileDownloads(FileDownloadInfo.init(fileTitle: Int32(id), andDownloadSource: newAdvertiseData.adFilePath), withCompletionBlock: { (response,url) in
+                                   // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                                    let filePath = newAdvertiseData.adFilePath?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+
+                                    DownloadManager.shared().startFileDownloads(FileDownloadInfo.init(fileTitle: Int32(id), andDownloadSource: filePath), withCompletionBlock: { (response,url) in
                                         DispatchQueue.main.async {
                                             let advData = realm.objects(AdvertiseData.self).filter("advertiseId = \(response)")
                                             if advData.count > 0 {
@@ -226,12 +229,81 @@ class AdvertiseData: Object {
             let paramCreateRelationship = ["commentDtls":jsonString!, "url":urlString,"filePath":"","fileName":""]
             do {
                 let multiAPI : multipartAPI = multipartAPI()
-                multiAPI.call(paramCreateRelationship, withCompletionBlock: { (dict, error) in
-                    guard dict?.count != 0, (dict?.keys.contains("responseCode"))!, dict!["responseCode"] as! Int != 0 else {
+                multiAPI.call(paramCreateRelationship, withCompletionBlock: { (aObject, error) in
+                    guard aObject?.count != 0, (aObject?.keys.contains("responseCode"))!, aObject!["responseCode"] as! Int != 0 else {
                         DispatchQueue.main.async {
                             MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
                         completionHandler(false)
                         return
+                    }
+                    let aObject = JSON(aObject!)
+                    let realm = try! Realm()
+                    let id : Int = aObject["advertiseId"].intValue
+                    
+                    let newAdvertiseData = AdvertiseData()
+                    newAdvertiseData.advertiseId = id
+                    newAdvertiseData.adFileName = aObject["adFileName"].stringValue
+                    newAdvertiseData.adFilePath = aObject["adFilePath"].stringValue
+                    newAdvertiseData.adType = aObject["adType"].stringValue
+                    newAdvertiseData.advertiseDate = aObject["advertiseDate"].doubleValue
+                    newAdvertiseData.strAdvertiseDate = aObject["strAdvertiseDate"].stringValue
+                    newAdvertiseData.caption = aObject["caption"].stringValue
+                    newAdvertiseData.contentTitle = aObject["contentTitle"].stringValue
+                    newAdvertiseData.tag = aObject["tag"].stringValue
+                    newAdvertiseData.upto100Charges = aObject["upto100Charges"].stringValue
+                    newAdvertiseData.upto1000Charges = aObject["upto1000Charges"].stringValue
+                    newAdvertiseData.upto10000Charges = aObject["upto10000Charges"].stringValue
+                    newAdvertiseData.upto50000Charges = aObject["upto50000Charges"].stringValue
+                    newAdvertiseData.upto200000Charges = aObject["upto200000Charges"].stringValue
+                    newAdvertiseData.upto10000000Charges = aObject["upto1000000Charges"].stringValue
+                    newAdvertiseData.upto200000Charges = aObject["upto2000000Charges"].stringValue
+                    newAdvertiseData.over20000000Charges = aObject["over20000000Charges"].stringValue
+                    newAdvertiseData.createdDate = aObject["createdDate"].string
+                    
+                    newAdvertiseData.lumineerId = aObject["lumineerId"].doubleValue
+                    newAdvertiseData.lumineerName = aObject["lumineerName"].stringValue
+                    newAdvertiseData.lumineerRegnNumber = aObject["lumineerRegnNumber"].stringValue
+                    newAdvertiseData.adPackageId = aObject["adPackageId"].doubleValue
+                    newAdvertiseData.lumiDetails = aObject["lumiDetails"].stringValue
+                    newAdvertiseData.lumiList = aObject["lumiList"].stringValue
+                    newAdvertiseData.lumineerAdLumis = aObject["lumineerAdLumis"].stringValue
+                    newAdvertiseData.fileExt = aObject["fileExt"].stringValue
+                    newAdvertiseData.contentType = aObject["contentType"].stringValue
+                    newAdvertiseData.lumiCount = aObject["lumiCount"].doubleValue
+                    newAdvertiseData.compaignWindow = aObject["compaignWindow"].stringValue
+                    newAdvertiseData.frequency = aObject["frequency"].stringValue
+                    newAdvertiseData.packageName = aObject["packageName"].stringValue
+                    newAdvertiseData.prices = aObject["prices"].doubleValue
+                    newAdvertiseData.timeOfDayTimeSlot = aObject["timeOfDayTimeSlot"].stringValue
+                    newAdvertiseData.airingAllotment = aObject["airingAllotment"].stringValue
+                    newAdvertiseData.likeCount = aObject["likeCount"].doubleValue
+                    
+                    let commnets = aObject["lumiAdCommentList"].array
+                    for cObject in commnets! {
+                        let newAdvCommnetsData = AdvComments()
+                        newAdvCommnetsData.commentId = cObject["commentId"].intValue
+                        newAdvCommnetsData.commentPostedDate = cObject["commentPostedDate"].doubleValue
+                        newAdvCommnetsData.comments = cObject["comments"].stringValue
+                        newAdvCommnetsData.isPostedByLumi = cObject["isPostedByLumi"].boolValue
+                        newAdvCommnetsData.isPostedByLumineer = cObject["isPostedByLumineer"].boolValue
+                        newAdvCommnetsData.advertiseId = cObject["advertiseId"].doubleValue
+                        newAdvCommnetsData.lumineerId = cObject["lumineerId"].doubleValue
+                        newAdvCommnetsData.strCommentPostedDate = cObject["strCommentPostedDate"].stringValue
+                        newAdvCommnetsData.lumiMobile = cObject["lumiMobile"].doubleValue
+                        newAdvCommnetsData.lumiName = cObject["lumiName"].stringValue
+                        newAdvCommnetsData.lumiName = cObject["lumiName"].stringValue
+                        try! realm.write {
+                            realm.add(newAdvCommnetsData, update: true)
+                            newAdvertiseData.advComments.append(newAdvCommnetsData)
+                        }
+                    }
+                    
+                    
+                    let recordExist = realm.objects(AdvertiseData.self).filter("advertiseId = \(id)")
+                    if recordExist.count > 0 {
+                        try! realm.write {
+                            realm.add(newAdvertiseData, update: true)
+                        }
                     }
                     completionHandler(true)
                 })

@@ -75,6 +75,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             playPauseAudio()
         }
     }
+    fileprivate var documentInteractionController = UIDocumentInteractionController()
 
     deinit {
         self.player.willMove(toParentViewController: self)
@@ -111,7 +112,6 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) + 44), width:Int(self.w), height: Int(44))
             self.inputTV.frame = CGRect(x: 10, y: 0, width:Int( self.w - 64), height: 44)
             self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(0), width: 60, height: 44)
-            self.tabBarController?.tabBar.isHidden = false
 
         }) { finished in
             //default disable scroll here to avoid bouncing
@@ -127,7 +127,6 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) - self.keyboardHeight), width:Int(self.w), height: Int(44))
             self.inputTV.frame = CGRect(x: 10, y: 18, width:Int( self.w - 64), height: 34)
             self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(18), width: 60, height: 34)
-            self.tabBarController?.tabBar.isHidden = true
 
         }) { finished in
             //default disable scroll here to avoid bouncing
@@ -141,12 +140,24 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             if success {
                 DispatchQueue.main.async {
                     hud.hide(animated: true)
+                    self.inputTV.text = ""
                     self.inputTV.resignFirstResponder()
+                    self.tblCommentData.reloadData()
+                    let indexPath = IndexPath(row: 0, section: 0)
+                    self.tblCommentData.scrollToRow(at: indexPath, at: .top, animated: true)
+                    if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
+                        let count = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count
+                        self.btnComments.setTitle("\(count) Comments", for: .normal)
+                        self.btnComments.setTitle("\(count) Comments", for: .selected)
+                    }
+                    self.setupInitialConstraints()
                 }
             }
         }
     }
     override func viewWillDisappear(_ animated: Bool) {
+        inputTV.text = ""
+        inputTV.resignFirstResponder()
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
     }
     
@@ -183,7 +194,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
                 }
                 else {
-                    let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
+                    let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                 }
             Alamofire.request(urlOriginalImage).responseImage { response in
@@ -193,7 +204,6 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     imageView.image = scalImg
                     self.runTimer()
                     self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
-
                 }
             }
             }
@@ -208,7 +218,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
                 }
                 else {
-                    let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
+                    let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                 }
             
@@ -260,8 +270,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             totalHeight -= 180
         }
         if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
-            constCommentsHeight.constant = 100
-            totalHeight += 100
+            constCommentsHeight.constant = 160
+            totalHeight += 160
         }
         setupBottomView()
         let yPos = (Int(UIScreen.main.bounds.height) - totalHeight)/2
@@ -328,6 +338,20 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     @IBAction func onBtnReportTapped(_ sender: Any) {
     }
     @IBAction func onBtnShareTapped(_ sender: Any) {
+        let urlOriginalImage : URL!
+        if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
+            if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
+            {
+                urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
+            }
+            else {
+                let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
+                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+            }
+            documentInteractionController.delegate = self
+            documentInteractionController.url = urlOriginalImage
+            documentInteractionController.presentPreview(animated: true)
+        }
     }
     @IBAction func onBtnLikeTapped(_ sender: UIButton) {
         btnLike.isSelected = !sender.isSelected
@@ -415,6 +439,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
 
     @IBAction func onBtnCloseAdvertise(_ sender: Any) {
+        inputTV.resignFirstResponder()
         self.parent?.view.backgroundColor = UIColor.white
         self.view.superview?.removeBlurEffect()
         removeAnimate()
@@ -423,7 +448,6 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
             player.stop()
         }
-        inputTV.resignFirstResponder()
     }
     
     func removeAnimate()
@@ -468,7 +492,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                 urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
             }
             else {
-                let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName
+                let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
                 urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
             }
             audioPlayer = try! AVAudioPlayer(contentsOf: urlOriginalImage as URL)
@@ -536,6 +560,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             audioTimer?.invalidate()
             btnPlayPause.isSelected = true
             audioPlayer?.stop()
+            inputTV.text = ""
             inputTV.resignFirstResponder()
             onBtnCloseAdvertise((Any).self)
         }
@@ -556,7 +581,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     func setupBottomView() {
         bottomView = UIView.init(frame: CGRect(x: 0, y: h + 34, width: w, height: 34))
         bottomView.backgroundColor = .clear
-        view.addSubview(bottomView)
+        self.tabBarController?.view.addSubview(bottomView)
         
         inputTV = UITextView()
         inputTV.font = UIFont.systemFont(ofSize: 14.0)
@@ -575,6 +600,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         submitButton.contentHorizontalAlignment = .center
         submitButton.isUserInteractionEnabled = true
         bottomView.addSubview(submitButton)
+        
+        //self.bottomView.bringSubview(toFront: (self.tabBarController?.view)!)
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -682,6 +709,13 @@ extension AdvertiseVC:PlayerPlaybackDelegate {
         onBtnCloseAdvertise((Any).self)
     }
     
+}
+    extension AdvertiseVC: UIDocumentInteractionControllerDelegate {
+        
+        func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+            return self
+        }
+        
 }
 
 

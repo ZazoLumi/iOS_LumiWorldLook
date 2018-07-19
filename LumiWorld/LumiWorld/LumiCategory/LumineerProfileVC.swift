@@ -415,11 +415,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
                 let date1 = currentDate
                 let date2 = cDate
                 let calendar = Calendar.current
-                let dateComponents = calendar.dateComponents([.minute], from: date1, to: date2)
+                let dateComponents = calendar.dateComponents([.minute], from: date2, to: date1)
                 print("Difference between times since midnight is", dateComponents.minute as Any)
                 let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
-                let diffValue = abs(dateComponents.minute!)
-                if  diffValue <= allowMinuntes! {
+                let diffValue = dateComponents.minute!
+                if diffValue > 0 && diffValue <= allowMinuntes! {
                     GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
                     self.view.addBlurEffect()
                     let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
