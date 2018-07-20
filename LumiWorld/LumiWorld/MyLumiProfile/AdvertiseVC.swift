@@ -403,7 +403,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer?.enterpriseLogo)
             cell.imgLumineerProfile.image = imgThumb
         }
-        cell.lblMessageTime.text = objComment?.strCommentPostedDate
+        cell.lblMessageTime.text = Date().getFormattedDate(string: (objComment?.strCommentPostedDate)!, formatter: "")
         cell.lblMessageDetails.text = objComment?.comments
         return cell
     }

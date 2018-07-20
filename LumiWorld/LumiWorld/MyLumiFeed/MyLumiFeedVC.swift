@@ -47,6 +47,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         return refreshControl
     }()
     let searchController = UISearchController(searchResultsController: nil)
+    var objAdvertiseVC : AdvertiseVC!
 
     override func viewDidLoad() {
         self.navigationItem.addSettingButtonOnRight()
@@ -106,12 +107,39 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
 
                             let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",message.enterpriseID)
                             let lumineer = objsLumineer[0]
-                            let section = ["title":lumineer.name as Any, "message":message as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any] as [String : Any]
+                            let section = ["title":lumineer.name as Any,"createdTime":message.createdTime as Any, "message":message as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"message"] as [String : Any]
                             self.aryActivityData.append(section as [String : AnyObject])
                         }
                     }
                 }
             }
+            let result  = realm.objects(AdvertiseData.self)
+            if result.count > 0 {
+                let currentDate = Date()
+               
+                for objAdv in result {
+                    let creteatedData = objAdv.strAdvertiseDate
+                    let cDate = Date().getCurrentUpdtedDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                    let date1 = currentDate
+                    let date2 = cDate
+                    let calendar = Calendar.current
+                    let dateComponents = calendar.dateComponents([.minute], from: date2, to: date1)
+                    print("Difference between times since midnight is", dateComponents.minute as Any)
+                    let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
+                    let diffValue = dateComponents.minute!
+                    if diffValue > 0 && diffValue <= allowMinuntes! {
+                        let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
+                        if objsLumineer.count > 0 {
+                            let lumineer = objsLumineer[0]
+                            let section = ["title":lumineer.name as Any,"createdTime":objAdv.updatedDate as Any, "message":objAdv as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"adv"] as [String : Any]
+                            self.aryActivityData.append(section as [String : AnyObject])
+                        }
+                    }
+                }
+                
+                
+            }
+
                 if self.aryActivityData.count > 0 {
                     self.tableView.backgroundView = nil
                     let sorted = self.aryActivityData.sorted { left, right -> Bool in
@@ -176,78 +204,93 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         else {
             objCellData = aryActivityData[indexPath.row]
         }
-        
-        let message = objCellData["message"] as? LumiMessage
-
-
-
         cell.lblLumineerTitle.text = objCellData["title"] as? String
-
-        let myStr = underlinedString(string: (message?.newsFeedBody)! as NSString, term: strSearchText)
-        cell.lblMessageDetails.attributedText = myStr
-        var msgCatDate = message?.messageCategory
-        msgCatDate?.append(" | \(Date().getFormattedDate(string: (message?.newsfeedPostedTime!)!, formatter: ""))")
-        cell.lblMessageTime.text = msgCatDate
         let imgThumb = UIImage.decodeBase64(strEncodeData:objCellData["profileImg"] as? String)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
         cell.imgLumineerProfile.image = scalImg
         cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
         cell.imgLumineerProfile?.clipsToBounds = true;
-        var strImageName : String!
-        if (message?.isReadByLumi)! {
-            strImageName = "Artboard 92xxhdpi"
-            cell.backgroundColor = UIColor.init(red: 250/255.0, green: 250/255.0, blue: 250/255.0, alpha: 0.8)
-        }
-        else {
-            strImageName = "Asset714"
-            cell.backgroundColor = UIColor.white
-        }
-        cell.imgRedDot?.image = UIImage(named:strImageName)
-
-        if message?.fileName == nil {
-            cell.constImgWidth.constant = 0
-        }
-        else {
-            cell.constImgWidth.constant = 25
-            var urlOriginalImage : URL!
-            if(message?.fileName?.hasUrlPrefix())!
-            {
-                urlOriginalImage = URL.init(string: (message?.fileName!)!)
+        cell.imgRedDot.isHidden = true
+        if !isFiltering() && objCellData["type"] as? String == "adv" {
+            let objAdv = objCellData["message"] as? AdvertiseData
+            let myStr = underlinedString(string: (objAdv?.contentTitle)! as NSString, term: "")
+            cell.lblMessageDetails.attributedText = myStr
+            var msgCatDate = "ADS"
+            msgCatDate.append(" | \(Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: ""))")
+            cell.lblMessageTime.text = msgCatDate
+            let strMsgType : String!
+            if objAdv?.contentType == "Video" {
+                strMsgType = "Asset102"
+            }
+            else if objAdv?.contentType == "Audio" {
+                strMsgType = "Asset104"
             }
             else {
-                let fileName = message?.fileName?.lastPathComponent
-                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                strMsgType = "Asset106"
             }
-            
-            if message?.contentType == "Video" && message?.imageURL != nil{
-                let fileName = message?.imageURL
-                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    
-                    if let image = response.result.value {
-                        let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
-                        cell.imgMessage.image = scalImg
+            cell.imgMessage.image = UIImage(named:strMsgType)
+        }
+        else {
+            cell.imgRedDot.isHidden = false
+            let message = objCellData["message"] as? LumiMessage
+            let myStr = underlinedString(string: (message?.newsFeedBody)! as NSString, term: strSearchText)
+            cell.lblMessageDetails.attributedText = myStr
+            var msgCatDate = message?.messageCategory
+            msgCatDate?.append(" | \(Date().getFormattedDate(string: (message?.newsfeedPostedTime!)!, formatter: ""))")
+            cell.lblMessageTime.text = msgCatDate
+            var strImageName : String!
+            if (message?.isReadByLumi)! {
+                strImageName = "Artboard 92xxhdpi"
+                cell.backgroundColor = UIColor.init(red: 250/255.0, green: 250/255.0, blue: 250/255.0, alpha: 0.8)
+            }
+            else {
+                strImageName = "Asset714"
+                cell.backgroundColor = UIColor.white
+            }
+            cell.imgRedDot?.image = UIImage(named:strImageName)
+            if message?.fileName == nil {
+                cell.constImgWidth.constant = 0
+            }
+            else {
+                cell.constImgWidth.constant = 25
+                var urlOriginalImage : URL!
+                if(message?.fileName?.hasUrlPrefix())!
+                {
+                    urlOriginalImage = URL.init(string: (message?.fileName!)!)
+                }
+                else {
+                    let fileName = message?.fileName?.lastPathComponent
+                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                }
+                
+                if message?.contentType == "Video" && message?.imageURL != nil{
+                    let fileName = message?.imageURL
+                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                    Alamofire.request(urlOriginalImage!).responseImage { response in
+                        debugPrint(response)
+                        
+                        if let image = response.result.value {
+                            let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+                            cell.imgMessage.image = scalImg
+                        }
+                    }
+                }
+                else if message?.contentType == "Document" {
+                    let image = UIImage.init(named: "docFile")
+                    let scalImg = image?.af_imageScaled(to: CGSize(width: 25, height: 25))
+                    cell.imgMessage.image = scalImg
+                }
+                else {
+                    Alamofire.request(urlOriginalImage!).responseImage { response in
+                        debugPrint(response)
+                        if let image = response.result.value {
+                            let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+                            cell.imgMessage.image = scalImg
+                        }
                     }
                 }
             }
-            else if message?.contentType == "Document" {
-                let image = UIImage.init(named: "docFile")
-                let scalImg = image?.af_imageScaled(to: CGSize(width: 25, height: 25))
-                cell.imgMessage.image = scalImg
-            }
-            else {
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    if let image = response.result.value {
-                        let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
-                        cell.imgMessage.image = scalImg
-                    }
-                }
-            }
         }
-
-
         return cell
     }
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -267,15 +310,37 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
             objCellData = aryActivityData[indexPath.row]
         }
         
-        let message = objCellData["message"] as? LumiMessage
-        GlobalShareData.sharedGlobal.objCurrentLumiMessage = message
-        GlobalShareData.sharedGlobal.objCurrentLumineer = objCellData["lumineer"] as? LumineerList
-        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
-        var chatVC: TGChatViewController?
-        chatVC = TGChatViewController(chat: chat)
-        //chatVC.
-        if let vc = chatVC {
-            navigationController?.pushViewController(vc, animated: true)
+        if !isFiltering() && objCellData["type"] as? String == "adv" {
+            let objAdv = objCellData["message"] as? AdvertiseData
+
+            GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
+            let realm = try! Realm()
+            let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv?.lumineerId.int ?? Int.self)
+            if objsLumineer.count > 0 {
+                let lumineer = objsLumineer[0]
+                GlobalShareData.sharedGlobal.objCurrentLumineer = lumineer
+            }
+            self.view.addBlurEffect()
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
+            self.addChildViewController(self.objAdvertiseVC)
+            self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
+            self.view.addSubview(self.objAdvertiseVC.view)
+            self.objAdvertiseVC
+                .didMove(toParentViewController: self)
+
+        }
+        else {
+            let message = objCellData["message"] as? LumiMessage
+            GlobalShareData.sharedGlobal.objCurrentLumiMessage = message
+            GlobalShareData.sharedGlobal.objCurrentLumineer = objCellData["lumineer"] as? LumineerList
+            GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
+            var chatVC: TGChatViewController?
+            chatVC = TGChatViewController(chat: chat)
+            //chatVC.
+            if let vc = chatVC {
+                navigationController?.pushViewController(vc, animated: true)
+                }
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
