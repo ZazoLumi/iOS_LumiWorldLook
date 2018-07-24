@@ -218,17 +218,17 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
             var msgCatDate = "ADS"
             msgCatDate.append(" | \(Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: ""))")
             cell.lblMessageTime.text = msgCatDate
-            let strMsgType : String!
+            let imgMsgType : UIImage!
             if objAdv?.contentType == "Video" {
-                strMsgType = "Asset102"
+                imgMsgType = UIImage(named:"Asset102")
             }
             else if objAdv?.contentType == "Audio" {
-                strMsgType = "Asset104"
+                imgMsgType = UIImage(named:"Asset104")
             }
             else {
-                strMsgType = "Asset106"
+                imgMsgType = UIImage(named:"Asset106")
             }
-            cell.imgMessage.image = UIImage(named:strMsgType)
+            cell.imgMessage.image = imgMsgType
         }
         else {
             cell.imgRedDot.isHidden = false

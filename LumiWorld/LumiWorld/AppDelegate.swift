@@ -33,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
             guard error == nil else {
                 return
             }
-            
             if granted {
                 DispatchQueue.main.async {
                     application.registerForRemoteNotifications()

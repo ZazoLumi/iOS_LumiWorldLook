@@ -764,9 +764,20 @@ extension UINavigationItem {
             actionLumiMsg.setValue(0, forKey: "titleTextAlignment")
             actionLumiMsg.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
             actionSheet.addAction(actionLumiMsg)
+            
+            
+            let actionSaveAds = UIAlertAction.init(title: " Saved ads", style: .default, image: (UIImage(named: "Asset 2183")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+                self.actionItemTapped(index: 203)
+                actionSheet.dismiss(animated: true, completion: {
+                })
+            }
+            actionSaveAds.setValue(0, forKey: "titleTextAlignment")
+            actionSaveAds.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
+            actionSheet.addAction(actionSaveAds)
+
           
             let actionAbout = UIAlertAction.init(title: " About", style: .default, image: (UIImage(named: "Asset 2184")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
-                self.actionItemTapped(index: 203)
+                self.actionItemTapped(index: 204)
                 actionSheet.dismiss(animated: true, completion: {
                 })
 
@@ -776,7 +787,7 @@ extension UINavigationItem {
             actionSheet.addAction(actionAbout)
             
             let actionFAQ = UIAlertAction.init(title: " FAQ", style: .default, image: (UIImage(named: "Asset 2182")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
-                self.actionItemTapped(index: 204)
+                self.actionItemTapped(index: 205)
                 actionSheet.dismiss(animated: true, completion: {
                 })
             }
@@ -784,10 +795,8 @@ extension UINavigationItem {
             actionFAQ.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
             actionSheet.addAction(actionFAQ)
 
-            
-           
             let actionLogout = UIAlertAction.init(title: " Logout", style: .default, image: (UIImage(named: "Asset 2183")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
-                self.actionItemTapped(index: 205)
+                self.actionItemTapped(index: 206)
                 actionSheet.dismiss(animated: true, completion: {
                 })
             }
@@ -808,11 +817,11 @@ extension UINavigationItem {
 
         }
     @objc func actionItemTapped(index: Int) {
-            if index == 203 || index == 201 {
+            if index == 204 || index == 201 {
                 var strUrl : String!
                 var strTitle : String!
 
-                if index == 203 {
+                if index == 204 {
                     strUrl = "http://196.223.97.152/portal/About-Lumi-World_191217.html"
                     strTitle = "About"
                 }
@@ -827,18 +836,24 @@ extension UINavigationItem {
                 objAboutPlusTC.strTitle = strTitle
                 GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objAboutPlusTC, animated: true)
             }
-            else if index == 204 {
+            else if index == 205 {
                 let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "FaqVC") as! FaqVC
                 GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objFaqVC, animated: true)
             }
+            else if index == 203 {
+                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "SavedAds") as! SavedAds
+                GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objFaqVC, animated: true)
+            }
+
             else if index == 200 {
                 let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let objLumiSupportVC = storyBoard.instantiateViewController(withIdentifier: "LumiSupportVC") as! LumiSupportVC
                 GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.supportThread.rawValue
  GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objLumiSupportVC, animated: true)
             }
-            else if index == 205 {
+            else if index == 206 {
                 GlobalShareData.sharedGlobal.realmManager.deleteDatabase()
                 defer {
                     GlobalShareData.sharedGlobal.clearDiskCache()

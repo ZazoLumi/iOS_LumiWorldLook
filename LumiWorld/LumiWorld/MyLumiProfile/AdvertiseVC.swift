@@ -12,6 +12,7 @@ import TNSlider
 import Alamofire
 import MBProgressHUD
 import IQKeyboardManagerSwift
+import RealmSwift
 
 class advCommentCell: UITableViewCell {
     @IBOutlet var imgLumineerProfile: UIImageView!
@@ -322,7 +323,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         btnComments.isSelected = !sender.isSelected
 //        setupInitialConstraints()
         inputTV.becomeFirstResponder()
-
+        
         
     }
     override func didReceiveMemoryWarning() {
@@ -333,7 +334,27 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
 
     @IBAction func onBtnFullScreenTapped(_ sender: Any) {
     }
+    
     @IBAction func onBtnSaveFileTapped(_ sender: Any) {
+        var msgText : String = ""
+        let realm = try! Realm()
+
+        let type = GlobalShareData.sharedGlobal.objCurrentAdv.contentType?.uppercased()
+        if GlobalShareData.sharedGlobal.objCurrentAdv.isVideoSaved {
+            msgText =  "\(type!) IS ALREADY SAVED"
+        }
+        else {
+            try! realm.write({
+                    GlobalShareData.sharedGlobal.objCurrentAdv.isVideoSaved = true})
+            msgText =  "\(type!) SAVED TO WATCH LATER"
+
+        }
+        let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+        hud.mode = .text
+        hud.label.text = NSLocalizedString(msgText, comment: "HUD message title")
+        hud.offset = self.view.center
+        hud.hide(animated: true, afterDelay: 3.0)
+
     }
     @IBAction func onBtnReportTapped(_ sender: Any) {
     }
