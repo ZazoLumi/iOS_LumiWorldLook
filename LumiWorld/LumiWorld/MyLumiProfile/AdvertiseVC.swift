@@ -349,10 +349,10 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             msgText =  "\(type!) SAVED TO WATCH LATER"
 
         }
-        let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+        let hud = MBProgressHUD.showAdded(to: self.view!, animated: true)
         hud.mode = .text
         hud.label.text = NSLocalizedString(msgText, comment: "HUD message title")
-        hud.offset = self.view.center
+        hud.offset = CGPoint(x:20, y: super.view.height/2)// CGPoint(x: (super.view.width/2)-50, y: super.view.height/2)
         hud.hide(animated: true, afterDelay: 3.0)
 
     }

@@ -766,7 +766,7 @@ extension UINavigationItem {
             actionSheet.addAction(actionLumiMsg)
             
             
-            let actionSaveAds = UIAlertAction.init(title: " Saved ads", style: .default, image: (UIImage(named: "Asset 2183")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
+            let actionSaveAds = UIAlertAction.init(title: " Saved ads", style: .default, image: (UIImage(named: "Asset116")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
                 self.actionItemTapped(index: 203)
                 actionSheet.dismiss(animated: true, completion: {
                 })
