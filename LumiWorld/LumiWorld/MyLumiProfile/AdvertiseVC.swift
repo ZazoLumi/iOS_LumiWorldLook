@@ -84,6 +84,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         self.player.removeFromParentViewController()
     }
 
+    func canRotate() -> Void {}
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,6 +98,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let dimAlphaRedColor =  UIColor.lumiGreen?.withAlphaComponent(0.5)
         viewAdvTimer.backgroundColor =  dimAlphaRedColor
         setupInitialConstraints()
+        (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .all
+
     }
     var keyboardHeight = 0
     @objc func keyboardWillShow(_ n: Notification?) {
@@ -160,6 +163,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         inputTV.text = ""
         inputTV.resignFirstResponder()
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .portrait
     }
     
     func displayAdvertiseContent() {
@@ -242,7 +246,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
 //            tapGestureRecognizer.numberOfTapsRequired = 1
 //           // self.player.view.addGestureRecognizer(tapGestureRecognizer)
         }
-        else {
+        else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
             self.imgAdvType.image = UIImage(named:"Asset104")
             timeFormatter.minimumIntegerDigits = 2
             timeFormatter.minimumFractionDigits = 0
@@ -340,12 +344,12 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let realm = try! Realm()
 
         let type = GlobalShareData.sharedGlobal.objCurrentAdv.contentType?.uppercased()
-        if GlobalShareData.sharedGlobal.objCurrentAdv.isVideoSaved {
+        if GlobalShareData.sharedGlobal.objCurrentAdv.isAdsSaved {
             msgText =  "\(type!) IS ALREADY SAVED"
         }
         else {
             try! realm.write({
-                    GlobalShareData.sharedGlobal.objCurrentAdv.isVideoSaved = true})
+                    GlobalShareData.sharedGlobal.objCurrentAdv.isAdsSaved = true})
             msgText =  "\(type!) SAVED TO WATCH LATER"
 
         }

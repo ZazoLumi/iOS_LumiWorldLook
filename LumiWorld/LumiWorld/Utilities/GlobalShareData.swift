@@ -52,7 +52,7 @@ struct Constants {
         static let APIGetAllUnreadMsgCountOfLumi = ":13004/instantMsg/getAllUnreadMsgCountOfLumi/v2"
         
         static let APIGetAllAdsPostedToLumiByALumineer = ":13004/adposting/getAllAdsPostedToLumiByALumineer"
-        static let APIGetAllAdsPostedToLumi = ":13004/adposting/getAllAdsPostedToLumi"
+        static let APIGetAllAdsPostedToLumi = "http://lumiimportupload20180622023528.azurewebsites.net/api/AdWrapper"
         static let APIPOSTAdvertiseComments = ":13004/adposting/postCommentsToLumineerAdByLumi"
         static let APIPOSTAdvertiseLike = ":13004/adposting/likeOrDislikeLumineerAd"
 
@@ -86,6 +86,7 @@ class GlobalShareData {
     lazy var applicationDocumentsDirectory: URL = {
         
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        print(urls)
         let documentDirectoryURL = urls[urls.count - 1] as URL
         let dbDirectoryURL = documentDirectoryURL.appendingPathComponent("Docs")
         

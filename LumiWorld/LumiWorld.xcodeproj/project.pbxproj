@@ -93,6 +93,7 @@
 		096BBFBB20E0CF680017EBA8 /* PryntTrimmerView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */; };
 		096BBFBC20E0CF680017EBA8 /* PryntTrimmerView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		096C2EF92064E28E0015C0A9 /* GlobalShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */; };
+		096E02C321182A59000F8FF8 /* ScrollableStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096E02C221182A59000F8FF8 /* ScrollableStackView.swift */; };
 		096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */; };
 		096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */; };
 		096ED9E320766D3B003CA8F1 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */; };
@@ -247,6 +248,7 @@
 		096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PryntTrimmerView.framework; sourceTree = "<group>"; };
 		096BBFBD20E0E6FA0017EBA8 /* LumiWorld.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LumiWorld.entitlements; sourceTree = "<group>"; };
 		096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShareData.swift; sourceTree = "<group>"; };
+		096E02C221182A59000F8FF8 /* ScrollableStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableStackView.swift; sourceTree = "<group>"; };
 		096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerProfileVC.swift; sourceTree = "<group>"; };
 		096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
 		096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 		0964E6E82060F981001D6F47 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				096E02C221182A59000F8FF8 /* ScrollableStackView.swift */,
 				7A94EEC720FA33A300977853 /* Player.swift */,
 				0940F95820C952ED00CCF3E1 /* EPContact */,
 				09931B802099F804005D3BE1 /* DownloadManager.h */,
@@ -815,6 +818,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				096E02C321182A59000F8FF8 /* ScrollableStackView.swift in Sources */,
 				094400EB20BE8FE9005995C3 /* WelcomView.swift in Sources */,
 				097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */,
 				09D012C120D92CCF00935B05 /* LumiWorldMessages.swift in Sources */,

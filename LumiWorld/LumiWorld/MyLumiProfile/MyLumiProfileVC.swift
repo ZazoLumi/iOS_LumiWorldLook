@@ -20,7 +20,8 @@ class MyLumiProfileVC: UIViewController {
     var objSendMessageTo : sendMessageTo!
     var objSuggestACompany : suggestCompany!
     var objsuggestALumineer : suggestALumineer!
-    
+    @IBOutlet weak var scrollable: ScrollableStackView!
+
     @IBOutlet weak var scrlAdvertiseView: UIView!
     @IBOutlet weak var lblFCount: UILabel!
     @IBOutlet weak var lblDCount: UILabel!
@@ -37,6 +38,7 @@ class MyLumiProfileVC: UIViewController {
         self.url1 = URL(fileURLWithPath: Bundle.main.path(forResource: "LumiWorldWelcom", ofType: "mp4")!)
         // Do any additional setup after loading the view.
         playVideo()
+        setupBottomScrollableUI()
 
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -100,7 +102,7 @@ class MyLumiProfileVC: UIViewController {
         let objLumiProfileDetails = storyBoard.instantiateViewController(withIdentifier: "LumiProfileDetails") as! LumiProfileDetails
         self.navigationController?.pushViewController(objLumiProfileDetails, animated: true)
     }
-    @IBAction func onBtnYonOHaveTapped(_ sender: Any) {
+    func onBtnYonOHaveTapped() {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objsuggestALumineer = storyBoard.instantiateViewController(withIdentifier: "suggestALumineer") as! suggestALumineer
@@ -110,8 +112,14 @@ class MyLumiProfileVC: UIViewController {
         self.objsuggestALumineer
             .didMove(toParentViewController: self)
     }
+    func onBtnShowSaveAdsTapped() {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "SavedAds") as! SavedAds
+        GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objFaqVC, animated: true)
+    }
+
     
-    @IBAction func onBtnMessageTapped(_ sender: Any) {
+     func onBtnMessageTapped() {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objSendMessageTo = storyBoard.instantiateViewController(withIdentifier: "sendMessageTo") as! sendMessageTo
@@ -121,7 +129,7 @@ class MyLumiProfileVC: UIViewController {
         self.objSendMessageTo.didMove(toParentViewController: self)
 
     }
-    @IBAction func onBtnSuggestLumineerTapped(_ sender: Any) {
+     func onBtnSuggestLumineerTapped() {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objSuggestACompany = storyBoard.instantiateViewController(withIdentifier: "suggestCompany") as! suggestCompany
@@ -131,7 +139,7 @@ class MyLumiProfileVC: UIViewController {
         self.objSuggestACompany.didMove(toParentViewController: self)
 
     }
-    @IBAction func onBtnInviteFriendsTapped(_ sender: Any) {
+     func onBtnInviteFriendsTapped() {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objInviteFriendVC = storyBoard.instantiateViewController(withIdentifier: "inviteFriendVC") as! inviteFriendVC
@@ -158,7 +166,48 @@ class MyLumiProfileVC: UIViewController {
         }
 
     }
+    
+    func setupBottomScrollableUI() {
+        scrollable.stackView.distribution = .fillEqually
+        scrollable.stackView.alignment = .center
+        scrollable.stackView.axis = .horizontal
+        scrollable.stackView.spacing = 22
+        scrollable.scrollView.layoutMargins = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        let imgArray = ["Asset 19","Asset 20","Asset 21","Asset 22","Asset 20"]
+        for i in 0 ..< 5 {
+            let image = UIImage.init(named: imgArray[i])
+            let button = UIButton.init(type: .custom)
+            button.frame = CGRect(x: 0, y: 0, width: (image?.size.width)! , height: (image?.size.height)!)
+            button.backgroundColor = UIColor.clear
+            button.setTitle("", for: .normal)
+            button.setImage(image, for: .normal)
+            button.tag = 20000 + i
+            button.heightAnchor.constraint(equalToConstant: (image?.size.height)!).isActive = true
+            button.widthAnchor.constraint(equalToConstant: (image?.size.width)!).isActive = true
+            button.addTarget(self, action:#selector(actionBttomMenuTapped(_:)), for: .touchUpInside)
+            scrollable.stackView.addArrangedSubview(button)
+        }
+    }
 
+    @objc func actionBttomMenuTapped(_ sender: UIButton){
+        let tag = sender.tag
+        
+        if tag == 20000 {
+            self.onBtnInviteFriendsTapped()
+        }
+        else if tag == 20001 {
+            self.onBtnSuggestLumineerTapped()
+        }
+        else if tag == 20002 {
+            self.onBtnYonOHaveTapped()
+        }
+        else if tag == 20003 {
+            self.onBtnMessageTapped()
+        }
+        else if tag == 20004 {
+            self.onBtnShowSaveAdsTapped()
+        }
+    }
     /*
     // MARK: - Navigation
 

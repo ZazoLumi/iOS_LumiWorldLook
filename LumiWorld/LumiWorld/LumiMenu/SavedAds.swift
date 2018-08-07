@@ -35,13 +35,14 @@ class SavedAds: UIViewController, UITableViewDelegate,UITableViewDataSource{
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .portrait
     }
 
 
     @objc func getSavedAdvertises() {
             self.aryActivityData = []
             let realm = try! Realm()
-            let result  = realm.objects(AdvertiseData.self).filter("isVideoSaved == %d",1)
+            let result  = realm.objects(AdvertiseData.self).filter("isAdsSaved == %d",1)
             if result.count > 0 {
                 for objAdv in result {
                     let creteatedData = objAdv.strAdvertiseDate

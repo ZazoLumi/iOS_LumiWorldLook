@@ -608,7 +608,7 @@ extension UINavigationItem {
         self.rightBarButtonItems = [barButton]
     }
     func addBackButtonOnLeft(){
-        let viewContent = UIView.init(frame: CGRect(x: -60, y: 0, width: 40, height: 30))
+        let viewContent = UIView.init(frame: CGRect(x: -65, y: 0, width: 60, height: 30))
         let btn1 = UIButton(type: .custom)
         let img = UIImage(named: "Artboard 142xxxhdpi")
         btn1.setImage(img, for: .normal)
@@ -616,13 +616,13 @@ extension UINavigationItem {
         btn1.addTarget(self, action:#selector(gotoBackPage(_:)), for: .touchUpInside)
         btn1.backgroundColor = UIColor.clear
        // btn1.imageEdgeInsets = UIEdgeInsets(top: 0, left:  -30, bottom: 0, right:0)
-        viewContent.backgroundColor = UIColor.clear
+        viewContent.backgroundColor = .clear
         viewContent.addSubview(btn1)
         if GlobalShareData.sharedGlobal.objCurretnVC != nil &&  GlobalShareData.sharedGlobal.objCurretnVC.isKind(of: TGChatViewController.self) && GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
         let btn2 = UIButton(type: .custom)
         let imgThumb = UIImage.decodeBase64(strEncodeData:GlobalShareData.sharedGlobal.objCurrentLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: 30, height: 30))
-        btn2.frame = CGRect(x: 20, y: 0, width: 30, height: 30)
+        btn2.frame = CGRect(x: 25, y: 0, width: 30, height: 30)
         btn2.cornerRadius = 15
       //  btn2.borderColor = UIColor.lumiGreen
         btn2.borderWidth = 0
@@ -647,6 +647,7 @@ extension UINavigationItem {
 
     @objc func gotoBackPage(_ sender: UIButton){
         if let topController = UIApplication.topViewController() {
+            (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .portrait
             topController.navigationController?.popViewController(animated: true)
         }
     }
@@ -764,16 +765,6 @@ extension UINavigationItem {
             actionLumiMsg.setValue(0, forKey: "titleTextAlignment")
             actionLumiMsg.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
             actionSheet.addAction(actionLumiMsg)
-            
-            
-            let actionSaveAds = UIAlertAction.init(title: " Saved ads", style: .default, image: (UIImage(named: "Asset116")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
-                self.actionItemTapped(index: 203)
-                actionSheet.dismiss(animated: true, completion: {
-                })
-            }
-            actionSaveAds.setValue(0, forKey: "titleTextAlignment")
-            actionSaveAds.setValue(UIColor.lumiGreen, forKey: "titleTextColor")
-            actionSheet.addAction(actionSaveAds)
 
           
             let actionAbout = UIAlertAction.init(title: " About", style: .default, image: (UIImage(named: "Asset 2184")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)))!) { (action) in
@@ -841,12 +832,6 @@ extension UINavigationItem {
                 let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "FaqVC") as! FaqVC
                 GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objFaqVC, animated: true)
             }
-            else if index == 203 {
-                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "SavedAds") as! SavedAds
-                GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objFaqVC, animated: true)
-            }
-
             else if index == 200 {
                 let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let objLumiSupportVC = storyBoard.instantiateViewController(withIdentifier: "LumiSupportVC") as! LumiSupportVC

@@ -54,7 +54,7 @@ class AdvertiseData: Object {
     @objc dynamic var timeOfDayTimeSlot: String? = nil
     @objc dynamic var airingAllotment: String? = nil
     @objc dynamic var isFileDownloaded = false
-    @objc dynamic var isVideoSaved = false
+    @objc dynamic var isAdsSaved = false
 
     var advComments = List<AdvComments>()
 
@@ -75,7 +75,7 @@ class AdvertiseData: Object {
                 urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetAllAdsPostedToLumiByALumineer)" + "?lumiMobile=\(cellNumber)" + "&lumineerId=\(lumineerId)" + "&lastViewedTS=\(lastViewDate)"
             }
             else {
-                urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetAllAdsPostedToLumi)" + "?lumiMobile=\(cellNumber)" + "&lastViewedTS=\(lastViewDate)"
+                urlString = Constants.APIDetails.APIGetAllAdsPostedToLumi +  "?lumiMobile=\(cellNumber)" + "&lastViewedTS=\(lastViewDate)"
             }
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
@@ -142,7 +142,7 @@ class AdvertiseData: Object {
                             else {
                                 let filePath = recordExist[0].adFilePath
                                 newAdvertiseData.adFilePath = filePath
-                                newAdvertiseData.isVideoSaved = recordExist[0].isVideoSaved
+                                newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
                                 try! realm.write {
                                     realm.add(newAdvertiseData, update: true)
                                 }
@@ -182,6 +182,11 @@ class AdvertiseData: Object {
                     let newAdvertiseData = self.getAdvertiseObject(aObject: aObject)
                     let recordExist = realm.objects(AdvertiseData.self).filter("advertiseId = \(newAdvertiseData.advertiseId)")
                     if recordExist.count > 0 {
+                        if recordExist[0].isFileDownloaded {
+                            newAdvertiseData.isFileDownloaded = true
+                            newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
+                            newAdvertiseData.adFilePath = recordExist[0].adFilePath
+                        }
                         try! realm.write {
                             realm.add(newAdvertiseData, update: true)
                         }
@@ -236,7 +241,7 @@ class AdvertiseData: Object {
         newAdvertiseData.timeOfDayTimeSlot = aObject["timeOfDayTimeSlot"].stringValue
         newAdvertiseData.airingAllotment = aObject["airingAllotment"].stringValue
         newAdvertiseData.likeCount = aObject["likeCount"].doubleValue
-        newAdvertiseData.isVideoSaved = false
+        newAdvertiseData.isAdsSaved = false
 
         let commnets = aObject["lumiAdCommentList"].array
         let realm = try! Realm()
