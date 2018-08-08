@@ -98,6 +98,8 @@
 		096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */; };
 		096ED9E320766D3B003CA8F1 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */; };
 		097A69AF20809569001D273E /* LumiMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097A69AE20809569001D273E /* LumiMessage.swift */; };
+		097B0C25211AD55B001285AF /* MediaZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097B0C23211AD559001285AF /* MediaZoom.swift */; };
+		097B0C26211AD55B001285AF /* VideoZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097B0C24211AD55A001285AF /* VideoZoom.swift */; };
 		097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BF9D9207DF865001F935C /* NoCopyPasteUITextField.swift */; };
 		097BF9DC207E052E001F935C /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BF9DB207E052D001F935C /* CameraHandler.swift */; };
 		097BFA40207E3647001F935C /* TGChatInputTextPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097BFA32207E363F001F935C /* TGChatInputTextPanel.swift */; };
@@ -253,6 +255,8 @@
 		096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
 		096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 		097A69AE20809569001D273E /* LumiMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiMessage.swift; sourceTree = "<group>"; };
+		097B0C23211AD559001285AF /* MediaZoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaZoom.swift; sourceTree = "<group>"; };
+		097B0C24211AD55A001285AF /* VideoZoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoZoom.swift; sourceTree = "<group>"; };
 		097BF9D9207DF865001F935C /* NoCopyPasteUITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCopyPasteUITextField.swift; sourceTree = "<group>"; };
 		097BF9DB207E052D001F935C /* CameraHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
 		097BFA32207E363F001F935C /* TGChatInputTextPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGChatInputTextPanel.swift; sourceTree = "<group>"; };
@@ -466,6 +470,8 @@
 		0964E6E82060F981001D6F47 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				097B0C23211AD559001285AF /* MediaZoom.swift */,
+				097B0C24211AD55A001285AF /* VideoZoom.swift */,
 				096E02C221182A59000F8FF8 /* ScrollableStackView.swift */,
 				7A94EEC720FA33A300977853 /* Player.swift */,
 				0940F95820C952ED00CCF3E1 /* EPContact */,
@@ -832,6 +838,7 @@
 				0964E71B2060F981001D6F47 /* ValidationError.swift in Sources */,
 				0964E591205FC811007E5924 /* AppDelegate.swift in Sources */,
 				0964E72F2060F981001D6F47 /* RequiredRule.swift in Sources */,
+				097B0C25211AD55B001285AF /* MediaZoom.swift in Sources */,
 				0964E7172060F981001D6F47 /* ExampleTipsContentView.swift in Sources */,
 				0964E6D62060F8ED001D6F47 /* ForgotPasswordVC.swift in Sources */,
 				0964E71A2060F981001D6F47 /* ValidationDelegate.swift in Sources */,
@@ -879,6 +886,7 @@
 				0964E7372060F981001D6F47 /* TextFieldTableViewController.swift in Sources */,
 				0964E7312060F981001D6F47 /* ValidationRule.swift in Sources */,
 				0940F95F20C952EE00CCF3E1 /* EPConstants.swift in Sources */,
+				097B0C26211AD55B001285AF /* VideoZoom.swift in Sources */,
 				09F18F0320C8121D0017914B /* inviteFriendVC.swift in Sources */,
 				0940F96420C952EE00CCF3E1 /* EPExtensions.swift in Sources */,
 				097BFA49207E3647001F935C /* TGTextMessageCellLayout.swift in Sources */,

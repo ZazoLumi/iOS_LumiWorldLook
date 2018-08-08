@@ -149,7 +149,16 @@ class MyLumiProfileVC: UIViewController {
         self.objInviteFriendVC.didMove(toParentViewController: self)
     }
     private func playVideo() {
-        self.player.replaceVideo(url1!)
+        
+        let player = AVPlayer(url: url1!)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.view.frame = CGRect(x: 0, y:0, width: scrlAdvertiseView.frame.size.width, height: scrlAdvertiseView.frame.size.height)
+        playerViewController.player = player
+        scrlAdvertiseView.addSubview(playerViewController.view)
+        playerViewController.player!.play()
+
+
+       /* self.player.replaceVideo(url1!)
         scrlAdvertiseView.addSubview(self.player.displayView)
         self.player.play()
         self.player.backgroundMode = .proceed
@@ -163,7 +172,7 @@ class MyLumiProfileVC: UIViewController {
             make.left.equalTo(strongSelf.snp.left)
             make.right.equalTo(strongSelf.snp.right)
             //make.height.equalTo(strongSelf.snp.width).multipliedBy(3.0/4.0) // you can 9.0/16.0
-        }
+        }*/
 
     }
     

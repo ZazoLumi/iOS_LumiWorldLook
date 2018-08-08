@@ -60,6 +60,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     let h = UIScreen.main.bounds.height
     let w = UIScreen.main.bounds.width
     var submitButton : UIButton!
+    var mediaZoom: MediaZoom?
 
     @IBOutlet weak var btnCloseAdv: UIButton!
     //var player:AVPlayer?
@@ -99,6 +100,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         viewAdvTimer.backgroundColor =  dimAlphaRedColor
         setupInitialConstraints()
         (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .all
+        
 
     }
     var keyboardHeight = 0
@@ -207,6 +209,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                 if let image = response.result.value {
                     let scalImg = image.af_imageScaled(to: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
                     imageView.image = scalImg
+                    self.mediaZoom = MediaZoom(with: imageView, animationTime: 0.5, useBlur: true)
                     self.runTimer()
                     self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
                 }
@@ -337,6 +340,14 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     
 
     @IBAction func onBtnFullScreenTapped(_ sender: Any) {
+        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
+            view.addSubview(mediaZoom!)
+            mediaZoom?.show()
+        }
+        else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
+            let value = UIInterfaceOrientation.landscapeLeft.rawValue
+            UIDevice.current.setValue(value, forKey: "orientation")
+        }
     }
     
     @IBAction func onBtnSaveFileTapped(_ sender: Any) {
