@@ -21,7 +21,7 @@ target 'LumiWorld' do
   pod 'HPGrowingTextView'
   pod 'ActionSheetPicker-3.0'
   pod 'Zip', '~> 1.1'
-  pod 'VGPlayer', '~> 0.2.0'
+  #  pod 'VGPlayer', '~> 0.2.0'
   pod 'TNSlider'
 
   # Pods for LumiWorld

@@ -21,15 +21,18 @@ class advCommentCell: UITableViewCell {
     @IBOutlet var lblMessageTime: UILabel!
     override func layoutSubviews() {
         super.layoutSubviews()
-        //        self.imgLumineerProfile.layer.cornerRadius = self.imgLumineerProfile.bounds.size.height/2
-        //        self.imgLumineerProfile.layer.borderWidth = 0.5;
-        //        self.imgLumineerProfile.layer.borderColor = UIColor.lumiGreen?.cgColor;
+                self.imgLumineerProfile.layer.cornerRadius = self.imgLumineerProfile.bounds.size.height/2
+                self.imgLumineerProfile.layer.borderWidth = 0.5;
+                self.imgLumineerProfile.layer.borderColor = UIColor.lumiGreen?.cgColor;
     }
 }
 class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TNSliderDelegate,UITextViewDelegate {
     
-
-      var inputTV: UITextView!
+    @IBOutlet weak var constTopViewTop: NSLayoutConstraint!
+    
+    @IBOutlet weak var constAdsOperationHeight: NSLayoutConstraint!
+    @IBOutlet weak var viewTopItems: UIView!
+    var inputTV: UITextView!
       var bottomView: UIView!
     
     @IBOutlet weak var tblCommentData: UITableView!
@@ -65,7 +68,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     @IBOutlet weak var btnCloseAdv: UIButton!
     //var player:AVPlayer?
    // var playerItem:AVPlayerItem?
-    fileprivate var player = Player()
+    //fileprivate var player = Player()
+    var playerView: AGVideoPlayerView!
     let timeFormatter = NumberFormatter()
     
     var audioPlayer: AVAudioPlayer?     // holds an audio player instance. This is an optional!
@@ -80,9 +84,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     fileprivate var documentInteractionController = UIDocumentInteractionController()
 
     deinit {
-        self.player.willMove(toParentViewController: self)
-        self.player.view.removeFromSuperview()
-        self.player.removeFromParentViewController()
+        self.playerView.removeFromSuperview()
     }
 
     func canRotate() -> Void {}
@@ -230,7 +232,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                 }
             
-            self.player.playerDelegate = self
+            /*self.player.playerDelegate = self
             self.player.playbackDelegate = self
             self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
             
@@ -242,13 +244,25 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             
             self.player.playbackLoops = true
             
-            self.player.fillMode = PlayerFillMode.resizeAspectFit.avFoundationType
+            self.player.fillMode = PlayerFillMode.resizeAspectFit.avFoundationType*/
+               playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)))
+                playerView.videoUrl = urlOriginalImage!
+                //        playerView.previewImageUrl = UIImage.init()
+                playerView.shouldAutoplay = true
+                playerView.shouldAutoRepeat = false
+                playerView.showsCustomControls = false
+                playerView.shouldSwitchToFullscreen = true
+                playerView.playbackDelegate = self;
+                self.viewAdvContent.addSubview(self.playerView)
+                playerView.translatesAutoresizingMaskIntoConstraints = false
+                let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
+                NSLayoutConstraint.activate(attributes.map {
+                    NSLayoutConstraint(item: playerView, attribute: $0, relatedBy: .equal, toItem: playerView.superview, attribute: $0, multiplier: 1, constant: 0)
+                })
+
             }
 
-//            let tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGestureRecognizer(_:)))
-//            tapGestureRecognizer.numberOfTapsRequired = 1
-//           // self.player.view.addGestureRecognizer(tapGestureRecognizer)
-        }
+    }
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
             self.imgAdvType.image = UIImage(named:"Asset104")
             timeFormatter.minimumIntegerDigits = 2
@@ -275,11 +289,16 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         }
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
             constAdvContainerHeight.constant = 60
-            totalHeight -= 180
+            totalHeight -= 160
         }
         if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
-            constCommentsHeight.constant = 160
-            totalHeight += 160
+            let commentsHeight = (Int(UIScreen.main.bounds.height) - totalHeight - 140)
+            var setHeights = commentsHeight
+            if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count * 54 < commentsHeight{
+                setHeights = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count * 54
+            }
+            constCommentsHeight.constant = CGFloat(setHeights)
+            totalHeight += setHeights
         }
         setupBottomView()
         let yPos = (Int(UIScreen.main.bounds.height) - totalHeight)/2
@@ -291,7 +310,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let seconds : Int64 = Int64(value)
         let targetTime:CMTime = CMTimeMake(seconds, 1)
         
-        player.seek(to: targetTime) { (result) in
+        self.playerView.player.seek(to: targetTime) { (result) in
             self.player.playFromCurrentTime()
         }
         return String(format: "%.2f%%", value)
@@ -339,14 +358,42 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     
 
-    @IBAction func onBtnFullScreenTapped(_ sender: Any) {
+    @IBAction func onBtnFullScreenTapped(_ sender: UIButton) {
         if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
             view.addSubview(mediaZoom!)
             mediaZoom?.show()
         }
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
-            let value = UIInterfaceOrientation.landscapeLeft.rawValue
-            UIDevice.current.setValue(value, forKey: "orientation")
+            if sender.isSelected {
+                self.player.togglePlayer()
+                constTopViewTop.constant = 0
+                constCommentsHeight.constant = 0
+                constAdsOperationHeight.constant = 0
+                constFileProgressHeight.constant = 0
+//                sender.isSelected = false
+//                let value = UIInterfaceOrientation.portrait.rawValue
+//                UIDevice.current.setValue(value, forKey: "orientation")
+               // self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
+            }
+            else {
+                constTopViewTop.constant = 0
+                constCommentsHeight.constant = 0
+                self.player.togglePlayer()
+
+                //viewFileProgress.frame =
+                viewFileProgress.rotate(angle: 90)
+                viewAddiotionalOperation.rotate(angle: 90)
+//                constAdsOperationHeight.constant = 0
+//                constFileProgressHeight.constant = 0
+                sender.isSelected = true
+//                let value = UIInterfaceOrientation.landscapeLeft.rawValue
+//                UIDevice.current.setValue(value, forKey: "orientation")
+//                constTopViewTop.constant = -80
+               // self.player.view.frame = CGRect(x: Int(self.player.view.frame.origin.x), y: Int(self.player.view.frame.origin.y), width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
+                // constAdvContainerHeight.constant = 250
+                
+
+            }
         }
     }
     
@@ -367,9 +414,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let hud = MBProgressHUD.showAdded(to: self.view!, animated: true)
         hud.mode = .text
         hud.label.text = NSLocalizedString(msgText, comment: "HUD message title")
-        hud.offset = CGPoint(x:20, y: super.view.height/2)// CGPoint(x: (super.view.width/2)-50, y: super.view.height/2)
+        hud.label.font = UIFont.init(name: "HelveticaNeue", size: 14)
+        hud.offset = CGPoint(x:0, y: super.view.height/2)// CGPoint(x: (super.view.width/2)-50, y: super.view.height/2)
         hud.hide(animated: true, afterDelay: 3.0)
-
     }
     @IBAction func onBtnReportTapped(_ sender: Any) {
     }
@@ -427,6 +474,11 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     if let image = response.result.value {
                         let scalImg = image.af_imageScaled(to: CGSize(width:self.imgLumineerProfile.frame.size.width, height: self.imgLumineerProfile.frame.size.height))
                         cell.imgLumineerProfile.image = scalImg
+                         cell.imgLumineerProfile?.clipsToBounds = true;
+//                        cell.imgLumineerProfile.contentMode = .scaleAspectFit
+//                        cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
+//
+
                     }
                 }
             }
@@ -671,21 +723,63 @@ extension AdvertiseVC {
             break
         }
     }
-    
-    
 }
 
 // MARK: - PlayerDelegate
 
-extension AdvertiseVC:PlayerDelegate {
-    func playerReady(_ player: Player) {
-        fileProgressSlider!.maximum = Float(self.player.maximumDuration)
+//extension AdvertiseVC:PlayerDelegate {
+//    func playerReady(_ player: Player) {
+//        fileProgressSlider!.maximum = Float(self.player.maximumDuration)
+//        fileProgressSlider!.continuous = false
+//        fileProgressSlider!.tintColor = UIColor.green
+//        hmsFrom(seconds: Int(self.player.maximumDuration)) { hours, minutes, seconds in
+//            self.nhours = self.getStringFrom(seconds: hours)
+//             self.nminutes = self.getStringFrom(seconds: minutes)
+//             self.nseconds = self.getStringFrom(seconds: seconds)
+//
+//            if hours != 0 {
+//                self.lblFileDuration.text = "00:00:00 / \(self.nhours):\(self.nminutes):\(self.nseconds)"
+//            }
+//            else {
+//                self.lblFileDuration.text = "00:00 / \(self.nminutes):\(self.nseconds)"
+//            }
+////            print("\(self.nhours):\(minutes):\(seconds)")
+//        }
+//        self.player.playFromBeginning()
+//        runTimer()
+//        self.viewAdvContent.bringSubview(toFront: viewAdvTimer)
+//
+//    }
+//
+//    func playerPlaybackStateDidChange(_ player: Player) {
+//    }
+//
+//    func playerBufferingStateDidChange(_ player: Player) {
+//    }
+//    func playerBufferTimeDidChange(_ bufferTime: Double) {
+//
+//    }
+//
+//}
+
+// MARK: - PlayerPlaybackDelegate
+
+extension AdvertiseVC:AGPlayerDelegate {
+    func playerReady(_ playerVC: AVPlayerViewController) {
+        var totalSeconds = 0
+        if let duration = playerVC.player?.currentItem?.asset.duration {
+            totalSeconds = CMTimeGetSeconds(duration)
+            fileProgressSlider!.maximum = Float(totalSeconds)
+        }
+
+        
+
         fileProgressSlider!.continuous = false
         fileProgressSlider!.tintColor = UIColor.green
-        hmsFrom(seconds: Int(self.player.maximumDuration)) { hours, minutes, seconds in
+        hmsFrom(seconds: Int(playerVC.player?.currentItem!.asset.duration)) { hours, minutes, seconds in
             self.nhours = self.getStringFrom(seconds: hours)
-             self.nminutes = self.getStringFrom(seconds: minutes)
-             self.nseconds = self.getStringFrom(seconds: seconds)
+            self.nminutes = self.getStringFrom(seconds: minutes)
+            self.nseconds = self.getStringFrom(seconds: seconds)
             
             if hours != 0 {
                 self.lblFileDuration.text = "00:00:00 / \(self.nhours):\(self.nminutes):\(self.nseconds)"
@@ -693,32 +787,19 @@ extension AdvertiseVC:PlayerDelegate {
             else {
                 self.lblFileDuration.text = "00:00 / \(self.nminutes):\(self.nseconds)"
             }
-//            print("\(self.nhours):\(minutes):\(seconds)")
+            //            print("\(self.nhours):\(minutes):\(seconds)")
         }
-        self.player.playFromBeginning()
+        self.playerView.player?.playFromBeginning()
         runTimer()
         self.viewAdvContent.bringSubview(toFront: viewAdvTimer)
-
-    }
-    
-    func playerPlaybackStateDidChange(_ player: Player) {
-    }
-    
-    func playerBufferingStateDidChange(_ player: Player) {
-    }
-    func playerBufferTimeDidChange(_ bufferTime: Double) {
         
+
     }
     
-}
-
-// MARK: - PlayerPlaybackDelegate
-
-extension AdvertiseVC:PlayerPlaybackDelegate {
-    
-    func playerCurrentTimeDidChange(_ player: Player) {
-        self.fileProgressSlider!.value = Float(self.player.currentTime)
-        hmsFrom(seconds: Int(self.player.currentTime)) { hours, minutes, seconds in
+    func playerCurrentTimeDidChange(_ playerVC: AVPlayerViewController) {
+        self.fileProgressSlider!.value = Float(CMTimeGetSeconds((playerVC.player?.currentTime())!))
+            //Float(playerVC.player?.currentTime)
+        hmsFrom(seconds: Int(CMTimeGetSeconds((playerVC.player?.currentTime())!))) { hours, minutes, seconds in
             let newhours = self.getStringFrom(seconds: hours)
             let minutes = self.getStringFrom(seconds: minutes)
             let seconds = self.getStringFrom(seconds: seconds)
@@ -730,20 +811,50 @@ extension AdvertiseVC:PlayerPlaybackDelegate {
                 self.lblFileDuration.text = "\(minutes):\(seconds) / \(self.nminutes):\(self.nseconds)"
             }
         }
+
     }
     
-    func playerPlaybackWillStartFromBeginning(_ player: Player) {
+    func playerPlaybackDidEnd(_ playerVC: AVPlayerViewController) {
+        playerVC.player?.pause()
     }
     
-    func playerPlaybackDidEnd(_ player: Player) {
-        self.player.pause()
-    }
-    
-    func playerPlaybackWillLoop(_ player: Player) {
-        self.player.stop()
+    func playerPlaybackWillLoop(_ playerVC: AVPlayerViewController) {
+        playerVC.player?.pause()
         btnPlayPause.isSelected = true
         onBtnCloseAdvertise((Any).self)
+
     }
+    
+    
+//    func playerCurrentTimeDidChange(_ player: Player) {
+//        self.fileProgressSlider!.value = Float(self.player.currentTime)
+//        hmsFrom(seconds: Int(self.player.currentTime)) { hours, minutes, seconds in
+//            let newhours = self.getStringFrom(seconds: hours)
+//            let minutes = self.getStringFrom(seconds: minutes)
+//            let seconds = self.getStringFrom(seconds: seconds)
+//
+//            if hours != 0 {
+//                self.lblFileDuration.text = "\(newhours):\(minutes):\(seconds) / \(self.nhours):\(self.nminutes):\(self.nseconds)"
+//            }
+//            else {
+//                self.lblFileDuration.text = "\(minutes):\(seconds) / \(self.nminutes):\(self.nseconds)"
+//            }
+//        }
+//    }
+//
+//    func playerPlaybackWillStartFromBeginning(_ player: Player) {
+//    }
+//
+//    func playerPlaybackDidEnd(_ player: Player) {
+//        self.player.pause()
+//    }
+//
+//    func playerPlaybackWillLoop(_ player: Player) {
+//        self.player.stop()
+//        btnPlayPause.isSelected = true
+//        onBtnCloseAdvertise((Any).self)
+//    }
+    
     
 }
     extension AdvertiseVC: UIDocumentInteractionControllerDelegate {
@@ -753,5 +864,17 @@ extension AdvertiseVC:PlayerPlaybackDelegate {
         }
         
 }
-
+extension UIView {
+    
+    /**
+     Rotate a view by specified degrees
+     
+     - parameter angle: angle in degrees
+     */
+    func rotate(angle: CGFloat) {
+        let radians = angle / 180.0 * CGFloat.pi
+        self.transform = CGAffineTransform(rotationAngle: radians)
+    }
+    
+}
 

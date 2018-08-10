@@ -298,6 +298,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
                   let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                     hud.mode = .text
                     hud.label.text = NSLocalizedString("Rating added successfully", comment: "HUD message title")
+                    hud.label.font = UIFont.init(name: "HelveticaNeue", size: 14)
                     hud.offset = self.view.center
                     hud.hide(animated: true, afterDelay: 3.0)
                 }

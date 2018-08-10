@@ -10,11 +10,9 @@ import UIKit
 import Alamofire
 import  RealmSwift
 import AVKit
-import VGPlayer
-import SnapKit
+
 
 class MyLumiProfileVC: UIViewController {
-    var player = VGPlayer()
     var url1 : URL?
     var objInviteFriendVC : inviteFriendVC!
     var objSendMessageTo : sendMessageTo!
@@ -37,23 +35,25 @@ class MyLumiProfileVC: UIViewController {
         self.navigationItem.title = GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!.uppercased() + "'S LUMI PROFILE"
         self.url1 = URL(fileURLWithPath: Bundle.main.path(forResource: "LumiWorldWelcom", ofType: "mp4")!)
         // Do any additional setup after loading the view.
-        playVideo()
         setupBottomScrollableUI()
+        playVideo()
 
     }
     override func viewWillAppear(_ animated: Bool) {
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         setupProfileData()
+
         //self.player.replaceVideo(url1!)
-        self.player.play()
+    }
+    override func viewDidAppear(_ animated: Bool) {
 
     }
     override func viewWillDisappear(_ animated: Bool) {
 //        for view in scrlAdvertiseView.subviews {
 //            view.removeSubviews()
 //        }
-        self.player.pause()
+
     }
     
     func setupProfileData() {
@@ -149,14 +149,33 @@ class MyLumiProfileVC: UIViewController {
         self.objInviteFriendVC.didMove(toParentViewController: self)
     }
     private func playVideo() {
+        let playerView: AGVideoPlayerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y:0, width: scrlAdvertiseView.frame.size.width, height: scrlAdvertiseView.frame.size.height))
+        playerView.videoUrl = url1!
+//        playerView.previewImageUrl = UIImage.init()
+        playerView.shouldAutoplay = true
+        playerView.shouldAutoRepeat = false
+        playerView.showsCustomControls = false
+        playerView.shouldSwitchToFullscreen = true
+        scrlAdvertiseView.addSubview(playerView)
+        playerView.translatesAutoresizingMaskIntoConstraints = false
+        let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
+        NSLayoutConstraint.activate(attributes.map {
+            NSLayoutConstraint(item: playerView, attribute: $0, relatedBy: .equal, toItem: playerView.superview, attribute: $0, multiplier: 1, constant: 0)
+        })
+
+
         
-        let player = AVPlayer(url: url1!)
+        
+        /*let player = AVPlayer(url: url1!)
         let playerViewController = AVPlayerViewController()
         playerViewController.view.frame = CGRect(x: 0, y:0, width: scrlAdvertiseView.frame.size.width, height: scrlAdvertiseView.frame.size.height)
         playerViewController.player = player
         scrlAdvertiseView.addSubview(playerViewController.view)
         playerViewController.player!.play()
-
+        if !playerViewController.showsPlaybackControls {
+            playerViewController.showsPlaybackControls = true
+        }
+*/
 
        /* self.player.replaceVideo(url1!)
         scrlAdvertiseView.addSubview(self.player.displayView)
@@ -229,33 +248,3 @@ class MyLumiProfileVC: UIViewController {
 
 }
 
-extension MyLumiProfileVC: VGPlayerDelegate {
-    func vgPlayer(_ player: VGPlayer, playerFailed error: VGPlayerError) {
-        print(error)
-    }
-    func vgPlayer(_ player: VGPlayer, stateDidChange state: VGPlayerState) {
-        print("player State ",state)
-    }
-    func vgPlayer(_ player: VGPlayer, bufferStateDidChange state: VGPlayerBufferstate) {
-        print("buffer State", state)
-    }
-    
-}
-
-extension MyLumiProfileVC: VGPlayerViewDelegate {
-    
-    func vgPlayerView(_ playerView: VGPlayerView, willFullscreen fullscreen: Bool) {
-        
-    }
-    func vgPlayerView(didTappedClose playerView: VGPlayerView) {
-        if playerView.isFullScreen {
-           // playerView.exitFullscreen()
-        } else {
-          //  self.navigationController?.popViewController(animated: true)
-        }
-        
-    }
-    func vgPlayerView(didDisplayControl playerView: VGPlayerView) {
-      //  UIApplication.shared.setStatusBarHidden(!playerView.isDisplayControl, with: .fade)
-    }
-}

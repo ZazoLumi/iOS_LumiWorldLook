@@ -464,6 +464,10 @@ open class Player: UIViewController {
     open func playerLayer() -> AVPlayerLayer? {
         return self._playerView.playerLayer
     }
+    
+    open func togglePlayer() {
+        self._playerView.togglePlayback()
+    }
 }
 
 // MARK: - loading funcs
@@ -861,5 +865,49 @@ internal class PlayerView: UIView {
         self.player?.pause()
         self.player = nil
     }
+    fileprivate var hasGoneFullScreen = false
+    fileprivate var isPlaying = false
+    fileprivate var originalFrame = CGRect.zero
     
+   open func togglePlayback() {
+        if !hasGoneFullScreen {
+            originalFrame = frame
+            hasGoneFullScreen = true
+        }
+        
+        isPlaying = !isPlaying
+        if isPlaying {
+            playerLayer.goFullscreen()
+            playerLayer.player?.play()
+        } else {
+            playerLayer.player?.pause()
+            playerLayer.minimizeToFrame(originalFrame)
+        }
+    }
+
+}
+extension CGAffineTransform {
+    
+    static let ninetyDegreeRotation = CGAffineTransform(rotationAngle: CGFloat(M_PI / 2))
+}
+
+extension AVPlayerLayer {
+    
+    var fullScreenAnimationDuration: TimeInterval {
+        return 0.15
+    }
+    
+    func minimizeToFrame(_ frame: CGRect) {
+        UIView.animate(withDuration: fullScreenAnimationDuration) {
+            self.setAffineTransform(.identity)
+            self.frame = frame
+        }
+    }
+    
+    func goFullscreen() {
+        UIView.animate(withDuration: fullScreenAnimationDuration) {
+            self.setAffineTransform(.ninetyDegreeRotation)
+            self.frame = UIScreen.main.bounds
+        }
+    }
 }

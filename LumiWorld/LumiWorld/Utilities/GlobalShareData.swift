@@ -241,7 +241,6 @@ class GlobalShareData {
                     hud.mode = .text
                     hud.label.text = NSLocalizedString("All messages are deleted successfully.", comment: "HUD message title")
                     hud.label.font = UIFont.init(name: "HelveticaNeue", size: 14)
-
                     hud.offset = CGPoint(x: 0.0, y: 120)
                     hud.hide(animated: true, afterDelay: 2.0)
 
