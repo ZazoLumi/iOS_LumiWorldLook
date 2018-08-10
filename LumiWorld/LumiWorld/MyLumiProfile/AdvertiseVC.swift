@@ -188,6 +188,10 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             let count = Int(GlobalShareData.sharedGlobal.objCurrentAdv.likeCount)
             btnLike.setTitle("\(count)", for: .normal)
             btnLike.setTitle("\(count)", for: .selected)
+            if GlobalShareData.sharedGlobal.objCurrentAdv.isAdsLiked {
+                btnLike.isEnabled = false
+                btnLike.isSelected = true
+            }
         }
 
         if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
@@ -433,6 +437,11 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let objAdvData = AdvertiseData()
         objAdvData.setLikeAdvertiseByLumi(param: ["isLike":!sender.isSelected as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]) { (success) in
             if success {
+                var count = Int(GlobalShareData.sharedGlobal.objCurrentAdv.likeCount)
+                count = count + 1
+                self.btnLike.setTitle("\(count)", for: .normal)
+                self.btnLike.setTitle("\(count)", for: .selected)
+
             }
         }
 

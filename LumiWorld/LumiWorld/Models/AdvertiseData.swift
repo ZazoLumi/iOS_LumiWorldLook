@@ -55,6 +55,7 @@ class AdvertiseData: Object {
     @objc dynamic var airingAllotment: String? = nil
     @objc dynamic var isFileDownloaded = false
     @objc dynamic var isAdsSaved = false
+    @objc dynamic var isAdsLiked = false
 
     var advComments = List<AdvComments>()
 
@@ -143,6 +144,7 @@ class AdvertiseData: Object {
                                 let filePath = recordExist[0].adFilePath
                                 newAdvertiseData.adFilePath = filePath
                                 newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
+                                newAdvertiseData.isAdsLiked = recordExist[0].isAdsLiked
                                 try! realm.write {
                                     realm.add(newAdvertiseData, update: true)
                                 }
@@ -185,6 +187,7 @@ class AdvertiseData: Object {
                         if recordExist[0].isFileDownloaded {
                             newAdvertiseData.isFileDownloaded = true
                             newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
+                            newAdvertiseData.isAdsLiked = recordExist[0].isAdsLiked
                             newAdvertiseData.adFilePath = recordExist[0].adFilePath
                         }
                         try! realm.write {
@@ -242,7 +245,7 @@ class AdvertiseData: Object {
         newAdvertiseData.airingAllotment = aObject["airingAllotment"].stringValue
         newAdvertiseData.likeCount = aObject["likeCount"].doubleValue
         newAdvertiseData.isAdsSaved = false
-
+        newAdvertiseData.isAdsLiked = false
         let commnets = aObject["lumiAdCommentList"].array
         let realm = try! Realm()
         for cObject in commnets! {

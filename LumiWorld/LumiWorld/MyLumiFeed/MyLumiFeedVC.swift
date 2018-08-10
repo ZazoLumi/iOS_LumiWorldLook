@@ -313,7 +313,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         
         if !isFiltering() && objCellData["type"] as? String == "adv" {
             let objAdv = objCellData["message"] as? AdvertiseData
-
+            GlobalShareData.sharedGlobal.isVideoPlaying = false
             GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
             let realm = try! Realm()
             let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv?.lumineerId.int ?? Int.self)
