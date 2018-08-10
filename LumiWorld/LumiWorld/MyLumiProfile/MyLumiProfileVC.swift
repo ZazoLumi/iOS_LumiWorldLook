@@ -28,6 +28,7 @@ class MyLumiProfileVC: UIViewController {
 
     @IBOutlet weak var lblDisplayName: UILabel!
     @IBOutlet weak var imgProfilePic: UIImageView!
+    var playerView: AGVideoPlayerView! = nil
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,16 +44,15 @@ class MyLumiProfileVC: UIViewController {
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         setupProfileData()
-
-        //self.player.replaceVideo(url1!)
+        playerView.playerController.player?.play()
+        playerView.isMuted = false //Mute the video.
     }
     override func viewDidAppear(_ animated: Bool) {
 
     }
     override func viewWillDisappear(_ animated: Bool) {
-//        for view in scrlAdvertiseView.subviews {
-//            view.removeSubviews()
-//        }
+        playerView.playerController.player?.pause()
+        playerView.isMuted = true //Mute the video.
 
     }
     
@@ -149,7 +149,7 @@ class MyLumiProfileVC: UIViewController {
         self.objInviteFriendVC.didMove(toParentViewController: self)
     }
     private func playVideo() {
-        let playerView: AGVideoPlayerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y:0, width: scrlAdvertiseView.frame.size.width, height: scrlAdvertiseView.frame.size.height))
+        playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y:0, width: scrlAdvertiseView.frame.size.width, height: scrlAdvertiseView.frame.size.height))
         playerView.videoUrl = url1!
 //        playerView.previewImageUrl = UIImage.init()
         playerView.shouldAutoplay = true
@@ -163,35 +163,6 @@ class MyLumiProfileVC: UIViewController {
             NSLayoutConstraint(item: playerView, attribute: $0, relatedBy: .equal, toItem: playerView.superview, attribute: $0, multiplier: 1, constant: 0)
         })
 
-
-        
-        
-        /*let player = AVPlayer(url: url1!)
-        let playerViewController = AVPlayerViewController()
-        playerViewController.view.frame = CGRect(x: 0, y:0, width: scrlAdvertiseView.frame.size.width, height: scrlAdvertiseView.frame.size.height)
-        playerViewController.player = player
-        scrlAdvertiseView.addSubview(playerViewController.view)
-        playerViewController.player!.play()
-        if !playerViewController.showsPlaybackControls {
-            playerViewController.showsPlaybackControls = true
-        }
-*/
-
-       /* self.player.replaceVideo(url1!)
-        scrlAdvertiseView.addSubview(self.player.displayView)
-        self.player.play()
-        self.player.backgroundMode = .proceed
-        self.player.delegate = self
-        self.player.displayView.delegate = self
-        self.player.displayView.titleLabel.text = ""
-        self.player.displayView.snp.makeConstraints { [weak self] (make) in
-            guard let strongSelf = scrlAdvertiseView else { return }
-            make.top.equalTo(strongSelf.snp.top)
-            make.bottom.equalTo(strongSelf.snp.bottom)
-            make.left.equalTo(strongSelf.snp.left)
-            make.right.equalTo(strongSelf.snp.right)
-            //make.height.equalTo(strongSelf.snp.width).multipliedBy(3.0/4.0) // you can 9.0/16.0
-        }*/
 
     }
     

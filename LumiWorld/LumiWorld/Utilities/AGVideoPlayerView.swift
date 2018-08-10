@@ -36,6 +36,7 @@ class AGVideoPlayerView: UIView {
         }
     }
     open weak var playbackDelegate: AGPlayerDelegate?
+    open var playerController : AVPlayerViewController = AVPlayerViewController()
 
     //Automatically play the video when its view is visible on the screen.
     var shouldAutoplay: Bool = false {
@@ -91,7 +92,6 @@ class AGVideoPlayerView: UIView {
     }
     
     //MARK: Private variables
-    open let player = AVPlayerViewController()
     fileprivate var isPlaying: Bool = false
     fileprivate var videoAsset: AVURLAsset?
     fileprivate var displayLink: CADisplayLink?
@@ -112,16 +112,11 @@ class AGVideoPlayerView: UIView {
     required override init(frame: CGRect) {
         super.init(frame: frame)
         setUpView()
-//        self.playerLayer.backgroundColor = UIColor.black.cgColor
-//        self.playerLayer.fillMode = PlayerFillMode.resizeAspectFit.avFoundationType
-
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setUpView()
-//        self.playerLayer.backgroundColor = UIColor.black.cgColor
-//        self.playerLayer.fillMode = PlayerFillMode.resizeAspectFit.avFoundationType
 
     }
     
@@ -137,37 +132,6 @@ class AGVideoPlayerView: UIView {
         }
     }
     
-//    // MARK: - properties
-//
-//    override class var layerClass: AnyClass {
-//        get {
-//            return AVPlayerLayer.self
-//        }
-//    }
-//
-//    var playerLayer: AVPlayerLayer {
-//        get {
-//            return self.layer as! AVPlayerLayer
-//        }
-//    }
-//
-//    var player: AVPlayer? {
-//        get {
-//            return self.playerLayer.player
-//        }
-//        set {
-//            self.playerLayer.player = newValue
-//        }
-//    }
-//
-//    var fillMode: String {
-//        get {
-//            return self.playerLayer.videoGravity.rawValue
-//        }
-//        set {
-//            self.playerLayer.videoGravity = AVLayerVideoGravity(rawValue: newValue)
-//        }
-//    }
 }
 
 //MARK: View configuration
@@ -180,10 +144,7 @@ extension AGVideoPlayerView {
     
     private func addVideoPlayerView() {
         playerController.view.frame = self.bounds
-       // playerController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        //playerController.contentOverlayView?.contentMode = kCAGravityResizeAspectFill
-        playerController.videoGravity = AVLayerVideoGravity.resizeAspectFill.rawValue
-
+        playerController.videoGravity = AVLayerVideoGravity.resizeAspect.rawValue
         playerController.showsPlaybackControls = false
         self.insertSubview(playerController.view, at: 0)
     }
@@ -275,7 +236,11 @@ extension AGVideoPlayerView {
         let player = AVPlayer(playerItem: item)
         playerController.player = player
         addPlayerObservers()
-        self.playbackDelegate?.playerReady(playerController)
+        DispatchQueue.main.asyncAfter(deadline: .now() +
+        0.3) {
+            self.playbackDelegate?.playerReady(self.playerController)
+        }
+
 
     }
     
@@ -297,17 +262,6 @@ extension AGVideoPlayerView {
             self.previewImageView.isHidden = true
             self.playerController.player?.play()
         }
-    
-
-//        videoAsset?.loadValuesAsynchronously(forKeys: ["playable", "tracks", "duration"], completionHandler: { [weak self] _ in
-//            DispatchQueue.main.async {
-//                if self?.isPlaying == true {
-//                    self?.playIcon.isHidden = true
-//                    self?.previewImageView.isHidden = true
-//                    self?.playerController.player?.play()
-//                }
-//            }
-//        })
     }
     
     fileprivate func pause() {
@@ -321,8 +275,8 @@ extension AGVideoPlayerView {
     @objc fileprivate func itemDidFinishPlaying() {
         if isPlaying {
             playerController.player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
-            playerController.player?.play()
-self.playbackDelegate?.playerPlaybackWillLoop(playerController)
+            //playerController.player?.play()
+            self.playbackDelegate?.playerPlaybackWillLoop(playerController)
         }
     }
 }
@@ -357,6 +311,8 @@ extension AGVideoPlayerView {
             if isFullscreen != fullscreen {
                 isFullscreen = fullscreen
                 NotificationCenter.default.post(name: .playerDidChangeFullscreenMode, object: isFullscreen)
+                playerController.player?.play()
+
             }
         default:
             break
@@ -367,6 +323,7 @@ extension AGVideoPlayerView {
 //MARK: Device orientation observing
 extension AGVideoPlayerView {
     @objc fileprivate func deviceOrientationDidChange(_ notification: Notification) {
+        self.playerController.player?.play()
         if isFullscreen || !isVisible() { return }
         if let orientation = (notification.object as? UIDevice)?.orientation, orientation == .landscapeLeft || orientation == .landscapeRight {
             playerController.forceFullScreenMode()
@@ -386,14 +343,17 @@ extension AGVideoPlayerView {
 extension AVPlayerViewController {
 
     func forceFullScreenMode() {
-        let selectorName : String = {
-            if #available(iOS 11, *) {
+        let selectorName: String = {
+            if #available(iOS 11.3, *) {
+                return "_transitionToFullScreenAnimated:interactive:completionHandler:"
+            } else if #available(iOS 11, *) {
                 return "_transitionToFullScreenAnimated:completionHandler:"
             } else {
                 return "_transitionToFullScreenViewControllerAnimated:completionHandler:"
             }
         }()
         let selectorToForceFullScreenMode = NSSelectorFromString(selectorName)
+        
         if self.responds(to: selectorToForceFullScreenMode) {
             self.perform(selectorToForceFullScreenMode, with: true, with: nil)
         }

@@ -71,6 +71,7 @@ class GlobalShareData {
     // Now Global.sharedGlobal is your singleton, no need to use nested or other classes
     static let sharedGlobal = GlobalShareData()
     var isContactPicked = false
+    var isVideoPlaying = false
     var userCellNumber: String! //for debugging
     var realmManager = RealmManager()
     var objCurrentLumineer : LumineerList!

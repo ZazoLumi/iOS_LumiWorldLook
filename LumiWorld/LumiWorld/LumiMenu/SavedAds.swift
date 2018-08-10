@@ -127,6 +127,7 @@ class SavedAds: UIViewController, UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        GlobalShareData.sharedGlobal.isVideoPlaying = false
         var objCellData : [String : Any]!
             objCellData = aryActivityData[indexPath.row]
         

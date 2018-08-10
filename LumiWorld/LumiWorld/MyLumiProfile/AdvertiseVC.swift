@@ -84,7 +84,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     fileprivate var documentInteractionController = UIDocumentInteractionController()
 
     deinit {
-        self.playerView.removeFromSuperview()
+        //self.playerView.removeFromSuperview()
     }
 
     func canRotate() -> Void {}
@@ -101,9 +101,10 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let dimAlphaRedColor =  UIColor.lumiGreen?.withAlphaComponent(0.5)
         viewAdvTimer.backgroundColor =  dimAlphaRedColor
         setupInitialConstraints()
-        (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .all
-        
+        let value = UIInterfaceOrientation.portrait.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
 
+        
     }
     var keyboardHeight = 0
     @objc func keyboardWillShow(_ n: Notification?) {
@@ -167,7 +168,6 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         inputTV.text = ""
         inputTV.resignFirstResponder()
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .portrait
     }
     
     func displayAdvertiseContent() {
@@ -221,6 +221,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         }
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
             self.imgAdvType.image = UIImage(named:"Asset102")
+            GlobalShareData.sharedGlobal.isVideoPlaying = true
             let urlOriginalImage : URL!
             if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
                 if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
@@ -231,7 +232,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                 }
-            
+                self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
+
             /*self.player.playerDelegate = self
             self.player.playbackDelegate = self
             self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
@@ -246,13 +248,13 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             
             self.player.fillMode = PlayerFillMode.resizeAspectFit.avFoundationType*/
                playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)))
+                playerView.playbackDelegate = self;
                 playerView.videoUrl = urlOriginalImage!
                 //        playerView.previewImageUrl = UIImage.init()
                 playerView.shouldAutoplay = true
-                playerView.shouldAutoRepeat = false
+                playerView.shouldAutoRepeat = true
                 playerView.showsCustomControls = false
                 playerView.shouldSwitchToFullscreen = true
-                playerView.playbackDelegate = self;
                 self.viewAdvContent.addSubview(self.playerView)
                 playerView.translatesAutoresizingMaskIntoConstraints = false
                 let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
@@ -310,8 +312,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let seconds : Int64 = Int64(value)
         let targetTime:CMTime = CMTimeMake(seconds, 1)
         
-        self.playerView.player.seek(to: targetTime) { (result) in
-            self.player.playFromCurrentTime()
+        self.playerView.playerController.player?.seek(to: targetTime) { (result) in
+            //todo self.player.playFromCurrentTime()
         }
         return String(format: "%.2f%%", value)
     }
@@ -332,9 +334,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         btnPlayPause.isSelected = !sender.isSelected
         if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
             if btnPlayPause.isSelected {
-                self.player.pause()
+                self.playerView.playerController.player?.pause()
             }else {
-                self.player.playFromCurrentTime()
+                self.playerView.playerController.player?.play()
             }
         }
         else {
@@ -342,8 +344,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         }
     }
     override func viewDidAppear(_ animated: Bool) {
-       // self.view.frame = CGRect(x: 30, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width-60 , height:240);
-        displayAdvertiseContent()
+        if !GlobalShareData.sharedGlobal.isVideoPlaying {
+            displayAdvertiseContent() }
     }
     @IBAction func onBtnCommentsTapped(_ sender: UIButton) {
         btnComments.isSelected = !sender.isSelected
@@ -365,34 +367,24 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         }
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
             if sender.isSelected {
-                self.player.togglePlayer()
-                constTopViewTop.constant = 0
-                constCommentsHeight.constant = 0
-                constAdsOperationHeight.constant = 0
-                constFileProgressHeight.constant = 0
+//                self.player.togglePlayer()
+//                constTopViewTop.constant = 0
+//                constCommentsHeight.constant = 0
+//                constAdsOperationHeight.constant = 0
+//                constFileProgressHeight.constant = 0
 //                sender.isSelected = false
 //                let value = UIInterfaceOrientation.portrait.rawValue
 //                UIDevice.current.setValue(value, forKey: "orientation")
                // self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
             }
             else {
-                constTopViewTop.constant = 0
-                constCommentsHeight.constant = 0
-                self.player.togglePlayer()
-
-                //viewFileProgress.frame =
-                viewFileProgress.rotate(angle: 90)
-                viewAddiotionalOperation.rotate(angle: 90)
-//                constAdsOperationHeight.constant = 0
-//                constFileProgressHeight.constant = 0
-                sender.isSelected = true
-//                let value = UIInterfaceOrientation.landscapeLeft.rawValue
-//                UIDevice.current.setValue(value, forKey: "orientation")
-//                constTopViewTop.constant = -80
-               // self.player.view.frame = CGRect(x: Int(self.player.view.frame.origin.x), y: Int(self.player.view.frame.origin.y), width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
-                // constAdvContainerHeight.constant = 250
-                
-
+                NotificationCenter.default.post(name: .playerDidChangeFullscreenMode, object: true)
+                playerView.playerController.forceFullScreenMode()
+                (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .landscapeLeft
+                let value = UIInterfaceOrientation.landscapeLeft.rawValue
+                UIDevice.current.setValue(value, forKey: "orientation")
+                (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .portrait
+                playerView.playerController.player?.play()
             }
         }
     }
@@ -531,10 +523,11 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         self.parent?.view.backgroundColor = UIColor.white
         self.view.superview?.removeBlurEffect()
         removeAnimate()
+        GlobalShareData.sharedGlobal.isVideoPlaying = false
         if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
             audioPlayer?.stop()}
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
-            player.stop()
+            self.playerView.playerController.player?.pause()
         }
     }
     
@@ -702,81 +695,23 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
 
 }
 
-extension AdvertiseVC {
-    
-    @objc func handleTapGestureRecognizer(_ gestureRecognizer: UITapGestureRecognizer) {
-        switch (self.player.playbackState.rawValue) {
-        case PlaybackState.stopped.rawValue:
-            //self.player.playFromBeginning()
-            break
-        case PlaybackState.paused.rawValue:
-            self.player.playFromCurrentTime()
-            break
-        case PlaybackState.playing.rawValue:
-            self.player.pause()
-            break
-        case PlaybackState.failed.rawValue:
-            self.player.pause()
-            break
-        default:
-            self.player.pause()
-            break
-        }
-    }
-}
-
-// MARK: - PlayerDelegate
-
-//extension AdvertiseVC:PlayerDelegate {
-//    func playerReady(_ player: Player) {
-//        fileProgressSlider!.maximum = Float(self.player.maximumDuration)
-//        fileProgressSlider!.continuous = false
-//        fileProgressSlider!.tintColor = UIColor.green
-//        hmsFrom(seconds: Int(self.player.maximumDuration)) { hours, minutes, seconds in
-//            self.nhours = self.getStringFrom(seconds: hours)
-//             self.nminutes = self.getStringFrom(seconds: minutes)
-//             self.nseconds = self.getStringFrom(seconds: seconds)
-//
-//            if hours != 0 {
-//                self.lblFileDuration.text = "00:00:00 / \(self.nhours):\(self.nminutes):\(self.nseconds)"
-//            }
-//            else {
-//                self.lblFileDuration.text = "00:00 / \(self.nminutes):\(self.nseconds)"
-//            }
-////            print("\(self.nhours):\(minutes):\(seconds)")
-//        }
-//        self.player.playFromBeginning()
-//        runTimer()
-//        self.viewAdvContent.bringSubview(toFront: viewAdvTimer)
-//
-//    }
-//
-//    func playerPlaybackStateDidChange(_ player: Player) {
-//    }
-//
-//    func playerBufferingStateDidChange(_ player: Player) {
-//    }
-//    func playerBufferTimeDidChange(_ bufferTime: Double) {
-//
-//    }
-//
-//}
 
 // MARK: - PlayerPlaybackDelegate
 
 extension AdvertiseVC:AGPlayerDelegate {
     func playerReady(_ playerVC: AVPlayerViewController) {
         var totalSeconds = 0
+        
         if let duration = playerVC.player?.currentItem?.asset.duration {
-            totalSeconds = CMTimeGetSeconds(duration)
+            totalSeconds = Int(CMTimeGetSeconds(duration))
             fileProgressSlider!.maximum = Float(totalSeconds)
         }
 
-        
+        print("totalSeconds\(totalSeconds)")
 
         fileProgressSlider!.continuous = false
         fileProgressSlider!.tintColor = UIColor.green
-        hmsFrom(seconds: Int(playerVC.player?.currentItem!.asset.duration)) { hours, minutes, seconds in
+        hmsFrom(seconds: totalSeconds) { hours, minutes, seconds in
             self.nhours = self.getStringFrom(seconds: hours)
             self.nminutes = self.getStringFrom(seconds: minutes)
             self.nseconds = self.getStringFrom(seconds: seconds)
@@ -789,7 +724,7 @@ extension AdvertiseVC:AGPlayerDelegate {
             }
             //            print("\(self.nhours):\(minutes):\(seconds)")
         }
-        self.playerView.player?.playFromBeginning()
+        // todo self.playerView.playerController.player?.playFromBeginning()
         runTimer()
         self.viewAdvContent.bringSubview(toFront: viewAdvTimer)
         
@@ -822,7 +757,6 @@ extension AdvertiseVC:AGPlayerDelegate {
         playerVC.player?.pause()
         btnPlayPause.isSelected = true
         onBtnCloseAdvertise((Any).self)
-
     }
     
     
