@@ -75,7 +75,6 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         searchController.searchBar.scopeButtonTitles = []
         searchController.searchBar.delegate = self
         self.tableView.reloadData()
-        GlobalShareData.sharedGlobal.isVideoPlaying = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {

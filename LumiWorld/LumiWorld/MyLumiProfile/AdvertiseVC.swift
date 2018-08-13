@@ -189,7 +189,6 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             btnLike.setTitle("\(count)", for: .normal)
             btnLike.setTitle("\(count)", for: .selected)
             if GlobalShareData.sharedGlobal.objCurrentAdv.isAdsLiked {
-                btnLike.isEnabled = false
                 btnLike.isSelected = true
             }
         }
@@ -254,7 +253,6 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)))
                 playerView.playbackDelegate = self;
                 playerView.videoUrl = urlOriginalImage!
-                //        playerView.previewImageUrl = UIImage.init()
                 playerView.shouldAutoplay = true
                 playerView.shouldAutoRepeat = true
                 playerView.showsCustomControls = false
@@ -437,11 +435,26 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let objAdvData = AdvertiseData()
         objAdvData.setLikeAdvertiseByLumi(param: ["isLike":!sender.isSelected as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]) { (success) in
             if success {
-                var count = Int(GlobalShareData.sharedGlobal.objCurrentAdv.likeCount)
-                count = count + 1
-                self.btnLike.setTitle("\(count)", for: .normal)
-                self.btnLike.setTitle("\(count)", for: .selected)
-
+                DispatchQueue.main.async {
+                    let realm = try! Realm()
+                    let result = realm.objects(AdvertiseData.self).filter("advertiseId = \(GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId)")
+                    if result.count > 0 {
+                        var count = Int(GlobalShareData.sharedGlobal.objCurrentAdv.likeCount)
+                        try! realm.write {
+                            if result[0].isAdsLiked {
+                                result[0].isAdsLiked = false
+                                GlobalShareData.sharedGlobal.objCurrentAdv.isAdsLiked = false
+                                count = count - 1
+                            }else {
+                                result[0].isAdsLiked = true
+                                count = count + 1
+                                GlobalShareData.sharedGlobal.objCurrentAdv.isAdsLiked = true
+                            }
+                            }
+                        self.btnLike.setTitle("\(count)", for: .normal)
+                        self.btnLike.setTitle("\(count)", for: .selected)
+                    }
+                }
             }
         }
 

@@ -325,6 +325,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        GlobalShareData.sharedGlobal.isVideoPlaying = false
         var objLumineer : LumineerList!
         let arrayOfItems = self.aryCategory[(indexPath.section)].lumineerList
         var delaytime : Double = 0
