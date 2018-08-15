@@ -46,8 +46,8 @@ class MyLumiProfileVC: UIViewController {
         setupProfileData()
         playerView.playerController.player?.play()
         playerView.isMuted = false //Mute the video.
-        let value = UIInterfaceOrientation.portrait.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
+//        let value = UIInterfaceOrientation.portrait.rawValue
+//        UIDevice.current.setValue(value, forKey: "orientation")
 
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -157,7 +157,7 @@ class MyLumiProfileVC: UIViewController {
         playerView.shouldAutoplay = true
         playerView.shouldAutoRepeat = true
         playerView.showsCustomControls = false
-        playerView.shouldSwitchToFullscreen = true
+        playerView.shouldSwitchToFullscreen = false
         scrlAdvertiseView.addSubview(playerView)
         playerView.translatesAutoresizingMaskIntoConstraints = false
         let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]

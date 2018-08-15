@@ -61,6 +61,7 @@ class viewProfileImgVC: UIViewController {
         CameraHandler.shared.didFinishCapturingImage = { (image, imgUrl) in
             GlobalShareData.sharedGlobal.strImagePath = (imgUrl?.absoluteString)!
             self.imgProfile.image = image
+            self.navigationController?.popViewController()
         }
     }
 

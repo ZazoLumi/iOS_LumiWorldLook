@@ -326,6 +326,7 @@ extension AGVideoPlayerView {
         self.playerController.player?.play()
         if isFullscreen || !isVisible() { return }
         if let orientation = (notification.object as? UIDevice)?.orientation, orientation == .landscapeLeft || orientation == .landscapeRight {
+            hanldeOrientation()
             playerController.forceFullScreenMode()
             updateDeviceOrientation(with: orientation)
         }
@@ -335,6 +336,16 @@ extension AGVideoPlayerView {
         UIDevice.current.setValue(UIDeviceOrientation.portrait.rawValue, forKey: "orientation")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
             UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
+        })
+    }
+    
+   public func hanldeOrientation() {
+        playerController.forceFullScreenMode()
+        let value = UIInterfaceOrientation.landscapeRight.rawValue
+        UIDevice.current.setValue(UIDeviceOrientation.portrait.rawValue, forKey: "orientation")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+            UIDevice.current.setValue(value, forKey: "orientation")
+            self.playerController.player?.play()
         })
     }
 }

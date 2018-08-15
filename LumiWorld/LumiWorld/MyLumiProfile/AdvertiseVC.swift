@@ -184,14 +184,12 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             btnComments.setTitle("\(count) Comments", for: .normal)
             btnComments.setTitle("\(count) Comments", for: .selected)
         }
-        if GlobalShareData.sharedGlobal.objCurrentAdv.likeCount > 0 {
             let count = Int(GlobalShareData.sharedGlobal.objCurrentAdv.likeCount)
             btnLike.setTitle("\(count)", for: .normal)
             btnLike.setTitle("\(count)", for: .selected)
             if GlobalShareData.sharedGlobal.objCurrentAdv.isAdsLiked {
                 btnLike.isSelected = true
             }
-        }
 
         if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
             self.imgAdvType.image = UIImage(named:"Asset106")
@@ -220,7 +218,6 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                 }
             }
             }
-
         }
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
             self.imgAdvType.image = UIImage(named:"Asset102")
@@ -256,7 +253,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                 playerView.shouldAutoplay = true
                 playerView.shouldAutoRepeat = true
                 playerView.showsCustomControls = false
-                playerView.shouldSwitchToFullscreen = true
+                playerView.shouldSwitchToFullscreen = false
                 self.viewAdvContent.addSubview(self.playerView)
                 playerView.translatesAutoresizingMaskIntoConstraints = false
                 let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
@@ -368,26 +365,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             mediaZoom?.show()
         }
         else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
-            if sender.isSelected {
-//                self.player.togglePlayer()
-//                constTopViewTop.constant = 0
-//                constCommentsHeight.constant = 0
-//                constAdsOperationHeight.constant = 0
-//                constFileProgressHeight.constant = 0
-//                sender.isSelected = false
-//                let value = UIInterfaceOrientation.portrait.rawValue
-//                UIDevice.current.setValue(value, forKey: "orientation")
-               // self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
-            }
-            else {
                 NotificationCenter.default.post(name: .playerDidChangeFullscreenMode, object: true)
-                playerView.playerController.forceFullScreenMode()
-                (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .landscapeLeft
-                let value = UIInterfaceOrientation.landscapeLeft.rawValue
-                UIDevice.current.setValue(value, forKey: "orientation")
-                (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .portrait
-                playerView.playerController.player?.play()
-            }
+                playerView.hanldeOrientation()
         }
     }
     
@@ -432,8 +411,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     @IBAction func onBtnLikeTapped(_ sender: UIButton) {
         btnLike.isSelected = !sender.isSelected
+        
         let objAdvData = AdvertiseData()
-        objAdvData.setLikeAdvertiseByLumi(param: ["isLike":!sender.isSelected as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]) { (success) in
+        objAdvData.setLikeAdvertiseByLumi(param: ["isLike":sender.isSelected as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]) { (success) in
             if success {
                 DispatchQueue.main.async {
                     let realm = try! Realm()
@@ -445,10 +425,12 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                                 result[0].isAdsLiked = false
                                 GlobalShareData.sharedGlobal.objCurrentAdv.isAdsLiked = false
                                 count = count - 1
+                                GlobalShareData.sharedGlobal.objCurrentAdv.likeCount -= 1;
                             }else {
                                 result[0].isAdsLiked = true
                                 count = count + 1
                                 GlobalShareData.sharedGlobal.objCurrentAdv.isAdsLiked = true
+                                GlobalShareData.sharedGlobal.objCurrentAdv.likeCount += 1;
                             }
                             }
                         self.btnLike.setTitle("\(count)", for: .normal)

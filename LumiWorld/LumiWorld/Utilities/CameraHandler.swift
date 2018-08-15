@@ -17,6 +17,7 @@ class CameraHandler: NSObject{
     var isFromchat = false
     var isVideoCapturing = false
     var isFromProfile = false
+    var isGallary = false
     fileprivate var currentVC: UIViewController!
     
     //MARK: Internal Properties
@@ -101,7 +102,15 @@ class CameraHandler: NSObject{
         //        /// Defines which screens are shown at launch, and their order.
         //        /// Default value is `[.library, .photo]`
         if isFromProfile {
-            config.screens = [.library,.photo]
+            if isGallary{
+                config.screens = [.library,]
+                config.startOnScreen = .library
+            }
+            else {
+                config.screens = [.photo,]
+                config.startOnScreen = .photo
+
+            }
         }
         else {
             config.screens = [.library, .photo, .video] }
@@ -223,10 +232,12 @@ class CameraHandler: NSObject{
         actionSheet.addAction(deleteAction)
         }
         actionSheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+            self.isGallary = false
             self.showCamera(vc: vc)
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+            self.isGallary = true
             self.showPhotoLibrary(vc: vc)
         }))
         

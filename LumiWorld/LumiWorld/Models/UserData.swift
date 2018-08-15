@@ -122,13 +122,8 @@ class UserData : Object{
             do {
                 let multiAPI : multipartAPI = multipartAPI()
                 multiAPI.call(param, withCompletionBlock: { (dict, error) in
-
-                    guard dict?.count != 0 else {
-                        completionHandler(UserData())
-                        return
-                    }
-                    
-                    guard (dict?.keys.contains("responseCode"))!, dict?.count != 0 , dict!["responseCode"] as! Int != 0 else {
+                   
+                    guard (dict?.keys.contains("responsCode"))!, dict?.count != 0 , dict!["responsCode"] as! Int != 0 else {
                         DispatchQueue.main.async {
                             let message = dict!["response"] as! String
                             GlobalShareData.sharedGlobal.objCurretnVC.showCustomAlert(strTitle: "", strDetails: message, completion: { (str) in

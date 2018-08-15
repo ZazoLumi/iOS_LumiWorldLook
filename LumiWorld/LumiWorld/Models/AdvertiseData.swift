@@ -141,10 +141,18 @@ class AdvertiseData: Object {
                                 }
                             }
                             else {
-                                let filePath = recordExist[0].adFilePath
-                                newAdvertiseData.adFilePath = filePath
+                                if recordExist[0].isFileDownloaded {
+                                    newAdvertiseData.isFileDownloaded = true
+                                    newAdvertiseData.adFilePath = recordExist[0].adFilePath
+                                    newAdvertiseData.adFileName = recordExist[0].adFileName
+                                }
+                                else {
+                                    self.downloadFileFromServer(newAdvertiseData: newAdvertiseData)
+                                }
                                 newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
                                 newAdvertiseData.isAdsLiked = recordExist[0].isAdsLiked
+                                newAdvertiseData.contentType = recordExist[0].contentType
+
                                 try! realm.write {
                                     realm.add(newAdvertiseData, update: true)
                                 }
@@ -186,10 +194,16 @@ class AdvertiseData: Object {
                     if recordExist.count > 0 {
                         if recordExist[0].isFileDownloaded {
                             newAdvertiseData.isFileDownloaded = true
-                            newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
-                            newAdvertiseData.isAdsLiked = recordExist[0].isAdsLiked
                             newAdvertiseData.adFilePath = recordExist[0].adFilePath
+                            newAdvertiseData.adFileName = recordExist[0].adFileName
                         }
+                        else {
+                            self.downloadFileFromServer(newAdvertiseData: newAdvertiseData)
+                        }
+                        newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
+                        newAdvertiseData.isAdsLiked = recordExist[0].isAdsLiked
+                        newAdvertiseData.contentType = recordExist[0].contentType
+
                         try! realm.write {
                             realm.add(newAdvertiseData, update: true)
                         }
@@ -300,6 +314,44 @@ class AdvertiseData: Object {
         }else{
             print("Internet Connection not Available!")
         }
+    }
+    
+    func downloadFileFromServer(newAdvertiseData:AdvertiseData) {
+        // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        let filePath = newAdvertiseData.adFilePath?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let realm = try! Realm()
+
+        DownloadManager.shared().startFileDownloads(FileDownloadInfo.init(fileTitle: Int32(newAdvertiseData.advertiseId), andDownloadSource: filePath), withCompletionBlock: { (response,url) in
+            DispatchQueue.main.async {
+                let advData = realm.objects(AdvertiseData.self).filter("advertiseId = \(response)")
+                if advData.count > 0 {
+                    var fileName : String!
+                    let objCurrentAdv = advData[0] as AdvertiseData
+                    if objCurrentAdv.contentType == "Video" {
+                        var thumbnail1 = url?.thumbnail()
+                        thumbnail1 = url?.thumbnail(fromTime: 5)
+                        if let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
+                            fileName = url?.lastPathComponent
+                            fileName = fileName?.deletingPathExtension
+                            fileName = fileName?.appendingPathExtension("png")
+                            let _ = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: fileName!)
+                        }
+                        
+                    }
+                    try! realm.write {
+                        if objCurrentAdv.contentType == "Video" {
+                            objCurrentAdv.videoThumbFile = fileName
+                        }
+                        objCurrentAdv.adFilePath = url?.absoluteString.removingPercentEncoding
+                        objCurrentAdv.isFileDownloaded = true
+                        realm.add(objCurrentAdv, update: true)
+                       
+                    }
+                }
+            }
+            
+            
+        })
     }
 
 }
