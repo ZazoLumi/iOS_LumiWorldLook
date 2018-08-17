@@ -28,16 +28,6 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             
-            //tabBarController?.selectedIndex = 1
-
-//            let alertController = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
-//            let takePhotoAction = UIAlertAction(title: "Take a photo", style: .default, handler: nil)
-//            alertController.addAction(takePhotoAction)
-//            let selectFromAlbumAction = UIAlertAction(title: "Select from album", style: .default, handler: nil)
-//            alertController.addAction(selectFromAlbumAction)
-//            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-//            alertController.addAction(cancelAction)
-//            tabBarController?.present(alertController, animated: true, completion: nil)
         }
     }
     
@@ -55,12 +45,11 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     let n3 = ExampleNavigationController.init(rootViewController: v3)
 
     tabBarController.viewControllers = [n1, n2, n3]
-    tabBarController.selectedIndex = 1
+    tabBarController.selectedIndex = 0
     let navigationController = ExampleNavigationController.init(rootViewController: tabBarController)
     
-//    navigationController.navigationItem.addSettingButtonOnRight()
-//    navigationController.navigationItem.addBackButtonOnLeft()
-    
+    tabBarController.navigationController?.setNavigationBarHidden(true, animated: true)
+
     return navigationController
     }
 }

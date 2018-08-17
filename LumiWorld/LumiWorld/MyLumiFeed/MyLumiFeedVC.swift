@@ -21,7 +21,6 @@ class lumiFeedCell: UITableViewCell {
     @IBOutlet var lblMessageTime: UILabel!
     @IBOutlet weak var constImgWidth: NSLayoutConstraint!
     @IBOutlet weak var imgMessage: UIImageView!
-
     @IBOutlet weak var constImgHeight: NSLayoutConstraint!
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -37,6 +36,8 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     var arySearchData: [[String:AnyObject]] = []
     var strSearchText : NSString!
     let viewWelcome :  WelcomView! = nil
+    var isLoadedFirstTime = false
+
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
@@ -50,13 +51,18 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     var objAdvertiseVC : AdvertiseVC!
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
-        self.tableView.addSubview(self.refreshControl)
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
+        //Static
+        self.tableView.addSubview(self.refreshControl)
         self.tableView!.tableFooterView = UIView()
+        isLoadedFirstTime = true
     }
+
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.navigationController?.setToolbarHidden(true, animated: false)
         self.tableView.tableFooterView = UIView()
         self.tableView.estimatedRowHeight = 64
@@ -64,19 +70,18 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         self.getLatestLumiMessages()
         GlobalShareData.sharedGlobal.objCurretnVC = self
         self.navigationItem.title = "MY LUMI FEED"
-
+        
         searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = true
+        searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search Feed"
         self.navigationItem.searchController = searchController
         definesPresentationContext = true
-
         // Setup the Scope Bar
         searchController.searchBar.scopeButtonTitles = []
         searchController.searchBar.delegate = self
-        self.tableView.reloadData()
+
     }
-    
+        
     override func viewWillDisappear(_ animated: Bool) {
         searchController.isActive = false
         self.tabBarController?.navigationItem.searchController = nil
@@ -136,7 +141,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                         }
                     }
                 }
-                
+                GlobalShareData.sharedGlobal.getCurrentAdvertise()
                 
             }
 
@@ -153,11 +158,11 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                 else {
 
             }
+            self.isLoadedFirstTime = false
                     self.tableView.reloadData()
                     self.refreshControl.endRefreshing()
             }
         
-            self.tableView.reloadData()
         }
     
     // MARK: - Tableview Methods
@@ -179,13 +184,26 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
             return arySearchData.count
         }
         else {
-            if self.aryActivityData.count == 0 {
+            if self.aryActivityData.count == 0 && !isLoadedFirstTime{
                 let viewWelcome = Bundle.main.loadNibNamed("WelcomView", owner:
                     self, options: nil)?.first as? WelcomView
                 // self.view.addSubview(viewWelcome!)
                 viewWelcome?.frame = CGRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.width)
                 viewWelcome?.btnGetStarted.addTarget(self, action:#selector(MyLumiFeedVC.didTapGetStarted), for: .touchUpInside)
                 self.tableView.backgroundView = viewWelcome
+            }
+            else if isLoadedFirstTime {
+                let viewBg = UIView .init(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
+                viewBg.backgroundColor = UIColor.clear
+               let dataMsgLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
+                dataMsgLabel.text = "Retrieving data.\nPlease wait.."
+                dataMsgLabel.numberOfLines = 0;
+                dataMsgLabel.textAlignment = .center;
+                dataMsgLabel.textColor = UIColor.init(hexString: "757576")
+                dataMsgLabel.font = UIFont(name: "HelveticaNeue", size: 20)
+                dataMsgLabel.sizeToFit()
+                viewBg.addSubview(dataMsgLabel)
+                self.tableView.backgroundView = dataMsgLabel;
             }
             else { self.tableView.backgroundView = nil}
         }
@@ -342,6 +360,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                 navigationController?.pushViewController(vc, animated: true)
                 }
         }
+        searchController.isActive = false
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -442,7 +461,7 @@ extension MyLumiFeedVC: UISearchBarDelegate {
 extension MyLumiFeedVC: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
-        let searchBar = searchController.searchBar
+        _ = searchController.searchBar
        // let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
         filterContentForSearchText(searchController.searchBar.text!, scope: "")
     }

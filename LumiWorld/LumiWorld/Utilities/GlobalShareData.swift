@@ -340,7 +340,36 @@ class GlobalShareData {
         }
     }
 
-    
+    func getCurrentAdvertise() -> [[String:AnyObject]]{
+        let realm = try! Realm()
+        let result  = realm.objects(AdvertiseData.self)
+        var aryAdsData: [[String:AnyObject]] = []
+        if result.count > 0 {
+            let currentDate = Date()
+            for objAdv in result {
+                let creteatedData = objAdv.strAdvertiseDate
+                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let date1 = currentDate
+                let date2 = cDate
+                let calendar = Calendar.current
+                let dateComponents = calendar.dateComponents([.minute], from: date2, to: date1)
+                print("Difference between times since midnight is", dateComponents.minute as Any)
+                let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
+                let diffValue = dateComponents.minute!
+                if diffValue > 0 && diffValue <= allowMinuntes! {
+                    let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
+                    if objsLumineer.count > 0 {
+                        let lumineer = objsLumineer[0]
+                        let section = ["title":lumineer.name as Any,"createdTime":objAdv.updatedDate as Any, "message":objAdv as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"adv"] as [String : Any]
+                        aryAdsData.append(section as [String : AnyObject])
+                    }
+                }
+            }
+            
+            print("Count:\(aryAdsData.count)")
+        }
+        return aryAdsData
+    }
 }
 
 

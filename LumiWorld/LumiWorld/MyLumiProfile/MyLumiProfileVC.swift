@@ -20,7 +20,7 @@ class MyLumiProfileVC: UIViewController {
     var objsuggestALumineer : suggestALumineer!
     @IBOutlet weak var scrollable: ScrollableStackView!
 
-    @IBOutlet weak var scrlAdvertiseView: UIView!
+    @IBOutlet weak var scrlAdvertiseView: ScrollableStackView!
     @IBOutlet weak var lblFCount: UILabel!
     @IBOutlet weak var lblDCount: UILabel!
     @IBOutlet weak var lblACount: UILabel!
@@ -29,6 +29,7 @@ class MyLumiProfileVC: UIViewController {
     @IBOutlet weak var lblDisplayName: UILabel!
     @IBOutlet weak var imgProfilePic: UIImageView!
     var playerView: AGVideoPlayerView! = nil
+    let aryAdsData : [[String:AnyObject]] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,16 +38,17 @@ class MyLumiProfileVC: UIViewController {
         self.url1 = URL(fileURLWithPath: Bundle.main.path(forResource: "LumiWorldWelcom", ofType: "mp4")!)
         // Do any additional setup after loading the view.
         setupBottomScrollableUI()
-        playVideo()
+        setupAdsScrollableUI()
+
+        //playVideo()
 
     }
     override func viewWillAppear(_ animated: Bool) {
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         setupProfileData()
-        playerView.playerController.player?.play()
-        playerView.isMuted = false //Mute the video.
-//        let value = UIInterfaceOrientation.portrait.rawValue
+        //playerView.playerController.player?.play()
+        //        let value = UIInterfaceOrientation.portrait.rawValue
 //        UIDevice.current.setValue(value, forKey: "orientation")
 
     }
@@ -54,8 +56,8 @@ class MyLumiProfileVC: UIViewController {
 
     }
     override func viewWillDisappear(_ animated: Bool) {
-        playerView.playerController.player?.pause()
-        playerView.isMuted = true //Mute the video.
+//        playerView.playerController.player?.pause()
+//        playerView.isMuted = true //Mute the video.
 
     }
     
@@ -158,6 +160,7 @@ class MyLumiProfileVC: UIViewController {
         playerView.shouldAutoRepeat = true
         playerView.showsCustomControls = false
         playerView.shouldSwitchToFullscreen = false
+        playerView.isMuted = true
         scrlAdvertiseView.addSubview(playerView)
         playerView.translatesAutoresizingMaskIntoConstraints = false
         let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
@@ -189,6 +192,81 @@ class MyLumiProfileVC: UIViewController {
             scrollable.stackView.addArrangedSubview(button)
         }
     }
+    
+    func setupAdsScrollableUI() {
+        scrlAdvertiseView.stackView.distribution = .equalSpacing
+        scrlAdvertiseView.stackView.alignment = .top
+        scrlAdvertiseView.stackView.axis = .horizontal
+        scrlAdvertiseView.stackView.spacing = 12
+        scrlAdvertiseView.scrollView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 0)
+        
+        let aryAdsData = GlobalShareData.sharedGlobal.getCurrentAdvertise()
+        for i in 0 ..< aryAdsData.count {
+            let objectData = aryAdsData[i]
+            let customAdsView = CustomAds.init(frame: CGRect(x: 0, y: 0, width: 300 , height: UIScreen.main.bounds.size.height))
+            customAdsView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-20).isActive = true
+            customAdsView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-165).isActive = true
+            customAdsView.translatesAutoresizingMaskIntoConstraints = true
+
+                customAdsView.tag = 50000 + i
+            let objAdv = objectData["message"] as? AdvertiseData
+
+            customAdsView.lblLumineerName.text = objectData["title"] as? String
+            let strBaseDataLogo = objectData["profileImg"] as? String
+            let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
+            customAdsView.imgLumineerProfile.image = imgThumb
+            customAdsView.lblAdvTitle.text = objAdv?.contentTitle
+            let imgMsgType : UIImage!
+            var urlOriginalImage : URL? = nil
+
+            if objAdv?.contentType == "Video" {
+                if objAdv?.adFilePath != nil {
+                    if(objAdv?.adFilePath?.hasUrlPrefix())!
+                    {
+                        urlOriginalImage = URL.init(string: (objAdv?.adFilePath!)!)
+                    }
+                    else {
+                        var fileName = objAdv?.adFileName?.replacingOccurrences(of: " ", with: "-")
+                        _ = fileName?.pathExtension
+                        let pathPrefix = fileName?.deletingPathExtension
+                        fileName = "\(pathPrefix!).png"
+                        urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                    }
+                }
+                imgMsgType = UIImage(named:"Asset102")
+            }
+            else if objAdv?.contentType == "Audio" {
+                imgMsgType = UIImage(named:"Asset104")
+            }
+            else {
+                if objAdv?.adFilePath != nil {
+                    if(objAdv?.adFilePath?.hasUrlPrefix())!
+                    {
+                        urlOriginalImage = URL.init(string: (objAdv?.adFilePath!)!)
+                    }
+                    else {
+                        let fileName = objAdv?.adFileName?.replacingOccurrences(of: " ", with: "-")
+                        urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                    }
+                }
+                imgMsgType = UIImage(named:"Asset106")
+            customAdsView.imgAdvType.image = imgMsgType
+            
+            customAdsView.imgAdsContent.contentMode = .scaleAspectFit
+                Alamofire.request(urlOriginalImage).responseImage { response in
+                    debugPrint(response)
+                    if let image = response.result.value {
+                        customAdsView.imgAdsContent.image = image
+                    }
+                }
+            }
+
+            customAdsView.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "")
+
+            scrlAdvertiseView.stackView.addArrangedSubview(customAdsView)
+        }
+    }
+
 
     @objc func actionBttomMenuTapped(_ sender: UIButton){
         let tag = sender.tag

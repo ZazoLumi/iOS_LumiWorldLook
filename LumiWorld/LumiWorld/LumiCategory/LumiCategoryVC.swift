@@ -56,7 +56,6 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     var imgBg : UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tabBarController?.navigationController?.setNavigationBarHidden(true, animated: true)
         self.navigationItem.addSettingButtonOnRight()
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes

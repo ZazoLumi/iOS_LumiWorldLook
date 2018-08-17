@@ -58,7 +58,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     var nhours : String = "00"
     var nminutes : String = "00"
     var nseconds : String = "00"
-    var seconds = 10
+    var seconds = 5
     var timer = Timer()
     let h = UIScreen.main.bounds.height
     let w = UIScreen.main.bounds.width
@@ -439,8 +439,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                 }
             }
         }
-
     }
+    
     // MARK: - Tableview Methods
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

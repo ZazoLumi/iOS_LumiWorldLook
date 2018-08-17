@@ -10,7 +10,9 @@ import UIKit
 import RealmSwift
 import Alamofire
 import MBProgressHUD
-class LumiProfileDetails: UIViewController,FormDataDelegate {
+class LumiProfileDetails: UIViewController,FormDataDelegate,UITextFieldDelegate {
+    @IBOutlet weak var btnDone: UIButton!
+    @IBOutlet weak var btnCancel: UIButton!
     var customview : CustomTableView!
     var isImgChanged = false
 
@@ -27,6 +29,8 @@ class LumiProfileDetails: UIViewController,FormDataDelegate {
         self.navigationItem.title = "MY LUMI PROFILE"
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
+        btnCancel.isHidden = true
+        btnDone.isHidden = true
 
         // Do any additional setup after loading the view.
     }
@@ -77,13 +81,15 @@ class LumiProfileDetails: UIViewController,FormDataDelegate {
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-        
     }
     
     @IBAction func onBtnDoneTapped(_ sender: Any) {
         customview.doneAction()
     }
     @IBAction func onBtnEditTapped(_ sender: Any) {
+        btnCancel.isHidden = false
+        btnDone.isHidden = false
+
         if btnImgProfilePic.imageView?.image == nil {
             CameraHandler.shared.showProfileActionSheet(vc: self,withDeletePhoto:false)
             CameraHandler.shared.isFromProfile = true
@@ -136,7 +142,13 @@ class LumiProfileDetails: UIViewController,FormDataDelegate {
         }
         
     }
+    open func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        btnCancel.isHidden = false
+        btnDone.isHidden = false
 
+        return true
+    }
     /*
     // MARK: - Navigation
 
