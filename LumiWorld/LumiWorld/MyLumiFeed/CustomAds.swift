@@ -19,6 +19,8 @@ class CustomAds: UIView {
     @IBOutlet weak var lblLumineerName: UILabel!
     @IBOutlet weak var imgLumineerProfile: UIImageView!
     @IBOutlet weak var imgAdsContent: UIImageView!
+    @IBOutlet weak var imgPlayIcon: UIImageView!
+
     let nibName = "CustomAds"
     var contentView:UIView?
 

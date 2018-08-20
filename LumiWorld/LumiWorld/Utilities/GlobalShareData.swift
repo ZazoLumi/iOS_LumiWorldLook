@@ -370,6 +370,24 @@ class GlobalShareData {
         }
         return aryAdsData
     }
+    
+    func getlatestCategoriesAndData () {
+        let objLumiCate = LumiCategory()
+        DispatchQueue.global(qos: .userInitiated).async {
+            objLumiCate.getLumiCategory(viewCtrl: self.objCurretnVC) { (aryCategory) in
+                guard aryCategory.count != 0 else {
+                    return
+                }
+                let objLumineerList = LumineerList()
+                let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.lumineerTimeStamp)
+                let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+                objLumineerList.getLumineerCompany(lastViewDate:escapedString!,completionHandler: { (List) in
+                    
+                    
+                })
+            }
+        }
+    }
 }
 
 

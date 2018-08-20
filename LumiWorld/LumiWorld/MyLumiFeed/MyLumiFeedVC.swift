@@ -124,7 +124,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                
                 for objAdv in result {
                     let creteatedData = objAdv.strAdvertiseDate
-                    let cDate = Date().getCurrentUpdtedDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                    let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
                     let date1 = currentDate
                     let date2 = cDate
                     let calendar = Calendar.current

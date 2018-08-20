@@ -18,18 +18,23 @@ class MyLumiProfileVC: UIViewController {
     var objSendMessageTo : sendMessageTo!
     var objSuggestACompany : suggestCompany!
     var objsuggestALumineer : suggestALumineer!
-    @IBOutlet weak var scrollable: ScrollableStackView!
+    var objAdvertiseVC : AdvertiseVC!
 
+    
+    @IBOutlet weak var scrollable: ScrollableStackView!
+    
+    var numberOfPages = 0
+    var currentPage = 0
+    var aryAdsData : [[String:AnyObject]] = []
     @IBOutlet weak var scrlAdvertiseView: ScrollableStackView!
     @IBOutlet weak var lblFCount: UILabel!
     @IBOutlet weak var lblDCount: UILabel!
     @IBOutlet weak var lblACount: UILabel!
     @IBOutlet weak var lblCCount: UILabel!
-
+    var timerScroll : Timer!
     @IBOutlet weak var lblDisplayName: UILabel!
     @IBOutlet weak var imgProfilePic: UIImageView!
     var playerView: AGVideoPlayerView! = nil
-    let aryAdsData : [[String:AnyObject]] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,7 +43,6 @@ class MyLumiProfileVC: UIViewController {
         self.url1 = URL(fileURLWithPath: Bundle.main.path(forResource: "LumiWorldWelcom", ofType: "mp4")!)
         // Do any additional setup after loading the view.
         setupBottomScrollableUI()
-        setupAdsScrollableUI()
 
         //playVideo()
 
@@ -50,14 +54,19 @@ class MyLumiProfileVC: UIViewController {
         //playerView.playerController.player?.play()
         //        let value = UIInterfaceOrientation.portrait.rawValue
 //        UIDevice.current.setValue(value, forKey: "orientation")
+        setupAdsScrollableUI()
 
     }
     override func viewDidAppear(_ animated: Bool) {
 
     }
     override func viewWillDisappear(_ animated: Bool) {
-//        playerView.playerController.player?.pause()
-//        playerView.isMuted = true //Mute the video.
+        clearScrollContent()
+        playerView.playerController.player?.pause()
+        playerView.isMuted = true //Mute the video.
+        if timerScroll != nil {
+            timerScroll.invalidate()
+        }
 
     }
     
@@ -153,23 +162,6 @@ class MyLumiProfileVC: UIViewController {
         self.view.addSubview(self.objInviteFriendVC.view)
         self.objInviteFriendVC.didMove(toParentViewController: self)
     }
-    private func playVideo() {
-        playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y:0, width: scrlAdvertiseView.frame.size.width, height: scrlAdvertiseView.frame.size.height))
-        playerView.videoUrl = url1!
-        playerView.shouldAutoplay = true
-        playerView.shouldAutoRepeat = true
-        playerView.showsCustomControls = false
-        playerView.shouldSwitchToFullscreen = false
-        playerView.isMuted = true
-        scrlAdvertiseView.addSubview(playerView)
-        playerView.translatesAutoresizingMaskIntoConstraints = false
-        let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
-        NSLayoutConstraint.activate(attributes.map {
-            NSLayoutConstraint(item: playerView, attribute: $0, relatedBy: .equal, toItem: playerView.superview, attribute: $0, multiplier: 1, constant: 0)
-        })
-
-
-    }
     
     func setupBottomScrollableUI() {
         scrollable.stackView.distribution = .fillEqually
@@ -199,16 +191,37 @@ class MyLumiProfileVC: UIViewController {
         scrlAdvertiseView.stackView.axis = .horizontal
         scrlAdvertiseView.stackView.spacing = 12
         scrlAdvertiseView.scrollView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 0)
-        
-        let aryAdsData = GlobalShareData.sharedGlobal.getCurrentAdvertise()
-        for i in 0 ..< aryAdsData.count {
+        scrlAdvertiseView.scrollView.isPagingEnabled = true
+        scrlAdvertiseView.scrollView.delegate = self
+
+        aryAdsData = GlobalShareData.sharedGlobal.getCurrentAdvertise()
+        for i in 0 ..< aryAdsData.count + 1{
+            if i == aryAdsData.count {
+                playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y:0, width: scrlAdvertiseView.frame.size.width, height: scrlAdvertiseView.frame.size.height))
+                playerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-40).isActive = true
+                playerView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-165).isActive = true
+                playerView.videoUrl = url1!
+                playerView.shouldAutoplay = true
+                playerView.shouldAutoRepeat = true
+                playerView.showsCustomControls = false
+                playerView.shouldSwitchToFullscreen = false
+                playerView.isMuted = true
+                scrlAdvertiseView.stackView.addArrangedSubview(playerView)
+                playerView.translatesAutoresizingMaskIntoConstraints = false
+
+            }
+            else {
             let objectData = aryAdsData[i]
-            let customAdsView = CustomAds.init(frame: CGRect(x: 0, y: 0, width: 300 , height: UIScreen.main.bounds.size.height))
-            customAdsView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-20).isActive = true
+            let customAdsView = CustomAds.init(frame: CGRect(x: 0, y: 0, width: 280 , height: UIScreen.main.bounds.size.height))
+            customAdsView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-40).isActive = true
             customAdsView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-165).isActive = true
             customAdsView.translatesAutoresizingMaskIntoConstraints = true
 
                 customAdsView.tag = 50000 + i
+                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleAdsViewTap(recognizer:)))
+                customAdsView.addGestureRecognizer(tapGestureRecognizer)
+                customAdsView.isUserInteractionEnabled = true
+
             let objAdv = objectData["message"] as? AdvertiseData
 
             customAdsView.lblLumineerName.text = objectData["title"] as? String
@@ -220,6 +233,7 @@ class MyLumiProfileVC: UIViewController {
             var urlOriginalImage : URL? = nil
 
             if objAdv?.contentType == "Video" {
+                customAdsView.imgPlayIcon.isHidden = false
                 if objAdv?.adFilePath != nil {
                     if(objAdv?.adFilePath?.hasUrlPrefix())!
                     {
@@ -236,9 +250,11 @@ class MyLumiProfileVC: UIViewController {
                 imgMsgType = UIImage(named:"Asset102")
             }
             else if objAdv?.contentType == "Audio" {
+                customAdsView.imgPlayIcon.isHidden = false
                 imgMsgType = UIImage(named:"Asset104")
             }
             else {
+                customAdsView.imgPlayIcon.isHidden = true
                 if objAdv?.adFilePath != nil {
                     if(objAdv?.adFilePath?.hasUrlPrefix())!
                     {
@@ -252,18 +268,24 @@ class MyLumiProfileVC: UIViewController {
                 imgMsgType = UIImage(named:"Asset106")
             customAdsView.imgAdvType.image = imgMsgType
             
-            customAdsView.imgAdsContent.contentMode = .scaleAspectFit
-                Alamofire.request(urlOriginalImage).responseImage { response in
-                    debugPrint(response)
-                    if let image = response.result.value {
-                        customAdsView.imgAdsContent.image = image
-                    }
-                }
             }
-
+            customAdsView.imgAdsContent.contentMode = .scaleAspectFit
             customAdsView.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "")
-
+            
             scrlAdvertiseView.stackView.addArrangedSubview(customAdsView)
+            if urlOriginalImage != nil {
+            Alamofire.request(urlOriginalImage!).responseImage { response in
+                debugPrint(response)
+                if let image = response.result.value {
+                    customAdsView.imgAdsContent.image = image
+                }
+                }}
+            }}
+
+        if aryAdsData.count > 0 {
+            numberOfPages = aryAdsData.count + 1
+           timerScroll = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
+
         }
     }
 
@@ -287,6 +309,63 @@ class MyLumiProfileVC: UIViewController {
             self.onBtnShowSaveAdsTapped()
         }
     }
+    
+    func clearScrollContent() {
+        for content in scrlAdvertiseView.scrollView.subviews {
+            content.removeSubviews()
+        }
+    }
+    
+    @objc func moveToNextPage (){
+        let pageWidth:CGFloat = self.scrlAdvertiseView.scrollView.frame.width - 2
+
+        if currentPage == numberOfPages {
+            currentPage = 0
+            playerView.playerController.player?.play()
+            self.scrlAdvertiseView.scrollView.scrollRectToVisible(CGRect(x:0, y:0, width:pageWidth, height:self.scrlAdvertiseView.scrollView.frame.height), animated: true)
+        }
+        else {
+        let maxWidth:CGFloat = pageWidth * CGFloat(numberOfPages)
+        let contentOffset:CGFloat = self.scrlAdvertiseView.scrollView.contentOffset.x
+        
+        var slideToX = contentOffset + pageWidth
+        
+        if  contentOffset + pageWidth == maxWidth
+        {
+            slideToX = 0
+        }
+        self.scrlAdvertiseView.scrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width:pageWidth, height:self.scrlAdvertiseView.scrollView.frame.height), animated: true)
+            currentPage += 1 }
+    }
+
+    @objc func handleAdsViewTap(recognizer : UITapGestureRecognizer)
+    {
+        var tag = recognizer.view!.tag - 50000
+        
+        guard tag < aryAdsData.count else {
+            return
+        }
+        let objectData = aryAdsData[tag]
+        let objAdv = objectData["message"] as? AdvertiseData
+        GlobalShareData.sharedGlobal.isVideoPlaying = false
+        GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
+        let realm = try! Realm()
+        let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv?.lumineerId.int ?? Int.self)
+        if objsLumineer.count > 0 {
+            let lumineer = objsLumineer[0]
+            GlobalShareData.sharedGlobal.objCurrentLumineer = lumineer
+        }
+        self.view.addBlurEffect()
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
+        self.addChildViewController(self.objAdvertiseVC)
+        self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
+        self.view.addSubview(self.objAdvertiseVC.view)
+        self.objAdvertiseVC
+            .didMove(toParentViewController: self)
+
+    }
+
     /*
     // MARK: - Navigation
 
@@ -299,3 +378,6 @@ class MyLumiProfileVC: UIViewController {
 
 }
 
+extension MyLumiProfileVC: UIScrollViewDelegate {
+    
+}
