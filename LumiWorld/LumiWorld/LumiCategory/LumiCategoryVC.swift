@@ -98,6 +98,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             }
         })
         getAllLumineerAdvertise()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -157,6 +158,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         objAdv.getLumineerAdvertise(param: ["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
             
         }
+        GlobalShareData.sharedGlobal.deleteExpiredAds()
     }
 
     // MARK: - Tableview Methods

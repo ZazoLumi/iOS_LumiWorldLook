@@ -404,38 +404,55 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     
     func displayAdvertiseContent() {
         //todo
-        let realm = try! Realm()
-        let result  = realm.objects(AdvertiseData.self).filter("lumineerId = \(GlobalShareData.sharedGlobal.objCurrentLumineer.id)")
-        if result.count > 0 {
-            let currentDate = Date()
-            
+        let aryAdsData = GlobalShareData.sharedGlobal.getCurrentAdvertise()
+        for object in aryAdsData {
+            let lumineerId = object["lumineerId"] as! Int
+            if lumineerId == GlobalShareData.sharedGlobal.objCurrentLumineer.id {
+                GlobalShareData.sharedGlobal.objCurrentAdv = object["message"] as! AdvertiseData
+                self.view.addBlurEffect()
+                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
+                self.addChildViewController(self.objAdvertiseVC)
+                self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
+                self.view.addSubview(self.objAdvertiseVC.view)
+                self.objAdvertiseVC
+                    .didMove(toParentViewController: self)
+                break
 
-            for objAdv in result {
-                let creteatedData = objAdv.strAdvertiseDate
-                let cDate = Date().getCurrentUpdtedDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
-                let date1 = currentDate
-                let date2 = cDate
-                let calendar = Calendar.current
-                let dateComponents = calendar.dateComponents([.minute], from: date2, to: date1)
-                print("Difference between times since midnight is", dateComponents.minute as Any)
-                let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
-                let diffValue = dateComponents.minute!
-                if diffValue > 0 && diffValue <= allowMinuntes! {
-                    GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
-                    self.view.addBlurEffect()
-                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                    objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
-                    self.addChildViewController(self.objAdvertiseVC)
-                    self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
-                    self.view.addSubview(self.objAdvertiseVC.view)
-                    self.objAdvertiseVC
-                        .didMove(toParentViewController: self)
-                    break
-                }
             }
-
-
         }
+//        let realm = try! Realm()
+//        let result  = realm.objects(AdvertiseData.self).filter("lumineerId = \(GlobalShareData.sharedGlobal.objCurrentLumineer.id)")
+//        if result.count > 0 {
+//            let currentDate = Date()
+//            
+//
+//            for objAdv in result {
+//                let creteatedData = objAdv.strAdvertiseDate
+//                let cDate = Date().getCurrentUpdtedDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+//                let date1 = currentDate
+//                let date2 = cDate
+//                let calendar = Calendar.current
+//                let dateComponents = calendar.dateComponents([.minute], from: date2, to: date1)
+//                print("Difference between times since midnight is", dateComponents.minute as Any)
+//                let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
+//                let diffValue = dateComponents.minute!
+//                if diffValue > 0 && diffValue <= allowMinuntes! {
+//                    GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
+//                    self.view.addBlurEffect()
+//                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//                    objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
+//                    self.addChildViewController(self.objAdvertiseVC)
+//                    self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
+//                    self.view.addSubview(self.objAdvertiseVC.view)
+//                    self.objAdvertiseVC
+//                        .didMove(toParentViewController: self)
+//                    break
+//                }
+//            }
+//
+//
+//        }
     }
 }
 

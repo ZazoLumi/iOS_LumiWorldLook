@@ -79,19 +79,15 @@ class LogInVC: UIViewController,FormDataDelegate {
             objUser.loginUserDetails(param: param as [String : AnyObject]) { (userData) in
                 UserDefaults.standard.setBoolValue(value: true, key: UserDefaultsKeys.isAlreadyLogin)
                 GlobalShareData.sharedGlobal.objCurretnVC = self
-                GlobalShareData.sharedGlobal.getlatestCategoriesAndData()
-              let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                 hud.label.text = NSLocalizedString("Fetching Data...", comment: "HUD loading title")
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    if #available(iOS 11.0, *) {
+                GlobalShareData.sharedGlobal.getlatestCategoriesAndData(completionHandler: { (response) in
+                    if response {
                         DispatchQueue.main.async {
                             hud.hide(animated: true)}
                         UIApplication.shared.keyWindow?.rootViewController = ExampleProvider.customIrregularityStyle(delegate: nil)
-                    } else {
-                        // Fallback on earlier versions
-                        }
-                }
+                    }
+                })
             }
         } catch let jsonError{
             print(jsonError)

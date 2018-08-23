@@ -152,8 +152,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     self.inputTV.text = ""
                     self.inputTV.resignFirstResponder()
                     self.tblCommentData.reloadData()
-                    let indexPath = IndexPath(row: 0, section: 0)
-                    self.tblCommentData.scrollToRow(at: indexPath, at: .top, animated: true)
+//                    let indexPath = IndexPath(row: 0, section: 0)
+//                    self.tblCommentData.scrollToRow(at: indexPath, at: .top, animated: true)
+                    self.tblCommentData.contentOffset = .zero
                     if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
                         let count = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count
                         self.btnComments.setTitle("\(count) Comments", for: .normal)

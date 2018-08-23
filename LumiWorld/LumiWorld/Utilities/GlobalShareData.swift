@@ -356,11 +356,11 @@ class GlobalShareData {
                 print("Difference between times since midnight is", dateComponents.minute as Any)
                 let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
                 let diffValue = dateComponents.minute!
-                if diffValue > 0 && diffValue <= allowMinuntes! {
+                if diffValue >= 0 && diffValue <= allowMinuntes! {
                     let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
                     if objsLumineer.count > 0 {
                         let lumineer = objsLumineer[0]
-                        let section = ["title":lumineer.name as Any,"createdTime":objAdv.updatedDate as Any, "message":objAdv as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"adv"] as [String : Any]
+                        let section = ["title":lumineer.name as Any,"createdTime":objAdv.updatedDate as Any, "message":objAdv as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"adv","lumineerId":lumineer.id] as [String : Any]
                         aryAdsData.append(section as [String : AnyObject])
                     }
                 }
@@ -371,26 +371,93 @@ class GlobalShareData {
         return aryAdsData
     }
     
-    func getlatestCategoriesAndData () {
+    func getAllAdvertise() -> [[String:AnyObject]]{
+        let realm = try! Realm()
+        let result  = realm.objects(AdvertiseData.self)
+        var aryAdsData: [[String:AnyObject]] = []
+        if result.count > 0 {
+            for objAdv in result {
+                    let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
+                    if objsLumineer.count > 0 {
+                        let lumineer = objsLumineer[0]
+                        let section = ["title":lumineer.name as Any,"createdTime":objAdv.updatedDate as Any, "message":objAdv as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"adv"] as [String : Any]
+                        aryAdsData.append(section as [String : AnyObject])
+                    }
+            }
+            
+            print("Count:\(aryAdsData.count)")
+        }
+        return aryAdsData
+    }
+
+    
+    func getlatestCategoriesAndData (completionHandler: @escaping (_ response: Bool) -> Void) {
         let objLumiCate = LumiCategory()
         DispatchQueue.global(qos: .userInitiated).async {
             objLumiCate.getLumiCategory(viewCtrl: self.objCurretnVC) { (aryCategory) in
                 guard aryCategory.count != 0 else {
+                    completionHandler(false)
                     return
                 }
                 let objLumineerList = LumineerList()
                 let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.lumineerTimeStamp)
                 let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
                 objLumineerList.getLumineerCompany(lastViewDate:escapedString!,completionHandler: { (List) in
-                    
-                    
+                    guard List.count != 0 else {
+                        completionHandler(false)
+                        return
+                    }
+                    completionHandler(true)
                 })
             }
         }
     }
+    
+    func deleteExpiredAds() {
+        let realm = try! Realm()
+        let result  = realm.objects(AdvertiseData.self)
+        if result.count > 0 {
+            for objAdv in result {
+                let creteatedData = objAdv.strAdvertiseDate
+                let weeksDay = (objAdv.compaignWindow?.components(separatedBy: " ").first?.int)! * 7
+                let calendar = Calendar.current
+                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                
+                let nextWeeksDate = calendar.date(byAdding: .day, value: weeksDay, to: cDate)
+                
+                
+                let currentDate = Date()
+                
+                if currentDate.isGreaterThanDate(dateToCompare: nextWeeksDate! as NSDate) {
+                    let comments = realm.objects(AdvComments.self).filter("advertiseId == %d",objAdv.advertiseId)
+                    try! realm.write {
+                        realm.delete(comments)
+                        realm.delete(objAdv)
+                        try! realm.commitWrite()
+                    }
+
+                }
+
+            }
+            
+        }
+    }
 }
 
-
+extension Date {
+    func isGreaterThanDate(dateToCompare: NSDate) -> Bool {
+        //Declare Variables
+        var isGreater = false
+        
+        //Compare Values
+        if self.compare(dateToCompare as Date) == ComparisonResult.orderedDescending {
+            isGreater = true
+        }
+        
+        //Return Result
+        return isGreater
+}
+}
 //// Use the singleton like this
 //let singleton = Global.sharedGlobal
 //

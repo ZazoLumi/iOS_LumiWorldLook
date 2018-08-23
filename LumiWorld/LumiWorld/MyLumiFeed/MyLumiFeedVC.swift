@@ -118,32 +118,36 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                     }
                 }
             }
-            let result  = realm.objects(AdvertiseData.self)
-            if result.count > 0 {
-                let currentDate = Date()
-               
-                for objAdv in result {
-                    let creteatedData = objAdv.strAdvertiseDate
-                    let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
-                    let date1 = currentDate
-                    let date2 = cDate
-                    let calendar = Calendar.current
-                    let dateComponents = calendar.dateComponents([.minute], from: date2, to: date1)
-                    print("Difference between times since midnight is", dateComponents.minute as Any)
-                    let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
-                    let diffValue = dateComponents.minute!
-                    if diffValue > 0 && diffValue <= allowMinuntes! {
-                        let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
-                        if objsLumineer.count > 0 {
-                            let lumineer = objsLumineer[0]
-                            let section = ["title":lumineer.name as Any,"createdTime":objAdv.updatedDate as Any, "message":objAdv as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"adv"] as [String : Any]
-                            self.aryActivityData.append(section as [String : AnyObject])
-                        }
-                    }
-                }
-                GlobalShareData.sharedGlobal.getCurrentAdvertise()
-                
-            }
+//            let result  = realm.objects(AdvertiseData.self)
+//            if result.count > 0 {
+//                let currentDate = Date()
+//
+//                for objAdv in result {
+//                    let creteatedData = objAdv.strAdvertiseDate
+//                    let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+//                    let date1 = currentDate
+//                    let date2 = cDate
+//                    let calendar = Calendar.current
+//                    let dateComponents = calendar.dateComponents([.minute], from: date2, to: date1)
+//                    print("Difference between times since midnight is", dateComponents.minute as Any)
+//                    let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
+//                    let diffValue = dateComponents.minute!
+//                    if diffValue > 0 && diffValue <= allowMinuntes! {
+//                        let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
+//                        if objsLumineer.count > 0 {
+//                            let lumineer = objsLumineer[0]
+//                            let section = ["title":lumineer.name as Any,"createdTime":objAdv.updatedDate as Any, "message":objAdv as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"adv"] as [String : Any]
+//                            self.aryActivityData.append(section as [String : AnyObject])
+//                        }
+//                    }
+//                }
+//
+//            }
+            let aryAdsData = GlobalShareData.sharedGlobal.getCurrentAdvertise()
+            self.aryActivityData += aryAdsData
+//            for object in aryAdsData {
+//                self.aryActivityData.append(object)
+//            }
 
                 if self.aryActivityData.count > 0 {
                     self.tableView.backgroundView = nil

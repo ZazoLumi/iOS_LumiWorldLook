@@ -62,12 +62,9 @@ class MyLumiProfileVC: UIViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         clearScrollContent()
-        playerView.playerController.player?.pause()
-        playerView.isMuted = true //Mute the video.
-        if timerScroll != nil {
-            timerScroll.invalidate()
-        }
-
+        playerView.showsCustomControls = false
+        //playerView.playerController.player?.pause()
+       // playerView.isMuted = true //Mute the video.
     }
     
     func setupProfileData() {
@@ -75,8 +72,7 @@ class MyLumiProfileVC: UIViewController {
         lblDisplayName.text = GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName
         let urlOriginalImage : URL!
         if GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic != nil {
-        if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())!
-        {
+        if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())! {
             urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic!)
         }
         else {
@@ -102,7 +98,6 @@ class MyLumiProfileVC: UIViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTapFrom(recognizer:)))
         self.imgProfilePic.addGestureRecognizer(tapGestureRecognizer)
         self.imgProfilePic.isUserInteractionEnabled = true
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -194,12 +189,13 @@ class MyLumiProfileVC: UIViewController {
         scrlAdvertiseView.scrollView.isPagingEnabled = true
         scrlAdvertiseView.scrollView.delegate = self
 
-        aryAdsData = GlobalShareData.sharedGlobal.getCurrentAdvertise()
+        aryAdsData = GlobalShareData.sharedGlobal.getAllAdvertise()
         for i in 0 ..< aryAdsData.count + 1{
             if i == aryAdsData.count {
+                let width = CGFloat(aryAdsData.count>0 ? 40 : 20)
                 playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y:0, width: scrlAdvertiseView.frame.size.width, height: scrlAdvertiseView.frame.size.height))
-                playerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-40).isActive = true
-                playerView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-165).isActive = true
+                playerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-width).isActive = true
+                playerView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-160).isActive = true
                 playerView.videoUrl = url1!
                 playerView.shouldAutoplay = true
                 playerView.shouldAutoRepeat = true
@@ -214,7 +210,7 @@ class MyLumiProfileVC: UIViewController {
             let objectData = aryAdsData[i]
             let customAdsView = CustomAds.init(frame: CGRect(x: 0, y: 0, width: 280 , height: UIScreen.main.bounds.size.height))
             customAdsView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-40).isActive = true
-            customAdsView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-165).isActive = true
+            customAdsView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-160).isActive = true
             customAdsView.translatesAutoresizingMaskIntoConstraints = true
 
                 customAdsView.tag = 50000 + i
@@ -285,8 +281,7 @@ class MyLumiProfileVC: UIViewController {
         if aryAdsData.count > 0 {
             numberOfPages = aryAdsData.count + 1
            timerScroll = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
-
-        }
+            }
     }
 
 
@@ -314,10 +309,15 @@ class MyLumiProfileVC: UIViewController {
         for content in scrlAdvertiseView.scrollView.subviews {
             content.removeSubviews()
         }
+        if timerScroll != nil {
+            timerScroll.invalidate()
+        }
+        currentPage = 0
+        self.scrlAdvertiseView.scrollView.contentOffset = .zero
     }
     
     @objc func moveToNextPage (){
-        let pageWidth:CGFloat = self.scrlAdvertiseView.scrollView.frame.width - 2
+        let pageWidth:CGFloat =  self.scrlAdvertiseView.scrollView.contentSize.width / CGFloat(numberOfPages)
 
         if currentPage == numberOfPages {
             currentPage = 0
@@ -325,17 +325,27 @@ class MyLumiProfileVC: UIViewController {
             self.scrlAdvertiseView.scrollView.scrollRectToVisible(CGRect(x:0, y:0, width:pageWidth, height:self.scrlAdvertiseView.scrollView.frame.height), animated: true)
         }
         else {
-        let maxWidth:CGFloat = pageWidth * CGFloat(numberOfPages)
-        let contentOffset:CGFloat = self.scrlAdvertiseView.scrollView.contentOffset.x
-        
-        var slideToX = contentOffset + pageWidth
-        
-        if  contentOffset + pageWidth == maxWidth
-        {
-            slideToX = 0
+            let maxWidth:CGFloat = self.scrlAdvertiseView.scrollView.contentSize.width
+                var contentOffset:CGFloat = self.scrlAdvertiseView.scrollView.contentOffset.x
+                if currentPage % 2 != 0  {
+                    contentOffset += 20
+                }
+            var slideToX = contentOffset + pageWidth
+            
+            if  contentOffset + pageWidth == maxWidth
+            {
+                slideToX = 0
+            }
+            self.scrlAdvertiseView.scrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width:pageWidth, height:self.scrlAdvertiseView.scrollView.frame.height), animated: true)
+                currentPage += 1
+//            if currentPage == numberOfPages {
+//                GlobalShareData.sharedGlobal.isVideoPlaying = true
+//
+//            }
+//            else {
+//                GlobalShareData.sharedGlobal.isVideoPlaying = false
+//            }
         }
-        self.scrlAdvertiseView.scrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width:pageWidth, height:self.scrlAdvertiseView.scrollView.frame.height), animated: true)
-            currentPage += 1 }
     }
 
     @objc func handleAdsViewTap(recognizer : UITapGestureRecognizer)
@@ -379,5 +389,8 @@ class MyLumiProfileVC: UIViewController {
 }
 
 extension MyLumiProfileVC: UIScrollViewDelegate {
-    
+//    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+//        var contentOffset:CGFloat = self.scrlAdvertiseView.scrollView.contentOffset.x
+//        currentPage = Int(contentOffset / CGFloat(numberOfPages))
+//    }
 }
