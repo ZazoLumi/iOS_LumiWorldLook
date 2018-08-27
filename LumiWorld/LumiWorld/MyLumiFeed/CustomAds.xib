@@ -38,30 +38,26 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2XB-4F-pi0">
-                            <rect key="frame" x="263" y="12" width="17" height="17"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="2XB-4F-pi0" secondAttribute="height" multiplier="1:1" id="dZO-0m-5bQ"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <state key="normal" image="Asset 49"/>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XAQ-Ug-7Au">
-                            <rect key="frame" x="241" y="12.5" width="17" height="17"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="XAQ-Ug-7Au" secondAttribute="height" multiplier="1:1" id="9Ab-Vj-eSr"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <state key="normal" image="Asset 50"/>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MpD-YY-W7T">
-                            <rect key="frame" x="219" y="12.5" width="17" height="17"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="MpD-YY-W7T" secondAttribute="height" multiplier="1:1" id="oC0-KD-cd0"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <state key="normal" image="Asset 51"/>
-                        </button>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="IU5-if-gl1">
+                            <rect key="frame" x="231" y="17" width="49" height="17"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MpD-YY-W7T">
+                                    <rect key="frame" x="0.0" y="0.0" width="13" height="17"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" image="Asset 51"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XAQ-Ug-7Au">
+                                    <rect key="frame" x="18" y="0.0" width="13" height="17"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" image="Asset 50"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2XB-4F-pi0">
+                                    <rect key="frame" x="36" y="0.0" width="13" height="17"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" image="Asset 49"/>
+                                </button>
+                            </subviews>
+                        </stackView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ImB-0O-ets">
                             <rect key="frame" x="10" y="6" width="71" height="22"/>
                             <constraints>
@@ -72,17 +68,13 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="2XB-4F-pi0" firstAttribute="top" secondItem="1ba-m5-r5Y" secondAttribute="bottom" id="3mE-Yd-QyD"/>
-                        <constraint firstItem="XAQ-Ug-7Au" firstAttribute="centerY" secondItem="MpD-YY-W7T" secondAttribute="centerY" id="CAc-S8-mhE"/>
                         <constraint firstAttribute="trailing" secondItem="1ba-m5-r5Y" secondAttribute="trailing" constant="20" id="Mh9-sW-l9e"/>
-                        <constraint firstItem="XAQ-Ug-7Au" firstAttribute="leading" secondItem="MpD-YY-W7T" secondAttribute="trailing" constant="5" id="WRR-at-b5z"/>
                         <constraint firstAttribute="height" constant="35" id="cMo-lP-QZ6"/>
                         <constraint firstItem="ImB-0O-ets" firstAttribute="leading" secondItem="mNO-G3-hcW" secondAttribute="leading" constant="10" id="dLl-se-LeE"/>
-                        <constraint firstItem="2XB-4F-pi0" firstAttribute="centerY" secondItem="MpD-YY-W7T" secondAttribute="centerY" id="jyV-5I-NcT"/>
                         <constraint firstItem="ImB-0O-ets" firstAttribute="centerY" secondItem="mNO-G3-hcW" secondAttribute="centerY" id="nvI-3d-lp1"/>
-                        <constraint firstAttribute="trailing" secondItem="2XB-4F-pi0" secondAttribute="trailing" constant="20" id="uP0-1H-Bt3"/>
+                        <constraint firstItem="IU5-if-gl1" firstAttribute="top" secondItem="1ba-m5-r5Y" secondAttribute="bottom" constant="5" id="qjd-tg-j2k"/>
                         <constraint firstItem="1ba-m5-r5Y" firstAttribute="top" secondItem="mNO-G3-hcW" secondAttribute="top" id="woz-kN-QRI"/>
-                        <constraint firstItem="2XB-4F-pi0" firstAttribute="leading" secondItem="XAQ-Ug-7Au" secondAttribute="trailing" constant="5" id="xXn-oP-jBP"/>
+                        <constraint firstAttribute="trailing" secondItem="IU5-if-gl1" secondAttribute="trailing" constant="20" id="xo1-Xr-Pxb"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="brx-3w-gvh">

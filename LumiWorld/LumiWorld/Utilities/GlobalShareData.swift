@@ -377,12 +377,18 @@ class GlobalShareData {
         var aryAdsData: [[String:AnyObject]] = []
         if result.count > 0 {
             for objAdv in result {
+                let creteatedData = objAdv.strAdvertiseDate
+                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let currentDate = Date()
+                if currentDate.isGreaterThanDate(dateToCompare: cDate as NSDate) {
                     let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
                     if objsLumineer.count > 0 {
                         let lumineer = objsLumineer[0]
                         let section = ["title":lumineer.name as Any,"createdTime":objAdv.updatedDate as Any, "message":objAdv as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"adv"] as [String : Any]
                         aryAdsData.append(section as [String : AnyObject])
                     }
+                }
+                
             }
             
             print("Count:\(aryAdsData.count)")
