@@ -646,9 +646,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             audioTimer?.invalidate()
             btnPlayPause.isSelected = true
             audioPlayer?.stop()
-            inputTV.text = ""
-            inputTV.resignFirstResponder()
-            onBtnCloseAdvertise((Any).self)
+//            inputTV.text = ""
+//            inputTV.resignFirstResponder()
+//            onBtnCloseAdvertise((Any).self)
         }
     }
     
@@ -761,7 +761,7 @@ extension AdvertiseVC:AGPlayerDelegate {
     func playerPlaybackWillLoop(_ playerVC: AVPlayerViewController) {
         playerVC.player?.pause()
         btnPlayPause.isSelected = true
-        onBtnCloseAdvertise((Any).self)
+        //onBtnCloseAdvertise((Any).self)
     }
     
     

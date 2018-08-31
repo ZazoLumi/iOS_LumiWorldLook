@@ -195,7 +195,7 @@ class MyLumiProfileVC: UIViewController {
                 let width = CGFloat(aryAdsData.count>0 ? 40 : 20)
                 playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y:0, width: scrlAdvertiseView.frame.size.width, height: scrlAdvertiseView.frame.size.height))
                 playerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-width).isActive = true
-                playerView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-160).isActive = true
+                playerView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-240).isActive = true
                 playerView.videoUrl = url1!
                 playerView.shouldAutoplay = true
                 playerView.shouldAutoRepeat = true
@@ -210,7 +210,7 @@ class MyLumiProfileVC: UIViewController {
             let objectData = aryAdsData[i]
             let customAdsView = CustomAds.init(frame: CGRect(x: 0, y: 0, width: 280 , height: UIScreen.main.bounds.size.height))
             customAdsView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-40).isActive = true
-            customAdsView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-160).isActive = true
+            customAdsView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-240).isActive = true
             customAdsView.translatesAutoresizingMaskIntoConstraints = true
 
                 customAdsView.tag = 50000 + i

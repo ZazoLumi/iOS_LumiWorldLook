@@ -1182,18 +1182,14 @@
                                 <rect key="frame" x="0.0" y="155" width="320" height="413"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="klP-qU-GYu">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="513"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="413"/>
                                         <subviews>
-                                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Asset 47" translatesAutoresizingMaskIntoConstraints="NO" id="a5z-I1-VPy">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </imageView>
                                             <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="uW6-TX-Npe" customClass="ScrollableStackView" customModule="LumiWorld" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="10" width="300" height="413"/>
+                                                <rect key="frame" x="10" y="10" width="300" height="313"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hd1-NU-bng">
-                                                <rect key="frame" x="15" y="422" width="290" height="1"/>
+                                                <rect key="frame" x="15" y="322" width="290" height="1"/>
                                                 <color key="backgroundColor" red="0.86125496229999998" green="0.86125496229999998" blue="0.86125496229999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="xgu-Bi-h1l"/>
@@ -1203,7 +1199,7 @@
                                                 <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g44-wj-Qhe" customClass="ScrollableStackView" customModule="LumiWorld" customModuleProvider="target">
-                                                <rect key="frame" x="15" y="423" width="290" height="80"/>
+                                                <rect key="frame" x="15" y="323" width="290" height="80"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="80" id="fIr-Ke-79C"/>
@@ -1214,14 +1210,11 @@
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="uW6-TX-Npe" secondAttribute="trailing" constant="10" id="2rr-DS-GpS"/>
                                             <constraint firstAttribute="trailing" secondItem="g44-wj-Qhe" secondAttribute="trailing" constant="15" id="5ug-wz-g8A"/>
-                                            <constraint firstAttribute="trailing" secondItem="a5z-I1-VPy" secondAttribute="trailing" id="6G3-P7-kIe"/>
                                             <constraint firstItem="g44-wj-Qhe" firstAttribute="leading" secondItem="klP-qU-GYu" secondAttribute="leading" constant="15" id="C3B-Py-JKh"/>
                                             <constraint firstAttribute="bottom" secondItem="g44-wj-Qhe" secondAttribute="bottom" constant="10" id="Cwd-U9-VJh"/>
                                             <constraint firstItem="Hd1-NU-bng" firstAttribute="top" secondItem="uW6-TX-Npe" secondAttribute="bottom" constant="-1" id="DkP-DX-gLD"/>
-                                            <constraint firstItem="a5z-I1-VPy" firstAttribute="top" secondItem="klP-qU-GYu" secondAttribute="top" id="EDf-nt-NmP"/>
                                             <constraint firstItem="Hd1-NU-bng" firstAttribute="width" secondItem="g44-wj-Qhe" secondAttribute="width" id="Iz9-0Q-z1K"/>
                                             <constraint firstItem="uW6-TX-Npe" firstAttribute="top" secondItem="klP-qU-GYu" secondAttribute="top" constant="10" id="Pad-aH-HR9"/>
-                                            <constraint firstItem="a5z-I1-VPy" firstAttribute="leading" secondItem="klP-qU-GYu" secondAttribute="leading" id="b4O-Gd-WIJ"/>
                                             <constraint firstItem="uW6-TX-Npe" firstAttribute="leading" secondItem="klP-qU-GYu" secondAttribute="leading" constant="10" id="egL-tg-ZAa"/>
                                             <constraint firstItem="uW6-TX-Npe" firstAttribute="centerX" secondItem="klP-qU-GYu" secondAttribute="centerX" id="iED-bu-Fba"/>
                                             <constraint firstItem="g44-wj-Qhe" firstAttribute="top" secondItem="Hd1-NU-bng" secondAttribute="bottom" id="q9l-yy-6DG"/>
@@ -1231,12 +1224,11 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.92941176470588238" green="0.93333333333333335" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="klP-qU-GYu" firstAttribute="height" secondItem="1w5-uU-4FC" secondAttribute="height" priority="250" id="L61-8K-4c5"/>
+                                    <constraint firstItem="klP-qU-GYu" firstAttribute="height" secondItem="1w5-uU-4FC" secondAttribute="height" id="L61-8K-4c5"/>
                                     <constraint firstAttribute="bottom" secondItem="klP-qU-GYu" secondAttribute="bottom" id="QIg-ZY-Vbw"/>
                                     <constraint firstAttribute="trailing" secondItem="klP-qU-GYu" secondAttribute="trailing" id="UAe-qX-Xvu"/>
                                     <constraint firstItem="klP-qU-GYu" firstAttribute="width" secondItem="1w5-uU-4FC" secondAttribute="width" id="XEP-3A-gAm"/>
                                     <constraint firstItem="klP-qU-GYu" firstAttribute="leading" secondItem="1w5-uU-4FC" secondAttribute="leading" id="mvu-uM-bEv"/>
-                                    <constraint firstItem="uW6-TX-Npe" firstAttribute="height" secondItem="1w5-uU-4FC" secondAttribute="height" id="xsV-Nt-PPA"/>
                                     <constraint firstItem="klP-qU-GYu" firstAttribute="top" secondItem="1w5-uU-4FC" secondAttribute="top" id="zaB-Of-GdV"/>
                                 </constraints>
                             </scrollView>
@@ -3705,7 +3697,6 @@
         <image name="Asset 3" width="33" height="33"/>
         <image name="Asset 3352" width="19" height="17"/>
         <image name="Asset 4" width="33" height="33"/>
-        <image name="Asset 47" width="320" height="367"/>
         <image name="Asset 5" width="33" height="33"/>
         <image name="Asset 6" width="33" height="33"/>
         <image name="Asset 9" width="285" height="217"/>
@@ -3732,6 +3723,6 @@
         <image name="nazish_passport_size" width="316" height="318"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="pnt-Xu-Aqh"/>
+        <segue reference="InY-X4-JKB"/>
     </inferredMetricsTieBreakers>
 </document>
