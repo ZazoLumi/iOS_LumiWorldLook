@@ -319,10 +319,10 @@ class AdvertiseData: Object {
     func downloadFileFromServer(newAdvertiseData:AdvertiseData) {
         // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
         let filePath = newAdvertiseData.adFilePath?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        let realm = try! Realm()
 
         DownloadManager.shared().startFileDownloads(FileDownloadInfo.init(fileTitle: Int32(newAdvertiseData.advertiseId), andDownloadSource: filePath), withCompletionBlock: { (response,url) in
             DispatchQueue.main.async {
+                let realm = try! Realm()
                 let advData = realm.objects(AdvertiseData.self).filter("advertiseId = \(response)")
                 if advData.count > 0 {
                     var fileName : String!

@@ -2889,13 +2889,15 @@
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Asset102" translatesAutoresizingMaskIntoConstraints="NO" id="p15-xQ-bnP">
-                                        <rect key="frame" x="65" y="37" width="19" height="11"/>
+                                        <rect key="frame" x="65" y="32" width="20" height="20"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="p15-xQ-bnP" secondAttribute="height" multiplier="19:11" id="cYm-bb-Ouu"/>
+                                            <constraint firstAttribute="width" constant="20" id="GMG-ai-yBT"/>
+                                            <constraint firstAttribute="width" secondItem="p15-xQ-bnP" secondAttribute="height" multiplier="1:1" id="H28-K8-XR6"/>
+                                            <constraint firstAttribute="height" constant="20" id="UK6-sA-uym"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z3Y-9H-oxh">
-                                        <rect key="frame" x="89" y="34" width="226" height="17"/>
+                                        <rect key="frame" x="90" y="34" width="225" height="17"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.50980392159999999" green="0.50980392159999999" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -2914,7 +2916,7 @@
                                     <constraint firstAttribute="height" constant="70" id="ox9-DV-hDx"/>
                                     <constraint firstItem="p15-xQ-bnP" firstAttribute="leading" secondItem="ocR-lk-GYA" secondAttribute="trailing" constant="5" id="qIm-WO-PPb"/>
                                     <constraint firstItem="WqF-aI-gKQ" firstAttribute="leading" secondItem="ocR-lk-GYA" secondAttribute="trailing" constant="5" id="t2f-aV-K84"/>
-                                    <constraint firstItem="p15-xQ-bnP" firstAttribute="top" secondItem="WqF-aI-gKQ" secondAttribute="bottom" constant="10" id="zJ6-mw-3Gs"/>
+                                    <constraint firstItem="p15-xQ-bnP" firstAttribute="top" secondItem="WqF-aI-gKQ" secondAttribute="bottom" constant="5" id="zJ6-mw-3Gs"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EJ8-GF-VI5">

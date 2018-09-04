@@ -152,14 +152,13 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     self.inputTV.text = ""
                     self.inputTV.resignFirstResponder()
                     self.tblCommentData.reloadData()
-//                    let indexPath = IndexPath(row: 0, section: 0)
-//                    self.tblCommentData.scrollToRow(at: indexPath, at: .top, animated: true)
-                    self.tblCommentData.contentOffset = .zero
                     if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
                         let count = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count
                         self.btnComments.setTitle("\(count) Comments", for: .normal)
                         self.btnComments.setTitle("\(count) Comments", for: .selected)
                     }
+                    if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 1 {
+                        self.tblCommentData.contentOffset = .zero}
                     self.setupInitialConstraints()
                 }
             }
@@ -305,8 +304,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         setupBottomView()
         let yPos = (Int(UIScreen.main.bounds.height) - totalHeight)/2
         self.view.frame = CGRect(x: 0, y: yPos, width:Int(self.view.frame.size.width), height:totalHeight);
-        tblCommentData.reloadData()
-
+        DispatchQueue.main.async {
+            self.tblCommentData.reloadData()}
     }
     func slider(_ slider: TNSlider, displayTextForValue value: Float) -> String {
         let seconds : Int64 = Int64(value)

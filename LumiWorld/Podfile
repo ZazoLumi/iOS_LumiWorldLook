@@ -23,7 +23,8 @@ target 'LumiWorld' do
   pod 'Zip', '~> 1.1'
   #  pod 'VGPlayer', '~> 0.2.0'
   pod 'TNSlider'
-
+  pod 'Fabric'
+  pod 'Crashlytics'
   # Pods for LumiWorld
 
 end

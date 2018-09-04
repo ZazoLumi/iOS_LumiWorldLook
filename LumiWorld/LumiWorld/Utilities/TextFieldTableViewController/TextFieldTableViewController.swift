@@ -70,23 +70,37 @@ open class TextFieldTableViewController: UITableViewController, UITextFieldDeleg
     // MARK: - UITextFieldDelegate
 
     @objc func textFieldDidChange(_ textField: UITextField) {
-        let indexPath = tableView.indexPath(for: textField)!
-        texts[indexPath.section][indexPath.row] = textField.text!
+        do{
+            let indexPath = try tableView.indexPath(for: textField)!
+            texts[indexPath.section][indexPath.row] = textField.text!
+        }catch MyError.runtimeError(let errorMessage){
+            print(errorMessage)
+        }catch{
+            print("some error")
+        }
     }
 
     open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        let indexPath = tableView.indexPath(for: textField)!
-        var nextIndexPath: IndexPath
-        if !isLastRow(indexPath.row, inSection: indexPath.section) {
-            nextIndexPath = IndexPath(row: indexPath.row+1, section: indexPath.section)
-        } else if !isLastSection(indexPath.section) {
-            nextIndexPath = IndexPath(row: 0, section: indexPath.section+1)
-        } else {
-            doneAction()
-            return false
+        
+        do{
+            let indexPath = try tableView.indexPath(for: textField)!
+            var nextIndexPath: IndexPath
+            if !isLastRow(indexPath.row, inSection: indexPath.section) {
+                nextIndexPath = IndexPath(row: indexPath.row+1, section: indexPath.section)
+            } else if !isLastSection(indexPath.section) {
+                nextIndexPath = IndexPath(row: 0, section: indexPath.section+1)
+            } else {
+                doneAction()
+                return false
+            }
+            tableView.textFieldForRow(at: nextIndexPath)!.becomeFirstResponder()
+        }catch MyError.runtimeError(let errorMessage){
+            print(errorMessage)
+        }catch{
+            print("some error")
         }
-        tableView.textFieldForRow(at: nextIndexPath)!.becomeFirstResponder()
         return false
+
     }
 
     // MARK: - Actions

@@ -1,5 +1,8 @@
 import UIKit
 import MaterialTextField
+enum MyError: Error {
+    case runtimeError(String)
+}
 
 open class TextFieldTableViewCell: UITableViewCell {
     open var textFieldLeftLayoutConstraint: NSLayoutConstraint!
@@ -27,8 +30,11 @@ open class TextFieldTableViewCell: UITableViewCell {
 }
 
 extension UITableView {
-    public func indexPath(for textField: UITextField) -> IndexPath? {
-        return indexPath(for: textField.superview!.superview! as! UITableViewCell)
+    public func indexPath(for textField: UITextField) throws -> IndexPath? {
+            guard let indexP = self.indexPath(for: textField.superview!.superview! as! UITableViewCell) else {
+                throw MyError.runtimeError("Fail")
+            }
+            return indexP
     }
 
     public func textFieldForRow(at indexPath: IndexPath) -> UITextField? {

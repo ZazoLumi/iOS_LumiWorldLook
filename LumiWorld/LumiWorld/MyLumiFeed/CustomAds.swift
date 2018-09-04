@@ -23,7 +23,7 @@ class CustomAds: UIView {
 
     let nibName = "CustomAds"
     var contentView:UIView?
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()

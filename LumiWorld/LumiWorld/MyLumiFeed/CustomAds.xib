@@ -33,7 +33,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="300" height="35"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ba-m5-r5Y">
-                            <rect key="frame" x="255.5" y="0.0" width="24.5" height="12"/>
+                            <rect key="frame" x="255.5" y="3" width="24.5" height="12"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -72,8 +72,8 @@
                         <constraint firstAttribute="height" constant="35" id="cMo-lP-QZ6"/>
                         <constraint firstItem="ImB-0O-ets" firstAttribute="leading" secondItem="mNO-G3-hcW" secondAttribute="leading" constant="10" id="dLl-se-LeE"/>
                         <constraint firstItem="ImB-0O-ets" firstAttribute="centerY" secondItem="mNO-G3-hcW" secondAttribute="centerY" id="nvI-3d-lp1"/>
-                        <constraint firstItem="IU5-if-gl1" firstAttribute="top" secondItem="1ba-m5-r5Y" secondAttribute="bottom" constant="5" id="qjd-tg-j2k"/>
-                        <constraint firstItem="1ba-m5-r5Y" firstAttribute="top" secondItem="mNO-G3-hcW" secondAttribute="top" id="woz-kN-QRI"/>
+                        <constraint firstItem="IU5-if-gl1" firstAttribute="top" secondItem="1ba-m5-r5Y" secondAttribute="bottom" constant="2" id="qjd-tg-j2k"/>
+                        <constraint firstItem="1ba-m5-r5Y" firstAttribute="top" secondItem="mNO-G3-hcW" secondAttribute="top" constant="3" id="woz-kN-QRI"/>
                         <constraint firstAttribute="trailing" secondItem="IU5-if-gl1" secondAttribute="trailing" constant="20" id="xo1-Xr-Pxb"/>
                     </constraints>
                 </view>
@@ -97,13 +97,15 @@
                             </constraints>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Asset102" translatesAutoresizingMaskIntoConstraints="NO" id="Ai5-P5-sXP">
-                            <rect key="frame" x="65" y="24" width="19" height="11"/>
+                            <rect key="frame" x="65" y="24" width="20" height="20"/>
                             <constraints>
-                                <constraint firstAttribute="width" secondItem="Ai5-P5-sXP" secondAttribute="height" multiplier="19:11" id="knd-gL-zo9"/>
+                                <constraint firstAttribute="width" constant="20" id="428-cA-yvz"/>
+                                <constraint firstAttribute="width" secondItem="Ai5-P5-sXP" secondAttribute="height" multiplier="1:1" id="M56-0B-0FW"/>
+                                <constraint firstAttribute="height" constant="20" id="mlv-rJ-YVW"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fkz-Uc-7qr">
-                            <rect key="frame" x="89" y="21" width="206" height="17"/>
+                            <rect key="frame" x="90" y="25.5" width="205" height="17"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                             <color key="textColor" red="0.50980392159999999" green="0.50980392159999999" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>

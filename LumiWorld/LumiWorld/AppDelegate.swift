@@ -10,6 +10,8 @@ import UIKit
 import SwifterSwift
 import IQKeyboardManagerSwift
 import UserNotifications
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
@@ -45,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         }
         //Register for remote notifications.. If permission above is NOT granted, all notifications are delivered silently to AppDelegate.
         application.registerForRemoteNotifications()
-
+        Fabric.with([Crashlytics.self])
         return true
     }
     

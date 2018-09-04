@@ -39,7 +39,7 @@ class MyLumiProfileVC: UIViewController {
         super.viewDidLoad()
         
         self.navigationItem.addSettingButtonOnRight()
-        self.navigationItem.title = GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!.uppercased() + "'S LUMI PROFILE"
+        self.navigationItem.title = "LUMI PROFILE"
         self.url1 = URL(fileURLWithPath: Bundle.main.path(forResource: "LumiWorldWelcom", ofType: "mp4")!)
         // Do any additional setup after loading the view.
         setupBottomScrollableUI()
@@ -51,14 +51,10 @@ class MyLumiProfileVC: UIViewController {
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         setupProfileData()
-        //playerView.playerController.player?.play()
-        //        let value = UIInterfaceOrientation.portrait.rawValue
-//        UIDevice.current.setValue(value, forKey: "orientation")
-        setupAdsScrollableUI()
-
     }
+    
     override func viewDidAppear(_ animated: Bool) {
-
+        setupAdsScrollableUI()
     }
     override func viewWillDisappear(_ animated: Bool) {
         clearScrollContent()
@@ -136,8 +132,8 @@ class MyLumiProfileVC: UIViewController {
         self.objSendMessageTo.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-230)/2, width:self.view.frame.size.width , height:300);
         self.view.addSubview(self.objSendMessageTo.view)
         self.objSendMessageTo.didMove(toParentViewController: self)
-
     }
+    
      func onBtnSuggestLumineerTapped() {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -164,7 +160,7 @@ class MyLumiProfileVC: UIViewController {
         scrollable.stackView.axis = .horizontal
         scrollable.stackView.spacing = 22
         scrollable.scrollView.layoutMargins = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        let imgArray = ["Asset 19","Asset 20","Asset 21","Asset 22","Asset 20"]
+        let imgArray = ["Asset 19","Asset 20","Asset 21","Asset 22","Watch Later"]
         for i in 0 ..< 5 {
             let image = UIImage.init(named: imgArray[i])
             let button = UIButton.init(type: .custom)
@@ -188,8 +184,16 @@ class MyLumiProfileVC: UIViewController {
         scrlAdvertiseView.scrollView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 0)
         scrlAdvertiseView.scrollView.isPagingEnabled = true
         scrlAdvertiseView.scrollView.delegate = self
-
+        aryAdsData = []
         aryAdsData = GlobalShareData.sharedGlobal.getAllAdvertise()
+        let sorted = aryAdsData.sorted { left, right -> Bool in
+            guard let rightKey = right["message"]?.updatedDate else { return true }
+            guard let leftKey = left["message"]?.updatedDate else { return true }
+            return leftKey > rightKey
+        }
+        self.aryAdsData.removeAll()
+        self.aryAdsData.append(contentsOf: sorted)
+
         for i in 0 ..< aryAdsData.count + 1{
             if i == aryAdsData.count {
                 let width = CGFloat(aryAdsData.count>0 ? 40 : 20)
@@ -280,7 +284,7 @@ class MyLumiProfileVC: UIViewController {
 
         if aryAdsData.count > 0 {
             numberOfPages = aryAdsData.count + 1
-           timerScroll = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
+           timerScroll = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
             }
     }
 
@@ -317,7 +321,7 @@ class MyLumiProfileVC: UIViewController {
     }
     
     @objc func moveToNextPage (){
-        let pageWidth:CGFloat =  self.scrlAdvertiseView.scrollView.contentSize.width / CGFloat(numberOfPages)
+        let pageWidth:CGFloat =  UIScreen.main.bounds.size.width-40
 
         if currentPage == numberOfPages {
             currentPage = 0
@@ -326,11 +330,11 @@ class MyLumiProfileVC: UIViewController {
         }
         else {
             let maxWidth:CGFloat = self.scrlAdvertiseView.scrollView.contentSize.width
-                var contentOffset:CGFloat = self.scrlAdvertiseView.scrollView.contentOffset.x
+                var contentOffset:CGFloat = self.scrlAdvertiseView.scrollView.contentOffset.x + 20
                 if currentPage % 2 != 0  {
-                    contentOffset += 20
+                    contentOffset += 2
                 }
-            var slideToX = contentOffset + pageWidth
+            var slideToX =  (maxWidth / CGFloat(numberOfPages)) + contentOffset
             
             if  contentOffset + pageWidth == maxWidth
             {
@@ -350,7 +354,7 @@ class MyLumiProfileVC: UIViewController {
 
     @objc func handleAdsViewTap(recognizer : UITapGestureRecognizer)
     {
-        var tag = recognizer.view!.tag - 50000
+        let tag = recognizer.view!.tag - 50000
         
         guard tag < aryAdsData.count else {
             return
