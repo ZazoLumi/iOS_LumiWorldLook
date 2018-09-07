@@ -38,6 +38,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     @IBOutlet weak var tblCommentData: UITableView!
     @IBOutlet weak var btnLike: UIButton!
     @IBOutlet weak var btnComments: UIButton!
+    @IBOutlet weak var btnReport: UIButton!
     @IBOutlet weak var viewAddiotionalOperation: UIView!
     @IBOutlet weak var constFileProgressHeight: NSLayoutConstraint!
     @IBOutlet weak var constCommentsHeight: NSLayoutConstraint!
@@ -145,28 +146,52 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
         hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
         let objAdvData = AdvertiseData()
-        objAdvData.sendAdvertiseComments(param: ["lumineerId":GlobalShareData.sharedGlobal.objCurrentLumineer.id as AnyObject,"comments":inputTV.text as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]) { (success) in
-            if success {
-                DispatchQueue.main.async {
-                    hud.hide(animated: true)
-                    self.inputTV.text = ""
-                    self.inputTV.resignFirstResponder()
-                    self.tblCommentData.reloadData()
-                    if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
-                        let count = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count
-                        self.btnComments.setTitle("\(count) Comments", for: .normal)
-                        self.btnComments.setTitle("\(count) Comments", for: .selected)
+        let dictDetails = ["lumineerId":GlobalShareData.sharedGlobal.objCurrentLumineer.id as AnyObject,"comments":inputTV.text as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]
+        if btnComments.isSelected {
+            objAdvData.sendAdvertiseComments(param: dictDetails) { (success) in
+                if success {
+                    DispatchQueue.main.async {
+                        hud.hide(animated: true)
+                        self.inputTV.text = ""
+                        self.inputTV.resignFirstResponder()
+                        self.tblCommentData.reloadData()
+                        if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
+                            let count = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count
+                            self.btnComments.setTitle("\(count) Comments", for: .normal)
+                            self.btnComments.setTitle("\(count) Comments", for: .selected)
+                        }
+                        if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 1 {
+                            self.tblCommentData.contentOffset = .zero}
+                        self.setupInitialConstraints()
                     }
-                    if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 1 {
-                        self.tblCommentData.contentOffset = .zero}
-                    self.setupInitialConstraints()
                 }
             }
         }
+        else if btnReport.isSelected {
+            objAdvData.sendAdvertiseReports(param: dictDetails) { (success) in
+                if success {
+                    DispatchQueue.main.async {
+                        hud.hide(animated: true)
+                        let hudNew = MBProgressHUD.showAdded(to: self.view!, animated: true)
+                        hudNew.mode = .text
+                        hudNew.label.text = NSLocalizedString("AdReport is posted successfully.", comment: "HUD message title")
+                        hudNew.label.font = UIFont.init(name: "HelveticaNeue", size: 14)
+                        hudNew.offset = CGPoint(x:0, y: UIScreen.main.bounds.height/2)
+                        hudNew.hide(animated: true, afterDelay: 3.0)
+                        self.inputTV.text = ""
+                        self.inputTV.resignFirstResponder()
+                    }
+                }
+            }
+        }
+        btnReport.isSelected = false
+        btnComments.isSelected = false
     }
     override func viewWillDisappear(_ animated: Bool) {
         inputTV.text = ""
         inputTV.resignFirstResponder()
+        btnReport.isSelected = false
+        btnComments.isSelected = false
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
     }
     
@@ -346,13 +371,13 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         if !GlobalShareData.sharedGlobal.isVideoPlaying {
             displayAdvertiseContent() }
     }
+    
     @IBAction func onBtnCommentsTapped(_ sender: UIButton) {
         btnComments.isSelected = !sender.isSelected
-//        setupInitialConstraints()
+        btnReport.isSelected = false
         inputTV.becomeFirstResponder()
-        
-        
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -371,27 +396,12 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     
     @IBAction func onBtnSaveFileTapped(_ sender: Any) {
-        var msgText : String = ""
-        let realm = try! Realm()
-
-        let type = GlobalShareData.sharedGlobal.objCurrentAdv.contentType?.uppercased()
-        if GlobalShareData.sharedGlobal.objCurrentAdv.isAdsSaved {
-            msgText =  "\(type!) IS ALREADY SAVED"
-        }
-        else {
-            try! realm.write({
-                    GlobalShareData.sharedGlobal.objCurrentAdv.isAdsSaved = true})
-            msgText =  "\(type!) SAVED TO WATCH LATER"
-
-        }
-        let hud = MBProgressHUD.showAdded(to: self.view!, animated: true)
-        hud.mode = .text
-        hud.label.text = NSLocalizedString(msgText, comment: "HUD message title")
-        hud.label.font = UIFont.init(name: "HelveticaNeue", size: 14)
-        hud.offset = CGPoint(x:0, y: super.view.height/2)// CGPoint(x: (super.view.width/2)-50, y: super.view.height/2)
-        hud.hide(animated: true, afterDelay: 3.0)
+        GlobalShareData.sharedGlobal.saveAdsRecord()
     }
-    @IBAction func onBtnReportTapped(_ sender: Any) {
+    @IBAction func onBtnReportTapped(_ sender: UIButton) {
+        btnReport.isSelected = !sender.isSelected
+        btnReport.isSelected = false
+        inputTV.becomeFirstResponder()
     }
     @IBAction func onBtnShareTapped(_ sender: Any) {
         let urlOriginalImage : URL!
@@ -692,6 +702,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
+            btnReport.isSelected = false
+            btnComments.isSelected = false
             return false
         }
         return true
@@ -795,9 +807,9 @@ extension AdvertiseVC:AGPlayerDelegate {
     
     
 }
-    extension AdvertiseVC: UIDocumentInteractionControllerDelegate {
+    extension UIViewController : UIDocumentInteractionControllerDelegate {
         
-        func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+        public func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
             return self
         }
         

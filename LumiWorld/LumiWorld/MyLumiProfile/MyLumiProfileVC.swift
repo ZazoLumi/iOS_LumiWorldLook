@@ -19,6 +19,7 @@ class MyLumiProfileVC: UIViewController {
     var objSuggestACompany : suggestCompany!
     var objsuggestALumineer : suggestALumineer!
     var objAdvertiseVC : AdvertiseVC!
+    fileprivate var documentInteractionController = UIDocumentInteractionController()
 
     
     @IBOutlet weak var scrollable: ScrollableStackView!
@@ -216,11 +217,15 @@ class MyLumiProfileVC: UIViewController {
             customAdsView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-40).isActive = true
             customAdsView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-240).isActive = true
             customAdsView.translatesAutoresizingMaskIntoConstraints = true
+            customAdsView.btnSaveAds.addTarget(self, action:#selector(onBtnSaveAdsTapped(_:)), for: .touchUpInside)
+                customAdsView.btnSaveAds.tag = 50000 + i
+                customAdsView.btnSared.addTarget(self, action:#selector(onBtnSaredAdsTapped(_:)), for: .touchUpInside)
+                customAdsView.btnSared.tag = 50000 + i
 
-                customAdsView.tag = 50000 + i
-                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleAdsViewTap(recognizer:)))
-                customAdsView.addGestureRecognizer(tapGestureRecognizer)
-                customAdsView.isUserInteractionEnabled = true
+            customAdsView.tag = 50000 + i
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleAdsViewTap(recognizer:)))
+            customAdsView.addGestureRecognizer(tapGestureRecognizer)
+            customAdsView.isUserInteractionEnabled = true
 
             let objAdv = objectData["message"] as? AdvertiseData
 
@@ -319,7 +324,6 @@ class MyLumiProfileVC: UIViewController {
         currentPage = 0
         self.scrlAdvertiseView.scrollView.contentOffset = .zero
     }
-    
     @objc func moveToNextPage (){
         let pageWidth:CGFloat =  UIScreen.main.bounds.size.width-40
 
@@ -377,7 +381,6 @@ class MyLumiProfileVC: UIViewController {
         self.view.addSubview(self.objAdvertiseVC.view)
         self.objAdvertiseVC
             .didMove(toParentViewController: self)
-
     }
 
     /*
@@ -389,6 +392,41 @@ class MyLumiProfileVC: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    @objc func onBtnSaveAdsTapped(_ sender: UIButton){
+        let index = sender.tag - 50000
+        guard index < aryAdsData.count else {
+            return
+        }
+        let objectData = aryAdsData[index]
+        let objAdv = objectData["message"] as? AdvertiseData
+        GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
+        GlobalShareData.sharedGlobal.saveAdsRecord()
+    }
+    
+    @objc func onBtnSaredAdsTapped(_ sender: UIButton){
+        let index = sender.tag - 50000
+        guard index < aryAdsData.count else {
+            return
+        }
+        let objectData = aryAdsData[index]
+        let objAdv = objectData["message"] as? AdvertiseData
+        GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
+        let urlOriginalImage : URL!
+        if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
+            if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
+            {
+                urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
+            }
+            else {
+                let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
+                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+            }
+            documentInteractionController.delegate = self
+            documentInteractionController.url = urlOriginalImage
+            documentInteractionController.presentPreview(animated: true)
+        }
+    }
+
 
 }
 

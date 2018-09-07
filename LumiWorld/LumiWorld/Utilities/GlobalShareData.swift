@@ -54,6 +54,7 @@ struct Constants {
         static let APIGetAllAdsPostedToLumiByALumineer = ":13004/adposting/getAllAdsPostedToLumiByALumineer"
         static let APIGetAllAdsPostedToLumi = "http://lumiimportupload20180622023528.azurewebsites.net/api/AdWrapper"
         static let APIPOSTAdvertiseComments = ":13004/adposting/postCommentsToLumineerAdByLumi"
+        static let APIPOSTAdvertiseReports = ":13004/adposting/postReportsToLumineerAdByLumi"
         static let APIPOSTAdvertiseLike = ":13004/adposting/likeOrDislikeLumineerAd"
 
    }
@@ -370,6 +371,29 @@ class GlobalShareData {
         }
         return aryAdsData
     }
+    
+    func saveAdsRecord() {
+        var msgText : String = ""
+        let realm = try! Realm()
+        
+        let type = GlobalShareData.sharedGlobal.objCurrentAdv.contentType?.uppercased()
+        if GlobalShareData.sharedGlobal.objCurrentAdv.isAdsSaved {
+            msgText =  "\(type!) IS ALREADY SAVED"
+        }
+        else {
+            try! realm.write({
+                GlobalShareData.sharedGlobal.objCurrentAdv.isAdsSaved = true})
+            msgText =  "\(type!) SAVED TO WATCH LATER"
+            
+        }
+        let hud = MBProgressHUD.showAdded(to: objCurretnVC.view!, animated: true)
+        hud.mode = .text
+        hud.label.text = NSLocalizedString(msgText, comment: "HUD message title")
+        hud.label.font = UIFont.init(name: "HelveticaNeue", size: 14)
+        hud.offset = CGPoint(x:0, y: UIScreen.main.bounds.height/2)// CGPoint(x: (super.view.width/2)-50, y: super.view.height/2)
+        hud.hide(animated: true, afterDelay: 3.0)
+    }
+    
     
     func getAllAdvertise() -> [[String:AnyObject]]{
         let realm = try! Realm()

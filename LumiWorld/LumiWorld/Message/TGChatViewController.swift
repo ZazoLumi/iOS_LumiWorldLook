@@ -441,10 +441,10 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     
 }
 
-extension TGChatViewController: UIDocumentInteractionControllerDelegate {
-    
-    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
-        return self
-    }
-    
-}
+//extension TGChatViewController: UIDocumentInteractionControllerDelegate {
+//    
+//    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+//        return self
+//    }
+//    
+//}

@@ -218,6 +218,34 @@ class AdvertiseData: Object {
         }
     }
     
+    func sendAdvertiseReports(param:[String:AnyObject],completionHandler: @escaping (_ result:Bool) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let jsonData = try? JSONSerialization.data(withJSONObject: param, options: [])
+            let jsonString = String(data: jsonData!, encoding: .utf8)
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIPOSTAdvertiseReports)"
+            
+            let paramCreateRelationship = ["reportDtls":jsonString!, "url":urlString,"filePath":"","fileName":""]
+            do {
+                let multiAPI : multipartAPI = multipartAPI()
+                multiAPI.call(paramCreateRelationship, withCompletionBlock: { (aObject, error) in
+                    guard aObject?.count != 0, (aObject?.keys.contains("responseCode"))!, aObject!["responseCode"] as! Int != 0 else {
+                        DispatchQueue.main.async {
+                            MBProgressHUD.hide(for: (appDelInstance().window?.rootViewController?.navigationController?.view)!, animated: true)}
+                        completionHandler(false)
+                        return
+                    }
+                    completionHandler(true)
+                })
+            } catch let jsonError {
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+
+    
     func getAdvertiseObject(aObject:JSON) -> AdvertiseData {
         let newAdvertiseData = AdvertiseData()
         let id : Int = aObject["advertiseId"].intValue
