@@ -84,7 +84,8 @@ class GlobalShareData {
     var aryAttachUrls : [URL] = []
     var currentScreenValue : String = currentScreen.messageThread.rawValue
     var strImagePath : String = ""
-
+    
+    
     lazy var applicationDocumentsDirectory: URL = {
         
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -486,7 +487,7 @@ extension Date {
         
         //Return Result
         return isGreater
-}
+    }
 }
 //// Use the singleton like this
 //let singleton = Global.sharedGlobal
