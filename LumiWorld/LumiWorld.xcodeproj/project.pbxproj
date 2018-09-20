@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		09028A7C20AEB86B007F85F2 /* AboutPlusTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */; };
 		090B085320C135AD00A05A7E /* LumiProfileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090B085220C135AD00A05A7E /* LumiProfileDetails.swift */; };
+		090E761F2153B7350032315C /* CustomSegmentedContrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090E761E2153B7340032315C /* CustomSegmentedContrl.swift */; };
 		0916065420871FA400F8E8EC /* multipartAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0916065320871FA400F8E8EC /* multipartAPI.m */; };
 		0933146E20CE5E4400FAE9C5 /* suggestALumineer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0933146D20CE5E4300FAE9C5 /* suggestALumineer.swift */; };
 		093F445E206B715900BC9983 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445D206B715800BC9983 /* UserData.swift */; };
@@ -165,6 +166,7 @@
 		0900544620591EC700262084 /* LumiWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LumiWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutPlusTC.swift; sourceTree = "<group>"; };
 		090B085220C135AD00A05A7E /* LumiProfileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiProfileDetails.swift; sourceTree = "<group>"; };
+		090E761E2153B7340032315C /* CustomSegmentedContrl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedContrl.swift; sourceTree = "<group>"; };
 		0916065120871FA300F8E8EC /* LumiWorld-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LumiWorld-Bridging-Header.h"; sourceTree = "<group>"; };
 		0916065220871FA400F8E8EC /* multipartAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multipartAPI.h; sourceTree = "<group>"; };
 		0916065320871FA400F8E8EC /* multipartAPI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = multipartAPI.m; sourceTree = "<group>"; };
@@ -476,6 +478,7 @@
 		0964E6E82060F981001D6F47 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				090E761E2153B7340032315C /* CustomSegmentedContrl.swift */,
 				7A80545D211CC3D700138BBD /* AGVideoPlayerView.swift */,
 				097B0C23211AD559001285AF /* MediaZoom.swift */,
 				096E02C221182A59000F8FF8 /* ScrollableStackView.swift */,
@@ -938,6 +941,7 @@
 				0964E7322060F981001D6F47 /* ZipCodeRule.swift in Sources */,
 				0964E7132060F981001D6F47 /* ExampleBasicContentView.swift in Sources */,
 				097BFA5B207E37EF001F935C /* NSAttributedString+NoChat.swift in Sources */,
+				090E761F2153B7350032315C /* CustomSegmentedContrl.swift in Sources */,
 				0964E7122060F981001D6F47 /* ExampleBackgroundContentView.swift in Sources */,
 				0964E7232060F981001D6F47 /* EmailRule.swift in Sources */,
 				0964E7152060F981001D6F47 /* ExampleHighlightableContentView.swift in Sources */,

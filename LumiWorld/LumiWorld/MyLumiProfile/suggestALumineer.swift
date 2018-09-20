@@ -43,7 +43,7 @@ class suggestALumineer: UIViewController,FormDataDelegate,UITableViewDelegate,UI
         self.tblLumineerData.reloadData()
         lumineerDataHeight.constant = 76
         // Do any additional setup after loading the view.
-    }
+    } 
 
     override func viewDidAppear(_ animated: Bool) {
         if !GlobalShareData.sharedGlobal.isContactPicked {
