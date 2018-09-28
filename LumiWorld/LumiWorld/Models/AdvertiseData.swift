@@ -21,8 +21,6 @@ class AdvertiseData: Object {
     @objc dynamic var likeCount: Double = 0
     @objc dynamic var createdDate: Double = 0
     @objc dynamic var updatedDate: Double = 0
-
-
     @objc dynamic var adFileName: String? = nil
     @objc dynamic var adFilePath: String? = nil
     @objc dynamic var adType: String? = nil

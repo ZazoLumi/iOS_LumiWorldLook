@@ -56,6 +56,7 @@ struct Constants {
         static let APIPOSTAdvertiseComments = ":13004/adposting/postCommentsToLumineerAdByLumi"
         static let APIPOSTAdvertiseReports = ":13004/adposting/postReportsToLumineerAdByLumi"
         static let APIPOSTAdvertiseLike = ":13004/adposting/likeOrDislikeLumineerAd"
+        static let APIGetAllLumineerContent = "http://lumiimportupload20180622023528.azurewebsites.net/api/GetAllContent"
 
    }
 }
@@ -421,6 +422,25 @@ class GlobalShareData {
         return aryAdsData
     }
 
+    func getAllContents() -> [LumineerContent]{
+        let realm = try! Realm()
+        let result  = realm.objects(LumineerContent.self)
+        var aryContentData: [LumineerContent] = []
+        if result.count > 0 {
+            for objContent in result {
+                let creteatedData = objAdv.strContentDate
+                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let currentDate = Date()
+                if currentDate.isGreaterThanDate(dateToCompare: cDate as NSDate) {
+                        aryContentData.append(objContent)
+                }
+                
+            }
+            
+            print("Count:\(aryContentData.count)")
+        }
+        return aryContentData
+    }
     
     func getlatestCategoriesAndData (completionHandler: @escaping (_ response: Bool) -> Void) {
         let objLumiCate = LumiCategory()

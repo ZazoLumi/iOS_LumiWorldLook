@@ -24,16 +24,16 @@ class SubjectCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-//        self.imgMessage.layer.cornerRadius = self.imgMessage.bounds.size.height * 0.50
-//        self.imgMessage.layer.borderWidth = 0.5;
-//        self.imgMessage.layer.borderColor = UIColor.clear.cgColor;
+        //        self.imgMessage.layer.cornerRadius = self.imgMessage.bounds.size.height * 0.50
+        //        self.imgMessage.layer.borderWidth = 0.5;
+        //        self.imgMessage.layer.borderColor = UIColor.clear.cgColor;
         
     }
     
     
 }
 
-class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate  {
     let kHeaderSectionTag: Int = 6900;
     var expandedSectionHeaderNumber: Int = -1
     var expandedSectionHeader: UITableViewHeaderFooterView!
@@ -52,6 +52,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     var aryActivityData: [[String:AnyObject]]!
     var objLumineer : LumineerList!
     var objAdvertiseVC : AdvertiseVC!
+    var objLumineerHomeVC : LumineerHomeVC!
+
     var isInboxCountSelected = false
     
     @IBOutlet weak var lblActivity: UIView!
@@ -59,32 +61,39 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     @IBOutlet weak var btnFollowLumineer: UIButton!
     @IBOutlet weak var mainViewHeights: NSLayoutConstraint!
     var objPopupSendMessage : PopupSendMessage! = nil
+    
+    private var pageController: UIPageViewController!
+    private var arrPageTexts:[UIViewController] = []
+    private var currentPage: Int!
+    
+    @IBOutlet var segmentedControlView : UIView!
+    var segmentedControl: CustomSegmentedContrl!
+
     //
     // MARK: Lifecycle methods
     //
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
         self.navigationItem.addBackButtonOnLeft()
-        NotificationCenter.default.addObserver(self, selector: #selector(getLatestLumiMessages), name: Notification.Name("popupRemoved"), object: nil)
-
+        
         lblExpandableDescription.delegate = self
         lblExpandableDescription.setLessLinkWith(lessLink: "Close", attributes: [.foregroundColor:UIColor.red], position: .center)
         
         lblExpandableDescription.shouldCollapse = true
         lblExpandableDescription.textReplacementType = .word
         lblExpandableDescription.numberOfLines = 2
-       // lblExpandableDescription.textAlignment = .right
+        // lblExpandableDescription.textAlignment = .right
         lblExpandableDescription.textAlignment = .center
-
+        
         // Do any additional setup after loading the view.
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleRatingTapFrom(recognizer:)))
         self.ratingVC.addGestureRecognizer(tapGestureRecognizer)
         self.ratingVC.isUserInteractionEnabled = true
-        viewActivityHeights.constant = 0
-        lblActivity.isHidden = true
-        lblLumiProfileTxt.text =  "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!), how can we help you?"
+        //viewActivityHeights.constant = 0
+//        lblActivity.isHidden = true
+//        lblLumiProfileTxt.text =  "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!), how can we help you?"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,11 +109,152 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         displayAdvertiseContent()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        setupSegmentData()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func setupSegmentData() {
+        segmentedControl = CustomSegmentedContrl.init(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: segmentedControlView.frame.size.height))
+        segmentedControl.backgroundColor = .white
+        segmentedControl.commaSeperatedButtonTitles = "HOME, VIDEO, MESSAGE,SHOP,SCHEDULER,COLLABS,SUPPORT"
+        segmentedControl.addTarget(self, action: #selector(onChangeOfSegment(_:)), for: .valueChanged)
+        currentPage = 0
+        segmentedControlView.addSubview(segmentedControl)
+
+        createPageViewController()
+    }
     
+    private func createPageViewController() {
+        
+        pageController = UIPageViewController.init(transitionStyle: UIPageViewControllerTransitionStyle.scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.horizontal, options: nil)
+        
+        pageController.view.backgroundColor = UIColor.clear
+        pageController.delegate = self
+        pageController.dataSource = self
+        
+        for svScroll in pageController.view.subviews as! [UIScrollView] {
+            svScroll.delegate = self
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.pageController.view.frame = CGRect(x: 0, y: self.segmentedControl.frame.maxY, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            
+        }
+        
+        // arrPageTexts = [vc1, vc2, vc3]
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objLumineerHomeVC = storyBoard.instantiateViewController(withIdentifier: "LumineerHomeVC") as! LumineerHomeVC
+        arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objLumineerHomeVC)
+        pageController.setViewControllers([objLumineerHomeVC], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+        
+        //self.addChildViewController(pageController)
+        segmentedControlView.addSubview(pageController.view)
+        pageController.didMove(toParentViewController: self)
+    }
+    
+    
+    private func indexofviewController(viewCOntroller: UIViewController) -> Int {
+        if(arrPageTexts .contains(viewCOntroller)) {
+            return arrPageTexts.index(of: viewCOntroller)!
+        }
+        
+        return -1
+    }
+    
+    
+    //MARK: - Pagination Delegate Methods
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        
+        var index = indexofviewController(viewCOntroller: viewController)
+        
+        if(index != -1) {
+            index = index - 1
+        }
+        
+        if(index < 0) {
+            return nil
+        }
+        else {
+            return arrPageTexts[index]
+        }
+        
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        
+        var index = indexofviewController(viewCOntroller: viewController)
+        
+        if(index != -1) {
+            index = index + 1
+        }
+        
+        if(index >= arrPageTexts.count) {
+            return nil
+        }
+        else {
+            return arrPageTexts[index]
+        }
+        
+    }
+    
+    func pageViewController(_ pageViewController1: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
+        if(completed) {
+            currentPage = arrPageTexts.index(of: (pageViewController1.viewControllers?.last)!)
+            // self.segmentedControl.selectedSegmentIndex = currentPage
+            
+            self.segmentedControl.updateSegmentedControlSegs(index: currentPage)
+            
+        }
+        
+    }
+    
+    
+    @objc func onChangeOfSegment(_ sender: CustomSegmentedContrl) {
+        
+        
+        switch sender.selectedSegmentIndex {
+        case 0:
+            pageController.setViewControllers([arrPageTexts[0]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+            currentPage = 0
+            
+        case 1:
+            if currentPage > 1{
+                pageController.setViewControllers([arrPageTexts[1]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+                currentPage = 1
+            }else{
+                pageController.setViewControllers([arrPageTexts[1]], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
+                currentPage = 1
+                
+            }
+        case 2:
+            if currentPage < 2 {
+                pageController.setViewControllers([arrPageTexts[2]], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
+                currentPage = 2
+                
+                
+            }else{
+                pageController.setViewControllers([arrPageTexts[2]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+                currentPage = 2
+                
+            }
+        default:
+            break
+        }
+        
+        
+    }
+
     func calculateCurrentHeight() {
         var tableHeight = 0
         if !isInboxCountSelected {
@@ -115,7 +265,6 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         }
         else if self.aryActivityData != nil, (self.aryActivityData.count)>0 {
             tableHeight = (self.aryActivityData.count * 46) + 64
-
         }
         mainViewHeights.constant
             =  (appDelegate.window?.bounds.size.height)! + lblExpandableDescription.frame.size.height + CGFloat(tableHeight)
@@ -142,11 +291,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             btnFollowLumineer.isSelected = false
         }
         let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
-       // let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
+        // let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
         let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
-
+        
         self.imgProfilePic.image = scalImg
-       // self.imgProfilePic.contentMode = .scaleAspectFill
+        // self.imgProfilePic.contentMode = .scaleAspectFill
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style:.plain, target: nil, action: nil)
         
         
@@ -157,7 +306,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
                 self.objLumineer.ratings = (json["finalRating"]?.intValue)!})
         }
         
-//todo \(String(describing: GlobalShareData.sharedGlobal.currentUserDetails.displayName))
+        //todo \(String(describing: GlobalShareData.sharedGlobal.currentUserDetails.displayName))
         objLumineer.getLumineerCompanyUnReadMessageCounts(param:["cellNumber":GlobalShareData.sharedGlobal.userCellNumber ,"lumineerName":""]) { (json) in
             let strCount = json["unreadCount"]!
             self.btnInboxCount.setTitle("\(strCount) INBOX", for: .normal)
@@ -172,56 +321,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         }
         objLumineer.getLumineerSocialMediaDetails(){ (json) in
         }
-       getLatestLumiMessages()
-        self.calculateCurrentHeight()
+        //getLatestLumiMessages()
+        //self.calculateCurrentHeight()
     }
     
-    @objc func getLatestLumiMessages() {
-        let objLumiMessage = LumiMessage()
-        let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.messageTimeStamp)
-        let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!], nParentId: GlobalShareData.sharedGlobal.objCurrentLumineer.parentid) { (objLumineer) in
-            let realm = try! Realm()
-            let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageCategory") as! [String]))
-            self.aryActivityData = []
-            for objUniqueItem in distinctTypes {
-                var aryLumiMessage = objLumineer.lumiMessages.filter("messageCategory = %@",objUniqueItem)
-                aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "id", ascending: false)
-
-                var uniqueObjects : [LumiMessage] = [LumiMessage]()
-                for obj in aryLumiMessage {
-                    if obj.value(forKeyPath:"messageSubject") != nil {
-                        let value = obj.value(forKeyPath:"messageSubject") as! String
-                        var isContain = false
-                        for newObj in uniqueObjects {
-                            if newObj.messageSubject == value {
-                                isContain = true
-                            }
-                        }
-                        if !isContain {
-                            uniqueObjects.append(obj)
-                        }
-                    }
-                }
-                uniqueObjects = uniqueObjects.sorted(by: { $0.id > $1.id })
-                var strImageName : String!
-                if uniqueObjects.count > 0 {
-                    if uniqueObjects[0].isReadByLumi  {
-                        strImageName = "Artboard 92xxhdpi"
-                    }
-                    else {
-                        strImageName = "Artboard 91xxhdpi"
-                    }
-                    
-                    let section = ["title":objUniqueItem, "text":uniqueObjects[0].messageSubject as Any,"date":Date().getFormattedDate(string: uniqueObjects[0].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
-                    self.aryActivityData.append(section as [String : AnyObject])
-                    
-                }
-            }
-            self.tblActivityData.reloadData()
-        }
-    }
-
+    
     //
     // MARK: ExpandableLabel Delegate
     //
@@ -239,21 +343,20 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         lblExpandableDescription.shouldCollapse = false
         lblExpandableDescription.numberOfLines = 2
         calculateCurrentHeight()
-   }
+    }
     
     func didCollapseLabel(_ label: ExpandableLabel) {
         lblExpandableDescription.shouldCollapse = true
         lblExpandableDescription.numberOfLines = 2
         lblExpandableDescription.textAlignment = .center
-
     }
-
-
+    
+    
     
     //
     // MARK: Social media methods
     //
-
+    
     @IBAction func onBtnFacebookTapped(_ sender: Any) {
     }
     
@@ -265,28 +368,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     }
     @IBAction func onBtnPhoneCallTapped(_ sender: Any) {
     }
-
+    
     //
     // MARK: Custom methods
     //
     
-    func addMessgePopup(activityType:String) {
-        self.view.addBlurEffect()
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        objPopupSendMessage = storyBoard.instantiateViewController(withIdentifier: "PopupSendMessage") as! PopupSendMessage
-        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
-        objPopupSendMessage.activityType = activityType
-        self.objPopupSendMessage.view.cornerRadius = 10
-        self.addChildViewController(self.objPopupSendMessage)
-        self.objPopupSendMessage.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-340)/2, width:self.view.frame.size.width , height:340);
-        self.view.addSubview(self.objPopupSendMessage.view)
-        self.objPopupSendMessage.didMove(toParentViewController: self)
-
-    }
-    
-    func removeMessgePopup() {
-        objPopupSendMessage.view.removeFromSuperview()
-    }
     @objc func handleRatingTapFrom(recognizer : UITapGestureRecognizer)
     {
         showRatingAlert(currntRating:ratingVC.rating) { (rating) in
@@ -295,7 +381,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             self.objLumineer.setLumineerCompanyRatings(param: param as [String : AnyObject], completionHandler: { (response) in
                 self.objLumineer.getLumineerAllRatings() { (json) in
                     self.ratingVC.rating = Double((json["finalRating"]?.intValue)!)
-                  let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
+                    let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                     hud.mode = .text
                     hud.label.text = NSLocalizedString("Rating added successfully", comment: "HUD message title")
                     hud.label.font = UIFont.init(name: "HelveticaNeue", size: 14)
@@ -306,81 +392,10 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             
         }
     }
-
-    @IBAction func onBtnProductTapped(_ sender: UIButton) {
-        btnProduct.isSelected = !sender.isSelected
-        if btnProduct.isSelected {
-            addMessgePopup(activityType:"Products")
-        }else {
-            removeMessgePopup()
-        }
-        btnProduct.isSelected = false
-    }
     
-    @IBAction func onBtnSupportTapped(_ sender: UIButton) {
-        btnSupport.isSelected = !sender.isSelected
-        if btnSupport.isSelected {
-            addMessgePopup(activityType:"Support")
-        }else {
-            removeMessgePopup()
-        }
-        btnSupport.isSelected = false
-    }
-    @IBAction func onBtnAccountsTapped(_ sender: UIButton) {
-      //  photoLibrary()
-        btnAccount.isSelected = !sender.isSelected
-        if btnAccount.isSelected {
-            addMessgePopup(activityType:"Accounts")
-        }else {
-            removeMessgePopup()
-        }
-        btnAccount.isSelected = false
-    }
-    func photoLibrary()
-    {
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
-            let myPickerController = UIImagePickerController()
-            myPickerController.delegate = self;
-            myPickerController.sourceType = .photoLibrary
-            //myPickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
-            myPickerController.allowsEditing = true
-//            myPickerController.navigationBar.isTranslucent = false
-            myPickerController.navigationBar.barTintColor = UIColor.blue // Background color
-            myPickerController.navigationBar.tintColor = UIColor.white // Cancel button ~ any UITabBarButton items
-            myPickerController.navigationBar.titleTextAttributes = [
-                kCTForegroundColorAttributeName as NSAttributedStringKey : UIColor.white]
-           self.present(myPickerController, animated: true, completion: nil) //self.navigationController?.present(myPickerController, animated: true, completion: nil)
-        }
-    }
     @IBAction func onBtnInboxCountTapped(_ sender: UIButton) {
-       // btnInboxCount.isSelected = !sender.isSelected
+        // btnInboxCount.isSelected = !sender.isSelected
         
-        if !isInboxCountSelected {
-            isInboxCountSelected = true
-            UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                if self.aryActivityData != nil, (self.aryActivityData.count)>0{
-                    self.viewActivityHeights.constant = CGFloat(self.aryActivityData.count * 46) + 30
-                }
-                else {
-                    self.viewActivityHeights.constant = 0
-                }
-                self.lblActivity.isHidden = false
-                self.view.layoutIfNeeded()
-            }, completion: { (finished: Bool) in
-                self.btnInboxCount.tintColor = UIColor.lightGray
-                self.calculateCurrentHeight()
-            })
-        }else {
-            isInboxCountSelected = false
-            btnInboxCount.tintColor = UIColor.init(hexString: "DA1913")
-            UIView.animate(withDuration: 0.6, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                self.viewActivityHeights.constant = 0
-                self.view.layoutIfNeeded()
-            },  completion: { (finished: Bool) in
-                self.calculateCurrentHeight()
-                self.lblActivity.isHidden = true
-            })
-        }
     }
     @IBAction func onBtnFollowTapped(_ sender: UIButton) {
         if !sender.isSelected {
@@ -396,7 +411,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
                     let imgThumb = UIImage.decodeBase64(strEncodeData:self.objLumineer.enterpriseLogo)
                     let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
                     self.imgProfilePic.image = scalImg
-
+                    
                 })
             }
         }
@@ -418,334 +433,42 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
                 self.objAdvertiseVC
                     .didMove(toParentViewController: self)
                 break
-
-            }
-        }
-//        let realm = try! Realm()
-//        let result  = realm.objects(AdvertiseData.self).filter("lumineerId = \(GlobalShareData.sharedGlobal.objCurrentLumineer.id)")
-//        if result.count > 0 {
-//            let currentDate = Date()
-//            
-//
-//            for objAdv in result {
-//                let creteatedData = objAdv.strAdvertiseDate
-//                let cDate = Date().getCurrentUpdtedDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
-//                let date1 = currentDate
-//                let date2 = cDate
-//                let calendar = Calendar.current
-//                let dateComponents = calendar.dateComponents([.minute], from: date2, to: date1)
-//                print("Difference between times since midnight is", dateComponents.minute as Any)
-//                let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
-//                let diffValue = dateComponents.minute!
-//                if diffValue > 0 && diffValue <= allowMinuntes! {
-//                    GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
-//                    self.view.addBlurEffect()
-//                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//                    objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
-//                    self.addChildViewController(self.objAdvertiseVC)
-//                    self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
-//                    self.view.addSubview(self.objAdvertiseVC.view)
-//                    self.objAdvertiseVC
-//                        .didMove(toParentViewController: self)
-//                    break
-//                }
-//            }
-//
-//
-//        }
-    }
-}
-
-//
-// MARK: Tableview Delegate & DataSource
-//
-
-extension LumineerProfileVC : UITableViewDelegate,UITableViewDataSource {
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 46.0;
-    }
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
-    }
-
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerFrame = tableView.frame
-
-        let headerView = UIView.init(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: tableView.frame.size.height))
-        headerView.backgroundColor = UIColor.clear
-        headerView.cornerRadius = 5
-
-        let innerView = UIView.init(frame: CGRect(x: 0, y: 5, width: headerView.frame.size.width, height: 40))
-        innerView.backgroundColor = UIColor.init(red: 238, green: 238, blue: 238)
-        innerView.cornerRadius = 5
-        
-        let lblTitle = UILabel(frame: CGRect(x: 10, y: 5, width: innerView.frame.size.width-110, height: 16))
-        lblTitle.font  = UIFont.init(name: "Helvetica-Bold", size: 14)
-        lblTitle.textColor = UIColor.black
-        lblTitle.backgroundColor = UIColor.clear
-        lblTitle.text = aryActivityData[section]["title"] as? String
-        innerView.addSubview(lblTitle)
-        
-        let lblTime = UILabel(frame: CGRect(x: lblTitle.frame.size.width+2, y: 5, width: 90, height: 12))
-        lblTime.font  = UIFont.init(name: "Helvetica", size: 10)
-        lblTime.textColor = UIColor.lumiGray
-        lblTime.backgroundColor = UIColor.clear
-        lblTime.textAlignment = .center
-        lblTime.text = aryActivityData[section]["date"] as? String
-        innerView.addSubview(lblTime)
-
-        
-        let imgIcon = UIImageView(frame: CGRect(x: 10, y: 21, width: 16, height: 16));
-        imgIcon.image = UIImage(named: aryActivityData[section]["imgName"] as! String)
-        imgIcon.contentMode = .scaleAspectFit
-        innerView.addSubview(imgIcon)
-        
-        let lblDesc = UILabel(frame: CGRect(x: 30, y: 21, width: innerView.frame.size.width-20, height: 16))
-        lblDesc.font  = UIFont.init(name: "Helvetica", size: 12)
-        lblDesc.textColor = UIColor.lumiGray
-        lblDesc.backgroundColor = UIColor.clear
-        lblDesc.text = aryActivityData[section]["text"] as? String
-        innerView.addSubview(lblDesc)
-
-        
-        let theImageView = UIImageView(frame: CGRect(x: headerFrame.width - 20, y: 5, width: 14, height: 14));
-        theImageView.image = UIImage(named: "Chevron-Dn-Wht")
-        theImageView.contentMode = .scaleAspectFit
-        theImageView.tag = kHeaderSectionTag + section
-        innerView.addSubview(theImageView)
-        headerView.addSubview(innerView)
-
-        // make headers touchable
-        headerView.tag = section
-        let headerTapGesture = UITapGestureRecognizer()
-        headerTapGesture.addTarget(self, action: #selector(LumineerProfileVC.sectionHeaderWasTouched(_:)))
-        headerView.addGestureRecognizer(headerTapGesture)
-        return headerView
-        
-    }
-
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        guard aryActivityData != nil else {
-            return 0
-        }
-        return aryActivityData.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (self.expandedSectionHeaderNumber == section) {
-            return self.aryActivityData[section]["data"]!.count;
-        } else {
-            return 0;
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SubjectCell", for: indexPath) as! SubjectCell
-        let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
-        let objLumiMessage = sectionData[indexPath.row] as LumiMessage
-        cell.lblSubject.text = objLumiMessage.messageSubject
-        cell.lblDate.text = Date().getFormattedDate(string: objLumiMessage.newsfeedPostedTime!, formatter: "")
-        cell.lblMessage.text = objLumiMessage.newsFeedBody
-
-        if objLumiMessage.fileName == nil {
-            cell.constImgWidth.constant = 0
-        }
-        else {
-            cell.constImgWidth.constant = 25
-            var urlOriginalImage : URL!
-            if(objLumiMessage.fileName?.hasUrlPrefix())!
-            {
-                urlOriginalImage = URL.init(string: objLumiMessage.fileName!)
-            }
-            else {
-                let fileName = objLumiMessage.fileName?.lastPathComponent
-                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-            }
-
-            if objLumiMessage.contentType == "Video" && objLumiMessage.imageURL != nil {
-                let fileName = objLumiMessage.imageURL
-                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    
-                    if let image = response.result.value {
-                        let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
-                        cell.imgMessage.image = scalImg
-                    }
-                }
-            }
-            else if objLumiMessage.contentType == "Document" {
-                let image = UIImage.init(named: "docFile")
-                let scalImg = image?.af_imageScaled(to: CGSize(width: 25, height: 25))
-                cell.imgMessage.image = scalImg
-            }
-            else {
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    
-                    if let image = response.result.value {
-                        let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
-                        cell.imgMessage.image = scalImg
-                    }
-                }
-
-            }
-            }
-        var strImageName : String!
-        
-        if objLumiMessage.isReadByLumi {
-            strImageName = "Artboard 92xxhdpi"
-        }
-        else {
-            strImageName = "Artboard 91xxhdpi"
-        }
-        cell.imgStatus.image = UIImage(named:strImageName)
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            print("Deleted")
-            let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
-            let objLumiMessage = sectionData[indexPath.row] as LumiMessage
-            objLumiMessage.setLumiSubjectThreadDelete(enterpriseId: objLumiMessage.enterpriseID, messageSubjectId: objLumiMessage.messageSubjectId, completionHandler: { (result) in
-                if result {
-                    self.getLatestLumiMessages()
-                    self.calculateCurrentHeight()
-                }
-            })
-        }
-    }
-    
-    // MARK: - Expand / Collapse Methods
-    
-    @objc func sectionHeaderWasTouched(_ sender: UITapGestureRecognizer) {
-        do {
-            let headerView = sender.view
-            let section    = headerView?.tag
-            let eImageView = headerView?.viewWithTag(kHeaderSectionTag + section!) as? UIImageView
-            
-            if (self.expandedSectionHeaderNumber == -1) {
-                self.expandedSectionHeaderNumber = section!
-                tableViewExpandSection(section!, imageView: eImageView!)
-            } else {
-                let cImageView = tblActivityData.viewWithTag(kHeaderSectionTag + self.expandedSectionHeaderNumber) as? UIImageView
-                if (self.expandedSectionHeaderNumber == section) {
-                    tableViewCollapeSection(section!, imageView: eImageView)
-                } else {
-                    tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView)
-                    tableViewExpandSection(section!, imageView: eImageView!)
-                }
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-    }
-    
-    func tableViewCollapeSection(_ section: Int, imageView: UIImageView?) {
-        do {
-            guard section != -1 else {
-                return
-            }
-            
-            let sectionData = self.aryActivityData[section]["data"] as! [LumiMessage]
-            self.expandedSectionHeaderNumber = -1;
-            if (sectionData.count == 0) {
-                return;
-            } else {
-                if imageView != nil {
-                    UIView.animate(withDuration: 0.4, animations: {
-                        imageView?.transform = CGAffineTransform(rotationAngle: (0.0 * CGFloat(Double.pi)) / 180.0)
-                    })
-                }
-                var indexesPath = [IndexPath]()
-                for i in 0 ..< sectionData.count {
-                    let index = IndexPath(row: i, section: section)
-                    indexesPath.append(index)
-                }
-                self.viewActivityHeights.constant = CGFloat(self.aryActivityData.count * 46) + 30
-
-                self.tblActivityData!.beginUpdates()
-                self.tblActivityData!.deleteRows(at: indexesPath, with: UITableViewRowAnimation.fade)
-                self.tblActivityData!.endUpdates()
-                calculateCurrentHeight()
                 
             }
-        } catch {
-            print(error.localizedDescription)
         }
-        
+        //        let realm = try! Realm()
+        //        let result  = realm.objects(AdvertiseData.self).filter("lumineerId = \(GlobalShareData.sharedGlobal.objCurrentLumineer.id)")
+        //        if result.count > 0 {
+        //            let currentDate = Date()
+        //
+        //
+        //            for objAdv in result {
+        //                let creteatedData = objAdv.strAdvertiseDate
+        //                let cDate = Date().getCurrentUpdtedDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+        //                let date1 = currentDate
+        //                let date2 = cDate
+        //                let calendar = Calendar.current
+        //                let dateComponents = calendar.dateComponents([.minute], from: date2, to: date1)
+        //                print("Difference between times since midnight is", dateComponents.minute as Any)
+        //                let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
+        //                let diffValue = dateComponents.minute!
+        //                if diffValue > 0 && diffValue <= allowMinuntes! {
+        //                    GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
+        //                    self.view.addBlurEffect()
+        //                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        //                    objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
+        //                    self.addChildViewController(self.objAdvertiseVC)
+        //                    self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
+        //                    self.view.addSubview(self.objAdvertiseVC.view)
+        //                    self.objAdvertiseVC
+        //                        .didMove(toParentViewController: self)
+        //                    break
+        //                }
+        //            }
+        //
+        //
+        //        }
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let chat = botChat
-        let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
-        GlobalShareData.sharedGlobal.objCurrentLumiMessage = sectionData[indexPath.row] as LumiMessage
-        GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
-
-        var chatVC: TGChatViewController?
-            chatVC = TGChatViewController(chat: chat)
-            //chatVC.
-
-        if let vc = chatVC {
-            navigationController?.pushViewController(vc, animated: true)
-        }
-        let sectionHeaderView = tableView.headerView(forSection: indexPath.section)
-        let eImageView = sectionHeaderView?.viewWithTag(kHeaderSectionTag + indexPath.section) as? UIImageView
-        let cImageView = tblActivityData.viewWithTag(kHeaderSectionTag + self.expandedSectionHeaderNumber) as? UIImageView
-        if (self.expandedSectionHeaderNumber == indexPath.section) {
-            tableViewCollapeSection(indexPath.section, imageView: eImageView)
-        } else {
-            tableViewCollapeSection(self.expandedSectionHeaderNumber, imageView: cImageView)
-            tableViewExpandSection(indexPath.section, imageView: eImageView!)
-        }
-
-
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableViewExpandSection(_ section: Int, imageView: UIImageView) {
-        do {
-            let sectionData = self.aryActivityData[section]["data"] as! [LumiMessage]
-            
-            if (sectionData.count == 0) {
-                self.expandedSectionHeaderNumber = -1;
-                return;
-            } else {
-                UIView.animate(withDuration: 0.4, animations: {
-                    imageView.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(Double.pi)) / 180.0)
-                })
-                var indexesPath = [IndexPath]()
-                for i in 0 ..< sectionData.count {
-                    let index = IndexPath(row: i, section: section)
-                    indexesPath.append(index)
-                }
-                self.viewActivityHeights.constant = CGFloat(self.aryActivityData.count * 46) + 100
-
-                self.expandedSectionHeaderNumber = section
-                self.tblActivityData!.beginUpdates()
-                self.tblActivityData!.insertRows(at: indexesPath, with: UITableViewRowAnimation.fade)
-                self.tblActivityData!.endUpdates()
-                calculateCurrentHeight()
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    //MARK: - Delegate methods
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        var chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        dismiss(animated: true, completion: nil)
-    }
-    
-
 }
 
 let botChat: Chat = {
@@ -775,20 +498,20 @@ struct SectionData {
     var numberOfItems: Int {
         return data.count
     }
-
-//    subscript(index: Int, key:Results<LumiMessage>) -> String {
-//        guard let coordinate = data[index][LumiMessage] else {
-//            return ""
-//        }
-//        return coordinate
-//    }
-
-//    subscript(index: Int) -> [String:String]? {
-//        guard let coordinate = self.data[index] as! [String: String] else {
-//            return nil
-//        }
-//        return coordinate
-//    }
+    
+    //    subscript(index: Int, key:Results<LumiMessage>) -> String {
+    //        guard let coordinate = data[index][LumiMessage] else {
+    //            return ""
+    //        }
+    //        return coordinate
+    //    }
+    
+    //    subscript(index: Int) -> [String:String]? {
+    //        guard let coordinate = self.data[index] as! [String: String] else {
+    //            return nil
+    //        }
+    //        return coordinate
+    //    }
     
     
 }
@@ -807,7 +530,7 @@ extension UIView {
         } else {
             self.backgroundColor = .black
         }
-
+        
     }
     /// Remove UIBlurEffect from UIView
     func removeBlurEffect() {
@@ -853,8 +576,8 @@ extension Date {
         timeStamp = olderTimestamp
         return timeStamp
     }
-
-     func getFormattedDate(string: String , formatter:String) -> String{
+    
+    func getFormattedDate(string: String , formatter:String) -> String{
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm"
         
@@ -873,7 +596,7 @@ extension Date {
             dateFormatter.dateFormat = "HH:mm a"
             let dateString = dateFormatter.string(from: date)
             return "Today, \(dateString)"
-
+            
         }
         print(dateFormatter.string(from: date)) // Jan 20,2018
         return dateFormatter.string(from: date);
@@ -883,11 +606,11 @@ extension Date {
         var dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm"
         let date = dateFormatterGet.date(from:string)!
-
+        
         dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = formatter
         let strDate = dateFormatterGet.string(from: date)
-
+        
         return dateFormatterGet.date(from:strDate)!
     }
     
@@ -912,12 +635,9 @@ extension Date {
         }
         return Date()
     }
-
 }
 
-
-extension UserDefaults{
-    
+extension UserDefaults {
     //MARK: Check Login
     func setStringValue(value: String, key: UserDefaultsKeys) {
         set(value, forKey: key.rawValue)
@@ -927,7 +647,7 @@ extension UserDefaults{
     //MARK: Retrieve User Data
     func getStringValue(key: UserDefaultsKeys) -> String{
         guard ((UserDefaults.standard.value(forKey: key.rawValue) as? String) != nil) else {
-           return ""
+            return ""
         }
         return string(forKey: key.rawValue)!
     }
@@ -944,28 +664,17 @@ extension UserDefaults{
         }
         return bool(forKey: key.rawValue)
     }
-
-
-    
-//    func isLoggedIn()-> Bool {
-//        return bool(forKey: UserDefaultsKeys.isLoggedIn.rawValue)
-//    }
-//
-//    //MARK: Save User Data
-//    func setUserID(value: Int){
-//        set(value, forKey: UserDefaultsKeys.userID.rawValue)
-//        //synchronize()
-//    }
-    
 }
+
 enum UserDefaultsKeys : String {
+    case contentTimeStamp
     case advertiseTimeStamp
     case messageTimeStamp
     case lumineerTimeStamp
     case supportTimeStamp
     case pendingVerification
     case isAlreadyLogin
-
+    
 }
 
 enum currentScreen : String {
@@ -974,8 +683,8 @@ enum currentScreen : String {
     case lumiFeed
     case lumiMessages
     case none
-
 }
+
 extension Date {
     func secondsFromBeginningOfTheDay() -> TimeInterval {
         let calendar = Calendar.current

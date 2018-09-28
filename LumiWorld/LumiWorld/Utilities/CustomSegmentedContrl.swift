@@ -17,26 +17,26 @@ class CustomSegmentedContrl: UIControl {
     
     
     
-    @IBInspectable var borderWidth: CGFloat = 0 {
+    @IBInspectable var borderWidth1: CGFloat = 0 {
         
         didSet {
-            layer.borderWidth = borderWidth
+            layer.borderWidth = borderWidth1
         }
     }
     
     
-    @IBInspectable var cornerRadius: CGFloat = 0 {
+    @IBInspectable var cornerRadius1: CGFloat = 0 {
         
         didSet {
-            layer.cornerRadius = cornerRadius
+            layer.cornerRadius = cornerRadius1
         }
     }
     
     
-    @IBInspectable var borderColor: UIColor = .clear {
+    @IBInspectable var borderColor1: UIColor = .clear {
         
         didSet {
-            layer.borderColor = borderColor.cgColor
+            layer.borderColor = borderColor1.cgColor
         }
     }
     
@@ -47,7 +47,7 @@ class CustomSegmentedContrl: UIControl {
         }
     }
     
-    @IBInspectable var textColor: UIColor = .lightGray {
+    @IBInspectable var textColor: UIColor = UIColor.lumiGray! {
         
         didSet {
             updateView()
@@ -55,14 +55,14 @@ class CustomSegmentedContrl: UIControl {
     }
     
     
-    @IBInspectable var selectorColor: UIColor = .darkGray {
+    @IBInspectable var selectorColor: UIColor = UIColor.lumiGreen! {
         
         didSet {
             updateView()
         }
     }
     
-    @IBInspectable var selectorTextColor: UIColor = .green {
+    @IBInspectable var selectorTextColor: UIColor = UIColor.lumiGreen! {
         
         didSet {
             updateView()
@@ -98,14 +98,15 @@ class CustomSegmentedContrl: UIControl {
             button.setTitle(buttonTitle, for: .normal)
             button.setTitleColor(textColor, for: .normal)
             button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
+            button.titleLabel?.font = UIFont.init(name: "HelveticaNeue", size: 10)
             buttons.append(button)
 //            button.setTitleColor(button.isSelected ? UIColor.gray : selectorTextColor, for: .normal)
         }
         
         buttons[0].setTitleColor(selectorTextColor, for: .normal)
         
-        let selectorWidth = frame.width / CGFloat(buttonTitles.count)
-        
+        var selectorWidth = frame.width / CGFloat(buttonTitles.count)
+        selectorWidth -= 20
         let y =    (self.frame.maxY - self.frame.minY) - 3.0
         
         selector = UIView.init(frame: CGRect.init(x: 0, y: y, width: selectorWidth, height: 3.0))
@@ -118,18 +119,15 @@ class CustomSegmentedContrl: UIControl {
         let stackView = UIStackView.init(arrangedSubviews: buttons)
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
         stackView.spacing = 0.0
         addSubview(stackView)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
         stackView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         stackView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         stackView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-
-        
     }
     
     // Only override draw() if you perform custom drawing.
@@ -144,33 +142,20 @@ class CustomSegmentedContrl: UIControl {
     
 
     @objc func buttonTapped(button: UIButton) {
-        
-        
         for (buttonIndex,btn) in buttons.enumerated() {
-            
             btn.setTitleColor(textColor, for: .normal)
-            
             if btn == button {
                 selectedSegmentIndex = buttonIndex
-                
-                let  selectorStartPosition = frame.width / CGFloat(buttons.count) * CGFloat(buttonIndex)
-                
+                let  selectorStartPosition = button.frame.origin.x
                 UIView.animate(withDuration: 0.3, animations: {
-                    
                     self.selector.frame.origin.x = selectorStartPosition
+                    self.selector.width = button.frame.size.width
                 })
-                
                 btn.setTitleColor(selectorTextColor, for: .normal)
             }
         }
-        
         sendActions(for: .valueChanged)
- 
- 
-        
-        
     }
-    
     
     func updateSegmentedControlSegs(index: Int) {
         
@@ -208,4 +193,9 @@ class CustomSegmentedContrl: UIControl {
     
     
     
+}
+extension String {
+    func SizeOf(_ font: UIFont) -> CGSize {
+        return self.size(withAttributes: [NSAttributedStringKey.font: font])
+    }
 }
