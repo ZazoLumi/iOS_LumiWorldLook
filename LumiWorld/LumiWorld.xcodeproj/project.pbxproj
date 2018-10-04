@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		09028A7C20AEB86B007F85F2 /* AboutPlusTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */; };
+		0907E8662164EC0C007D41DB /* LumineerAdvertiseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0907E8652164EC0C007D41DB /* LumineerAdvertiseVC.swift */; };
 		090B085320C135AD00A05A7E /* LumiProfileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090B085220C135AD00A05A7E /* LumiProfileDetails.swift */; };
 		090E761F2153B7350032315C /* CustomSegmentedContrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090E761E2153B7340032315C /* CustomSegmentedContrl.swift */; };
 		0916065420871FA400F8E8EC /* multipartAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0916065320871FA400F8E8EC /* multipartAPI.m */; };
@@ -100,6 +101,7 @@
 		096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */; };
 		096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */; };
 		096ED9E320766D3B003CA8F1 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */; };
+		097945772162415000ABAEFA /* LumineerMessagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097945762162414F00ABAEFA /* LumineerMessagesVC.swift */; };
 		097A0BF92126D8ED008680F1 /* CustomAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097A0BF82126D8ED008680F1 /* CustomAds.swift */; };
 		097A0BFB2126D909008680F1 /* CustomAds.xib in Resources */ = {isa = PBXBuildFile; fileRef = 097A0BFA2126D909008680F1 /* CustomAds.xib */; };
 		097A69AF20809569001D273E /* LumiMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097A69AE20809569001D273E /* LumiMessage.swift */; };
@@ -167,6 +169,7 @@
 /* Begin PBXFileReference section */
 		0900544620591EC700262084 /* LumiWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LumiWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutPlusTC.swift; sourceTree = "<group>"; };
+		0907E8652164EC0C007D41DB /* LumineerAdvertiseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerAdvertiseVC.swift; sourceTree = "<group>"; };
 		090B085220C135AD00A05A7E /* LumiProfileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiProfileDetails.swift; sourceTree = "<group>"; };
 		090E761E2153B7340032315C /* CustomSegmentedContrl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedContrl.swift; sourceTree = "<group>"; };
 		0916065120871FA300F8E8EC /* LumiWorld-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LumiWorld-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -262,6 +265,7 @@
 		096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerProfileVC.swift; sourceTree = "<group>"; };
 		096ED9E0207653FA003CA8F1 /* ExpandableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
 		096ED9E220766D3B003CA8F1 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
+		097945762162414F00ABAEFA /* LumineerMessagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerMessagesVC.swift; sourceTree = "<group>"; };
 		097A0BF82126D8ED008680F1 /* CustomAds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAds.swift; sourceTree = "<group>"; };
 		097A0BFA2126D909008680F1 /* CustomAds.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomAds.xib; sourceTree = "<group>"; };
 		097A69AE20809569001D273E /* LumiMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiMessage.swift; sourceTree = "<group>"; };
@@ -589,6 +593,8 @@
 				0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */,
 				096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */,
 				09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */,
+				097945762162414F00ABAEFA /* LumineerMessagesVC.swift */,
+				0907E8652164EC0C007D41DB /* LumineerAdvertiseVC.swift */,
 			);
 			path = LumiCategory;
 			sourceTree = "<group>";
@@ -861,6 +867,7 @@
 				0964E72F2060F981001D6F47 /* RequiredRule.swift in Sources */,
 				097B0C25211AD55B001285AF /* MediaZoom.swift in Sources */,
 				0964E7172060F981001D6F47 /* ExampleTipsContentView.swift in Sources */,
+				0907E8662164EC0C007D41DB /* LumineerAdvertiseVC.swift in Sources */,
 				0964E6D62060F8ED001D6F47 /* ForgotPasswordVC.swift in Sources */,
 				0964E71A2060F981001D6F47 /* ValidationDelegate.swift in Sources */,
 				097BFA5A207E37EF001F935C /* UIFont+NoChat.swift in Sources */,
@@ -875,6 +882,7 @@
 				093A6D2F215BB48D004731DE /* LumineerContent.swift in Sources */,
 				7A3BBA432090867900B96750 /* TGAttachmentMessageCell.swift in Sources */,
 				09ECA79A209C8230001570EA /* LocationSearchTable.swift in Sources */,
+				097945772162415000ABAEFA /* LumineerMessagesVC.swift in Sources */,
 				097A0BF92126D8ED008680F1 /* CustomAds.swift in Sources */,
 				0964E72D2060F981001D6F47 /* PhoneNumberRule.swift in Sources */,
 				0956324620BD42E800BE8EFB /* LumiFAQ.swift in Sources */,

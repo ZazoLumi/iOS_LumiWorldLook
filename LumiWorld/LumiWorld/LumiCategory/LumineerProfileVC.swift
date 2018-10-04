@@ -12,28 +12,12 @@ import RealmSwift
 import Alamofire
 import AVKit
 import MBProgressHUD
-
-class SubjectCell: UITableViewCell {
-    @IBOutlet weak var imgStatus: UIImageView!
-    
-    @IBOutlet weak var lblSubject: UILabel!
-    @IBOutlet weak var lblMessage: UILabel!
-    @IBOutlet weak var lblDate: UILabel!
-    @IBOutlet weak var imgMessage: UIImageView!
-    @IBOutlet weak var constImgWidth: NSLayoutConstraint!
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        //        self.imgMessage.layer.cornerRadius = self.imgMessage.bounds.size.height * 0.50
-        //        self.imgMessage.layer.borderWidth = 0.5;
-        //        self.imgMessage.layer.borderColor = UIColor.clear.cgColor;
-        
-    }
-    
-    
+protocol ScrollContentSize : class {
+    func changeScrollContentSize(_ heiht: Int)
 }
 
-class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate  {
+
+class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate, ScrollContentSize  {
     let kHeaderSectionTag: Int = 6900;
     var expandedSectionHeaderNumber: Int = -1
     var expandedSectionHeader: UITableViewHeaderFooterView!
@@ -53,6 +37,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     var objLumineer : LumineerList!
     var objAdvertiseVC : AdvertiseVC!
     var objLumineerHomeVC : LumineerHomeVC!
+    
 
     var isInboxCountSelected = false
     
@@ -67,6 +52,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     private var currentPage: Int!
     
     @IBOutlet var segmentedControlView : UIView!
+    @IBOutlet var scrollContentView : UIScrollView!
+
     var segmentedControl: CustomSegmentedContrl!
 
     //
@@ -107,6 +94,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         titleLabel.font = UIFont.systemFont(ofSize: 20)
         navigationItem.titleView = titleLabel
         displayAdvertiseContent()
+        GlobalShareData.sharedGlobal.objCurretnVC = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -118,8 +106,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     }
     func setupSegmentData() {
         segmentedControl = CustomSegmentedContrl.init(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: segmentedControlView.frame.size.height))
-        segmentedControl.backgroundColor = .white
-        segmentedControl.commaSeperatedButtonTitles = "HOME, VIDEO, MESSAGE,SHOP,SCHEDULER,COLLABS,SUPPORT"
+        segmentedControl.backgroundColor = .clear
+        segmentedControl.commaSeperatedButtonTitles = "HOME, SHOP,SCHEDULER,ADS,COLLABS,MESSAGE"
         segmentedControl.addTarget(self, action: #selector(onChangeOfSegment(_:)), for: .valueChanged)
         currentPage = 0
         segmentedControlView.addSubview(segmentedControl)
@@ -138,27 +126,35 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         for svScroll in pageController.view.subviews as! [UIScrollView] {
             svScroll.delegate = self
         }
-        
+        scrollContentView.translatesAutoresizingMaskIntoConstraints = false
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.pageController.view.frame = CGRect(x: 0, y: self.segmentedControl.frame.maxY, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-            
+            self.pageController.view.frame = CGRect(x: 0, y: 5, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - ((self.segmentedControlView.frame.origin.y+self.segmentedControlView.frame.size.height)-50))
         }
         
         // arrPageTexts = [vc1, vc2, vc3]
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objLumineerHomeVC = storyBoard.instantiateViewController(withIdentifier: "LumineerHomeVC") as! LumineerHomeVC
+     
+        let objLumineerMessageVC = storyBoard.instantiateViewController(withIdentifier: "LumineerMessagesVC") as! LumineerMessagesVC
+        
+        let objLumineerAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "LumineerAdvertiseVC") as! LumineerAdvertiseVC
+
+        objLumineerMessageVC.delegate = self
+        objLumineerAdvertiseVC.delegate = self
+
         arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objLumineerMessageVC)
         arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objLumineerAdvertiseVC)
         arrPageTexts.append(objLumineerHomeVC)
-        arrPageTexts.append(objLumineerHomeVC)
-        arrPageTexts.append(objLumineerHomeVC)
-        arrPageTexts.append(objLumineerHomeVC)
-        arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objLumineerMessageVC)
         pageController.setViewControllers([objLumineerHomeVC], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
         
-        //self.addChildViewController(pageController)
-        segmentedControlView.addSubview(pageController.view)
+        self.addChildViewController(pageController)
+        scrollContentView.addSubview(pageController.view)
         pageController.didMove(toParentViewController: self)
+        
     }
     
     
@@ -222,12 +218,10 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     
     @objc func onChangeOfSegment(_ sender: CustomSegmentedContrl) {
         
-        
         switch sender.selectedSegmentIndex {
         case 0:
             pageController.setViewControllers([arrPageTexts[0]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
             currentPage = 0
-            
         case 1:
             if currentPage > 1{
                 pageController.setViewControllers([arrPageTexts[1]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
@@ -248,6 +242,16 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
                 currentPage = 2
                 
             }
+        case 3:
+            pageController.setViewControllers([arrPageTexts[3]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+            currentPage = 3
+        case 4:
+            pageController.setViewControllers([arrPageTexts[4]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+            currentPage = 4
+        case 5:
+            pageController.setViewControllers([arrPageTexts[5]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+            currentPage = 5
+
         default:
             break
         }
@@ -255,19 +259,13 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         
     }
 
+    func changeScrollContentSize(_ heiht: Int) {
+        scrollContentView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: CGFloat(heiht))
+    }
+
     func calculateCurrentHeight() {
-        var tableHeight = 0
-        if !isInboxCountSelected {
-            tableHeight = 0
-        }
-        else if self.aryActivityData != nil, self.expandedSectionHeaderNumber == -1 ,(self.aryActivityData.count)>0{
-            tableHeight = self.aryActivityData.count * 46
-        }
-        else if self.aryActivityData != nil, (self.aryActivityData.count)>0 {
-            tableHeight = (self.aryActivityData.count * 46) + 64
-        }
         mainViewHeights.constant
-            =  (appDelegate.window?.bounds.size.height)! + lblExpandableDescription.frame.size.height + CGFloat(tableHeight)
+            =  (appDelegate.window?.bounds.size.height)! + lblExpandableDescription.frame.size.height
     }
     
     func setupLumineerData() {

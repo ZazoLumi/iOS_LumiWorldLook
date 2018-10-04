@@ -97,7 +97,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 
             }
         })
-        getAllLumineerAdvertise()
+        getAllLatestLumineerData()
         
     }
     
@@ -152,13 +152,30 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         }
     }
     
-    func getAllLumineerAdvertise() {
+    func getAllLatestLumineerData() {
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
         let objAdv = AdvertiseData()
         
         objAdv.getLumineerAdvertise(param: ["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
-            
+            dispatchGroup.leave()
+            GlobalShareData.sharedGlobal.deleteExpiredAds()
         }
-        GlobalShareData.sharedGlobal.deleteExpiredAds()
+        
+        dispatchGroup.enter()
+        let objContent = LumineerContent()
+        
+        objContent.getLumineerContents(param:["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
+            dispatchGroup.leave()
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            print("Both functions complete 👍")
+        }
+
+        
+
     }
 
     // MARK: - Tableview Methods
