@@ -83,7 +83,7 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                     msg.attachmentURL = obj.fileName
                     
                     msg.deliveryStatus = .Delivered
-                    msg.date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd HH:mm")
+                    msg.date = Date().getDateFromString(strCurrentDate: obj.newsfeedPostedTime!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd HH:mm")
                     msg.messageId = obj.id
                     if obj.isSentByLumi == true {
                         msg.isOutgoing = true
@@ -100,7 +100,8 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                     }
                     
                     if index == 0 {
-                        date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
+                        //date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
+                       date = Date().getDateFromString(strCurrentDate: obj.newsfeedPostedTime!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd")
                         let msg2 = Message()
                         msg2.msgType = "System"
                         msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input your message."
@@ -111,13 +112,13 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                         arr.append(msg1)
                         arr.append(msg2)
                     }
-                    else if date != Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd"), index != 0
+                    else if date != Date().getDateFromString(strCurrentDate: obj.newsfeedPostedTime!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd"), index != 0
                     {
                         let msg1 = Message()
                         msg1.msgType = "Date"
                         msg1.date = msg.date
                         arr.append(msg1)
-                        date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
+                        date = Date().getDateFromString(strCurrentDate: obj.newsfeedPostedTime!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd")
                     }
                     arr.append(msg)
                     
@@ -168,7 +169,8 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                         msg.attachmentURL = obj.supportFilePath
                         
                         msg.deliveryStatus = .Delivered
-                        msg.date = Date().getDateFromString(string: obj.sentDate!, formatter: "yyyy-MM-dd HH:mm")
+                        
+                        msg.date = Date().getDateFromString(strCurrentDate: obj.sentDate!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd HH:mm")
                         msg.messageId = obj.supportId
                         if obj.sentBy == "Lumi World" {
                             msg.isOutgoing = false
@@ -185,7 +187,8 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                         }
                         
                         if index == 0 {
-                            date = Date().getDateFromString(string: obj.sentDate!, formatter: "yyyy-MM-dd")
+                            
+                            date = Date().getDateFromString(strCurrentDate: obj.sentDate!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd")
                             let msg2 = Message()
                             msg2.msgType = "System"
                             msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input your message."
@@ -196,13 +199,13 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                             arr.append(msg1)
                             arr.append(msg2)
                         }
-                        else if date != Date().getDateFromString(string: obj.sentDate!, formatter: "yyyy-MM-dd"), index != 0
+                        else if date != Date().getDateFromString(strCurrentDate: obj.sentDate!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd"), index != 0
                         {
                             let msg1 = Message()
                             msg1.msgType = "Date"
                             msg1.date = msg.date
                             arr.append(msg1)
-                            date = Date().getDateFromString(string: obj.sentDate!, formatter: "yyyy-MM-dd")
+                            date = Date().getDateFromString(strCurrentDate: obj.sentDate!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd")
                         }
                         arr.append(msg)
                         

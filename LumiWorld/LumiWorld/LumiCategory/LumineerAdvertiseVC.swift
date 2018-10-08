@@ -39,6 +39,10 @@ class LumineerAdvertiseVC: UIViewController, UITableViewDelegate,UITableViewData
     
     override func viewDidAppear(_ animated: Bool) {
         tableView.isScrollEnabled = false
+        delegate?.changeScrollContentSize((self.aryAdvertiseData.count*161)+50)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        delegate?.resetScrollContentOffset()
     }
 
     override func didReceiveMemoryWarning() {
@@ -145,7 +149,6 @@ class LumineerAdvertiseVC: UIViewController, UITableViewDelegate,UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let chat = botChat
         var objCellData : [String : Any]!
             objCellData = aryAdvertiseData[indexPath.row]
         

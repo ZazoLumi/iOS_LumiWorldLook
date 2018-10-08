@@ -209,7 +209,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DtE-Lu-0ay">
-                                <rect key="frame" x="0.0" y="63.5" width="320" height="220"/>
+                                <rect key="frame" x="0.0" y="63.5" width="320" height="230"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nazish_passport_size" translatesAutoresizingMaskIntoConstraints="NO" id="287-9c-Ybl">
                                         <rect key="frame" x="109.5" y="5" width="101" height="101"/>
@@ -292,13 +292,13 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="re3-2e-yBT">
-                                        <rect key="frame" x="0.0" y="200" width="320" height="20"/>
+                                        <rect key="frame" x="0.0" y="200" width="320" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="220" id="7Rn-S6-Ykr"/>
+                                    <constraint firstAttribute="height" constant="230" id="7Rn-S6-Ykr"/>
                                     <constraint firstItem="T2t-Xi-Bf2" firstAttribute="top" secondItem="287-9c-Ybl" secondAttribute="bottom" constant="5" id="7Zf-na-pFS"/>
                                     <constraint firstItem="re3-2e-yBT" firstAttribute="top" secondItem="QaV-rz-8Lz" secondAttribute="bottom" constant="2" id="AJu-Kf-lni"/>
                                     <constraint firstAttribute="bottom" secondItem="re3-2e-yBT" secondAttribute="bottom" id="Bi8-OC-q0n"/>
@@ -324,7 +324,7 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZd-Ef-11X">
-                                <rect key="frame" x="0.0" y="283.5" width="320" height="284.5"/>
+                                <rect key="frame" x="0.0" y="293.5" width="320" height="274.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </scrollView>
                         </subviews>
@@ -2335,7 +2335,7 @@
                                         <rect key="frame" x="0.0" y="61" width="260" height="154"/>
                                         <attributedString key="attributedText">
                                             <fragment>
-                                                <string key="content">We are exited that you wish to introduce your friends to Lumi World.  Please note that in doing so we will disclose your full name and mobile number in the correspondence to avoid your ivitation being flagged as spam.                                                                       </string>
+                                                <string key="content">We are excited that you wish to introduce your friends to Lumi World.  Please note that in doing so we will disclose your full name and mobile number in the correspondence to avoid your invitation being flagged as spam.                                                                       </string>
                                                 <attributes>
                                                     <color key="NSColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <font key="NSFont" size="14" name="HelveticaNeue"/>
@@ -4072,42 +4072,60 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="v1i-Cc-7x2">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                                <rect key="frame" x="5" y="0.0" width="310" height="548"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vTo-EO-xmx">
-                                    <size key="itemSize" width="111" height="114"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="vTo-EO-xmx">
+                                    <size key="itemSize" width="110" height="110"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="80f-v4-kKa" customClass="LumineerContentCell" customModule="LumiWorld" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="cell" id="80f-v4-kKa" customClass="LumineerContentCell" customModule="LumiWorld" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="110" height="110"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="110" height="110"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TbT-r1-cuX">
-                                                    <rect key="frame" x="5" y="5" width="100" height="100"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TbT-r1-cuX">
+                                                    <rect key="frame" x="10" y="10" width="90" height="90"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Play-icon" translatesAutoresizingMaskIntoConstraints="NO" id="9XR-MS-UV6">
+                                                    <rect key="frame" x="38.5" y="38.5" width="33" height="33"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="9XR-MS-UV6" secondAttribute="height" multiplier="1:1" id="0BG-sr-c2H"/>
+                                                    </constraints>
                                                 </imageView>
                                             </subviews>
                                         </view>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="9XR-MS-UV6" firstAttribute="centerY" secondItem="80f-v4-kKa" secondAttribute="centerY" id="4lx-zK-w0N"/>
+                                            <constraint firstItem="9XR-MS-UV6" firstAttribute="centerX" secondItem="80f-v4-kKa" secondAttribute="centerX" id="Feg-aq-lw8"/>
+                                            <constraint firstItem="9XR-MS-UV6" firstAttribute="width" secondItem="9XR-MS-UV6" secondAttribute="height" multiplier="1:1" id="qfD-UU-qrU"/>
+                                        </constraints>
                                         <size key="customSize" width="110" height="110"/>
                                         <connections>
                                             <outlet property="imageView" destination="TbT-r1-cuX" id="7zO-t1-SpE"/>
+                                            <outlet property="imgPlay" destination="9XR-MS-UV6" id="8Nl-cb-dL3"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="U3p-sv-ub9" id="nvm-bz-XLW"/>
+                                    <outlet property="delegate" destination="U3p-sv-ub9" id="2Pi-Hz-FXN"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="v1i-Cc-7x2" firstAttribute="leading" secondItem="nFR-FS-opT" secondAttribute="leading" id="82i-BK-wy8"/>
-                            <constraint firstItem="v1i-Cc-7x2" firstAttribute="top" secondItem="nFR-FS-opT" secondAttribute="top" id="aLS-xw-CEN"/>
-                            <constraint firstAttribute="trailing" secondItem="v1i-Cc-7x2" secondAttribute="trailing" id="jLE-RT-aSd"/>
-                            <constraint firstItem="nFR-FS-opT" firstAttribute="bottom" secondItem="v1i-Cc-7x2" secondAttribute="bottom" id="pCJ-um-Kc2"/>
+                            <constraint firstItem="v1i-Cc-7x2" firstAttribute="leading" secondItem="nFR-FS-opT" secondAttribute="leading" constant="5" id="82i-BK-wy8"/>
+                            <constraint firstItem="v1i-Cc-7x2" firstAttribute="top" secondItem="nFR-FS-opT" secondAttribute="top" constant="-20" id="aLS-xw-CEN"/>
+                            <constraint firstAttribute="trailing" secondItem="v1i-Cc-7x2" secondAttribute="trailing" constant="5" id="jLE-RT-aSd"/>
+                            <constraint firstItem="nFR-FS-opT" firstAttribute="bottom" secondItem="v1i-Cc-7x2" secondAttribute="bottom" constant="20" id="pCJ-um-Kc2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nFR-FS-opT"/>
                     </view>
@@ -4118,6 +4136,33 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="veu-l0-6fn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-714.375" y="2310.211267605634"/>
+        </scene>
+        <!--Coomingsoon-->
+        <scene sceneID="wq8-p2-32C">
+            <objects>
+                <viewController storyboardIdentifier="coomingsoon" id="4Bg-63-cUP" customClass="coomingsoon" customModule="LumiWorld" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mP4-Ub-iAv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comming soon.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpU-Wz-tvQ">
+                                <rect key="frame" x="67.5" y="269" width="185" height="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
+                                <color key="textColor" red="0.41960784309999999" green="0.77647058820000003" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="VpU-Wz-tvQ" firstAttribute="centerX" secondItem="mP4-Ub-iAv" secondAttribute="centerX" id="jPG-AL-Aqn"/>
+                            <constraint firstItem="VpU-Wz-tvQ" firstAttribute="centerY" secondItem="mP4-Ub-iAv" secondAttribute="centerY" id="lHL-0s-KQ2"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="CKF-Wn-l1B"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dRT-Mu-cpr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2109" y="2453"/>
         </scene>
         <!--Lumineer MessagesVC-->
         <scene sceneID="Wrc-vH-8B1">
@@ -4354,6 +4399,7 @@
                         <outlet property="btnProduct" destination="Rma-l4-LHi" id="wAw-hr-PaY"/>
                         <outlet property="btnSupport" destination="Yn6-7o-90W" id="Qq5-fs-J4U"/>
                         <outlet property="lblActivity" destination="0Zf-QQ-yk1" id="Szb-ZW-i1R"/>
+                        <outlet property="lblLumiProfileTxt" destination="TVV-hq-fCl" id="5Wd-Rc-ehs"/>
                         <outlet property="tblActivityData" destination="Qur-Xr-6Aj" id="hpP-5e-l7C"/>
                         <outlet property="viewActivityHeights" destination="8Iy-ki-IfD" id="DM4-Hf-7iF"/>
                     </connections>
@@ -4410,6 +4456,6 @@
         <image name="nazish_passport_size" width="316" height="318"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="InY-X4-JKB"/>
+        <segue reference="pnt-Xu-Aqh"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -14,6 +14,7 @@ import AVKit
 import MBProgressHUD
 protocol ScrollContentSize : class {
     func changeScrollContentSize(_ heiht: Int)
+    func resetScrollContentOffset()
 }
 
 
@@ -81,6 +82,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         //viewActivityHeights.constant = 0
 //        lblActivity.isHidden = true
 //        lblLumiProfileTxt.text =  "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!), how can we help you?"
+        setupSegmentData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -98,7 +100,6 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        setupSegmentData()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -139,15 +140,20 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         let objLumineerMessageVC = storyBoard.instantiateViewController(withIdentifier: "LumineerMessagesVC") as! LumineerMessagesVC
         
         let objLumineerAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "LumineerAdvertiseVC") as! LumineerAdvertiseVC
+        
+        let objCoomingsoon = storyBoard.instantiateViewController(withIdentifier: "coomingsoon") as! coomingsoon
+
+        
 
         objLumineerMessageVC.delegate = self
         objLumineerAdvertiseVC.delegate = self
+        objLumineerHomeVC.delegate = self
 
         arrPageTexts.append(objLumineerHomeVC)
-        arrPageTexts.append(objLumineerMessageVC)
-        arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objCoomingsoon)
+        arrPageTexts.append(objCoomingsoon)
         arrPageTexts.append(objLumineerAdvertiseVC)
-        arrPageTexts.append(objLumineerHomeVC)
+        arrPageTexts.append(objCoomingsoon)
         arrPageTexts.append(objLumineerMessageVC)
         pageController.setViewControllers([objLumineerHomeVC], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
         
@@ -261,6 +267,10 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
 
     func changeScrollContentSize(_ heiht: Int) {
         scrollContentView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: CGFloat(heiht))
+    }
+    
+    func resetScrollContentOffset() {
+        self.scrollContentView.contentOffset = .zero
     }
 
     func calculateCurrentHeight() {
@@ -600,13 +610,13 @@ extension Date {
         return dateFormatter.string(from: date);
     }
     
-    func getDateFromString(string: String , formatter:String) -> Date {
+    func getDateFromString(strCurrentDate: String, curFormatter:String, expFormatter:String) -> Date {
         var dateFormatterGet = DateFormatter()
-        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm"
-        let date = dateFormatterGet.date(from:string)!
+        dateFormatterGet.dateFormat = curFormatter
+        let date = dateFormatterGet.date(from:strCurrentDate)!
         
         dateFormatterGet = DateFormatter()
-        dateFormatterGet.dateFormat = formatter
+        dateFormatterGet.dateFormat = expFormatter
         let strDate = dateFormatterGet.string(from: date)
         
         return dateFormatterGet.date(from:strDate)!

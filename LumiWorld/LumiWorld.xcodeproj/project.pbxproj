@@ -12,6 +12,7 @@
 		090B085320C135AD00A05A7E /* LumiProfileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090B085220C135AD00A05A7E /* LumiProfileDetails.swift */; };
 		090E761F2153B7350032315C /* CustomSegmentedContrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090E761E2153B7340032315C /* CustomSegmentedContrl.swift */; };
 		0916065420871FA400F8E8EC /* multipartAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0916065320871FA400F8E8EC /* multipartAPI.m */; };
+		092A5739216B59BB00151329 /* coomingsoon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092A5738216B59BB00151329 /* coomingsoon.swift */; };
 		0933146E20CE5E4400FAE9C5 /* suggestALumineer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0933146D20CE5E4300FAE9C5 /* suggestALumineer.swift */; };
 		093A6D2F215BB48D004731DE /* LumineerContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093A6D2E215BB48D004731DE /* LumineerContent.swift */; };
 		093F445E206B715900BC9983 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093F445D206B715800BC9983 /* UserData.swift */; };
@@ -175,6 +176,7 @@
 		0916065120871FA300F8E8EC /* LumiWorld-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LumiWorld-Bridging-Header.h"; sourceTree = "<group>"; };
 		0916065220871FA400F8E8EC /* multipartAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multipartAPI.h; sourceTree = "<group>"; };
 		0916065320871FA400F8E8EC /* multipartAPI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = multipartAPI.m; sourceTree = "<group>"; };
+		092A5738216B59BB00151329 /* coomingsoon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = coomingsoon.swift; sourceTree = "<group>"; };
 		0933146D20CE5E4300FAE9C5 /* suggestALumineer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = suggestALumineer.swift; sourceTree = "<group>"; };
 		093A6D2E215BB48D004731DE /* LumineerContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerContent.swift; sourceTree = "<group>"; };
 		093F445D206B715800BC9983 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
@@ -595,6 +597,7 @@
 				09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */,
 				097945762162414F00ABAEFA /* LumineerMessagesVC.swift */,
 				0907E8652164EC0C007D41DB /* LumineerAdvertiseVC.swift */,
+				092A5738216B59BB00151329 /* coomingsoon.swift */,
 			);
 			path = LumiCategory;
 			sourceTree = "<group>";
@@ -854,6 +857,7 @@
 				094400EB20BE8FE9005995C3 /* WelcomView.swift in Sources */,
 				097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */,
 				09D012C120D92CCF00935B05 /* LumiWorldMessages.swift in Sources */,
+				092A5739216B59BB00151329 /* coomingsoon.swift in Sources */,
 				0964E7192060F981001D6F47 /* Validatable.swift in Sources */,
 				7A94EEC820FA33A400977853 /* Player.swift in Sources */,
 				0964E71D2060F981001D6F47 /* ValidatorDictionary.swift in Sources */,

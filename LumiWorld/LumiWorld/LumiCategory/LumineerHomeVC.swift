@@ -7,17 +7,38 @@
 //
 
 import UIKit
+import Alamofire
+import RealmSwift
+
 class LumineerContentCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imgPlay: UIImageView!
 }
 
-class LumineerHomeVC: UIViewController {
+class LumineerHomeVC: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
     @IBOutlet weak var collectionView: UICollectionView!
     var aryContentData : [LumineerContent] = []
     let reuseIdentifier = "cell"
-    
+    weak var delegate: ScrollContentSize?
+    var objAdvertiseVC : AdvertiseVC!
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Define Layout here
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        //Get device width
+        let width = UIScreen.main.bounds.width
+        //set section inset as per your requirement.
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        //set cell item size here
+        layout.itemSize = CGSize(width: width / 3.2, height: width / 3.2)
+        //set Minimum spacing between 2 items
+        layout.minimumInteritemSpacing = 5
+        //set minimum vertical line spacing here between two lines in collectionview
+        layout.minimumLineSpacing = 5
+        //apply defined layout to collectionview
+        collectionView!.collectionViewLayout = layout
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -28,10 +49,14 @@ class LumineerHomeVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         setupCotentData()
     }
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        delegate?.resetScrollContentOffset()
+    }
+
     func setupCotentData() {
         aryContentData = []
         aryContentData = GlobalShareData.sharedGlobal.getAllContents()
+        delegate?.changeScrollContentSize((aryContentData.count*110/3)+50)
         collectionView.reloadData()
     }
 
@@ -48,9 +73,52 @@ class LumineerHomeVC: UIViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! LumineerContentCell
         
         // Use the outlet in our custom class to get a reference to the UILabel in the cell
-        let objContent = self.aryContentData[indexPath.item]
+        let objContent = self.aryContentData[indexPath.item] as LumineerContent
         
-        cell.backgroundColor = UIColor.cyan // make cell more visible in our example project
+        var urlOriginalImage : URL? = nil
+        
+        if objContent.contentType == "video" {
+            cell.imgPlay.isHidden = false
+            if objContent.adMediaURL != nil {
+                if(objContent.adMediaURL?.hasUrlPrefix())!
+                {
+                    urlOriginalImage = URL.init(string: (objContent.adMediaURL!))
+                }
+                else {
+                    var fileName = objContent.contentFileName?.replacingOccurrences(of: " ", with: "-")
+                    _ = fileName?.pathExtension
+                    let pathPrefix = fileName?.deletingPathExtension
+                    fileName = "\(pathPrefix!).png"
+                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                }
+            }
+        }
+        else if objContent.contentType == "audio" {
+            cell.imgPlay.isHidden = false
+        }
+        else {
+            cell.imgPlay.isHidden = true
+            if objContent.adMediaURL != nil {
+                if(objContent.adMediaURL?.hasUrlPrefix())!
+                {
+                    urlOriginalImage = URL.init(string: (objContent.adMediaURL!))
+                }
+                else {
+                    let fileName = objContent.contentFileName?.replacingOccurrences(of: " ", with: "-")
+                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                }
+            }
+        }
+        cell.imageView.contentMode = .scaleAspectFit
+        if urlOriginalImage != nil {
+            Alamofire.request(urlOriginalImage!).responseImage { response in
+                debugPrint(response)
+                if let image = response.result.value {
+                    cell.imageView.image = image
+                }
+            }}
+        cell.imageView.contentMode = .scaleAspectFill
+        cell.backgroundColor = UIColor.clear // make cell more visible in our example project
         
         return cell
     }
@@ -60,6 +128,25 @@ class LumineerHomeVC: UIViewController {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
+        let objContent = aryContentData[indexPath.row] as? LumineerContent
+        
+        GlobalShareData.sharedGlobal.isVideoPlaying = false
+        GlobalShareData.sharedGlobal.objCurrentContent = objContent
+        let realm = try! Realm()
+        let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objContent?.lumineerId.int ?? Int.self)
+        if objsLumineer.count > 0 {
+            let lumineer = objsLumineer[0]
+            GlobalShareData.sharedGlobal.objCurrentLumineer = lumineer
+        }
+        GlobalShareData.sharedGlobal.objCurretnVC.view.addBlurEffect()
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
+       self.objAdvertiseVC.screenType = .Content
+        GlobalShareData.sharedGlobal.objCurretnVC.addChildViewController(self.objAdvertiseVC)
+        self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
+        GlobalShareData.sharedGlobal.objCurretnVC.view.addSubview(self.objAdvertiseVC.view)
+        self.objAdvertiseVC
+            .didMove(toParentViewController: self)
     }
 
     /*

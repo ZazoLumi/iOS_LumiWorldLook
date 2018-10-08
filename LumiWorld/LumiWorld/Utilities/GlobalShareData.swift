@@ -78,6 +78,7 @@ class GlobalShareData {
     var realmManager = RealmManager()
     var objCurrentLumineer : LumineerList!
     var objCurrentAdv : AdvertiseData!
+    var objCurrentContent : LumineerContent!
     var objCurrentLumiMessage : LumiMessage!
     var objCurrentSupport : LumiSupport!
     var objCurretnVC : UIViewController!
@@ -351,7 +352,8 @@ class GlobalShareData {
             let currentDate = Date()
             for objAdv in result {
                 let creteatedData = objAdv.strAdvertiseDate
-                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
                 let date1 = currentDate
                 let date2 = cDate
                 let calendar = Calendar.current
@@ -403,7 +405,7 @@ class GlobalShareData {
         if result.count > 0 {
             for objAdv in result {
                 let creteatedData = objAdv.strAdvertiseDate
-                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
                 let currentDate = Date()
                 if currentDate.isGreaterThanDate(dateToCompare: cDate as NSDate) {
                     let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
@@ -429,7 +431,7 @@ class GlobalShareData {
         if result.count > 0 {
             for objAdv in result {
                 let creteatedData = objAdv.strAdvertiseDate
-                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
                 let currentDate = Date()
                 if currentDate.isGreaterThanDate(dateToCompare: cDate as NSDate) {
                     let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
@@ -454,7 +456,7 @@ class GlobalShareData {
         if result.count > 0 {
             for objContent in result {
                 let creteatedData = objContent.strContentDate
-                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd'T'HH:mm:ss", expFormatter: "yyyy-MM-dd HH:mm")
                 let currentDate = Date()
                 if currentDate.isGreaterThanDate(dateToCompare: cDate as NSDate) {
                         aryContentData.append(objContent)
@@ -497,7 +499,7 @@ class GlobalShareData {
                 let creteatedData = objAdv.strAdvertiseDate
                 let weeksDay = (objAdv.compaignWindow?.components(separatedBy: " ").first?.int)! * 7
                 let calendar = Calendar.current
-                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
                 
                 let nextWeeksDate = calendar.date(byAdding: .day, value: weeksDay, to: cDate)
                 

@@ -55,14 +55,18 @@ class LumineerMessagesVC: UIViewController,UIImagePickerControllerDelegate, UINa
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(getLatestLumiMessages), name: Notification.Name("popupRemoved"), object: nil)
-
+        lblLumiProfileTxt.text =  "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!), how can we help you?"
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         getLatestLumiMessages()
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        delegate?.resetScrollContentOffset()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -113,7 +117,7 @@ class LumineerMessagesVC: UIViewController,UIImagePickerControllerDelegate, UINa
             }
             self.tblActivityData.reloadData()
             self.viewActivityHeights.constant = CGFloat(self.aryActivityData.count * 46) + 30
-
+            self.calculateCurrentHeight()
         }
     }
 

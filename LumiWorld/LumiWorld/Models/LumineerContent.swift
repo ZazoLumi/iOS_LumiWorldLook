@@ -53,7 +53,8 @@ class LumineerContent: Object {
     @objc dynamic var compaignWindow: String? = nil
     @objc dynamic var contentFileType: String? = nil
 
-    
+    var advComments = List<AdvComments>()
+
     override static func primaryKey() -> String? {
         return "id"
     }
@@ -97,7 +98,7 @@ class LumineerContent: Object {
                                         if advData.count > 0 {
                                             var fileName : String!
                                             let objCurrentAdv = advData[0] as LumineerContent
-                                            if objCurrentAdv.contentFileType == "Video" {
+                                            if objCurrentAdv.contentType == "video" {
                                                 var thumbnail1 = url?.thumbnail()
                                                 thumbnail1 = url?.thumbnail(fromTime: 5)
                                                 if let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
@@ -109,7 +110,7 @@ class LumineerContent: Object {
                                                 
                                             }
                                             try! realm.write {
-                                                if objCurrentAdv.contentFileType == "Video" {
+                                                if objCurrentAdv.contentType == "video" {
                                                     objCurrentAdv.videoThumbFile = fileName
                                                 }
                                                 objCurrentAdv.adMediaURL = url?.absoluteString.removingPercentEncoding
@@ -128,6 +129,8 @@ class LumineerContent: Object {
                             }
                         }
                         else {
+                            newContentData.id = recordExist[0].id
+
                             if recordExist[0].isFileDownloaded {
                                 newContentData.isFileDownloaded = true
                                 newContentData.adMediaURL = recordExist[0].adMediaURL
@@ -138,7 +141,7 @@ class LumineerContent: Object {
                             }
                             newContentData.isCtsSaved = recordExist[0].isCtsSaved
                             newContentData.isCtsLiked = recordExist[0].isCtsLiked
-                            newContentData.contentFileType = recordExist[0].contentFileType
+                            newContentData.contentType = recordExist[0].contentType
                             
                             try! realm.write {
                                 realm.add(newContentData, update: true)
@@ -177,16 +180,22 @@ class LumineerContent: Object {
         newContentData.upto10000000Charges = aObject["upto1000000Charges"].stringValue
         newContentData.upto200000Charges = aObject["upto2000000Charges"].stringValue
         newContentData.over20000000Charges = aObject["over20000000Charges"].stringValue
-        newContentData.strContentDate = aObject["strCreatedDate"].stringValue
-        newContentData.strUpdatedDate = aObject["strUpdatedDate"].stringValue
+        if aObject["strCreatedDate"].stringValue.range(of:".") != nil {
+            let result = aObject["strCreatedDate"].stringValue.split(separator: ".")
+            newContentData.strContentDate = String(result[0]) as String
+        }
+        if aObject["strUpdatedDate"].stringValue.range(of:".") != nil {
+            let result = aObject["strUpdatedDate"].stringValue.split(separator: ".")
+            newContentData.strUpdatedDate = String(result[0]) as String
+        }
         newContentData.contentPackageId = aObject["contentPackageId"].doubleValue
         newContentData.lumineerId = aObject["lumineerId"].doubleValue
         newContentData.lumineerName = aObject["enterpriseName"].stringValue
         newContentData.lumineerRegnNumber = aObject["lumineerRegnNumber"].stringValue
         newContentData.adPackageId = aObject["adPackageId"].doubleValue
         newContentData.fileExt = aObject["fileExt"].stringValue
-        newContentData.contentType = aObject["contentType"].stringValue
-        newContentData.contentFileType = aObject["contentFileType"].stringValue
+        newContentData.contentType = aObject["contentFileType"].stringValue
+        newContentData.contentFileType = aObject["contentType"].stringValue
         newContentData.lumiCount = aObject["lumiCount"].doubleValue
         newContentData.compaignWindow = aObject["compaignWindow"].stringValue
         newContentData.contentPackageName = aObject["contentPackageName"].stringValue
@@ -209,7 +218,7 @@ class LumineerContent: Object {
                 if advData.count > 0 {
                     var fileName : String!
                     let objCurrentAdv = advData[0] as LumineerContent
-                    if objCurrentAdv.contentFileType == "Video" {
+                    if objCurrentAdv.contentType == "video" {
                         var thumbnail1 = url?.thumbnail()
                         thumbnail1 = url?.thumbnail(fromTime: 5)
                         if let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
@@ -221,7 +230,7 @@ class LumineerContent: Object {
                         
                     }
                     try! realm.write {
-                        if objCurrentAdv.contentFileType == "Video" {
+                        if objCurrentAdv.contentType == "video" {
                             objCurrentAdv.videoThumbFile = fileName
                         }
                         objCurrentAdv.adMediaURL = url?.absoluteString.removingPercentEncoding
