@@ -142,6 +142,8 @@
 		09EAD74720B6C55C00EB37E1 /* LumiSupportVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EAD74620B6C55C00EB37E1 /* LumiSupportVC.swift */; };
 		09ECA799209C8230001570EA /* mapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ECA797209C822F001570EA /* mapViewController.swift */; };
 		09ECA79A209C8230001570EA /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ECA798209C8230001570EA /* LocationSearchTable.swift */; };
+		09EFBB8B216C99A9009528E2 /* CallHistoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EFBB8A216C99A9009528E2 /* CallHistoryVC.swift */; };
+		09EFBB8D216CC8B5009528E2 /* LumineerContentGalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EFBB8C216CC8B4009528E2 /* LumineerContentGalleryVC.swift */; };
 		09F18F0320C8121D0017914B /* inviteFriendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F18F0220C8121D0017914B /* inviteFriendVC.swift */; };
 		67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */; };
 		7A3BBA422090867900B96750 /* TGAttachmentMessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3BBA402090867700B96750 /* TGAttachmentMessageCellLayout.swift */; };
@@ -309,6 +311,8 @@
 		09EAD74620B6C55C00EB37E1 /* LumiSupportVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiSupportVC.swift; sourceTree = "<group>"; };
 		09ECA797209C822F001570EA /* mapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapViewController.swift; sourceTree = "<group>"; };
 		09ECA798209C8230001570EA /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
+		09EFBB8A216C99A9009528E2 /* CallHistoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallHistoryVC.swift; sourceTree = "<group>"; };
+		09EFBB8C216CC8B4009528E2 /* LumineerContentGalleryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LumineerContentGalleryVC.swift; sourceTree = "<group>"; };
 		09F18F0220C8121D0017914B /* inviteFriendVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = inviteFriendVC.swift; sourceTree = "<group>"; };
 		1ED9069746B80D308CA990E5 /* Pods-LumiWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LumiWorld.release.xcconfig"; path = "Pods/Target Support Files/Pods-LumiWorld/Pods-LumiWorld.release.xcconfig"; sourceTree = "<group>"; };
 		6FEF0ECD00478AAAF31FB7D6 /* Pods-testSVG.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testSVG.debug.xcconfig"; path = "Pods/Target Support Files/Pods-testSVG/Pods-testSVG.debug.xcconfig"; sourceTree = "<group>"; };
@@ -591,6 +595,7 @@
 				09ECA796209C8224001570EA /* LocationSharing */,
 				0965F16420A07CDD0017CA71 /* DocumentBrowser */,
 				094809D82154F4E6000D8668 /* LumineerHomeVC.swift */,
+				09EFBB8C216CC8B4009528E2 /* LumineerContentGalleryVC.swift */,
 				7ABBEA2F20948A55004EC13C /* SendAttachmentVC.swift */,
 				0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */,
 				096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */,
@@ -598,6 +603,7 @@
 				097945762162414F00ABAEFA /* LumineerMessagesVC.swift */,
 				0907E8652164EC0C007D41DB /* LumineerAdvertiseVC.swift */,
 				092A5738216B59BB00151329 /* coomingsoon.swift */,
+				09EFBB8A216C99A9009528E2 /* CallHistoryVC.swift */,
 			);
 			path = LumiCategory;
 			sourceTree = "<group>";
@@ -881,6 +887,7 @@
 				097BFA4D207E3647001F935C /* TGChatViewController.swift in Sources */,
 				0940F96320C952EE00CCF3E1 /* EPContactsPicker.swift in Sources */,
 				0964E7282060F981001D6F47 /* IPV4Rule.swift in Sources */,
+				09EFBB8D216CC8B5009528E2 /* LumineerContentGalleryVC.swift in Sources */,
 				097BFA45207E3647001F935C /* TGDateMessageCellLayout.swift in Sources */,
 				09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */,
 				093A6D2F215BB48D004731DE /* LumineerContent.swift in Sources */,
@@ -951,6 +958,7 @@
 				0964E7252060F981001D6F47 /* FloatRule.swift in Sources */,
 				0964E7212060F981001D6F47 /* CharacterSetRule.swift in Sources */,
 				0964E72B2060F981001D6F47 /* MinLengthRule.swift in Sources */,
+				09EFBB8B216C99A9009528E2 /* CallHistoryVC.swift in Sources */,
 				0965F16620A07CE60017CA71 /* DocumentBrowserViewController.swift in Sources */,
 				0964E7352060F981001D6F47 /* NewCustomTableView.swift in Sources */,
 				0940F96020C952EE00CCF3E1 /* EPContact.swift in Sources */,

@@ -110,7 +110,7 @@ class LumineerMessagesVC: UIViewController,UIImagePickerControllerDelegate, UINa
                         strImageName = "Artboard 91xxhdpi"
                     }
                     
-                    let section = ["title":objUniqueItem, "text":uniqueObjects[0].messageSubject as Any,"date":Date().getFormattedDate(string: uniqueObjects[0].newsfeedPostedTime!, formatter: ""),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
+                    let section = ["title":objUniqueItem, "text":uniqueObjects[0].messageSubject as Any,"date":Date().getFormattedDate(string: uniqueObjects[0].newsfeedPostedTime!, formatter: "yyyy-MM-dd HH:mm"),"data":uniqueObjects,"imgName":strImageName] as [String : Any]
                     self.aryActivityData.append(section as [String : AnyObject])
                     
                 }
@@ -294,7 +294,7 @@ extension LumineerMessagesVC : UITableViewDelegate,UITableViewDataSource {
         let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
         let objLumiMessage = sectionData[indexPath.row] as LumiMessage
         cell.lblSubject.text = objLumiMessage.messageSubject
-        cell.lblDate.text = Date().getFormattedDate(string: objLumiMessage.newsfeedPostedTime!, formatter: "")
+        cell.lblDate.text = Date().getFormattedDate(string: objLumiMessage.newsfeedPostedTime!, formatter: "yyyy-MM-dd HH:mm")
         cell.lblMessage.text = objLumiMessage.newsFeedBody
         
         if objLumiMessage.fileName == nil {

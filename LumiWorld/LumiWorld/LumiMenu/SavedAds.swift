@@ -103,7 +103,7 @@ class SavedAds: UIViewController, UITableViewDelegate,UITableViewDataSource{
             let objAdv = objCellData["message"] as? AdvertiseData
             cell.lblMessageDetails.text = objAdv?.contentTitle
             var msgCatDate = "ADS"
-            msgCatDate.append(" | \(Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: ""))")
+            msgCatDate.append(" | \(Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "yyyy-MM-dd HH:mm"))")
             cell.lblMessageTime.text = msgCatDate
             let strMsgType : String!
             if objAdv?.contentType == "Video" {

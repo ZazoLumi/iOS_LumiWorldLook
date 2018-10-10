@@ -129,7 +129,7 @@ class LumineerAdvertiseVC: UIViewController, UITableViewDelegate,UITableViewData
             cell.imgAdvType.image = imgMsgType
         }
         cell.imgAdsContent.contentMode = .scaleAspectFit
-        cell.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "")
+        cell.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "yyyy-MM-dd HH:mm")
         
         if urlOriginalImage != nil {
             Alamofire.request(urlOriginalImage!).responseImage { response in

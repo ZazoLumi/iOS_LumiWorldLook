@@ -449,17 +449,22 @@ class GlobalShareData {
         return aryAdsData
     }
 
-    func getAllContents() -> [LumineerContent]{
+    func getAllContents() -> [[String:AnyObject]]{
         let realm = try! Realm()
         let result  = realm.objects(LumineerContent.self)
-        var aryContentData: [LumineerContent] = []
+        var aryContentData: [[String:AnyObject]] = []
         if result.count > 0 {
             for objContent in result {
                 let creteatedData = objContent.strContentDate
                 let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd'T'HH:mm:ss", expFormatter: "yyyy-MM-dd HH:mm")
                 let currentDate = Date()
                 if currentDate.isGreaterThanDate(dateToCompare: cDate as NSDate) {
-                        aryContentData.append(objContent)
+                    let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objContent.lumineerId.int)
+                    if objsLumineer.count > 0 {
+                        let lumineer = objsLumineer[0]
+                        let section = ["title":lumineer.name as Any, "message":objContent as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"content"] as [String : Any]
+                        aryContentData.append(section as [String : AnyObject])
+                    }
                 }
                 
             }

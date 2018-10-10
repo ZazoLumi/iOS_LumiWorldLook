@@ -282,7 +282,7 @@ class MyLumiProfileVC: UIViewController {
             customAdsView.imgAdvType.image = imgMsgType
             }
             customAdsView.imgAdsContent.contentMode = .scaleAspectFit
-            customAdsView.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "")
+            customAdsView.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "yyyy-MM-dd HH:mm")
             
             scrlAdvertiseView.stackView.addArrangedSubview(customAdsView)
             if urlOriginalImage != nil {

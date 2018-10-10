@@ -587,27 +587,29 @@ extension Date {
     
     func getFormattedDate(string: String , formatter:String) -> String{
         let dateFormatterGet = DateFormatter()
-        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm"
+        dateFormatterGet.dateFormat = formatter
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM dd,yyyy HH:mm"
-        let date = dateFormatterGet.date(from:string)!
-        
+        let date = dateFormatterGet.date(from:string)
+        guard date != nil else {
+            return ""
+        }
         let calendar = Calendar.current
         
-        if calendar.isDateInYesterday(date) {
+        if calendar.isDateInYesterday(date!) {
             dateFormatter.dateFormat = "HH:mm a"
-            let dateString = dateFormatter.string(from: date)
+            let dateString = dateFormatter.string(from: date!)
             return "Yesterday, \(dateString)"
         }
-        else if calendar.isDateInToday(date) {
+        else if calendar.isDateInToday(date!) {
             dateFormatter.dateFormat = "HH:mm a"
-            let dateString = dateFormatter.string(from: date)
+            let dateString = dateFormatter.string(from: date!)
             return "Today, \(dateString)"
             
         }
-        print(dateFormatter.string(from: date)) // Jan 20,2018
-        return dateFormatter.string(from: date);
+        print(dateFormatter.string(from: date!)) // Jan 20,2018
+        return dateFormatter.string(from: date!);
     }
     
     func getDateFromString(strCurrentDate: String, curFormatter:String, expFormatter:String) -> Date {

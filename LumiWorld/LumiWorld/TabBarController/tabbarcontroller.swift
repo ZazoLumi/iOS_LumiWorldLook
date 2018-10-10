@@ -32,19 +32,25 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     }
     
     let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-    let v1 = storyBoard.instantiateViewController(withIdentifier: "MyLumiFeedVC") as! MyLumiFeedVC
-    let v2 = storyBoard.instantiateViewController(withIdentifier: "LumiCategoryVC") as! LumiCategoryVC
-    let v3 = storyBoard.instantiateViewController(withIdentifier: "MyLumiProfileVC") as! MyLumiProfileVC
+    let v1 = storyBoard.instantiateViewController(withIdentifier: "LumineerContentGalleryVC") as! LumineerContentGalleryVC
+    let v2 = storyBoard.instantiateViewController(withIdentifier: "MyLumiFeedVC") as! MyLumiFeedVC
+    let v3 = storyBoard.instantiateViewController(withIdentifier: "LumiCategoryVC") as! LumiCategoryVC
+    let v4 = storyBoard.instantiateViewController(withIdentifier: "CallHistoryVC") as! CallHistoryVC
+    let v5 = storyBoard.instantiateViewController(withIdentifier: "MyLumiProfileVC") as! MyLumiProfileVC
 
     v1.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 76xxhdpi"), selectedImage: UIImage(named: "Artboard 76xxhdpi"))
-    v2.tabBarItem = ESTabBarItem.init(ExampleIrregularityContentView(), title: nil, image: UIImage(named: "Artboard 77xxhdpi"), selectedImage: UIImage(named: "Artboard 77xxhdpi"))
-    v3.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 78xxhdpi"), selectedImage: UIImage(named: "Artboard 78xxhdpi"))
+    v2.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 76xxhdpi"), selectedImage: UIImage(named: "Artboard 76xxhdpi"))
+    v3.tabBarItem = ESTabBarItem.init(ExampleIrregularityContentView(), title: nil, image: UIImage(named: "Artboard 77xxhdpi"), selectedImage: UIImage(named: "Artboard 77xxhdpi"))
+    v4.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Call"), selectedImage: UIImage(named: "Call"))
+    v5.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 78xxhdpi"), selectedImage: UIImage(named: "Artboard 78xxhdpi"))
 
     let n1 = ExampleNavigationController.init(rootViewController: v1)
     let n2 = ExampleNavigationController.init(rootViewController: v2)
     let n3 = ExampleNavigationController.init(rootViewController: v3)
+    let n4 = ExampleNavigationController.init(rootViewController: v4)
+    let n5 = ExampleNavigationController.init(rootViewController: v5)
 
-    tabBarController.viewControllers = [n1, n2, n3]
+    tabBarController.viewControllers = [n1, n2, n3, n4, n5]
     tabBarController.selectedIndex = 0
     let navigationController = ExampleNavigationController.init(rootViewController: tabBarController)
     
