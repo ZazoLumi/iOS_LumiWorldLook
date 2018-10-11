@@ -19,14 +19,28 @@ class ContentGalleryCell : UITableViewCell {
     @IBOutlet weak var lblLumineerName: UILabel!
     @IBOutlet weak var imgLumineerProfile: UIImageView!
     @IBOutlet weak var imgAdsContent: UIImageView!
-    @IBOutlet weak var imgPlayIcon: UIImageView!
     
     @IBOutlet weak var btnLike: UIButton!
     @IBOutlet weak var btnComments: UIButton!
     @IBOutlet weak var btnReport: UIButton!
     @IBOutlet weak var btnShare: UIButton!
     @IBOutlet weak var btnFullScreen: UIButton!
+    @IBOutlet weak var viewContainer: UIView!
+    @IBOutlet weak var mvPlayerView: AGVideoPlayerView!
 
+//    lazy var mvPlayerView: AGVideoPlayerView = {
+//        let playerView = AGVideoPlayerView()
+//        playerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width).isActive = true
+//        playerView.heightAnchor.constraint(equalToConstant: 170).isActive = true
+//        //        playerView.leadingAnchor.constraint(equalTo: 0)
+//        //        playerView.videoUrl = url1!
+//        playerView.shouldAutoplay = true
+//        playerView.shouldAutoRepeat = true
+//        playerView.showsCustomControls = false
+//        playerView.shouldSwitchToFullscreen = false
+//        playerView.isMuted = true
+//        return playerView
+//    }()
 
 
 }
@@ -35,6 +49,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
     var aryContentData: [[String:AnyObject]] = []
     var objContentertiseVC : AdvertiseVC!
     weak var delegate: ScrollContentSize?
+    var objPlayer: AVAudioPlayer?
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,9 +111,17 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ContentGalleryCell", for: indexPath) as! ContentGalleryCell
+        var cell :  ContentGalleryCell!
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
+        let objContent = objCellData["message"] as? LumineerContent
+
+        if objContent?.contentType == "video" {
+            cell = tableView.dequeueReusableCell(withIdentifier: "ContentVideoCell", for: indexPath) as! ContentGalleryCell
+        }
+        else if objContent?.contentType == "image" {
+            cell = tableView.dequeueReusableCell(withIdentifier: "ContentGalleryCell", for: indexPath) as! ContentGalleryCell
+        }
         
         cell.lblLumineerName.text = objCellData["title"] as? String
         let imgThumb = UIImage.decodeBase64(strEncodeData:objCellData["profileImg"] as? String)
@@ -106,36 +130,34 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
         cell.imgLumineerProfile?.clipsToBounds = true;
 
-        let objContent = objCellData["message"] as? LumineerContent
 
         cell.lblAdvTitle.text = objContent?.contentTitle
 
         let imgMsgType : UIImage!
         var urlOriginalImage : URL? = nil
-        
         if objContent?.contentType == "video" {
-            cell.imgPlayIcon.isHidden = false
-                if objContent?.adMediaURL != nil {
+            if objContent?.adMediaURL != nil {
                     if(objContent?.adMediaURL?.hasUrlPrefix())!
                     {
                         urlOriginalImage = URL.init(string: (objContent?.adMediaURL!)!)
                     }
                     else {
-                        var fileName = objContent?.contentFileName?.replacingOccurrences(of: " ", with: "-")
-                        _ = fileName?.pathExtension
-                        let pathPrefix = fileName?.deletingPathExtension
-                        fileName = "\(pathPrefix!).png"
+                        let fileName = objContent?.contentFileName?.replacingOccurrences(of: " ", with: "-")
                         urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                     }
+                    cell.mvPlayerView.videoUrl = urlOriginalImage!
+                    cell.mvPlayerView.shouldAutoplay = true
+                    cell.mvPlayerView.shouldAutoRepeat = true
+                    cell.mvPlayerView.showsCustomControls = false
+                    cell.mvPlayerView.shouldSwitchToFullscreen = false
+                    cell.mvPlayerView.isMuted = false
                 }
             imgMsgType = UIImage(named:"Asset102")
         }
         else if objContent?.contentType == "audio" {
-            cell.imgPlayIcon.isHidden = false
             imgMsgType = UIImage(named:"Asset104")
         }
         else {
-            cell.imgPlayIcon.isHidden = true
             if objContent?.adMediaURL != nil {
                 if(objContent?.adMediaURL?.hasUrlPrefix())!
                 {
@@ -147,25 +169,72 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                 }
             }
             imgMsgType = UIImage(named:"Asset106")
-            cell.imgAdvType.image = imgMsgType
+            if urlOriginalImage != nil {
+                Alamofire.request(urlOriginalImage!).responseImage { response in
+                    debugPrint(response)
+                    if let image = response.result.value {
+                        let scalImg = image.af_imageScaled(to: CGSize(width: cell.imgAdsContent.size.width, height: cell.imgAdsContent.size.height))
+                        cell.imgAdsContent.image = scalImg
+                    }
+                }}
+            cell.imgAdsContent.contentMode = .scaleAspectFit
         }
-        cell.imgAdsContent.contentMode = .scaleAspectFit
+        cell.imgAdvType.image = imgMsgType
         cell.lblAdvPostedTime.text = Date().getFormattedDate(string: (objContent?.strContentDate!)!, formatter: "yyyy-MM-ddTHH:mm:ss")
         
-        if urlOriginalImage != nil {
-            Alamofire.request(urlOriginalImage!).responseImage { response in
-                debugPrint(response)
-                if let image = response.result.value {
-                    let scalImg = image.af_imageScaled(to: CGSize(width: cell.imgAdsContent.size.width, height: cell.imgAdsContent.size.height))
-                    cell.imgAdsContent.image = scalImg
-                }
-            }}
+        
         
         return cell
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("Raw:\(indexPath.row)")
+        guard let contentCell = (cell as? ContentGalleryCell) else { return };
+        var objCellData : [String : Any]!
+        objCellData = aryContentData[indexPath.row]
+        let objContent = objCellData["message"] as? LumineerContent
+        if objContent?.contentType == "audio" {
+            let urlOriginalImage : URL!
+            if objContent?.adMediaURL != nil {
+                if(objContent?.adMediaURL?.hasUrlPrefix())!
+                {
+                    urlOriginalImage = URL.init(string: (objContent?.adMediaURL!)!)
+                }
+                else {
+                    let fileName = objContent?.contentFileName?.replacingOccurrences(of: " ", with: "-")
+                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                }
+                playAudioFile(urlOriginalImage: urlOriginalImage)
+            }
+
+        }
+        else if objContent?.contentType == "video" {
+            let visibleCells = tableView.visibleCells;
+            _ = visibleCells.startIndex;
+                contentCell.mvPlayerView.playerController.player?.play()
+        }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let contentCell = (cell as? ContentGalleryCell) else { return };
+        var objCellData : [String : Any]!
+        objCellData = aryContentData[indexPath.row]
+        let objContent = objCellData["message"] as? LumineerContent
+        if objContent?.contentType == "audio" {
+            objPlayer?.stop()
+        }
+        else if objContent?.contentType == "video" {
+            let visibleCells = tableView.visibleCells;
+            let minIndex = visibleCells.startIndex;
+            if tableView.visibleCells.index(of: cell) == minIndex {
+                contentCell.mvPlayerView.playerController.player?.pause()
+            }
+        }    }
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        /* var objCellData : [String : Any]!
@@ -191,6 +260,25 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
             */
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func playAudioFile(urlOriginalImage : URL) {
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            // For iOS 11
+            objPlayer = try AVAudioPlayer(contentsOf: urlOriginalImage, fileTypeHint: AVFileType.mp3.rawValue)
+            
+            
+            guard let aPlayer = objPlayer else { return }
+            aPlayer.play()
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
 
     /*
     // MARK: - Navigation

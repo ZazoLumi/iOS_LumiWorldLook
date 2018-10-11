@@ -35,10 +35,10 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     let v1 = storyBoard.instantiateViewController(withIdentifier: "LumineerContentGalleryVC") as! LumineerContentGalleryVC
     let v2 = storyBoard.instantiateViewController(withIdentifier: "MyLumiFeedVC") as! MyLumiFeedVC
     let v3 = storyBoard.instantiateViewController(withIdentifier: "LumiCategoryVC") as! LumiCategoryVC
-    let v4 = storyBoard.instantiateViewController(withIdentifier: "CallHistoryVC") as! CallHistoryVC
+    let v4 = storyBoard.instantiateViewController(withIdentifier: "CallLumineerVC") as! CallLumineerVC
     let v5 = storyBoard.instantiateViewController(withIdentifier: "MyLumiProfileVC") as! MyLumiProfileVC
 
-    v1.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 76xxhdpi"), selectedImage: UIImage(named: "Artboard 76xxhdpi"))
+    v1.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Gallery"), selectedImage: UIImage(named: "Gallery"))
     v2.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Artboard 76xxhdpi"), selectedImage: UIImage(named: "Artboard 76xxhdpi"))
     v3.tabBarItem = ESTabBarItem.init(ExampleIrregularityContentView(), title: nil, image: UIImage(named: "Artboard 77xxhdpi"), selectedImage: UIImage(named: "Artboard 77xxhdpi"))
     v4.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: nil, image: UIImage(named: "Call"), selectedImage: UIImage(named: "Call"))

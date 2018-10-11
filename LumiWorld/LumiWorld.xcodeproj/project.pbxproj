@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		09028A7C20AEB86B007F85F2 /* AboutPlusTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */; };
 		0907E8662164EC0C007D41DB /* LumineerAdvertiseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0907E8652164EC0C007D41DB /* LumineerAdvertiseVC.swift */; };
+		090A88FD216F74C8000F7798 /* CallLumineerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090A88FC216F74C7000F7798 /* CallLumineerVC.swift */; };
 		090B085320C135AD00A05A7E /* LumiProfileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090B085220C135AD00A05A7E /* LumiProfileDetails.swift */; };
 		090E761F2153B7350032315C /* CustomSegmentedContrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090E761E2153B7340032315C /* CustomSegmentedContrl.swift */; };
 		0916065420871FA400F8E8EC /* multipartAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0916065320871FA400F8E8EC /* multipartAPI.m */; };
@@ -142,7 +143,6 @@
 		09EAD74720B6C55C00EB37E1 /* LumiSupportVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EAD74620B6C55C00EB37E1 /* LumiSupportVC.swift */; };
 		09ECA799209C8230001570EA /* mapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ECA797209C822F001570EA /* mapViewController.swift */; };
 		09ECA79A209C8230001570EA /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ECA798209C8230001570EA /* LocationSearchTable.swift */; };
-		09EFBB8B216C99A9009528E2 /* CallHistoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EFBB8A216C99A9009528E2 /* CallHistoryVC.swift */; };
 		09EFBB8D216CC8B5009528E2 /* LumineerContentGalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EFBB8C216CC8B4009528E2 /* LumineerContentGalleryVC.swift */; };
 		09F18F0320C8121D0017914B /* inviteFriendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F18F0220C8121D0017914B /* inviteFriendVC.swift */; };
 		67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */; };
@@ -173,6 +173,7 @@
 		0900544620591EC700262084 /* LumiWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LumiWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutPlusTC.swift; sourceTree = "<group>"; };
 		0907E8652164EC0C007D41DB /* LumineerAdvertiseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerAdvertiseVC.swift; sourceTree = "<group>"; };
+		090A88FC216F74C7000F7798 /* CallLumineerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallLumineerVC.swift; sourceTree = "<group>"; };
 		090B085220C135AD00A05A7E /* LumiProfileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiProfileDetails.swift; sourceTree = "<group>"; };
 		090E761E2153B7340032315C /* CustomSegmentedContrl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedContrl.swift; sourceTree = "<group>"; };
 		0916065120871FA300F8E8EC /* LumiWorld-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LumiWorld-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -311,7 +312,6 @@
 		09EAD74620B6C55C00EB37E1 /* LumiSupportVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiSupportVC.swift; sourceTree = "<group>"; };
 		09ECA797209C822F001570EA /* mapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapViewController.swift; sourceTree = "<group>"; };
 		09ECA798209C8230001570EA /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
-		09EFBB8A216C99A9009528E2 /* CallHistoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallHistoryVC.swift; sourceTree = "<group>"; };
 		09EFBB8C216CC8B4009528E2 /* LumineerContentGalleryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LumineerContentGalleryVC.swift; sourceTree = "<group>"; };
 		09F18F0220C8121D0017914B /* inviteFriendVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = inviteFriendVC.swift; sourceTree = "<group>"; };
 		1ED9069746B80D308CA990E5 /* Pods-LumiWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LumiWorld.release.xcconfig"; path = "Pods/Target Support Files/Pods-LumiWorld/Pods-LumiWorld.release.xcconfig"; sourceTree = "<group>"; };
@@ -603,7 +603,7 @@
 				097945762162414F00ABAEFA /* LumineerMessagesVC.swift */,
 				0907E8652164EC0C007D41DB /* LumineerAdvertiseVC.swift */,
 				092A5738216B59BB00151329 /* coomingsoon.swift */,
-				09EFBB8A216C99A9009528E2 /* CallHistoryVC.swift */,
+				090A88FC216F74C7000F7798 /* CallLumineerVC.swift */,
 			);
 			path = LumiCategory;
 			sourceTree = "<group>";
@@ -872,6 +872,7 @@
 				7A80545E211CC3D800138BBD /* AGVideoPlayerView.swift in Sources */,
 				0964E6D52060F8ED001D6F47 /* CreateAccountVC.swift in Sources */,
 				0964E72C2060F981001D6F47 /* PasswordRule.swift in Sources */,
+				090A88FD216F74C8000F7798 /* CallLumineerVC.swift in Sources */,
 				0964E71B2060F981001D6F47 /* ValidationError.swift in Sources */,
 				0964E591205FC811007E5924 /* AppDelegate.swift in Sources */,
 				0964E72F2060F981001D6F47 /* RequiredRule.swift in Sources */,
@@ -958,7 +959,6 @@
 				0964E7252060F981001D6F47 /* FloatRule.swift in Sources */,
 				0964E7212060F981001D6F47 /* CharacterSetRule.swift in Sources */,
 				0964E72B2060F981001D6F47 /* MinLengthRule.swift in Sources */,
-				09EFBB8B216C99A9009528E2 /* CallHistoryVC.swift in Sources */,
 				0965F16620A07CE60017CA71 /* DocumentBrowserViewController.swift in Sources */,
 				0964E7352060F981001D6F47 /* NewCustomTableView.swift in Sources */,
 				0940F96020C952EE00CCF3E1 /* EPContact.swift in Sources */,
