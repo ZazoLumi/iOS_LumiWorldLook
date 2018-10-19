@@ -161,7 +161,7 @@ class MyLumiProfileVC: UIViewController {
         scrollable.stackView.axis = .horizontal
         scrollable.stackView.spacing = 22
         scrollable.scrollView.layoutMargins = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        let imgArray = ["Asset 19","Asset 20","Asset 21","Asset 22","Watch Later"]
+        let imgArray = ["Asset 19-1","Asset 20-1","Asset 21-1","Asset 22","Watch Later"]
         for i in 0 ..< 5 {
             let image = UIImage.init(named: imgArray[i])
             let button = UIButton.init(type: .custom)

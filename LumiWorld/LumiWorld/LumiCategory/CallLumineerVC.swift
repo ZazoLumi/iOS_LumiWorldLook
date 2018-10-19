@@ -87,6 +87,7 @@ class CallLumineerVC: UIViewController , UITableViewDelegate,UITableViewDataSour
         let result = realm.objects(LumineerList.self)
         aryActivityData = result.compactMap { return $0 }
         self.tableView.reloadData()
+        self.refreshControl.endRefreshing()
     }
     
     // MARK: - Tableview Methods

@@ -323,7 +323,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         }
         else {
                 self.lblAdvTitle.text = GlobalShareData.sharedGlobal.objCurrentContent.contentTitle
-                if GlobalShareData.sharedGlobal.objCurrentContent.advComments.count > 0 {
+            if GlobalShareData.sharedGlobal.objCurrentContent.ctnComments.count > 0 {
                     let count = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count
                     btnComments.setTitle("\(count) Comments", for: .normal)
                     btnComments.setTitle("\(count) Comments", for: .selected)
@@ -459,11 +459,11 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     constAdvContainerHeight.constant = 60
                     totalHeight -= 160
                 }
-                if GlobalShareData.sharedGlobal.objCurrentContent.advComments.count > 0 {
+            if GlobalShareData.sharedGlobal.objCurrentContent.ctnComments.count > 0 {
                     let commentsHeight = (Int(UIScreen.main.bounds.height) - totalHeight - 140)
                     var setHeights = commentsHeight
-                    if GlobalShareData.sharedGlobal.objCurrentContent.advComments.count * 54 < commentsHeight{
-                        setHeights = GlobalShareData.sharedGlobal.objCurrentContent.advComments.count * 54
+                if GlobalShareData.sharedGlobal.objCurrentContent.ctnComments.count * 54 < commentsHeight{
+                    setHeights = GlobalShareData.sharedGlobal.objCurrentContent.ctnComments.count * 54
                     }
                     constCommentsHeight.constant = CGFloat(setHeights)
                     totalHeight += setHeights
@@ -557,7 +557,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     @IBAction func onBtnFullScreenTapped(_ sender: UIButton) {
         if screenType == .Advertise {
             if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
-                view.addSubview(mediaZoom!)
+                GlobalShareData.sharedGlobal.objCurretnVC.view.addSubview(mediaZoom!)
                 mediaZoom?.show()
             }
             else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
@@ -567,14 +567,13 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         }
         else {
             if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "image" {
-                view.addSubview(mediaZoom!)
+                GlobalShareData.sharedGlobal.objCurretnVC.view.addSubview(mediaZoom!)
                 mediaZoom?.show()
             }
             else if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "video" {
                 NotificationCenter.default.post(name: .playerDidChangeFullscreenMode, object: true)
                 playerView.hanldeOrientation()
             }
-
         }
     }
     

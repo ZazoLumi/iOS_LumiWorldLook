@@ -684,7 +684,7 @@ enum UserDefaultsKeys : String {
     case supportTimeStamp
     case pendingVerification
     case isAlreadyLogin
-    
+    case isLaunchedFirst
 }
 
 enum currentScreen : String {

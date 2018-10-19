@@ -53,7 +53,7 @@ class LumineerContent: Object {
     @objc dynamic var compaignWindow: String? = nil
     @objc dynamic var contentFileType: String? = nil
 
-    var advComments = List<AdvComments>()
+    var ctnComments = List<ContentComments>()
 
     override static func primaryKey() -> String? {
         return "id"
@@ -64,8 +64,14 @@ class LumineerContent: Object {
             print("Internet Connection Available!")
            // let cellNumber = param["lumiMobile"]!
             let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.contentTimeStamp)
-           // let lastViewDate = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
-               let urlString = Constants.APIDetails.APIGetAllLumineerContent
+            let lastViewDate = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+            var urlString : String!
+            if lastViewDate != "" {
+                print("test1")
+                urlString = Constants.APIDetails.APIGetAllLumineerContent + "?date=\(lastViewDate)"}
+            else {
+                print("test0")
+                urlString = Constants.APIDetails.APIGetAllLumineerContent }
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempArray = json.arrayValue
@@ -88,7 +94,7 @@ class LumineerContent: Object {
                             try! realm.write {
                                 realm.add(newContentData, update: true)
                             }
-                            if aObject["adFileName"].string != nil, (aObject["adFileName"].string?.count)! > 0 {
+                            if aObject["adMediaURL"].string != nil, (aObject["adMediaURL"].string?.count)! > 0 {
                                 // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
                                 let filePath = newContentData.adMediaURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                                 
@@ -159,12 +165,11 @@ class LumineerContent: Object {
             print("Internet Connection not Available!")
         }
     }
-
     
     func getContentObject(cObject:JSON) -> LumineerContent {
         let newContentData = LumineerContent()
         let aObject = cObject["adDetails"]
-        newContentData.id = self.incrementID()
+        newContentData.id = self.incrementContentID()
         newContentData.contentID = aObject["contentID"].stringValue
         newContentData.contentFileName = aObject["contentFileName"].stringValue
         newContentData.adMediaURL = cObject["adMediaURL"].stringValue
@@ -205,6 +210,34 @@ class LumineerContent: Object {
         newContentData.isCtsSaved = false
         newContentData.isCtsLiked = false
         
+
+        let newObject = cObject["comments"]
+
+        let commnets = newObject["comments"].array
+        if commnets != nil && ((commnets?.count) != nil) {
+        let realm = try! Realm()
+        for cObject in commnets! {
+            let newCtnCommnetsData = ContentComments()
+            newCtnCommnetsData.id = self.incrementContentCommentID()
+            newCtnCommnetsData.commentId = cObject["commentID"].stringValue
+            newCtnCommnetsData.commentBody = cObject["commentBody"].stringValue
+            newCtnCommnetsData.isPostedByLumi = cObject["isPostedByLumi"].boolValue
+            newCtnCommnetsData.isPostedByLumineer = cObject["isPostedByLumineer"].boolValue
+            newCtnCommnetsData.contentID = cObject["contentID"].stringValue
+            let lumineerDetails = aObject["lumineerDetails"]
+            newCtnCommnetsData.lumineerId = lumineerDetails["lumineerId"].doubleValue
+            newCtnCommnetsData.strCreatedDate = cObject["createdDate"].stringValue
+            newCtnCommnetsData.strUpdatedDate = cObject["updatedDate"].stringValue
+            let lumiDetails = aObject["lumiDetails"]
+            newCtnCommnetsData.lumiMobile = lumiDetails["cell"].doubleValue
+            newCtnCommnetsData.lumiName = cObject["lumiName"].stringValue
+            newCtnCommnetsData.lumiName = cObject["lumiName"].stringValue
+            try! realm.write {
+                realm.add(newCtnCommnetsData, update: true)
+                newContentData.ctnComments.append(newCtnCommnetsData)
+            }
+            }
+        }
         return newContentData
     }
     func downloadFileFromServer(newAdvertiseData:LumineerContent) {
@@ -244,9 +277,34 @@ class LumineerContent: Object {
             
         })
     }
-    func incrementID() -> Int {
+    func incrementContentID() -> Int {
         let realm = try! Realm()
         return (realm.objects(LumineerContent.self).max(ofProperty: "id") as Int? ?? 0) + 1
     }
+        func incrementContentCommentID() -> Int {
+            let realm = try! Realm()
+            return (realm.objects(ContentComments.self).max(ofProperty: "id") as Int? ?? 0) + 1
+        }
 
+
+}
+
+class ContentComments : Object {
+    
+    @objc dynamic var id = 0
+    @objc dynamic var commentId: String? = nil
+    @objc dynamic var strCreatedDate: String? = nil
+    @objc dynamic var strUpdatedDate: String? = nil
+    @objc dynamic var contentID: String? = nil
+    @objc dynamic var lumiMobile: Double = 0
+    @objc dynamic var lumineerId: Double = 0
+    @objc dynamic var commentBody: String? = nil
+    @objc dynamic var lumiName: String? = nil
+    @objc dynamic var lumineerName: String? = nil
+    @objc dynamic var isPostedByLumi = false
+    @objc dynamic var isPostedByLumineer = false
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
 }

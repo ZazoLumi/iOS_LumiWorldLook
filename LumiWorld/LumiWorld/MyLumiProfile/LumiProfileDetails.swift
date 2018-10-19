@@ -15,7 +15,6 @@ class LumiProfileDetails: UIViewController,FormDataDelegate,UITextFieldDelegate 
     @IBOutlet weak var btnCancel: UIButton!
     var customview : CustomTableView!
     var isImgChanged = false
-
     @IBOutlet weak var txtDisplayName: UITextField!
     @IBOutlet weak var txtLastName: UITextField!
     @IBOutlet weak var txtFirstName: UITextField!

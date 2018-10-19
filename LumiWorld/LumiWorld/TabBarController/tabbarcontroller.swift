@@ -51,7 +51,13 @@ static func customIrregularityStyle(delegate: UITabBarControllerDelegate?) -> Ex
     let n5 = ExampleNavigationController.init(rootViewController: v5)
 
     tabBarController.viewControllers = [n1, n2, n3, n4, n5]
-    tabBarController.selectedIndex = 0
+    if UserDefaults.standard.getBoolValue(key:UserDefaultsKeys.isLaunchedFirst) {
+        tabBarController.selectedIndex = 0
+    }
+    else {
+        UserDefaults.standard.setBoolValue(value: true, key: UserDefaultsKeys.isLaunchedFirst)
+        tabBarController.selectedIndex = 2
+    }
     let navigationController = ExampleNavigationController.init(rootViewController: tabBarController)
     
     tabBarController.navigationController?.setNavigationBarHidden(true, animated: true)
