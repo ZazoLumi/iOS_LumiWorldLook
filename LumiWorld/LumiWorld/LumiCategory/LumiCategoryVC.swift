@@ -660,7 +660,7 @@ extension UINavigationItem {
 
     @objc func goBackToLumineerPage(_ sender: UIButton){
         GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.lumiFeed.rawValue
-        GlobalShareData.sharedGlobal.objCurretnVC.tabBarController?.selectedIndex = 1
+        GlobalShareData.sharedGlobal.objCurretnVC.tabBarController?.selectedIndex = 2
         
     }
 

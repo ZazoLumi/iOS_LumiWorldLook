@@ -160,7 +160,7 @@ class CallLumineerVC: UIViewController , UITableViewDelegate,UITableViewDataSour
     }
     
     @objc func didTapGetStarted() {
-        self.tabBarController?.selectedIndex = 1
+        self.tabBarController?.selectedIndex = 2
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
