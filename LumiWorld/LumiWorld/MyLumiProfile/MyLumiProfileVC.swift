@@ -120,7 +120,7 @@ class MyLumiProfileVC: UIViewController {
     }
     func onBtnShowSaveAdsTapped() {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "SavedAds") as! SavedAds
+        let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "SavedDataVC") as! SavedDataVC
         GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objFaqVC, animated: true)
     }
 

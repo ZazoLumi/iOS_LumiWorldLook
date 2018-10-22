@@ -138,7 +138,7 @@
 		09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */; };
 		09D98A0C2065042C00C74E1F /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0B2065042B00C74E1F /* AFWrapper.swift */; };
 		09D98A1020652D7000C74E1F /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D98A0F20652D6F00C74E1F /* RealmManager.swift */; };
-		09E7947A2105C29C00F4961E /* SavedAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E794792105C29B00F4961E /* SavedAds.swift */; };
+		09E7947A2105C29C00F4961E /* SavedDataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E794792105C29B00F4961E /* SavedDataVC.swift */; };
 		09EAD74520B6B05E00EB37E1 /* LumiSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EAD74420B6B05E00EB37E1 /* LumiSupport.swift */; };
 		09EAD74720B6C55C00EB37E1 /* LumiSupportVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EAD74620B6C55C00EB37E1 /* LumiSupportVC.swift */; };
 		09ECA799209C8230001570EA /* mapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ECA797209C822F001570EA /* mapViewController.swift */; };
@@ -307,7 +307,7 @@
 		09D5E7AE207CF87600242EFC /* PopupSendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupSendMessage.swift; sourceTree = "<group>"; };
 		09D98A0B2065042B00C74E1F /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
 		09D98A0F20652D6F00C74E1F /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
-		09E794792105C29B00F4961E /* SavedAds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedAds.swift; sourceTree = "<group>"; };
+		09E794792105C29B00F4961E /* SavedDataVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedDataVC.swift; sourceTree = "<group>"; };
 		09EAD74420B6B05E00EB37E1 /* LumiSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiSupport.swift; sourceTree = "<group>"; };
 		09EAD74620B6C55C00EB37E1 /* LumiSupportVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumiSupportVC.swift; sourceTree = "<group>"; };
 		09ECA797209C822F001570EA /* mapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapViewController.swift; sourceTree = "<group>"; };
@@ -365,7 +365,7 @@
 		09028A7A20AEB7F9007F85F2 /* LumiMenu */ = {
 			isa = PBXGroup;
 			children = (
-				09E794792105C29B00F4961E /* SavedAds.swift */,
+				09E794792105C29B00F4961E /* SavedDataVC.swift */,
 				09028A7B20AEB86B007F85F2 /* AboutPlusTC.swift */,
 			);
 			path = LumiMenu;
@@ -969,7 +969,7 @@
 				097BFA40207E3647001F935C /* TGChatInputTextPanel.swift in Sources */,
 				097BFA47207E3647001F935C /* TGSystemMessageCellLayout.swift in Sources */,
 				09ECA799209C8230001570EA /* mapViewController.swift in Sources */,
-				09E7947A2105C29C00F4961E /* SavedAds.swift in Sources */,
+				09E7947A2105C29C00F4961E /* SavedDataVC.swift in Sources */,
 				09D5E7AF207CF87600242EFC /* PopupSendMessage.swift in Sources */,
 				0964E72A2060F981001D6F47 /* MaxLengthRule.swift in Sources */,
 				0964E7102060F981001D6F47 /* MyLumiProfileVC.swift in Sources */,

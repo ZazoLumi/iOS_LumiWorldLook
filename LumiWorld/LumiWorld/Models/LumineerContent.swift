@@ -18,6 +18,8 @@ class LumineerContent: Object {
     @objc dynamic var lumineerId: Double = 0
     @objc dynamic var contentPackageId: Double = 0
     @objc dynamic var adMediaURL: String? = nil
+    @objc dynamic var contentFilePath: String? = nil
+
     @objc dynamic var contentType: String? = nil
     @objc dynamic var contentTitle: String? = nil
     @objc dynamic var caption: String? = nil
@@ -173,6 +175,7 @@ class LumineerContent: Object {
         newContentData.contentID = aObject["contentID"].stringValue
         newContentData.contentFileName = aObject["contentFileName"].stringValue
         newContentData.adMediaURL = cObject["adMediaURL"].stringValue
+        newContentData.contentFilePath = cObject["adMediaURL"].stringValue
         newContentData.strContentDate = aObject["strContentDate"].stringValue
         newContentData.caption = aObject["caption"].stringValue
         newContentData.contentTitle = aObject["contentTitle"].stringValue
@@ -185,14 +188,18 @@ class LumineerContent: Object {
         newContentData.upto10000000Charges = aObject["upto1000000Charges"].stringValue
         newContentData.upto200000Charges = aObject["upto2000000Charges"].stringValue
         newContentData.over20000000Charges = aObject["over20000000Charges"].stringValue
-        if aObject["strCreatedDate"].stringValue.range(of:".") != nil {
-            let result = aObject["strCreatedDate"].stringValue.split(separator: ".")
-            newContentData.strContentDate = String(result[0]) as String
-        }
-        if aObject["strUpdatedDate"].stringValue.range(of:".") != nil {
-            let result = aObject["strUpdatedDate"].stringValue.split(separator: ".")
-            newContentData.strUpdatedDate = String(result[0]) as String
-        }
+        
+        newContentData.strCreatedDate = aObject["strCreatedDate"].stringValue
+        newContentData.strUpdatedDate = aObject["strUpdatedDate"].stringValue
+
+//        if aObject["strCreatedDate"].stringValue.range(of:".") != nil {
+//            let result = aObject["strCreatedDate"].stringValue.split(separator: ".")
+//            newContentData.strCreatedDate = String(result[0]) as String
+//        }
+//        if aObject["strUpdatedDate"].stringValue.range(of:".") != nil {
+//            let result = aObject["strUpdatedDate"].stringValue.split(separator: ".")
+//            newContentData.strUpdatedDate = String(result[0]) as String
+//        }
         newContentData.contentPackageId = aObject["contentPackageId"].doubleValue
         newContentData.lumineerId = aObject["lumineerId"].doubleValue
         newContentData.lumineerName = aObject["enterpriseName"].stringValue
@@ -277,6 +284,62 @@ class LumineerContent: Object {
             
         })
     }
+    
+    func sendContentComments(param:[String:AnyObject],completionHandler: @escaping (_ result:Bool) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let paramObj = ["contentFilePath":param["contentFilePath"]! as Any,"lumiDetails":["cell":GlobalShareData.sharedGlobal.objCurrentUserDetails.cell!,"firstName":GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!,"lastName":GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName!,"displayName":GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!],"lumineerDetails":["lumineerId":param["lumineerId"]! as Any,"lumineerName":param["lumineerName"]! as Any],"contentID":param["contentID"]! as Any,"commentID":"" as Any,"commentBody":param["commentBody"]! as Any,"commentType":"0" as Any ] as [String : Any]
+            do {
+            let urlString: String = Constants.APIDetails.APIPostLumineerContentComments
+            AFWrapper.requestPOSTURL(urlString, params:paramObj as [String : AnyObject], headers: nil, success: { (json) in
+                print(json)
+                if json.rawString() == "Comment send" {
+                    completionHandler(true)
+                }
+                else {
+                    completionHandler(false)
+                }
+
+            }, failure: { (Error) in
+                print(Error.localizedDescription)
+            })
+                
+            } catch let jsonError {
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+    
+    func sendContentLikes(param:[String:AnyObject],completionHandler: @escaping (_ result:Bool) -> Void) {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            let paramObj = ["contentFilePath":param["contentFilePath"]! as Any,"lumiDetails":["cell":GlobalShareData.sharedGlobal.objCurrentUserDetails.cell!,"firstName":GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!,"lastName":GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName!,"displayName":GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!],"lumineerDetails":["lumineerId":param["lumineerId"]! as Any,"lumineerName":param["lumineerName"]! as Any],"contentID":param["contentID"]! as Any,"likeID":"" as Any,"likeBody":param["likeBody"]! as Any,"like":param["like"]! as Any,"likeType":"0" as Any ] as [String : Any]
+            do {
+                let urlString: String = Constants.APIDetails.APIPostLumineerContentLikes
+                AFWrapper.requestPOSTURL(urlString, params:paramObj as [String : AnyObject], headers: nil, success: { (json) in
+                    print(json)
+                    if json.rawString() == "Like send" {
+                        completionHandler(true)
+                    }
+                    else {
+                        completionHandler(false)
+                    }
+                    
+                }, failure: { (Error) in
+                    print(Error.localizedDescription)
+                })
+                
+            } catch let jsonError {
+                print(jsonError)
+            }
+        }else{
+            print("Internet Connection not Available!")
+        }
+    }
+
+    
     func incrementContentID() -> Int {
         let realm = try! Realm()
         return (realm.objects(LumineerContent.self).max(ofProperty: "id") as Int? ?? 0) + 1

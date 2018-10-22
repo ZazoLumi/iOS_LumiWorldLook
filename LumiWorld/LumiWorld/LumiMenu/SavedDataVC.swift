@@ -12,7 +12,7 @@ import RealmSwift
 import AVKit
 import Alamofire
 
-class SavedAds: UIViewController, UITableViewDelegate,UITableViewDataSource{
+class SavedDataVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     @IBOutlet weak var tableView: UITableView!
     var aryActivityData: [[String:AnyObject]] = []
     let viewWelcome :  WelcomView! = nil

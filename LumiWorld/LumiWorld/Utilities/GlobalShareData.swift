@@ -57,6 +57,10 @@ struct Constants {
         static let APIPOSTAdvertiseReports = ":13004/adposting/postReportsToLumineerAdByLumi"
         static let APIPOSTAdvertiseLike = ":13004/adposting/likeOrDislikeLumineerAd"
         static let APIGetAllLumineerContent = "http://lumiimportupload20180622023528.azurewebsites.net/api/GetAllContent"
+        static let APIPostLumineerContentComments = "http://lumiimportupload20180622023528.azurewebsites.net/api/PostContentComment"
+        static let APIPostLumineerContentLikes = "http://lumiimportupload20180622023528.azurewebsites.net/api/LikeContent"
+
+        
 
    }
 }
@@ -455,8 +459,8 @@ class GlobalShareData {
         var aryContentData: [[String:AnyObject]] = []
         if result.count > 0 {
             for objContent in result {
-                let creteatedData = objContent.strContentDate
-                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd'T'HH:mm:ss", expFormatter: "yyyy-MM-dd HH:mm")
+                let creteatedData = objContent.strCreatedDate
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd HH:mm")
                 let currentDate = Date()
                 if currentDate.isGreaterThanDate(dateToCompare: cDate as NSDate) {
                     let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objContent.lumineerId.int)
@@ -466,9 +470,7 @@ class GlobalShareData {
                         aryContentData.append(section as [String : AnyObject])
                     }
                 }
-                
             }
-            
             print("Count:\(aryContentData.count)")
         }
         return aryContentData
