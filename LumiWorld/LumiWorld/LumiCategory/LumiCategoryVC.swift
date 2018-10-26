@@ -92,13 +92,12 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             
             if count > 0 {
                 
-                self.navigationController?.tabBarController?.viewControllers?.first?.tabBarItem.badgeValue = "\(count)"
+                self.navigationController?.tabBarController?.viewControllers![1].tabBarItem.badgeValue = "\(count)"
                 //self.navigationController!.tabBarItem.badgeValue = "\(count)"
                 
             }
         })
-        getAllLatestLumineerData()
-        
+        GlobalShareData.sharedGlobal.getAllLatestLumineerData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -152,31 +151,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         }
     }
     
-    func getAllLatestLumineerData() {
-        let dispatchGroup = DispatchGroup()
-        
-        dispatchGroup.enter()
-        let objAdv = AdvertiseData()
-        
-        objAdv.getLumineerAdvertise(param: ["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
-            dispatchGroup.leave()
-            GlobalShareData.sharedGlobal.deleteExpiredAds()
-        }
-        
-        dispatchGroup.enter()
-        let objContent = LumineerContent()
-        
-        objContent.getLumineerContents(param:["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
-            dispatchGroup.leave()
-        }
-
-        dispatchGroup.notify(queue: .main) {
-            print("Both functions complete 👍")
-        }
-
-        
-
-    }
+    
 
     // MARK: - Tableview Methods
     
@@ -868,7 +843,6 @@ extension UINavigationItem {
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.advertiseTimeStamp.rawValue)
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.contentTimeStamp.rawValue)
                     UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.isAlreadyLogin)
-                    UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.isLaunchedFirst)
                     let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     let objLogInVC = storyBoard.instantiateInitialViewController()
                     UIApplication.shared.keyWindow?.rootViewController = objLogInVC }

@@ -148,7 +148,7 @@ class CustomSegmentedContrl: UIControl {
                 selectedSegmentIndex = buttonIndex
                 let  selectorStartPosition = button.frame.origin.x
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.selector.frame.origin.x = selectorStartPosition
+                    self.selector.frame.origin.x = selectorStartPosition + 2
                     self.selector.width = button.frame.size.width
                 })
                 btn.setTitleColor(selectorTextColor, for: .normal)
@@ -171,7 +171,6 @@ class CustomSegmentedContrl: UIControl {
         })
         
         buttons[index].setTitleColor(selectorTextColor, for: .normal)
-        
     }
 
    

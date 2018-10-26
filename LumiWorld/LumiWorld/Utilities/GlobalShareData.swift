@@ -466,7 +466,7 @@ class GlobalShareData {
                     let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objContent.lumineerId.int)
                     if objsLumineer.count > 0 {
                         let lumineer = objsLumineer[0]
-                        let section = ["title":lumineer.name as Any, "message":objContent as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"content"] as [String : Any]
+                        let section = ["title":lumineer.name as Any, "message":objContent as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"content","isSelected":"false"] as [String : Any]
                         aryContentData.append(section as [String : AnyObject])
                     }
                 }
@@ -525,6 +525,29 @@ class GlobalShareData {
 
             }
             
+        }
+    }
+    
+    func getAllLatestLumineerData() {
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        let objAdv = AdvertiseData()
+        
+        objAdv.getLumineerAdvertise(param: ["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
+            dispatchGroup.leave()
+            GlobalShareData.sharedGlobal.deleteExpiredAds()
+        }
+        
+        dispatchGroup.enter()
+        let objContent = LumineerContent()
+        
+        objContent.getLumineerContents(param:["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            print("Both functions complete 👍")
         }
     }
 }

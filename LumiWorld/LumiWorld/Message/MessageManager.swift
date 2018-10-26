@@ -102,15 +102,11 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                     if index == 0 {
                         //date = Date().getDateFromString(string: obj.newsfeedPostedTime!, formatter: "yyyy-MM-dd")
                        date = Date().getDateFromString(strCurrentDate: obj.newsfeedPostedTime!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd")
-                        let msg2 = Message()
-                        msg2.msgType = "System"
-                        msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input your message."
                         
                         let msg1 = Message()
                         msg1.msgType = "Date"
                         msg1.date = date
                         arr.append(msg1)
-                        arr.append(msg2)
                     }
                     else if date != Date().getDateFromString(strCurrentDate: obj.newsfeedPostedTime!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd"), index != 0
                     {
@@ -189,15 +185,11 @@ class MessageManager: NSObject{//, NOCClientDelegate {
                         if index == 0 {
                             
                             date = Date().getDateFromString(strCurrentDate: obj.sentDate!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd")
-                            let msg2 = Message()
-                            msg2.msgType = "System"
-                            msg2.text = "Welcome to \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!) Please input your message."
                             
                             let msg1 = Message()
                             msg1.msgType = "Date"
                             msg1.date = date
                             arr.append(msg1)
-                            arr.append(msg2)
                         }
                         else if date != Date().getDateFromString(strCurrentDate: obj.sentDate!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd"), index != 0
                         {

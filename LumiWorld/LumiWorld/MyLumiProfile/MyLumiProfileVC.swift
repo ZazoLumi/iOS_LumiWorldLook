@@ -161,7 +161,7 @@ class MyLumiProfileVC: UIViewController {
         scrollable.stackView.axis = .horizontal
         scrollable.stackView.spacing = 22
         scrollable.scrollView.layoutMargins = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        let imgArray = ["Asset 21-1","Asset 19-1","Asset 20-1","Asset 22","Watch Later"]
+        let imgArray = ["Asset 21-1","Asset 19-1","Asset 20-1","Watch Later","Asset 22"]
         for i in 0 ..< 5 {
             let image = UIImage.init(named: imgArray[i])
             let button = UIButton.init(type: .custom)
@@ -305,19 +305,19 @@ class MyLumiProfileVC: UIViewController {
         let tag = sender.tag
         
         if tag == 20000 {
-            self.onBtnYonOHaveTapped()
+            self.onBtnInviteFriendsTapped()
         }
         else if tag == 20001 {
-            self.onBtnInviteFriendsTapped()
+            self.onBtnYonOHaveTapped()
         }
         else if tag == 20002 {
             self.onBtnSuggestLumineerTapped()
         }
         else if tag == 20003 {
-            self.onBtnMessageTapped()
+            self.onBtnShowSaveAdsTapped()
         }
         else if tag == 20004 {
-            self.onBtnShowSaveAdsTapped()
+            self.onBtnMessageTapped()
         }
     }
     

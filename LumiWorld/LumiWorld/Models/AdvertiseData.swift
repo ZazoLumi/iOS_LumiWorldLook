@@ -111,7 +111,7 @@ class AdvertiseData: Object {
                                                 if objCurrentAdv.contentType == "Video" {
                                                     var thumbnail1 = url?.thumbnail()
                                                     thumbnail1 = url?.thumbnail(fromTime: 5)
-                                                    if let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
+                                                    if thumbnail1 != nil, let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
                                                         fileName = url?.lastPathComponent
                                                         fileName = fileName?.deletingPathExtension
                                                         fileName = fileName?.appendingPathExtension("png")

@@ -125,10 +125,13 @@ class UserData : Object{
                    
                     guard (dict?.keys.contains("responsCode"))!, dict?.count != 0 , dict!["responsCode"] as! Int != 0 else {
                         DispatchQueue.main.async {
+                            guard (dict?.keys.contains("response"))!  else {
+                                return
+                            }
                             let message = dict!["response"] as! String
                             GlobalShareData.sharedGlobal.objCurretnVC.showCustomAlert(strTitle: "", strDetails: message, completion: { (str) in
                             })
-                        }
+                            }
                         completionHandler(UserData())
                         return
                         }

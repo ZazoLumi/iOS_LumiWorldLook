@@ -70,10 +70,10 @@ class LumineerContent: Object {
             var urlString : String!
             if lastViewDate != "" {
                 print("test1")
-                urlString = Constants.APIDetails.APIGetAllLumineerContent + "?date=\(lastViewDate)"}
+                urlString = Constants.APIDetails.APIGetAllLumineerContent + "?date=\(lastViewDate)" + "&lumiMobile=\(GlobalShareData.sharedGlobal.userCellNumber!)"}
             else {
                 print("test0")
-                urlString = Constants.APIDetails.APIGetAllLumineerContent }
+                urlString = Constants.APIDetails.APIGetAllLumineerContent + "?lumiMobile=\((GlobalShareData.sharedGlobal.objCurrentUserDetails.cell)!)" }
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempArray = json.arrayValue
@@ -216,8 +216,16 @@ class LumineerContent: Object {
         newContentData.likeCount = aObject["likeCount"].doubleValue
         newContentData.isCtsSaved = false
         newContentData.isCtsLiked = false
-        
+        newContentData.likeCount = 0
 
+        if let likeObject = cObject["likes"].dictionary {
+            let likes = likeObject["likes"]?.array
+            if likes != nil && ((likes?.count) != nil) {
+                newContentData.likeCount = Double((likes?.count)!)
+            }
+        }
+
+        
         let newObject = cObject["comments"]
 
         let commnets = newObject["comments"].array
@@ -293,7 +301,7 @@ class LumineerContent: Object {
             let urlString: String = Constants.APIDetails.APIPostLumineerContentComments
             AFWrapper.requestPOSTURL(urlString, params:paramObj as [String : AnyObject], headers: nil, success: { (json) in
                 print(json)
-                if json.rawString() == "Comment send" {
+                if json.rawString()?.uppercased() == "COMMENT SEND" {
                     completionHandler(true)
                 }
                 else {
@@ -320,7 +328,7 @@ class LumineerContent: Object {
                 let urlString: String = Constants.APIDetails.APIPostLumineerContentLikes
                 AFWrapper.requestPOSTURL(urlString, params:paramObj as [String : AnyObject], headers: nil, success: { (json) in
                     print(json)
-                    if json.rawString() == "Like send" {
+                    if json.rawString()?.uppercased() == "LIKE SEND" {
                         completionHandler(true)
                     }
                     else {

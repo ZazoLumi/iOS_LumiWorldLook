@@ -13,7 +13,7 @@ import Alamofire
 import MBProgressHUD
 import IQKeyboardManagerSwift
 
-class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataSource {
+class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataSource,UITextViewDelegate {
     @IBOutlet weak var lblAdvTitle: UILabel!
     @IBOutlet weak var lblAdvPostedTime: UILabel!
     @IBOutlet weak var commentTblHeight : NSLayoutConstraint!
@@ -33,10 +33,18 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
     @IBOutlet weak var mvPlayerView: AGVideoPlayerView!
     @IBOutlet weak var cellTableView: UITableView!
     var aryCommentsData : [ContentComments] = []
+    @IBOutlet weak var inputTV: UITextView!
+    @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak  var submitButton : UIButton!
+    let h = UIScreen.main.bounds.height
+    let w = UIScreen.main.bounds.width
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if aryCommentsData.count > 0 {commentTblHeight.constant = CGFloat((aryCommentsData.count * 54) + 10) }
-        else {commentTblHeight.constant = 0}
+        if aryCommentsData.count > 0 {commentTblHeight.constant = CGFloat((aryCommentsData.count * 54) + 34) }
+        else if btnComments.isSelected {commentTblHeight.constant = 40}
+        else {
+            commentTblHeight.constant = 0
+        }
         return aryCommentsData.count
     }
     
@@ -86,6 +94,46 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
 
         return cell
     }
+    
+   @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        inputTV.resignFirstResponder()
+    }
+
+//    var keyboardHeight = 0
+//    @objc func keyboardWillShow(_ n: Notification?) {
+//        if let keyboardSize = (n?.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+//            keyboardHeight = Int(keyboardSize.height)
+//            print(keyboardHeight)
+//            textViewDidChange(inputTV)
+//            IQKeyboardManager.sharedManager().enableAutoToolbar = false
+//        }
+//    }
+//    @objc func keyboardWillHide(_ n: Notification?) {
+//        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+//            self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) + 44), width:Int(self.w), height: Int(44))
+//            self.inputTV.frame = CGRect(x: 10, y: 0, width:Int( self.w - 64), height: 44)
+//            self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(0), width: 60, height: 44)
+//            IQKeyboardManager.sharedManager().enableAutoToolbar = true
+//        }) { finished in
+//            //default disable scroll here to avoid bouncing
+//        }
+//
+//    }
+//
+//    func textViewDidChange(_ textView: UITextView) {
+//        //1. letters and submit button vars
+//        //3. set height vars
+//        inputTV.isScrollEnabled = true
+//        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+//            self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) - self.keyboardHeight), width:Int(self.w), height: Int(44))
+//            self.inputTV.frame = CGRect(x: 10, y: 18, width:Int( self.w - 64), height: 34)
+//            self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(18), width: 60, height: 34)
+//        }) { finished in
+//            //default disable scroll here to avoid bouncing
+//        }
+//    }
+
 }
 
 //    lazy var mvPlayerView: AGVideoPlayerView = {
@@ -102,7 +150,7 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
 //        return playerView
 //    }()
 
-class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableViewDataSource,UITextViewDelegate {
+class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     var aryContentData: [[String:AnyObject]] = []
     var objContentertiseVC : AdvertiseVC!
@@ -110,21 +158,26 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
     var objPlayer: AVAudioPlayer?
     var mediaZoom: MediaZoom?
     fileprivate var documentInteractionController = UIDocumentInteractionController()
-    var inputTV: UITextView!
-    var bottomView: UIView!
-    var submitButton : UIButton!
-    let h = UIScreen.main.bounds.height
-    let w = UIScreen.main.bounds.width
     var objCurrentContent : LumineerContent!
     var currentCell : ContentGalleryCell!
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+            #selector(LumiCategoryVC.handleRefresh(_:)),
+                                 for: UIControlEvents.valueChanged)
+        refreshControl.tintColor = UIColor.lumiGreen
+        
+        return refreshControl
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
-
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        self.tableView.addSubview(self.refreshControl)
         self.tableView!.tableFooterView = UIView()
 
         // Do any additional setup after loading the view.
@@ -143,15 +196,20 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         self.navigationItem.title = "LUMI WORLD GALLERY"
     }
     override func viewWillDisappear(_ animated: Bool) {
-        inputTV.text = ""
-        inputTV.resignFirstResponder()
-
+//        inputTV.text = ""
+//        inputTV.resignFirstResponder()
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        self.getLatestLumineersContents()
+    }
+
     @objc func getLatestLumineersContents() {
         aryContentData = GlobalShareData.sharedGlobal.getAllContents()
 //        let sorted = aryContentData.sorted { left, right -> Bool in
@@ -162,8 +220,10 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
 //        self.aryContentData.removeAll()
 //        self.aryContentData.append(contentsOf: sorted)
         self.tableView.reloadData()
-        setupBottomView()
+//        setupBottomView()
+        self.refreshControl.endRefreshing()
     }
+    
     // MARK: - Tableview Methods
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -221,7 +281,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                     cell.mvPlayerView.shouldAutoRepeat = true
                     cell.mvPlayerView.showsCustomControls = false
                     cell.mvPlayerView.shouldSwitchToFullscreen = false
-                    cell.mvPlayerView.isMuted = false
+                    cell.mvPlayerView.isMuted = true
                 }
             imgMsgType = UIImage(named:"Asset102")
         }
@@ -272,12 +332,19 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
 
         cell.aryCommentsData = []
         cell.aryCommentsData = (objContent?.ctnComments.map {return $0})!
-        if cell.aryCommentsData.count > 0 {cell.cellTableView.reloadData()
+        if cell.aryCommentsData.count > 0 {
             let count = cell.aryCommentsData.count
             cell.btnComments.setTitle("\(count) Comments", for: .normal)
             cell.btnComments.setTitle("\(count) Comments", for: .selected)
         }
+        if objCellData["isSelected"] as? String == "true" {
+            cell.cellTableView.reloadData()
+            cell.submitButton.addTarget(self, action: #selector(self.onBtnSendComments(_:)), for: .touchUpInside)
+            
+        }
         else {
+            cell.aryCommentsData = []
+            cell.cellTableView.reloadData()
             cell.commentTblHeight.constant = 0
         }
         return cell
@@ -306,14 +373,12 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                 }
                 playAudioFile(urlOriginalImage: urlOriginalImage)
             }
-
         }
         else if objContent?.contentType == "video" {
             let visibleCells = tableView.visibleCells;
             _ = visibleCells.startIndex;
                 contentCell.mvPlayerView.playerController.player?.play()
         }
-        
     }
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -458,8 +523,10 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                 hud.hide(animated: true)
             }
             if success {
-                DispatchQueue.main.async {
-                }
+                GlobalShareData.sharedGlobal.getAllLatestLumineerData()
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
+                    self.getLatestLumineersContents()
+                })
             }
         }
 
@@ -472,8 +539,17 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
         objCurrentContent = objCellData["message"] as? LumineerContent
-        inputTV.becomeFirstResponder()
-
+        //currentCell.inputTV.becomeFirstResponder()
+        if sender.isSelected {
+            print("false")
+            aryContentData[indexPath.row]["isSelected"] = "false" as AnyObject
+            sender.isSelected = false
+        }else {
+            print("true")
+            aryContentData[indexPath.row]["isSelected"]  = "true" as AnyObject
+            sender.isSelected = true
+        }
+        tableView.reloadData()
     }
 
     func playAudioFile(urlOriginalImage : URL) {
@@ -493,82 +569,21 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
 
 
  
-    // MARK: - Comment Inputview
-    
-    func setupBottomView() {
-        bottomView = UIView.init(frame: CGRect(x: 0, y: h + 34, width: w, height: 34))
-        bottomView.backgroundColor = .clear
-        self.tabBarController?.view.addSubview(bottomView)
-        
-        inputTV = UITextView()
-        inputTV.font = UIFont.systemFont(ofSize: 14.0)
-        inputTV.frame = CGRect(x: 5, y: 0, width: w - 64, height: (inputTV.font?.lineHeight)!)
-        inputTV.delegate = self
-        // inputTV.autocorrectionType = .no
-        inputTV.cornerRadius = 10
-        inputTV.borderWidth = 1
-        inputTV.borderColor = UIColor.lumiGreen
-        bottomView.addSubview(inputTV)
-        
-        submitButton = UIButton.init(type: .custom)
-        submitButton.frame = CGRect(x: w - 60, y: 0, width: 60, height: 60)
-        submitButton.addTarget(self, action: #selector(self.onBtnSendComments), for: .touchUpInside)
-        submitButton.setImage(UIImage.init(named: "Artboard 134xxhdpi"), for: .normal)
-        submitButton.contentHorizontalAlignment = .center
-        submitButton.isUserInteractionEnabled = true
-        bottomView.addSubview(submitButton)
-        
-        //self.bottomView.bringSubview(toFront: (self.tabBarController?.view)!)
-    }
-     
-    var keyboardHeight = 0
-    @objc func keyboardWillShow(_ n: Notification?) {
-        if let keyboardSize = (n?.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = Int(keyboardSize.height)
-            print(keyboardHeight)
-            textViewDidChange(inputTV)
-            IQKeyboardManager.sharedManager().enableAutoToolbar = false
-        }
-    }
-    @objc func keyboardWillHide(_ n: Notification?) {
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
-            self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) + 44), width:Int(self.w), height: Int(44))
-            self.inputTV.frame = CGRect(x: 10, y: 0, width:Int( self.w - 64), height: 44)
-            self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(0), width: 60, height: 44)
-            IQKeyboardManager.sharedManager().enableAutoToolbar = true
-        }) { finished in
-            //default disable scroll here to avoid bouncing
-        }
-        
-    }
-    
-    func textViewDidChange(_ textView: UITextView) {
-        //1. letters and submit button vars
-        //3. set height vars
-        inputTV.isScrollEnabled = true
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
-            self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) - self.keyboardHeight), width:Int(self.w), height: Int(44))
-            self.inputTV.frame = CGRect(x: 10, y: 18, width:Int( self.w - 64), height: 34)
-            self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(18), width: 60, height: 34)
-        }) { finished in
-            //default disable scroll here to avoid bouncing
-        }
-    }
 
     @objc func onBtnSendComments(_ sender: Any) {
         let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
         hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
             let objAdvData = LumineerContent()
-        let dictDetails = ["contentFilePath":objCurrentContent.contentFilePath! as AnyObject,"commentBody":inputTV.text! as AnyObject,"lumineerId":(objCurrentContent.lumineerId) as AnyObject,"contentID":objCurrentContent.contentID! as AnyObject,"lumineerName":objCurrentContent.lumineerName! as AnyObject]
+        let dictDetails = ["contentFilePath":objCurrentContent.contentFilePath! as AnyObject,"commentBody":currentCell.inputTV.text! as AnyObject,"lumineerId":(objCurrentContent.lumineerId) as AnyObject,"contentID":objCurrentContent.contentID! as AnyObject,"lumineerName":objCurrentContent.lumineerName! as AnyObject]
 
                 objAdvData.sendContentComments(param: dictDetails) { (success) in
                     DispatchQueue.main.async {
                         hud.hide(animated: true)
+                        self.currentCell.inputTV.text = ""
+                        self.currentCell.inputTV.resignFirstResponder()
                     }
                     if success {
                         DispatchQueue.main.async {
-                            self.inputTV.text = ""
-                            self.inputTV.resignFirstResponder()
                             if self.objCurrentContent.ctnComments.count > 0 {
                                 let count = self.objCurrentContent.ctnComments.count
                                 self.currentCell.btnComments.setTitle("\(count) Comments", for: .normal)
@@ -577,7 +592,11 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                             if self.objCurrentContent.ctnComments.count > 1 {
                                 self.currentCell.cellTableView.contentOffset = .zero
                             }
-                            self.getLatestLumineersContents()
+                            GlobalShareData.sharedGlobal.getAllLatestLumineerData()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
+                                self.getLatestLumineersContents()
+                            })
+
                         }
                     }
                 }

@@ -208,6 +208,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         btnReport.isSelected = false
         btnComments.isSelected = false
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        
     }
     
     func displayAdvertiseContent() {

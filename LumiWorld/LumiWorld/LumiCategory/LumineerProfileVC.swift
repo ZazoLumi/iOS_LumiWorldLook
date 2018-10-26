@@ -124,9 +124,17 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         pageController.delegate = self
         pageController.dataSource = self
         
-        for svScroll in pageController.view.subviews as! [UIScrollView] {
-            svScroll.delegate = self
+//        pageController.view.gestureRecognizers?.forEach({ (gesture) in
+//            pageController.view.removeGestureRecognizer(gesture)
+//        })
+        if let scrollView = pageController.view.subviews.filter({$0.isKind(of: UIScrollView.self)}).first as? UIScrollView {
+            scrollView.isScrollEnabled = false
         }
+
+        
+//        for svScroll in pageController.view.subviews as! [UIScrollView] {
+//            svScroll.delegate = self
+//        }
         scrollContentView.translatesAutoresizingMaskIntoConstraints = false
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -684,7 +692,6 @@ enum UserDefaultsKeys : String {
     case supportTimeStamp
     case pendingVerification
     case isAlreadyLogin
-    case isLaunchedFirst
 }
 
 enum currentScreen : String {
