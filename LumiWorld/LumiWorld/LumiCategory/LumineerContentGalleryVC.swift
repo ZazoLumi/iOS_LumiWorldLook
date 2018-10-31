@@ -515,9 +515,11 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         objCurrentContent = objCellData["message"] as? LumineerContent
         let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
         hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
+        let isLike = (sender.isSelected ? "true" : "false") as String
         let objAdvData = LumineerContent()
-        let dictDetails = ["contentFilePath":objCurrentContent.contentFilePath! as AnyObject,"likeBody":"" as AnyObject,"like":sender.isSelected as AnyObject,"lumineerId":(objCurrentContent.lumineerId) as AnyObject,"contentID":objCurrentContent.contentID! as AnyObject,"lumineerName":objCurrentContent.lumineerName! as AnyObject]
-        
+        let dictDetails = ["contentFilePath":objCurrentContent.contentFilePath! as AnyObject,"likeBody":"" as AnyObject,"like":isLike as AnyObject,"lumineerId":(objCurrentContent.lumineerId) as AnyObject,"contentID":objCurrentContent.contentID! as AnyObject,"lumineerName":objCurrentContent.lumineerName! as AnyObject]
+       // let dictDetails = ["contentFilePath":objCurrentContent.contentFilePath! as AnyObject,"likeBody":"" as AnyObject,"like":(sender.isSelected ? "true" : "false") as AnyObject,"lumineerId":(objCurrentContent.lumineerId) as AnyObject,"contentID":objCurrentContent.contentID! as AnyObject,"lumineerName":objCurrentContent.lumineerName! as AnyObject]
+
         objAdvData.sendContentLikes(param: dictDetails) { (success) in
             DispatchQueue.main.async {
                 hud.hide(animated: true)
@@ -529,7 +531,6 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                 })
             }
         }
-
     }
     
     @objc func didTapCommentsBtn(_ sender: UIButton) {

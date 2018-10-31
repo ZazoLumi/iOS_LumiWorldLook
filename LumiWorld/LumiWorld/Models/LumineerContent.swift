@@ -323,7 +323,7 @@ class LumineerContent: Object {
     func sendContentLikes(param:[String:AnyObject],completionHandler: @escaping (_ result:Bool) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
-            let paramObj = ["contentFilePath":param["contentFilePath"]! as Any,"lumiDetails":["cell":GlobalShareData.sharedGlobal.objCurrentUserDetails.cell!,"firstName":GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!,"lastName":GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName!,"displayName":GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!],"lumineerDetails":["lumineerId":param["lumineerId"]! as Any,"lumineerName":param["lumineerName"]! as Any],"contentID":param["contentID"]! as Any,"likeID":"" as Any,"likeBody":param["likeBody"]! as Any,"like":param["like"]! as Any,"likeType":"0" as Any ] as [String : Any]
+            let paramObj = ["contentFilePath":param["contentFilePath"]! as Any,"lumiDetails":["cell":GlobalShareData.sharedGlobal.objCurrentUserDetails.cell!,"firstName":GlobalShareData.sharedGlobal.objCurrentUserDetails.firstName!,"lastName":GlobalShareData.sharedGlobal.objCurrentUserDetails.lastName!,"displayName":GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!],"lumineerDetails":["lumineerId":param["lumineerId"]! as Any,"lumineerName":param["lumineerName"]! as Any],"contentID":param["contentID"]! as Any,"likeID":"" as Any,"likeBody":"" as Any,"like":param["like"]! as Any,"likeType":"0" as Any ] as [String : Any]
             do {
                 let urlString: String = Constants.APIDetails.APIPostLumineerContentLikes
                 AFWrapper.requestPOSTURL(urlString, params:paramObj as [String : AnyObject], headers: nil, success: { (json) in
@@ -356,12 +356,9 @@ class LumineerContent: Object {
             let realm = try! Realm()
             return (realm.objects(ContentComments.self).max(ofProperty: "id") as Int? ?? 0) + 1
         }
-
-
 }
 
 class ContentComments : Object {
-    
     @objc dynamic var id = 0
     @objc dynamic var commentId: String? = nil
     @objc dynamic var strCreatedDate: String? = nil
