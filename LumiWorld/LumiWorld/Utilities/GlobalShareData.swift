@@ -56,6 +56,11 @@ struct Constants {
         static let APIPOSTAdvertiseComments = ":13004/adposting/postCommentsToLumineerAdByLumi"
         static let APIPOSTAdvertiseReports = ":13004/adposting/postReportsToLumineerAdByLumi"
         static let APIPOSTAdvertiseLike = ":13004/adposting/likeOrDislikeLumineerAd"
+        static let APIGetAllLumineerContent = "http://lumiimportupload20180622023528.azurewebsites.net/api/GetAllContent"
+        static let APIPostLumineerContentComments = "http://lumiimportupload20180622023528.azurewebsites.net/api/PostContentComment"
+        static let APIPostLumineerContentLikes = "http://lumiimportupload20180622023528.azurewebsites.net/api/LikeContent"
+
+        
 
    }
 }
@@ -77,6 +82,7 @@ class GlobalShareData {
     var realmManager = RealmManager()
     var objCurrentLumineer : LumineerList!
     var objCurrentAdv : AdvertiseData!
+    var objCurrentContent : LumineerContent!
     var objCurrentLumiMessage : LumiMessage!
     var objCurrentSupport : LumiSupport!
     var objCurretnVC : UIViewController!
@@ -350,7 +356,8 @@ class GlobalShareData {
             let currentDate = Date()
             for objAdv in result {
                 let creteatedData = objAdv.strAdvertiseDate
-                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
                 let date1 = currentDate
                 let date2 = cDate
                 let calendar = Calendar.current
@@ -395,15 +402,14 @@ class GlobalShareData {
         hud.hide(animated: true, afterDelay: 3.0)
     }
     
-    
-    func getAllAdvertise() -> [[String:AnyObject]]{
+    func geCurrentLumineersAdvertise() -> [[String:AnyObject]]{
         let realm = try! Realm()
-        let result  = realm.objects(AdvertiseData.self)
+        let result  = realm.objects(AdvertiseData.self).filter("id == %d",objCurrentLumineer.id)
         var aryAdsData: [[String:AnyObject]] = []
         if result.count > 0 {
             for objAdv in result {
                 let creteatedData = objAdv.strAdvertiseDate
-                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
                 let currentDate = Date()
                 if currentDate.isGreaterThanDate(dateToCompare: cDate as NSDate) {
                     let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
@@ -421,6 +427,54 @@ class GlobalShareData {
         return aryAdsData
     }
 
+    
+    func getAllAdvertise() -> [[String:AnyObject]]{
+        let realm = try! Realm()
+        let result  = realm.objects(AdvertiseData.self)
+        var aryAdsData: [[String:AnyObject]] = []
+        if result.count > 0 {
+            for objAdv in result {
+                let creteatedData = objAdv.strAdvertiseDate
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let currentDate = Date()
+                if currentDate.isGreaterThanDate(dateToCompare: cDate as NSDate) {
+                    let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objAdv.lumineerId.int)
+                    if objsLumineer.count > 0 {
+                        let lumineer = objsLumineer[0]
+                        let section = ["title":lumineer.name as Any,"createdTime":objAdv.updatedDate as Any, "message":objAdv as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"adv"] as [String : Any]
+                        aryAdsData.append(section as [String : AnyObject])
+                    }
+                }
+                
+            }
+            
+            print("Count:\(aryAdsData.count)")
+        }
+        return aryAdsData
+    }
+
+    func getAllContents() -> [[String:AnyObject]]{
+        let realm = try! Realm()
+        let result  = realm.objects(LumineerContent.self)
+        var aryContentData: [[String:AnyObject]] = []
+        if result.count > 0 {
+            for objContent in result {
+                let creteatedData = objContent.strCreatedDate
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd HH:mm")
+                let currentDate = Date()
+                if currentDate.isGreaterThanDate(dateToCompare: cDate as NSDate) {
+                    let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objContent.lumineerId.int)
+                    if objsLumineer.count > 0 {
+                        let lumineer = objsLumineer[0]
+                        let section = ["title":lumineer.name as Any, "message":objContent as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"content","isSelected":"false"] as [String : Any]
+                        aryContentData.append(section as [String : AnyObject])
+                    }
+                }
+            }
+            print("Count:\(aryContentData.count)")
+        }
+        return aryContentData
+    }
     
     func getlatestCategoriesAndData (completionHandler: @escaping (_ response: Bool) -> Void) {
         let objLumiCate = LumiCategory()
@@ -452,7 +506,7 @@ class GlobalShareData {
                 let creteatedData = objAdv.strAdvertiseDate
                 let weeksDay = (objAdv.compaignWindow?.components(separatedBy: " ").first?.int)! * 7
                 let calendar = Calendar.current
-                let cDate = Date().getDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
+                let cDate = Date().getDateFromString(strCurrentDate: creteatedData!, curFormatter: "yyyy-MM-dd HH:mm", expFormatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
                 
                 let nextWeeksDate = calendar.date(byAdding: .day, value: weeksDay, to: cDate)
                 
@@ -471,6 +525,29 @@ class GlobalShareData {
 
             }
             
+        }
+    }
+    
+    func getAllLatestLumineerData() {
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        let objAdv = AdvertiseData()
+        
+        objAdv.getLumineerAdvertise(param: ["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
+            dispatchGroup.leave()
+            GlobalShareData.sharedGlobal.deleteExpiredAds()
+        }
+        
+        dispatchGroup.enter()
+        let objContent = LumineerContent()
+        
+        objContent.getLumineerContents(param:["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            print("Both functions complete 👍")
         }
     }
 }

@@ -14,6 +14,12 @@ import MBProgressHUD
 import IQKeyboardManagerSwift
 import RealmSwift
 
+enum ScreenType {
+    case Advertise
+    case Content
+}
+
+
 class advCommentCell: UITableViewCell {
     @IBOutlet var imgLumineerProfile: UIImageView!
     @IBOutlet var lblLumineerTitle: UILabel!
@@ -67,6 +73,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     var mediaZoom: MediaZoom?
 
     @IBOutlet weak var btnCloseAdv: UIButton!
+    
+    var screenType : ScreenType = .Advertise
+
     //var player:AVPlayer?
    // var playerItem:AVPlayerItem?
     //fileprivate var player = Player()
@@ -145,6 +154,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     @objc func onBtnSendComments(_ sender: Any) {
         let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
         hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
+        if screenType == .Advertise {
+
         let objAdvData = AdvertiseData()
         let dictDetails = ["lumineerId":GlobalShareData.sharedGlobal.objCurrentLumineer.id as AnyObject,"comments":inputTV.text as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]
         if btnComments.isSelected {
@@ -184,6 +195,10 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                 }
             }
         }
+        }
+        else {
+            
+        }
         btnReport.isSelected = false
         btnComments.isSelected = false
     }
@@ -193,6 +208,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         btnReport.isSelected = false
         btnComments.isSelected = false
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        
     }
     
     func displayAdvertiseContent() {
@@ -203,128 +219,257 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         strBaseDataLogo = objLumineer?.enterpriseLogo
         let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
         self.imgLumineerProfile.image = imgThumb
-        self.lblAdvTitle.text = GlobalShareData.sharedGlobal.objCurrentAdv.contentTitle
-        if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
-            let count = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count
-            btnComments.setTitle("\(count) Comments", for: .normal)
-            btnComments.setTitle("\(count) Comments", for: .selected)
-        }
+        if screenType == .Advertise {
+            self.lblAdvTitle.text = GlobalShareData.sharedGlobal.objCurrentAdv.contentTitle
+            if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
+                let count = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count
+                btnComments.setTitle("\(count) Comments", for: .normal)
+                btnComments.setTitle("\(count) Comments", for: .selected)
+            }
             let count = Int(GlobalShareData.sharedGlobal.objCurrentAdv.likeCount)
             btnLike.setTitle("\(count)", for: .normal)
             btnLike.setTitle("\(count)", for: .selected)
             if GlobalShareData.sharedGlobal.objCurrentAdv.isAdsLiked {
                 btnLike.isSelected = true
             }
-
-        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
-            self.imgAdvType.image = UIImage(named:"Asset106")
-            var imageView : UIImageView
-            imageView  = UIImageView(frame:CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)));
-            self.viewAdvContent.addSubview(imageView)
-            imageView.contentMode = .scaleAspectFit
-            let urlOriginalImage : URL!
-            if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
-                if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
-                {
-                    urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
+            
+            if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
+                self.imgAdvType.image = UIImage(named:"Asset106")
+                var imageView : UIImageView
+                imageView  = UIImageView(frame:CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)));
+                self.viewAdvContent.addSubview(imageView)
+                imageView.contentMode = .scaleAspectFit
+                let urlOriginalImage : URL!
+                if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
+                    if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
+                    {
+                        urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
+                    }
+                    else {
+                        let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
+                        urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                    }
+                    Alamofire.request(urlOriginalImage).responseImage { response in
+                        debugPrint(response)
+                        if let image = response.result.value {
+                            let scalImg = image.af_imageScaled(to: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
+                            imageView.image = scalImg
+                            self.mediaZoom = MediaZoom(with: imageView, animationTime: 0.5, useBlur: true)
+                            self.runTimer()
+                            self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
+                        }
+                    }
                 }
-                else {
-                    let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
-                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-                }
-            Alamofire.request(urlOriginalImage).responseImage { response in
-                debugPrint(response)
-                if let image = response.result.value {
-                    let scalImg = image.af_imageScaled(to: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
-                    imageView.image = scalImg
-                    self.mediaZoom = MediaZoom(with: imageView, animationTime: 0.5, useBlur: true)
-                    self.runTimer()
+            }
+            else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
+                self.imgAdvType.image = UIImage(named:"Asset102")
+                GlobalShareData.sharedGlobal.isVideoPlaying = true
+                let urlOriginalImage : URL!
+                if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
+                    if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
+                    {
+                        urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
+                    }
+                    else {
+                        let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
+                        urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                    }
                     self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
+                    
+                    /*self.player.playerDelegate = self
+                     self.player.playbackDelegate = self
+                     self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
+                     
+                     // self.addChildViewController(self.player)
+                     self.viewAdvContent.addSubview(self.player.view)
+                     self.player.didMove(toParentViewController: self)
+                     
+                     self.player.url = urlOriginalImage
+                     
+                     self.player.playbackLoops = true
+                     
+                     self.player.fillMode = PlayerFillMode.resizeAspectFit.avFoundationType*/
+                    playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)))
+                    playerView.playbackDelegate = self;
+                    playerView.videoUrl = urlOriginalImage!
+                    playerView.shouldAutoplay = true
+                    playerView.shouldAutoRepeat = true
+                    playerView.showsCustomControls = false
+                    playerView.shouldSwitchToFullscreen = false
+                    self.viewAdvContent.addSubview(self.playerView)
+                    playerView.translatesAutoresizingMaskIntoConstraints = false
+                    let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
+                    NSLayoutConstraint.activate(attributes.map {
+                        NSLayoutConstraint(item: playerView, attribute: $0, relatedBy: .equal, toItem: playerView.superview, attribute: $0, multiplier: 1, constant: 0)
+                    })
+                    
                 }
+                
             }
+            else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
+                self.imgAdvType.image = UIImage(named:"Asset104")
+                timeFormatter.minimumIntegerDigits = 2
+                timeFormatter.minimumFractionDigits = 0
+                timeFormatter.roundingMode = .down
+                
+                // Load the sound and set up the timer.
+                
+                queueSound()
+                makeTimer()
+                self.runTimer()
+                isPlaying = true
+                audioPlayer?.play()
             }
+
         }
-        else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
-            self.imgAdvType.image = UIImage(named:"Asset102")
-            GlobalShareData.sharedGlobal.isVideoPlaying = true
-            let urlOriginalImage : URL!
-            if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
-                if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
-                {
-                    urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
+        else {
+                self.lblAdvTitle.text = GlobalShareData.sharedGlobal.objCurrentContent.contentTitle
+            if GlobalShareData.sharedGlobal.objCurrentContent.ctnComments.count > 0 {
+                    let count = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count
+                    btnComments.setTitle("\(count) Comments", for: .normal)
+                    btnComments.setTitle("\(count) Comments", for: .selected)
                 }
-                else {
-                    let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
-                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                let count = Int(GlobalShareData.sharedGlobal.objCurrentContent.likeCount)
+                btnLike.setTitle("\(count)", for: .normal)
+                btnLike.setTitle("\(count)", for: .selected)
+                if GlobalShareData.sharedGlobal.objCurrentContent.isCtsLiked {
+                    btnLike.isSelected = true
                 }
-                self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
-
-            /*self.player.playerDelegate = self
-            self.player.playbackDelegate = self
-            self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
-            
-           // self.addChildViewController(self.player)
-            self.viewAdvContent.addSubview(self.player.view)
-            self.player.didMove(toParentViewController: self)
-            
-            self.player.url = urlOriginalImage
-            
-            self.player.playbackLoops = true
-            
-            self.player.fillMode = PlayerFillMode.resizeAspectFit.avFoundationType*/
-               playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)))
-                playerView.playbackDelegate = self;
-                playerView.videoUrl = urlOriginalImage!
-                playerView.shouldAutoplay = true
-                playerView.shouldAutoRepeat = true
-                playerView.showsCustomControls = false
-                playerView.shouldSwitchToFullscreen = false
-                self.viewAdvContent.addSubview(self.playerView)
-                playerView.translatesAutoresizingMaskIntoConstraints = false
-                let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
-                NSLayoutConstraint.activate(attributes.map {
-                    NSLayoutConstraint(item: playerView, attribute: $0, relatedBy: .equal, toItem: playerView.superview, attribute: $0, multiplier: 1, constant: 0)
-                })
-
-            }
-
-    }
-        else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
-            self.imgAdvType.image = UIImage(named:"Asset104")
-            timeFormatter.minimumIntegerDigits = 2
-            timeFormatter.minimumFractionDigits = 0
-            timeFormatter.roundingMode = .down
-            
-            // Load the sound and set up the timer.
-            
-            queueSound()
-            makeTimer()
-            self.runTimer()
-            isPlaying = true
-            audioPlayer?.play()
+                
+                if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "image" {
+                    self.imgAdvType.image = UIImage(named:"Asset106")
+                    var imageView : UIImageView
+                    imageView  = UIImageView(frame:CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)));
+                    self.viewAdvContent.addSubview(imageView)
+                    imageView.contentMode = .scaleAspectFit
+                    let urlOriginalImage : URL!
+                    if GlobalShareData.sharedGlobal.objCurrentContent.adMediaURL != nil {
+                        if(GlobalShareData.sharedGlobal.objCurrentContent.adMediaURL?.hasUrlPrefix())!
+                        {
+                            urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentContent.adMediaURL!)
+                        }
+                        else {
+                            let fileName = GlobalShareData.sharedGlobal.objCurrentContent.contentFileName?.replacingOccurrences(of: " ", with: "-")
+                            urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                        }
+                        Alamofire.request(urlOriginalImage).responseImage { response in
+                            debugPrint(response)
+                            if let image = response.result.value {
+                                let scalImg = image.af_imageScaled(to: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
+                                imageView.image = scalImg
+                                self.mediaZoom = MediaZoom(with: imageView, animationTime: 0.5, useBlur: true)
+                                self.runTimer()
+                                self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
+                            }
+                        }
+                    }
+                }
+                else if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "video" {
+                    self.imgAdvType.image = UIImage(named:"Asset102")
+                    GlobalShareData.sharedGlobal.isVideoPlaying = true
+                    let urlOriginalImage : URL!
+                    if GlobalShareData.sharedGlobal.objCurrentContent.adMediaURL != nil {
+                        if(GlobalShareData.sharedGlobal.objCurrentContent.adMediaURL?.hasUrlPrefix())!
+                        {
+                            urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentContent.adMediaURL!)
+                        }
+                        else {
+                            let fileName = GlobalShareData.sharedGlobal.objCurrentContent.contentFileName?.replacingOccurrences(of: " ", with: "-")
+                            urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                        }
+                        self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
+                        
+                        /*self.player.playerDelegate = self
+                         self.player.playbackDelegate = self
+                         self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
+                         
+                         // self.addChildViewController(self.player)
+                         self.viewAdvContent.addSubview(self.player.view)
+                         self.player.didMove(toParentViewController: self)
+                         
+                         self.player.url = urlOriginalImage
+                         
+                         self.player.playbackLoops = true
+                         
+                         self.player.fillMode = PlayerFillMode.resizeAspectFit.avFoundationType*/
+                        playerView = AGVideoPlayerView.init(frame: CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height)))
+                        playerView.playbackDelegate = self;
+                        playerView.videoUrl = urlOriginalImage!
+                        playerView.shouldAutoplay = true
+                        playerView.shouldAutoRepeat = true
+                        playerView.showsCustomControls = false
+                        playerView.shouldSwitchToFullscreen = false
+                        self.viewAdvContent.addSubview(self.playerView)
+                        playerView.translatesAutoresizingMaskIntoConstraints = false
+                        let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
+                        NSLayoutConstraint.activate(attributes.map {
+                            NSLayoutConstraint(item: playerView, attribute: $0, relatedBy: .equal, toItem: playerView.superview, attribute: $0, multiplier: 1, constant: 0)
+                        })
+                        
+                    }
+                    
+                }
+                else if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "audio" {
+                    self.imgAdvType.image = UIImage(named:"Asset104")
+                    timeFormatter.minimumIntegerDigits = 2
+                    timeFormatter.minimumFractionDigits = 0
+                    timeFormatter.roundingMode = .down
+                    
+                    // Load the sound and set up the timer.
+                    
+                    queueSound()
+                    makeTimer()
+                    self.runTimer()
+                    isPlaying = true
+                    audioPlayer?.play()
+                }
         }
+        
     }
     
     func setupInitialConstraints()  {
         var totalHeight = 350
         constCommentsHeight.constant = 0
         viewFileProgress.isHidden = false
-        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
-            constFileProgressHeight.constant = 0
-            viewFileProgress.isHidden = true
-        }
-        else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
-            constAdvContainerHeight.constant = 60
-            totalHeight -= 160
-        }
-        if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
-            let commentsHeight = (Int(UIScreen.main.bounds.height) - totalHeight - 140)
-            var setHeights = commentsHeight
-            if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count * 54 < commentsHeight{
-                setHeights = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count * 54
+        if screenType == .Advertise {
+            if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
+                constFileProgressHeight.constant = 0
+                viewFileProgress.isHidden = true
             }
-            constCommentsHeight.constant = CGFloat(setHeights)
-            totalHeight += setHeights
+            else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
+                constAdvContainerHeight.constant = 60
+                totalHeight -= 160
+            }
+            if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count > 0 {
+                let commentsHeight = (Int(UIScreen.main.bounds.height) - totalHeight - 140)
+                var setHeights = commentsHeight
+                if GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count * 54 < commentsHeight{
+                    setHeights = GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count * 54
+                }
+                constCommentsHeight.constant = CGFloat(setHeights)
+                totalHeight += setHeights
+            }
+
+        }
+        else {
+                if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "image" {
+                    constFileProgressHeight.constant = 0
+                    viewFileProgress.isHidden = true
+                }
+                else if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "audio" {
+                    constAdvContainerHeight.constant = 60
+                    totalHeight -= 160
+                }
+            if GlobalShareData.sharedGlobal.objCurrentContent.ctnComments.count > 0 {
+                    let commentsHeight = (Int(UIScreen.main.bounds.height) - totalHeight - 140)
+                    var setHeights = commentsHeight
+                if GlobalShareData.sharedGlobal.objCurrentContent.ctnComments.count * 54 < commentsHeight{
+                    setHeights = GlobalShareData.sharedGlobal.objCurrentContent.ctnComments.count * 54
+                    }
+                    constCommentsHeight.constant = CGFloat(setHeights)
+                    totalHeight += setHeights
+                }
+                
         }
         setupBottomView()
         let yPos = (Int(UIScreen.main.bounds.height) - totalHeight)/2
@@ -344,27 +489,53 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     
     @IBAction func sliderValueChanged(_ playbackSlider: TNSlider) {
         print(playbackSlider.value)
-        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
-            guard let audioPlayer = audioPlayer else {
-                return
+        if screenType == .Advertise {
+            if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
+                guard let audioPlayer = audioPlayer else {
+                    return
+                }
+                audioPlayer.currentTime = audioPlayer.duration * Double(playbackSlider.value)
             }
-            audioPlayer.currentTime = audioPlayer.duration * Double(playbackSlider.value)
         }
+        else {
+            if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "audio" {
+                guard let audioPlayer = audioPlayer else {
+                    return
+                }
+                audioPlayer.currentTime = audioPlayer.duration * Double(playbackSlider.value)
+            }
 
+        }
+        
     }
     
     @IBAction func playButtonTapped(_ sender:UIButton)
     {
         btnPlayPause.isSelected = !sender.isSelected
-        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
-            if btnPlayPause.isSelected {
-                self.playerView.playerController.player?.pause()
-            }else {
-                self.playerView.playerController.player?.play()
+        if screenType == .Advertise {
+            if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
+                if btnPlayPause.isSelected {
+                    self.playerView.playerController.player?.pause()
+                }else {
+                    self.playerView.playerController.player?.play()
+                }
             }
-        }
+            else {
+                isPlaying = !isPlaying
+                }
+            }
         else {
-            isPlaying = !isPlaying
+            if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "video" {
+                if btnPlayPause.isSelected {
+                    self.playerView.playerController.player?.pause()
+                }else {
+                    self.playerView.playerController.player?.play()
+                }
+            }
+            else {
+                isPlaying = !isPlaying
+            }
+
         }
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -385,13 +556,25 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     
 
     @IBAction func onBtnFullScreenTapped(_ sender: UIButton) {
-        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
-            view.addSubview(mediaZoom!)
-            mediaZoom?.show()
+        if screenType == .Advertise {
+            if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Image" {
+                GlobalShareData.sharedGlobal.objCurretnVC.view.addSubview(mediaZoom!)
+                mediaZoom?.show()
+            }
+            else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
+                    NotificationCenter.default.post(name: .playerDidChangeFullscreenMode, object: true)
+                    playerView.hanldeOrientation()
+                }
         }
-        else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
+        else {
+            if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "image" {
+                GlobalShareData.sharedGlobal.objCurretnVC.view.addSubview(mediaZoom!)
+                mediaZoom?.show()
+            }
+            else if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "video" {
                 NotificationCenter.default.post(name: .playerDidChangeFullscreenMode, object: true)
                 playerView.hanldeOrientation()
+            }
         }
     }
     
@@ -405,23 +588,29 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     @IBAction func onBtnShareTapped(_ sender: Any) {
         let urlOriginalImage : URL!
-        if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
-            if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
-            {
-                urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
-            }
-            else {
-                let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
-                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-            }
-            documentInteractionController.delegate = self
-            documentInteractionController.url = urlOriginalImage
-            documentInteractionController.presentPreview(animated: true)
+        if screenType == .Advertise {
+            if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
+                if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
+                {
+                    urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath!)
+                }
+                else {
+                    let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
+                    urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                }
+                documentInteractionController.delegate = self
+                documentInteractionController.url = urlOriginalImage
+                documentInteractionController.presentPreview(animated: true)
+                }
+        }
+        else {
+            
         }
     }
     @IBAction func onBtnLikeTapped(_ sender: UIButton) {
         btnLike.isSelected = !sender.isSelected
-        
+        if screenType == .Advertise {
+
         let objAdvData = AdvertiseData()
         objAdvData.setLikeAdvertiseByLumi(param: ["isLike":sender.isSelected as AnyObject,"lumiMobile":GlobalShareData.sharedGlobal.userCellNumber as AnyObject,"advertiseId":GlobalShareData.sharedGlobal.objCurrentAdv.advertiseId as AnyObject]) { (success) in
             if success {
@@ -449,6 +638,10 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                 }
             }
         }
+        }
+        else {
+            
+        }
     }
     
     // MARK: - Tableview Methods
@@ -457,13 +650,20 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if screenType == .Content {
+            return 0
+        }
             return GlobalShareData.sharedGlobal.objCurrentAdv.advComments.count;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "advCommentCell", for: indexPath) as! advCommentCell
         var objComment : AdvComments!
-        objComment = GlobalShareData.sharedGlobal.objCurrentAdv.advComments[indexPath.row] as AdvComments
+        if screenType == .Advertise {
+            objComment = GlobalShareData.sharedGlobal.objCurrentAdv.advComments[indexPath.row] as AdvComments }
+        else {
+            
+        }
         if objComment.isPostedByLumi {
             let urlOriginalImage : URL!
             if GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic != nil {
@@ -497,7 +697,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer?.enterpriseLogo)
             cell.imgLumineerProfile.image = imgThumb
         }
-        cell.lblMessageTime.text = Date().getFormattedDate(string: (objComment?.strCommentPostedDate)!, formatter: "")
+        cell.lblMessageTime.text = Date().getFormattedDate(string: (objComment?.strCommentPostedDate)!, formatter: "yyyy-MM-dd HH:mm")
         cell.lblMessageDetails.text = objComment?.comments
         return cell
     }
@@ -522,8 +722,15 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
             //Send alert to indicate time's up.
         } else {
             seconds -= 1
-            let type = GlobalShareData.sharedGlobal.objCurrentAdv.contentType?.uppercased()
-            lblAdvTimerSeconds.text = "YOU CAN CLOSE THE \(type!) IN \(seconds)"
+            if screenType == .Advertise {
+                let type = GlobalShareData.sharedGlobal.objCurrentAdv.contentType?.uppercased()
+                    lblAdvTimerSeconds.text = "YOU CAN CLOSE THE \(type!) IN \(seconds)"
+            }
+            else {
+                let type = GlobalShareData.sharedGlobal.objCurrentContent.contentType?.uppercased()
+                lblAdvTimerSeconds.text = "YOU CAN CLOSE THE \(type!) IN \(seconds)"
+
+            }
         }
     }
     
@@ -538,10 +745,20 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         self.view.superview?.removeBlurEffect()
         removeAnimate()
         GlobalShareData.sharedGlobal.isVideoPlaying = false
-        if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
-            audioPlayer?.stop()}
-        else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
-            self.playerView.playerController.player?.pause()
+        if screenType == .Advertise {
+            if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Audio" {
+                audioPlayer?.stop()}
+            else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
+                self.playerView.playerController.player?.pause()
+                }
+        }
+        else {
+            if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "audio" {
+                audioPlayer?.stop()}
+            else if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "video" {
+                self.playerView.playerController.player?.pause()
+            }
+
         }
     }
     
@@ -581,6 +798,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     func queueSound() {
         // Use this methid to load up the sound.
         let urlOriginalImage : URL!
+        if screenType == .Advertise {
         if GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath != nil {
             if(GlobalShareData.sharedGlobal.objCurrentAdv.adFilePath?.hasUrlPrefix())!
             {
@@ -591,6 +809,10 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                 urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
             }
             audioPlayer = try! AVAudioPlayer(contentsOf: urlOriginalImage as URL)
+        }
+        }
+        else {
+            
         }
 
 //        let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName

@@ -81,6 +81,7 @@ class LogInVC: UIViewController,FormDataDelegate {
                 GlobalShareData.sharedGlobal.objCurretnVC = self
                 let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
                 hud.label.text = NSLocalizedString("Fetching Data...", comment: "HUD loading title")
+                GlobalShareData.sharedGlobal.getAllLatestLumineerData()
                 GlobalShareData.sharedGlobal.getlatestCategoriesAndData(completionHandler: { (response) in
                     if response {
                         DispatchQueue.main.async {

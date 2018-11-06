@@ -34,3 +34,4 @@ class LumiWorldMessages: Object {
             return "messageId"
         }
 }
+

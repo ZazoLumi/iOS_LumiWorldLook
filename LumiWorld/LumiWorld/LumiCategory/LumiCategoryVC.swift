@@ -92,13 +92,12 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             
             if count > 0 {
                 
-                self.navigationController?.tabBarController?.viewControllers?.first?.tabBarItem.badgeValue = "\(count)"
+                self.navigationController?.tabBarController?.viewControllers![1].tabBarItem.badgeValue = "\(count)"
                 //self.navigationController!.tabBarItem.badgeValue = "\(count)"
                 
             }
         })
-        getAllLumineerAdvertise()
-        
+        GlobalShareData.sharedGlobal.getAllLatestLumineerData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -152,14 +151,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         }
     }
     
-    func getAllLumineerAdvertise() {
-        let objAdv = AdvertiseData()
-        
-        objAdv.getLumineerAdvertise(param: ["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
-            
-        }
-        GlobalShareData.sharedGlobal.deleteExpiredAds()
-    }
+    
 
     // MARK: - Tableview Methods
     
@@ -643,7 +635,7 @@ extension UINavigationItem {
 
     @objc func goBackToLumineerPage(_ sender: UIButton){
         GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.lumiFeed.rawValue
-        GlobalShareData.sharedGlobal.objCurretnVC.tabBarController?.selectedIndex = 1
+        GlobalShareData.sharedGlobal.objCurretnVC.tabBarController?.selectedIndex = 2
         
     }
 
@@ -849,6 +841,7 @@ extension UINavigationItem {
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.lumineerTimeStamp.rawValue)
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.supportTimeStamp.rawValue)
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.advertiseTimeStamp.rawValue)
+                    UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.contentTimeStamp.rawValue)
                     UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.isAlreadyLogin)
                     let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     let objLogInVC = storyBoard.instantiateInitialViewController()

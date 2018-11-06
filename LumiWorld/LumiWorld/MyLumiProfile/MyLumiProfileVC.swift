@@ -120,7 +120,7 @@ class MyLumiProfileVC: UIViewController {
     }
     func onBtnShowSaveAdsTapped() {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "SavedAds") as! SavedAds
+        let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "SavedDataVC") as! SavedDataVC
         GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objFaqVC, animated: true)
     }
 
@@ -161,7 +161,7 @@ class MyLumiProfileVC: UIViewController {
         scrollable.stackView.axis = .horizontal
         scrollable.stackView.spacing = 22
         scrollable.scrollView.layoutMargins = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        let imgArray = ["Asset 19","Asset 20","Asset 21","Asset 22","Watch Later"]
+        let imgArray = ["Asset 21-1","Asset 19-1","Asset 20-1","Watch Later","Asset 22"]
         for i in 0 ..< 5 {
             let image = UIImage.init(named: imgArray[i])
             let button = UIButton.init(type: .custom)
@@ -233,7 +233,15 @@ class MyLumiProfileVC: UIViewController {
             let strBaseDataLogo = objectData["profileImg"] as? String
             let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
             customAdsView.imgLumineerProfile.image = imgThumb
-            customAdsView.lblAdvTitle.text = objAdv?.contentTitle
+                
+                let attributedString = NSMutableAttributedString()
+                attributedString.yy_appendString((objAdv?.contentTitle)!)
+                attributedString.append(NSAttributedString(string: " #\((objAdv?.caption)!)",
+                                                           attributes: [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]))
+                attributedString.append(NSAttributedString(string: " \((objAdv?.tag)!)",
+                                                           attributes: [.underlineStyle: NSUnderlineStyle.styleNone.rawValue]))
+
+            customAdsView.lblAdvTitle.text = attributedString.string
             let imgMsgType : UIImage!
             var urlOriginalImage : URL? = nil
 
@@ -272,10 +280,9 @@ class MyLumiProfileVC: UIViewController {
                 }
                 imgMsgType = UIImage(named:"Asset106")
             customAdsView.imgAdvType.image = imgMsgType
-            
             }
             customAdsView.imgAdsContent.contentMode = .scaleAspectFit
-            customAdsView.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "")
+            customAdsView.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "yyyy-MM-dd HH:mm")
             
             scrlAdvertiseView.stackView.addArrangedSubview(customAdsView)
             if urlOriginalImage != nil {
@@ -301,16 +308,16 @@ class MyLumiProfileVC: UIViewController {
             self.onBtnInviteFriendsTapped()
         }
         else if tag == 20001 {
-            self.onBtnSuggestLumineerTapped()
-        }
-        else if tag == 20002 {
             self.onBtnYonOHaveTapped()
         }
+        else if tag == 20002 {
+            self.onBtnSuggestLumineerTapped()
+        }
         else if tag == 20003 {
-            self.onBtnMessageTapped()
+            self.onBtnShowSaveAdsTapped()
         }
         else if tag == 20004 {
-            self.onBtnShowSaveAdsTapped()
+            self.onBtnMessageTapped()
         }
     }
     

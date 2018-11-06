@@ -238,7 +238,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
             let myStr = underlinedString(string: (objAdv?.contentTitle)! as NSString, term: "")
             cell.lblMessageDetails.attributedText = myStr
             var msgCatDate = "ADS"
-            msgCatDate.append(" | \(Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: ""))")
+            msgCatDate.append(" | \(Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "yyyy-MM-dd HH:mm"))")
             cell.lblMessageTime.text = msgCatDate
             let imgMsgType : UIImage!
             if objAdv?.contentType == "Video" {
@@ -258,7 +258,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
             let myStr = underlinedString(string: (message?.newsFeedBody)! as NSString, term: strSearchText)
             cell.lblMessageDetails.attributedText = myStr
             var msgCatDate = message?.messageCategory
-            msgCatDate?.append(" | \(Date().getFormattedDate(string: (message?.newsfeedPostedTime!)!, formatter: ""))")
+            msgCatDate?.append(" | \(Date().getFormattedDate(string: (message?.newsfeedPostedTime!)!, formatter: "yyyy-MM-dd HH:mm"))")
             cell.lblMessageTime.text = msgCatDate
             var strImageName : String!
             if (message?.isReadByLumi)! {
@@ -405,7 +405,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     }
     
    @objc func didTapGetStarted() {
-        self.tabBarController?.selectedIndex = 1
+        self.tabBarController?.selectedIndex = 2
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
