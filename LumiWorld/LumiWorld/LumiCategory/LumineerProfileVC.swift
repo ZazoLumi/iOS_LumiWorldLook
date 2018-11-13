@@ -82,7 +82,6 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         //viewActivityHeights.constant = 0
 //        lblActivity.isHidden = true
 //        lblLumiProfileTxt.text =  "Hi \(GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName!), how can we help you?"
-        setupSegmentData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,6 +99,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        setupSegmentData()
+
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -151,8 +152,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         
         let objCoomingsoon = storyBoard.instantiateViewController(withIdentifier: "coomingsoon") as! coomingsoon
 
-        
-
+        GlobalShareData.sharedGlobal.sagmentViewHeight = Int(scrollContentView.frame.size.height)
         objLumineerMessageVC.delegate = self
         objLumineerAdvertiseVC.delegate = self
         objLumineerHomeVC.delegate = self

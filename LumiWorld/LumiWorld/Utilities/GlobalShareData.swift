@@ -90,7 +90,7 @@ class GlobalShareData {
     var aryAttachUrls : [URL] = []
     var currentScreenValue : String = currentScreen.messageThread.rawValue
     var strImagePath : String = ""
-    
+    var sagmentViewHeight : NSInteger = 0
     
     lazy var applicationDocumentsDirectory: URL = {
         

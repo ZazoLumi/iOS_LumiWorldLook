@@ -206,8 +206,14 @@ class LumineerContent: Object {
         newContentData.lumineerRegnNumber = aObject["lumineerRegnNumber"].stringValue
         newContentData.adPackageId = aObject["adPackageId"].doubleValue
         newContentData.fileExt = aObject["fileExt"].stringValue
-        newContentData.contentType = aObject["contentFileType"].stringValue
+        if aObject["contentType"].stringValue == "Audio Clips" {
+            newContentData.contentType = "audio"
+        }
+        else {
+            newContentData.contentType = aObject["contentFileType"].stringValue
+        }
         newContentData.contentFileType = aObject["contentType"].stringValue
+
         newContentData.lumiCount = aObject["lumiCount"].doubleValue
         newContentData.compaignWindow = aObject["compaignWindow"].stringValue
         newContentData.contentPackageName = aObject["contentPackageName"].stringValue

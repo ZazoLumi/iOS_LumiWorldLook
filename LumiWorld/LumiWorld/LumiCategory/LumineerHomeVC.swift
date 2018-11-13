@@ -131,7 +131,7 @@ class LumineerHomeVC: UIViewController,UICollectionViewDelegate,UICollectionView
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
-        var objCellData : [String : Any]!
+        /*var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
         let objContent = objCellData["message"] as? LumineerContent
 
@@ -152,7 +152,7 @@ class LumineerHomeVC: UIViewController,UICollectionViewDelegate,UICollectionView
         self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
         GlobalShareData.sharedGlobal.objCurretnVC.view.addSubview(self.objAdvertiseVC.view)
         self.objAdvertiseVC
-            .didMove(toParentViewController: self)
+            .didMove(toParentViewController: self)*/
     }
 
     /*

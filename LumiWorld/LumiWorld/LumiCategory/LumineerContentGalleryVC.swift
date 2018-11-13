@@ -22,7 +22,8 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
     @IBOutlet weak var lblLumineerName: UILabel!
     @IBOutlet weak var imgLumineerProfile: UIImageView!
     @IBOutlet weak var imgAdsContent: UIImageView!
-    
+    @IBOutlet weak var imgAudioPlay: UIImageView!
+
     @IBOutlet weak var btnLike: UIButton!
     @IBOutlet weak var btnComments: UIButton!
     @IBOutlet weak var btnReport: UIButton!
@@ -198,6 +199,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
     override func viewWillDisappear(_ animated: Bool) {
 //        inputTV.text = ""
 //        inputTV.resignFirstResponder()
+        objPlayer?.stop()
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
     }
@@ -361,6 +363,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         objCellData = aryContentData[indexPath.row]
         let objContent = objCellData["message"] as? LumineerContent
         if objContent?.contentType == "audio" {
+
             let urlOriginalImage : URL!
             if objContent?.adMediaURL != nil {
                 if(objContent?.adMediaURL?.hasUrlPrefix())!
@@ -372,6 +375,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                 }
                 playAudioFile(urlOriginalImage: urlOriginalImage)
+                contentCell.contentView.bringSubview(toFront: contentCell.imgAudioPlay)
+
             }
         }
         else if objContent?.contentType == "video" {
@@ -388,6 +393,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let objContent = objCellData["message"] as? LumineerContent
         if objContent?.contentType == "audio" {
             objPlayer?.stop()
+            //cell.contentView.bringSubview(toFront: cell.imgAudioPlay)
         }
         else if objContent?.contentType == "video" {
             let visibleCells = tableView.visibleCells;

@@ -21,7 +21,10 @@ class coomingsoon: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewDidLayoutSubviews() {
+        self.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:GlobalShareData.sharedGlobal.sagmentViewHeight)
 
+    }
     /*
     // MARK: - Navigation
 

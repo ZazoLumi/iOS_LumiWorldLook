@@ -38,8 +38,8 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="IU5-if-gl1">
-                            <rect key="frame" x="231" y="17" width="49" height="17"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="IU5-if-gl1">
+                            <rect key="frame" x="221" y="17" width="59" height="17"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MpD-YY-W7T">
                                     <rect key="frame" x="0.0" y="0.0" width="13" height="17"/>
@@ -47,12 +47,12 @@
                                     <state key="normal" image="Asset 51"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XAQ-Ug-7Au">
-                                    <rect key="frame" x="18" y="0.0" width="13" height="17"/>
+                                    <rect key="frame" x="23" y="0.0" width="13" height="17"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <state key="normal" image="Asset 50"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2XB-4F-pi0">
-                                    <rect key="frame" x="36" y="0.0" width="13" height="17"/>
+                                    <rect key="frame" x="46" y="0.0" width="13" height="17"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <state key="normal" image="Asset 49"/>
                                 </button>

@@ -586,12 +586,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.6248029"
+            timestampString = "563834498.280486"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "619"
             endingLineNumber = "619"
-            landmarkName = "makeTimer()"
+            landmarkName = "onBtnLikeTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -602,12 +602,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.625309"
+            timestampString = "563834498.280594"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "581"
             endingLineNumber = "581"
-            landmarkName = "playPauseAudio()"
+            landmarkName = "onBtnSaveFileTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -618,12 +618,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.625687"
+            timestampString = "563834498.280684"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "554"
             endingLineNumber = "554"
-            landmarkName = "onBtnCloseAdvertise(_:)"
+            landmarkName = "didReceiveMemoryWarning()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -634,12 +634,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.626066"
+            timestampString = "563834498.28075"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "619"
             endingLineNumber = "619"
-            landmarkName = "makeTimer()"
+            landmarkName = "onBtnLikeTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -650,12 +650,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.62644"
+            timestampString = "563834498.280804"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "619"
             endingLineNumber = "619"
-            landmarkName = "makeTimer()"
+            landmarkName = "onBtnLikeTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -666,12 +666,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.6268131"
+            timestampString = "563834498.280857"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "619"
             endingLineNumber = "619"
-            landmarkName = "makeTimer()"
+            landmarkName = "onBtnLikeTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -682,7 +682,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.627183"
+            timestampString = "563834498.28091"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "249"
@@ -698,7 +698,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.6275541"
+            timestampString = "563834498.280962"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "214"
@@ -714,12 +714,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.627916"
+            timestampString = "563834498.281015"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "103"
             endingLineNumber = "103"
-            landmarkName = "viewWillAppear(_:)"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -730,7 +730,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.6282721"
+            timestampString = "563834498.281068"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "109"
@@ -746,11 +746,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.628638"
+            timestampString = "563834498.2811199"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "102"
             endingLineNumber = "102"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
+            timestampString = "563834498.281173"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
             landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -762,28 +778,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.629055"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "keyboardWillHide(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.629503"
+            timestampString = "563834498.281232"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "431"
             endingLineNumber = "431"
-            landmarkName = "onBtnShareTapped(_:)"
+            landmarkName = "setupInitialConstraints()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -794,12 +794,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.629867"
+            timestampString = "563834498.281286"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "490"
             endingLineNumber = "490"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkName = "sliderValueChanged(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -810,12 +810,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.63024"
+            timestampString = "563834498.28134"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "468"
             endingLineNumber = "468"
-            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            landmarkName = "setupInitialConstraints()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -826,12 +826,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.630657"
+            timestampString = "563834498.281392"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "474"
             endingLineNumber = "474"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkName = "setupInitialConstraints()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -1098,12 +1098,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.63123"
+            timestampString = "563834498.2815861"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "344"
             endingLineNumber = "344"
-            landmarkName = "playButtonTapped(_:)"
+            landmarkName = "displayAdvertiseContent()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1130,12 +1130,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
-            timestampString = "555505421.4478149"
+            timestampString = "563834498.281665"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "413"
             endingLineNumber = "413"
-            landmarkName = "displayAdvertiseContent()"
+            landmarkName = "onBtnInboxCountTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1146,12 +1146,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.631678"
+            timestampString = "563834498.2817219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "202"
             endingLineNumber = "202"
-            landmarkName = "displayAdvertiseContent()"
+            landmarkName = "onBtnSendComments(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1178,7 +1178,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.632063"
+            timestampString = "563834498.281794"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "271"
@@ -1199,8 +1199,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "156"
             endingLineNumber = "156"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "onBtnInviteFriendsTapped()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1210,12 +1210,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.632769"
+            timestampString = "563834498.281868"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "350"
             endingLineNumber = "350"
-            landmarkName = "viewDidAppear(_:)"
+            landmarkName = "displayAdvertiseContent()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1226,12 +1226,76 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
-            timestampString = "555694511.633113"
+            timestampString = "563834498.281921"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "191"
             endingLineNumber = "191"
-            landmarkName = "displayAdvertiseContent()"
+            landmarkName = "onBtnSendComments(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/LumiCategory/LumineerContentGalleryVC.swift"
+            timestampString = "563834498.2819771"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/LumiCategory/LumineerContentGalleryVC.swift"
+            timestampString = "563834498.2820311"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "368"
+            endingLineNumber = "368"
+            landmarkName = "tableView(_:willDisplay:forRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
+            timestampString = "563834498.2820849"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "802"
+            endingLineNumber = "802"
+            landmarkName = "queueSound()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
+            timestampString = "563834498.2821389"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
+            landmarkName = "createPageViewController()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

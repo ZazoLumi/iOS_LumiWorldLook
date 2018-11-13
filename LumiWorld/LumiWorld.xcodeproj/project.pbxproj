@@ -371,13 +371,6 @@
 			path = LumiMenu;
 			sourceTree = "<group>";
 		};
-		093A6D2D215B87F1004731DE /* LumineerContent */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = LumineerContent;
-			sourceTree = "<group>";
-		};
 		093F445C206B715800BC9983 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -410,7 +403,6 @@
 			isa = PBXGroup;
 			children = (
 				096BBFBD20E0E6FA0017EBA8 /* LumiWorld.entitlements */,
-				093A6D2D215B87F1004731DE /* LumineerContent */,
 				09028A7A20AEB7F9007F85F2 /* LumiMenu */,
 				097BF9DE207E35D2001F935C /* Message */,
 				093F445C206B715800BC9983 /* Models */,
@@ -714,7 +706,7 @@
 					0900544520591EC700262084 = {
 						CreatedOnToolsVersion = 9.1;
 						LastSwiftMigration = 0910;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -796,7 +788,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" b22069d008776e69d7d3c9b68fd370d6fcf26b6f 284d9e5cba3be12638a841bdbc57ec962ef4f657ca3034e1070e78ca97cfe9b8";
+			shellScript = "    ";
 		};
 		2860A662A2D0255E7026B6EE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1125,7 +1117,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = LumiWorld/LumiWorld.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J323ZHWH83;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1136,8 +1128,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworld.zazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "510147dc-b366-4b45-998f-c4551ad6bc5f";
-				PROVISIONING_PROFILE_SPECIFIER = 19April_DevLumi;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LumiWorld/Utilities/LumiWorld-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -1154,7 +1146,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = LumiWorld/LumiWorld.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J323ZHWH83;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1165,8 +1157,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworld.zazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "510147dc-b366-4b45-998f-c4551ad6bc5f";
-				PROVISIONING_PROFILE_SPECIFIER = 19April_DevLumi;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LumiWorld/Utilities/LumiWorld-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
