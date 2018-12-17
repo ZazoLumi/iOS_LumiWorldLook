@@ -309,8 +309,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             btnFollowLumineer.isSelected = false
         }
         let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
-        // let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
-        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
+        // let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
+        let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
         
         self.imgProfilePic.image = scalImg
         // self.imgProfilePic.contentMode = .scaleAspectFill
@@ -427,7 +427,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             DispatchQueue.global(qos: .userInitiated).async {
                 objLumiList.setLumineerCompanyFollowUnFollowData(id:GlobalShareData.sharedGlobal.userCellNumber,companyregistrationnumber:companyRegistrationNumber,uniqueID: strUniqueID, status:strStatus , completionHandler: { (List) in
                     let imgThumb = UIImage.decodeBase64(strEncodeData:self.objLumineer.enterpriseLogo)
-                    let scalImg = imgThumb.af_imageScaled(to: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
+                    let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
                     self.imgProfilePic.image = scalImg
                     
                 })
@@ -687,6 +687,7 @@ extension UserDefaults {
 }
 
 enum UserDefaultsKeys : String {
+    case gallaryTimeStamp
     case contentTimeStamp
     case advertiseTimeStamp
     case messageTimeStamp

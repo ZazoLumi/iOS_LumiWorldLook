@@ -73,7 +73,7 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
                 Alamofire.request(urlOriginalImage!).responseImage { response in
                     debugPrint(response)
                     if let image = response.result.value {
-                        let scalImg = image.af_imageScaled(to: CGSize(width:self.imgLumineerProfile.frame.size.width, height: self.imgLumineerProfile.frame.size.height))
+                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:self.imgLumineerProfile.frame.size.width, height: self.imgLumineerProfile.frame.size.height))
                         cell.imgLumineerProfile.image = scalImg
                         cell.imgLumineerProfile?.clipsToBounds = true;
                         //                        cell.imgLumineerProfile.contentMode = .scaleAspectFit
@@ -115,7 +115,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
     var objPlayer: AVAudioPlayer?
     var mediaZoom: MediaZoom?
     fileprivate var documentInteractionController = UIDocumentInteractionController()
-    var objCurrentContent : LumineerContent!
+    var objCurrentContent : LumineerGalleryData!
     var currentCell : ContentGalleryCell!
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -169,7 +169,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
     }
 
     @objc func getLatestLumineersContents() {
-        aryContentData = GlobalShareData.sharedGlobal.getAllContents(isCurrentLumineer: false)
+        aryContentData = GlobalShareData.sharedGlobal.getAllGallaryContents()
 //        let sorted = aryContentData.sorted { left, right -> Bool in
 //            guard let rightKey = right["message"]?.updatedDate else { return true }
 //            guard let leftKey = left["message"]?.updatedDate else { return true }
@@ -197,7 +197,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         var cell :  ContentGalleryCell!
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        let objContent = objCellData["message"] as? LumineerContent
+        let objContent = objCellData["message"] as? LumineerGalleryData
 
         if objContent?.contentType == "video" {
             cell = tableView.dequeueReusableCell(withIdentifier: "ContentVideoCell", for: indexPath) as! ContentGalleryCell
@@ -211,7 +211,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         
         cell.lblLumineerName.text = objCellData["title"] as? String
         let imgThumb = UIImage.decodeBase64(strEncodeData:objCellData["profileImg"] as? String)
-        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
+        let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
         cell.imgLumineerProfile.image = scalImg
         cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
         cell.imgLumineerProfile?.clipsToBounds = true;
@@ -246,6 +246,10 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
             cell.btnMuteUnmute.tag = indexPath.row + 70000
             cell.contentView.bringSubview(toFront: cell.btnMuteUnmute)
             cell.contentView.bringSubview(toFront: cell.btnPlayPause)
+            let imgThumb = UIImage.decodeBase64(strEncodeData:(objContent?.thumbnail!)! )
+            let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgAdsContent.frame.size.width, height: cell.imgAdsContent.frame.size.height))
+            cell.imgAdsContent.image = scalImg
+
         }
         else {
             if objContent?.adMediaURL != nil {
@@ -263,7 +267,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                 Alamofire.request(urlOriginalImage!).responseImage { response in
                     debugPrint(response)
                     if let image = response.result.value {
-                        let scalImg = image.af_imageScaled(to: CGSize(width: cell.imgAdsContent.size.width, height: cell.imgAdsContent.size.height))
+                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: cell.imgAdsContent.size.width, height: cell.imgAdsContent.size.height))
                         cell.imgAdsContent.image = scalImg
                     }
                 }}
@@ -292,7 +296,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
 
 
         cell.aryCommentsData = []
-        cell.aryCommentsData = (objContent?.ctnComments.map {return $0})!
+        cell.aryCommentsData = (objContent?.glrComments.map {return $0})!
         if cell.aryCommentsData.count > 0 {
             let count = cell.aryCommentsData.count
             cell.btnComments.setTitle("\(count) Comments", for: .normal)
@@ -320,7 +324,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         guard let contentCell = (cell as? ContentGalleryCell) else { return };
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        let objContent = objCellData["message"] as? LumineerContent
+        let objContent = objCellData["message"] as? LumineerGalleryData
         if objContent?.contentType == "audio" {
             let urlOriginalImage : URL!
             if objContent?.adMediaURL != nil {
@@ -335,6 +339,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                 playAudioFile(urlOriginalImage: urlOriginalImage)
                 contentCell.viewContainer.bringSubview(toFront: contentCell.btnPlayPause)
                 contentCell.viewContainer.bringSubview(toFront: contentCell.btnMuteUnmute)
+                contentCell.btnPlayPause.isSelected = true
+                contentCell.btnMuteUnmute.isSelected = false
             }
         }
         else if objContent?.contentType == "video" {
@@ -348,10 +354,10 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         guard let contentCell = (cell as? ContentGalleryCell) else { return };
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        let objContent = objCellData["message"] as? LumineerContent
+        let objContent = objCellData["message"] as? LumineerGalleryData
         if objContent?.contentType == "audio" {
             objPlayer?.stop()
-            //cell.contentView.bringSubview(toFront: cell.imgAudioPlay)
+            contentCell.btnPlayPause.isSelected = false
         }
         else if objContent?.contentType == "video" {
             let visibleCells = tableView.visibleCells;
@@ -372,7 +378,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let cell = tableView.cellForRow(at: indexPath) as? ContentGalleryCell;
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        let objContent = objCellData["message"] as? LumineerContent
+        let objContent = objCellData["message"] as? LumineerGalleryData
         if objContent?.contentType == "audio" {
         
         }
@@ -393,18 +399,18 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let indexPath = IndexPath(row: index, section: 0)
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        let objContent = objCellData["message"] as? LumineerContent
+        let objContent = objCellData["message"] as? LumineerGalleryData
         
         var msgText : String = ""
         let realm = try! Realm()
         
         let type = objContent?.contentType?.uppercased()
-        if (objContent?.isCtsSaved)! {
+        if (objContent?.isGlrSaved)! {
             msgText =  "\(type!) IS ALREADY SAVED"
         }
         else {
             try! realm.write({
-                objContent?.isCtsSaved = true})
+                objContent?.isGlrSaved = true})
             msgText =  "\(type!) SAVED TO WATCH LATER"
             
         }
@@ -422,8 +428,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let indexPath = IndexPath(row: index, section: 0)
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        let objContent = objCellData["message"] as? LumineerContent
-        let urlOriginalImage : URL!
+        _ = objCellData["message"] as? LumineerGalleryData
+        let _ : URL!
         currentCell = tableView.cellForRow(at: indexPath) as? ContentGalleryCell;
         currentCell.btnPlayPause.isSelected = !sender.isSelected
     }
@@ -433,10 +439,17 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let indexPath = IndexPath(row: index, section: 0)
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        let objContent = objCellData["message"] as? LumineerContent
-        let urlOriginalImage : URL!
+        _ = objCellData["message"] as? LumineerGalleryData
+        let _ : URL!
         currentCell = tableView.cellForRow(at: indexPath) as? ContentGalleryCell;
         currentCell.btnMuteUnmute.isSelected = !sender.isSelected
+        
+        if sender.isSelected {
+            objPlayer?.volume = 1.0
+        }
+        else {
+            objPlayer?.volume = 0
+        }
     }
 
     @objc func didTapShareBtn(_ sender: UIButton) {
@@ -444,7 +457,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let indexPath = IndexPath(row: index, section: 0)
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        let objContent = objCellData["message"] as? LumineerContent
+        let objContent = objCellData["message"] as? LumineerGalleryData
         let urlOriginalImage : URL!
 
         if objContent?.adMediaURL != nil {
@@ -465,7 +478,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let indexPath = IndexPath(row: index, section: 0)
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        objCurrentContent = objCellData["message"] as? LumineerContent
+        objCurrentContent = objCellData["message"] as? LumineerGalleryData
     }
     
     @objc func didTapLikeBtn(_ sender: UIButton) {
@@ -474,12 +487,12 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let indexPath = IndexPath(row: index, section: 0)
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        objCurrentContent = objCellData["message"] as? LumineerContent
+        objCurrentContent = objCellData["message"] as? LumineerGalleryData
         let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
         hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
         let isLike = (sender.isSelected ? "true" : "false") as String
         let objAdvData = LumineerContent()
-        let dictDetails = ["contentFilePath":objCurrentContent.contentFilePath! as AnyObject,"likeBody":"" as AnyObject,"like":isLike as AnyObject,"lumineerId":(objCurrentContent.lumineerId) as AnyObject,"contentID":objCurrentContent.contentID! as AnyObject,"lumineerName":objCurrentContent.lumineerName! as AnyObject]
+        let dictDetails = ["contentFilePath":objCurrentContent.contentFilePath! as AnyObject,"likeBody":"" as AnyObject,"like":isLike as AnyObject,"lumineerId":(objCurrentContent.lumineerId) as AnyObject,"contentID":objCurrentContent.galleryID! as AnyObject,"lumineerName":objCurrentContent.lumineerName! as AnyObject]
        // let dictDetails = ["contentFilePath":objCurrentContent.contentFilePath! as AnyObject,"likeBody":"" as AnyObject,"like":(sender.isSelected ? "true" : "false") as AnyObject,"lumineerId":(objCurrentContent.lumineerId) as AnyObject,"contentID":objCurrentContent.contentID! as AnyObject,"lumineerName":objCurrentContent.lumineerName! as AnyObject]
 
         objAdvData.sendContentLikes(param: dictDetails) { (success) in
@@ -501,7 +514,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         currentCell = tableView.cellForRow(at: indexPath) as? ContentGalleryCell;
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
-        objCurrentContent = objCellData["message"] as? LumineerContent
+        objCurrentContent = objCellData["message"] as? LumineerGalleryData
         //currentCell.inputTV.becomeFirstResponder()
         if sender.isSelected {
             print("false")
@@ -524,18 +537,18 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
             objPlayer = try AVAudioPlayer(contentsOf: urlOriginalImage, fileTypeHint: AVFileType.mp3.rawValue)
             guard let aPlayer = objPlayer else { return }
             aPlayer.play()
+            aPlayer.volume = 0
             
         } catch let error {
             print(error.localizedDescription)
         }
     }
- 
 
     @objc func onBtnSendComments(_ sender: Any) {
         let hud = MBProgressHUD.showAdded(to: (self.navigationController?.view)!, animated: true)
         hud.label.text = NSLocalizedString("Sending...", comment: "HUD loading title")
             let objAdvData = LumineerContent()
-        let dictDetails = ["contentFilePath":objCurrentContent.contentFilePath! as AnyObject,"commentBody":currentCell.inputTV.text! as AnyObject,"lumineerId":(objCurrentContent.lumineerId) as AnyObject,"contentID":objCurrentContent.contentID! as AnyObject,"lumineerName":objCurrentContent.lumineerName! as AnyObject]
+        let dictDetails = ["contentFilePath":objCurrentContent.contentFilePath! as AnyObject,"commentBody":currentCell.inputTV.text! as AnyObject,"lumineerId":(objCurrentContent.lumineerId) as AnyObject,"contentID":objCurrentContent.galleryID! as AnyObject,"lumineerName":objCurrentContent.lumineerName! as AnyObject]
 
                 objAdvData.sendContentComments(param: dictDetails) { (success) in
                     DispatchQueue.main.async {
@@ -545,12 +558,12 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                     }
                     if success {
                         DispatchQueue.main.async {
-                            if self.objCurrentContent.ctnComments.count > 0 {
-                                let count = self.objCurrentContent.ctnComments.count
+                            if self.objCurrentContent.glrComments.count > 0 {
+                                let count = self.objCurrentContent.glrComments.count
                                 self.currentCell.btnComments.setTitle("\(count) Comments", for: .normal)
                                 self.currentCell.btnComments.setTitle("\(count) Comments", for: .selected)
                             }
-                            if self.objCurrentContent.ctnComments.count > 1 {
+                            if self.objCurrentContent.glrComments.count > 1 {
                                 self.currentCell.cellTableView.contentOffset = .zero
                             }
                             GlobalShareData.sharedGlobal.getAllLatestLumineerData()

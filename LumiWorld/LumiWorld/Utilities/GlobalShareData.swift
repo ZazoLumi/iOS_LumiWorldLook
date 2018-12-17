@@ -59,6 +59,8 @@ struct Constants {
         static let APIGetAllLumineerContent = "http://lumiimportupload20180622023528.azurewebsites.net/api/GetAllContent"
         static let APIPostLumineerContentComments = "http://lumiimportupload20180622023528.azurewebsites.net/api/PostContentComment"
         static let APIPostLumineerContentLikes = "http://lumiimportupload20180622023528.azurewebsites.net/api/LikeContent"
+        static let APIGetAllLumineerGallery = "http://lumiimportupload20180622023528.azurewebsites.net/api/GetAllGallery"
+
    }
 }
 
@@ -479,6 +481,24 @@ class GlobalShareData {
         return aryContentData
     }
     
+    func getAllGallaryContents() -> [[String:AnyObject]]{
+        let realm = try! Realm()
+        let result  = realm.objects(LumineerGalleryData.self)
+        var aryContentData: [[String:AnyObject]] = []
+        if result.count > 0 {
+            for objContent in result {
+                    let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objContent.lumineerId.int)
+                    if objsLumineer.count > 0 {
+                        let lumineer = objsLumineer[0]
+                        let section = ["title":lumineer.name as Any, "message":objContent as Any,"profileImg":lumineer.enterpriseLogo as Any,"lumineer":lumineer as Any,"type":"content","isSelected":"false"] as [String : Any]
+                        aryContentData.append(section as [String : AnyObject])
+                }
+            }
+            print("Count:\(aryContentData.count)")
+        }
+        return aryContentData
+    }
+    
     func getlatestCategoriesAndData (completionHandler: @escaping (_ response: Bool) -> Void) {
         let objLumiCate = LumiCategory()
         DispatchQueue.global(qos: .userInitiated).async {
@@ -548,6 +568,13 @@ class GlobalShareData {
         objContent.getLumineerContents(param:["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
             dispatchGroup.leave()
         }
+        
+        let objGallary = LumineerGalleryData()
+        
+        objGallary.getLumineerGetAllGallaryContents(param:["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
+            dispatchGroup.leave()
+        }
+
         
         dispatchGroup.notify(queue: .main) {
             print("Both functions complete 👍")

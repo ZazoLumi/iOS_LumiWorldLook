@@ -252,7 +252,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     Alamofire.request(urlOriginalImage).responseImage { response in
                         debugPrint(response)
                         if let image = response.result.value {
-                            let scalImg = image.af_imageScaled(to: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
+                            let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
                             imageView.image = scalImg
                             self.mediaZoom = MediaZoom(with: imageView, animationTime: 0.5, useBlur: true)
                             self.runTimer()
@@ -355,7 +355,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                         Alamofire.request(urlOriginalImage).responseImage { response in
                             debugPrint(response)
                             if let image = response.result.value {
-                                let scalImg = image.af_imageScaled(to: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
+                                let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
                                 imageView.image = scalImg
                                 self.mediaZoom = MediaZoom(with: imageView, animationTime: 0.5, useBlur: true)
                                 self.runTimer()
@@ -678,7 +678,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                 Alamofire.request(urlOriginalImage!).responseImage { response in
                     debugPrint(response)
                     if let image = response.result.value {
-                        let scalImg = image.af_imageScaled(to: CGSize(width:self.imgLumineerProfile.frame.size.width, height: self.imgLumineerProfile.frame.size.height))
+                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:self.imgLumineerProfile.frame.size.width, height: self.imgLumineerProfile.frame.size.height))
                         cell.imgLumineerProfile.image = scalImg
                          cell.imgLumineerProfile?.clipsToBounds = true;
 //                        cell.imgLumineerProfile.contentMode = .scaleAspectFit

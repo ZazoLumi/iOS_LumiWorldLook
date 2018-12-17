@@ -116,7 +116,7 @@ class LumineerHomeVC: UIViewController,UICollectionViewDelegate,UICollectionView
                 debugPrint(response)
                 
                 if let image = response.result.value {
-                    let scalImg = image.af_imageScaled(to: CGSize(width: cell.imageView.size.width, height: cell.imageView.size.height))
+                    let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: cell.imageView.size.width, height: cell.imageView.size.height))
                     cell.imageView.image = scalImg
                 }
             }}

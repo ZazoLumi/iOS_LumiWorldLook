@@ -126,7 +126,7 @@ class CallLumineerVC: UIViewController , UITableViewDelegate,UITableViewDataSour
         cell.lblMessageDetails.text = objCellData.contactNumber
 
         let imgThumb = UIImage.decodeBase64(strEncodeData:objCellData.enterpriseLogo)
-        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
+        let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
         cell.imgLumineerProfile.image = scalImg
         cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
         cell.imgLumineerProfile?.clipsToBounds = true;

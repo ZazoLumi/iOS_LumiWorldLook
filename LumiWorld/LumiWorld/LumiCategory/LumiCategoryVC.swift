@@ -250,7 +250,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 debugPrint(response)
                 
                 if let image = response.result.value {
-                   let scalImg = image.af_imageScaled(to: CGSize(width: 20, height: 20))
+                   let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 20, height: 20))
                     btnHeaderView?.setImage(scalImg, for: .normal)
                 }
             }
@@ -259,7 +259,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 debugPrint(response)
                 
                 if let image = response.result.value {
-                    let scalImg = image.af_imageScaled(to: CGSize(width: 20, height: 20))
+                    let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 20, height: 20))
                     btnHeaderView?.setImage(scalImg, for: .selected)
                 }
             }
@@ -304,7 +304,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         cell.btnFollowUnfollow.tag = kFollowDataTag + indexPath.row
         cell.lblCompanyName.text = objLumineer.displayName
         let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
-        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgCompanyLogo.frame.size.width, height: cell.imgCompanyLogo.frame.size.height))
+        let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgCompanyLogo.frame.size.width, height: cell.imgCompanyLogo.frame.size.height))
         cell.imgCompanyLogo.contentMode = .scaleAspectFit
         cell.imgCompanyLogo.image = scalImg
         cell.imgCompanyLogo?.layer.cornerRadius = (scalImg.size.width)/2
@@ -677,7 +677,7 @@ extension UINavigationItem {
             Alamofire.request(urlOriginalImage!).responseImage { response in
                 debugPrint(response)
                 if let image = response.result.value {
-                    let scalImg = image.af_imageScaled(to: CGSize(width:imgProfile.frame.size.width, height: imgProfile.frame.size.height))
+                    let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:imgProfile.frame.size.width, height: imgProfile.frame.size.height))
                     imgProfile.image = scalImg
                 }
                 }
@@ -842,6 +842,7 @@ extension UINavigationItem {
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.supportTimeStamp.rawValue)
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.advertiseTimeStamp.rawValue)
                     UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.contentTimeStamp.rawValue)
+                    UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.gallaryTimeStamp.rawValue)
                     UserDefaults.standard.setBoolValue(value: false, key: UserDefaultsKeys.isAlreadyLogin)
                     let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     let objLogInVC = storyBoard.instantiateInitialViewController()

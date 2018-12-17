@@ -200,7 +200,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         }
         cell.lblLumineerTitle.text = objCellData["title"] as? String
         let imgThumb = UIImage.decodeBase64(strEncodeData:objCellData["profileImg"] as? String)
-        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
+        let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
         cell.imgLumineerProfile.image = scalImg
         cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
         cell.imgLumineerProfile?.clipsToBounds = true;
@@ -264,21 +264,21 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                         debugPrint(response)
                         
                         if let image = response.result.value {
-                            let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+                            let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
                             cell.imgMessage.image = scalImg
                         }
                     }
                 }
                 else if message?.contentType == "Document" {
                     let image = UIImage.init(named: "docFile")
-                    let scalImg = image?.af_imageScaled(to: CGSize(width: 25, height: 25))
+                    let scalImg = image?.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
                     cell.imgMessage.image = scalImg
                 }
                 else {
                     Alamofire.request(urlOriginalImage!).responseImage { response in
                         debugPrint(response)
                         if let image = response.result.value {
-                            let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+                            let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
                             cell.imgMessage.image = scalImg
                         }
                     }

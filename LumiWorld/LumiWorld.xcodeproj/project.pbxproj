@@ -150,6 +150,7 @@
 		7A3BBA432090867900B96750 /* TGAttachmentMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3BBA412090867800B96750 /* TGAttachmentMessageCell.swift */; };
 		7A80545E211CC3D800138BBD /* AGVideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A80545D211CC3D700138BBD /* AGVideoPlayerView.swift */; };
 		7A94EEC820FA33A400977853 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A94EEC720FA33A300977853 /* Player.swift */; };
+		7AA8B1A621C7CE5300D93B45 /* LumineerGalleryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA8B1A521C7CE5200D93B45 /* LumineerGalleryData.swift */; };
 		7ABBEA3020948A55004EC13C /* SendAttachmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABBEA2F20948A55004EC13C /* SendAttachmentVC.swift */; };
 /* End PBXBuildFile section */
 
@@ -320,6 +321,7 @@
 		7A3BBA412090867800B96750 /* TGAttachmentMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGAttachmentMessageCell.swift; sourceTree = "<group>"; };
 		7A80545D211CC3D700138BBD /* AGVideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AGVideoPlayerView.swift; sourceTree = "<group>"; };
 		7A94EEC720FA33A300977853 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		7AA8B1A521C7CE5200D93B45 /* LumineerGalleryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumineerGalleryData.swift; sourceTree = "<group>"; };
 		7ABBEA2F20948A55004EC13C /* SendAttachmentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendAttachmentVC.swift; sourceTree = "<group>"; };
 		9F02ED078EDE7A7BA7E9DE02 /* Pods-testSVG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testSVG.release.xcconfig"; path = "Pods/Target Support Files/Pods-testSVG/Pods-testSVG.release.xcconfig"; sourceTree = "<group>"; };
 		B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LumiWorld.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -382,6 +384,7 @@
 				09D012C020D92CCF00935B05 /* LumiWorldMessages.swift */,
 				0943CAD720F729D100BF4A51 /* AdvertiseData.swift */,
 				093A6D2E215BB48D004731DE /* LumineerContent.swift */,
+				7AA8B1A521C7CE5200D93B45 /* LumineerGalleryData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -944,6 +947,7 @@
 				097BFA46207E3647001F935C /* TGDeliveryStatusView.swift in Sources */,
 				097BFA41207E3647001F935C /* TGTitleView.swift in Sources */,
 				0964E7332060F981001D6F47 /* CustomTableView.swift in Sources */,
+				7AA8B1A621C7CE5300D93B45 /* LumineerGalleryData.swift in Sources */,
 				0964E71C2060F981001D6F47 /* Validator.swift in Sources */,
 				096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */,
 				0949920E20CA721C005B53C8 /* sendMessageTo.swift in Sources */,

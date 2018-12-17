@@ -79,7 +79,7 @@ class MyLumiProfileVC: UIViewController {
         Alamofire.request(urlOriginalImage!).responseImage { response in
             debugPrint(response)
             if let image = response.result.value {
-                let scalImg = image.af_imageScaled(to: CGSize(width:self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
+                let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
                 self.imgProfilePic.image = scalImg
             }
             }

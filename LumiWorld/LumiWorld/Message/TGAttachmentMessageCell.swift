@@ -129,12 +129,12 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
                     debugPrint(response)
                     if let image = response.result.value {
                         if cellLayout.attachImageViewFrame.size.width > 0, cellLayout.attachImageViewFrame.size.height > 0 {
-                           // let scalImg = image.af_imageScaled(to: CGSize(width:cellLayout.attachImageViewFrame.size.width , height: cellLayout.attachImageViewFrame.size.height))
+                           // let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:cellLayout.attachImageViewFrame.size.width , height: cellLayout.attachImageViewFrame.size.height))
                             self.attachImageView.image = image
                         }
                         else {
 
-                            let scalImg = image.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
+                            let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
                             self.attachImageView.image = scalImg }
                     }
                 }
@@ -152,7 +152,7 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
                             debugPrint(response)
                             
                             if let image = response.result.value {
-                                //let scalImg = image.af_imageScaled(to: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
+                                //let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
                                 self.attachImageView.image = image
                             }
                             }

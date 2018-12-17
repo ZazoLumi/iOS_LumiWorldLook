@@ -319,14 +319,14 @@ extension LumineerMessagesVC : UITableViewDelegate,UITableViewDataSource {
                     debugPrint(response)
                     
                     if let image = response.result.value {
-                        let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
                         cell.imgMessage.image = scalImg
                     }
                 }
             }
             else if objLumiMessage.contentType == "Document" {
                 let image = UIImage.init(named: "docFile")
-                let scalImg = image?.af_imageScaled(to: CGSize(width: 25, height: 25))
+                let scalImg = image?.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
                 cell.imgMessage.image = scalImg
             }
             else {
@@ -334,7 +334,7 @@ extension LumineerMessagesVC : UITableViewDelegate,UITableViewDataSource {
                     debugPrint(response)
                     
                     if let image = response.result.value {
-                        let scalImg = image.af_imageScaled(to: CGSize(width: 25, height: 25))
+                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
                         cell.imgMessage.image = scalImg
                     }
                 }

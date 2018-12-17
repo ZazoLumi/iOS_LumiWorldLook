@@ -95,7 +95,7 @@ class SavedDataVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
 
         cell.lblLumineerTitle.text = objCellData["title"] as? String
         let imgThumb = UIImage.decodeBase64(strEncodeData:objCellData["profileImg"] as? String)
-        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
+        let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
         cell.imgLumineerProfile.image = scalImg
         cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
         cell.imgLumineerProfile?.clipsToBounds = true;

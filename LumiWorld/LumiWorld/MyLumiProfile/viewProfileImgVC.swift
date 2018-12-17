@@ -39,7 +39,7 @@ class viewProfileImgVC: UIViewController {
         Alamofire.request(urlOriginalImage!).responseImage { response in
             debugPrint(response)
             if let image = response.result.value {
-                let scalImg = image.af_imageScaled(to: CGSize(width:self.imgProfile.frame.size.width, height: self.imgProfile.frame.size.height))
+                let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:self.imgProfile.frame.size.width, height: self.imgProfile.frame.size.height))
                 self.imgProfile.image = scalImg
             }
         }
