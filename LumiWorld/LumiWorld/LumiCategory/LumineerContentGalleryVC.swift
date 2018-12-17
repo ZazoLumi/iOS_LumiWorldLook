@@ -18,6 +18,8 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
     @IBOutlet weak var lblAdvPostedTime: UILabel!
     @IBOutlet weak var commentTblHeight : NSLayoutConstraint!
 
+    @IBOutlet weak var btnMuteUnmute: UIButton!
+    @IBOutlet weak var btnPlayPause: UIButton!
     @IBOutlet weak var imgAdvType: UIImageView!
     @IBOutlet weak var lblLumineerName: UILabel!
     @IBOutlet weak var imgLumineerProfile: UIImageView!
@@ -101,55 +103,9 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
         inputTV.resignFirstResponder()
     }
 
-//    var keyboardHeight = 0
-//    @objc func keyboardWillShow(_ n: Notification?) {
-//        if let keyboardSize = (n?.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-//            keyboardHeight = Int(keyboardSize.height)
-//            print(keyboardHeight)
-//            textViewDidChange(inputTV)
-//            IQKeyboardManager.sharedManager().enableAutoToolbar = false
-//        }
-//    }
-//    @objc func keyboardWillHide(_ n: Notification?) {
-//        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
-//            self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) + 44), width:Int(self.w), height: Int(44))
-//            self.inputTV.frame = CGRect(x: 10, y: 0, width:Int( self.w - 64), height: 44)
-//            self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(0), width: 60, height: 44)
-//            IQKeyboardManager.sharedManager().enableAutoToolbar = true
-//        }) { finished in
-//            //default disable scroll here to avoid bouncing
-//        }
-//
-//    }
-//
-//    func textViewDidChange(_ textView: UITextView) {
-//        //1. letters and submit button vars
-//        //3. set height vars
-//        inputTV.isScrollEnabled = true
-//        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
-//            self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) - self.keyboardHeight), width:Int(self.w), height: Int(44))
-//            self.inputTV.frame = CGRect(x: 10, y: 18, width:Int( self.w - 64), height: 34)
-//            self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(18), width: 60, height: 34)
-//        }) { finished in
-//            //default disable scroll here to avoid bouncing
-//        }
-//    }
 
 }
 
-//    lazy var mvPlayerView: AGVideoPlayerView = {
-//        let playerView = AGVideoPlayerView()
-//        playerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width).isActive = true
-//        playerView.heightAnchor.constraint(equalToConstant: 170).isActive = true
-//        //        playerView.leadingAnchor.constraint(equalTo: 0)
-//        //        playerView.videoUrl = url1!
-//        playerView.shouldAutoplay = true
-//        playerView.shouldAutoRepeat = true
-//        playerView.showsCustomControls = false
-//        playerView.shouldSwitchToFullscreen = false
-//        playerView.isMuted = true
-//        return playerView
-//    }()
 
 class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
@@ -213,7 +169,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
     }
 
     @objc func getLatestLumineersContents() {
-        aryContentData = GlobalShareData.sharedGlobal.getAllContents()
+        aryContentData = GlobalShareData.sharedGlobal.getAllContents(isCurrentLumineer: false)
 //        let sorted = aryContentData.sorted { left, right -> Bool in
 //            guard let rightKey = right["message"]?.updatedDate else { return true }
 //            guard let leftKey = left["message"]?.updatedDate else { return true }
@@ -231,11 +187,6 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
-//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 220
-//    }
-
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -270,8 +221,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         var urlOriginalImage : URL? = nil
         if objContent?.contentType == "video" {
             if objContent?.adMediaURL != nil {
-                    if(objContent?.adMediaURL?.hasUrlPrefix())!
-                    {
+                    if(objContent?.adMediaURL?.hasUrlPrefix())!{
                         urlOriginalImage = URL.init(string: (objContent?.adMediaURL!)!)
                     }
                     else {
@@ -289,6 +239,13 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         }
         else if objContent?.contentType == "audio" {
             imgMsgType = UIImage(named:"Asset104")
+            cell.btnPlayPause.addTarget(self, action: #selector(didTapPlayPauseBtn(_:)), for: .touchUpInside)
+            cell.btnPlayPause.tag = indexPath.row + 80000
+            
+            cell.btnMuteUnmute.addTarget(self, action: #selector(didTapMuteUnmuteBtn(_:)), for: .touchUpInside)
+            cell.btnMuteUnmute.tag = indexPath.row + 70000
+            cell.contentView.bringSubview(toFront: cell.btnMuteUnmute)
+            cell.contentView.bringSubview(toFront: cell.btnPlayPause)
         }
         else {
             if objContent?.adMediaURL != nil {
@@ -331,6 +288,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         
         cell.btnSave.addTarget(self, action: #selector(didTapSaveBtn(_:)), for: .touchUpInside)
         cell.btnSave.tag = indexPath.row + 60000
+        
+
 
         cell.aryCommentsData = []
         cell.aryCommentsData = (objContent?.ctnComments.map {return $0})!
@@ -363,7 +322,6 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         objCellData = aryContentData[indexPath.row]
         let objContent = objCellData["message"] as? LumineerContent
         if objContent?.contentType == "audio" {
-
             let urlOriginalImage : URL!
             if objContent?.adMediaURL != nil {
                 if(objContent?.adMediaURL?.hasUrlPrefix())!
@@ -375,8 +333,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                 }
                 playAudioFile(urlOriginalImage: urlOriginalImage)
-                contentCell.contentView.bringSubview(toFront: contentCell.imgAudioPlay)
-
+                contentCell.viewContainer.bringSubview(toFront: contentCell.btnPlayPause)
+                contentCell.viewContainer.bringSubview(toFront: contentCell.btnMuteUnmute)
             }
         }
         else if objContent?.contentType == "video" {
@@ -405,29 +363,9 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       /* var objCellData : [String : Any]!
-            objCellData = aryContentData[indexPath.row]
-        
-            let objContent = objCellData["message"] as? AdvertiseData
-            GlobalShareData.sharedGlobal.isVideoPlaying = false
-            GlobalShareData.sharedGlobal.objCurrentAdv = objContent
-            let realm = try! Realm()
-            let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",objContent?.lumineerId.int ?? Int.self)
-            if objsLumineer.count > 0 {
-                let lumineer = objsLumineer[0]
-                GlobalShareData.sharedGlobal.objCurrentLumineer = lumineer
-            }
-            GlobalShareData.sharedGlobal.objCurretnVC.view.addBlurEffect()
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            objContentertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
-            GlobalShareData.sharedGlobal.objCurretnVC.addChildViewController(self.objContentertiseVC)
-            self.objContentertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
-            GlobalShareData.sharedGlobal.objCurretnVC.view.addSubview(self.objContentertiseVC.view)
-            self.objContentertiseVC
-                .didMove(toParentViewController: self)
-            */
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
     @objc func didTapFullScreenBtn(_ sender: UIButton) {
         let index = sender.tag - 50000
         let indexPath = IndexPath(row: index, section: 0)
@@ -476,10 +414,30 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         hud.label.font = UIFont.init(name: "HelveticaNeue", size: 14)
         hud.offset = CGPoint(x:0, y: UIScreen.main.bounds.height/2)// CGPoint(x: (super.view.width/2)-50, y: super.view.height/2)
         hud.hide(animated: true, afterDelay: 3.0)
-        
     }
    
 
+    @objc func didTapPlayPauseBtn(_ sender: UIButton) {
+        let index = sender.tag - 80000
+        let indexPath = IndexPath(row: index, section: 0)
+        var objCellData : [String : Any]!
+        objCellData = aryContentData[indexPath.row]
+        let objContent = objCellData["message"] as? LumineerContent
+        let urlOriginalImage : URL!
+        currentCell = tableView.cellForRow(at: indexPath) as? ContentGalleryCell;
+        currentCell.btnPlayPause.isSelected = !sender.isSelected
+    }
+    
+    @objc func didTapMuteUnmuteBtn(_ sender: UIButton) {
+        let index = sender.tag - 70000
+        let indexPath = IndexPath(row: index, section: 0)
+        var objCellData : [String : Any]!
+        objCellData = aryContentData[indexPath.row]
+        let objContent = objCellData["message"] as? LumineerContent
+        let urlOriginalImage : URL!
+        currentCell = tableView.cellForRow(at: indexPath) as? ContentGalleryCell;
+        currentCell.btnMuteUnmute.isSelected = !sender.isSelected
+    }
 
     @objc func didTapShareBtn(_ sender: UIButton) {
         let index = sender.tag - 40000
@@ -500,7 +458,6 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
 
             }
         }
-
     }
     
     @objc func didTapReportBtn(_ sender: UIButton) {
@@ -509,7 +466,6 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         var objCellData : [String : Any]!
         objCellData = aryContentData[indexPath.row]
         objCurrentContent = objCellData["message"] as? LumineerContent
-        
     }
     
     @objc func didTapLikeBtn(_ sender: UIButton) {
@@ -573,8 +529,6 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
             print(error.localizedDescription)
         }
     }
-
-
  
 
     @objc func onBtnSendComments(_ sender: Any) {

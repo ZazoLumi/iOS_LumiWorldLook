@@ -439,7 +439,6 @@ class LumiCategory : Object{
     }else{
         print("Internet Connection not Available!")
     }
-
     }
 }
 

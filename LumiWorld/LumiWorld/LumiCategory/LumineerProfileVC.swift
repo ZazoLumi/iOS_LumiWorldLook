@@ -47,7 +47,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     @IBOutlet weak var btnFollowLumineer: UIButton!
     @IBOutlet weak var mainViewHeights: NSLayoutConstraint!
     var objPopupSendMessage : PopupSendMessage! = nil
-    
+    var isVLoaded = false
     private var pageController: UIPageViewController!
     private var arrPageTexts:[UIViewController] = []
     private var currentPage: Int!
@@ -99,7 +99,9 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        setupSegmentData()
+        if !isVLoaded {
+            isVLoaded = true
+            setupSegmentData() }
 
     }
     override func didReceiveMemoryWarning() {

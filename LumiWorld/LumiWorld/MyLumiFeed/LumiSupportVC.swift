@@ -154,5 +154,4 @@ class LumiSupportVC: UIViewController,UITableViewDelegate,UITableViewDataSource 
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.getLatestLumiSupportMessages()
     }
-
 }

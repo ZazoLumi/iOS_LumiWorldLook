@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lKX-4L-Pcc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lKX-4L-Pcc">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -3212,7 +3212,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="330" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Er3-ej-Rah">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="330" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Er3-ej-Rah">
                                 <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -3982,17 +3982,30 @@
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wma-Ps-l1B" customClass="AGVideoPlayerView" customModule="LumiWorld" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="170"/>
                                                                     <subviews>
-                                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Play-icon" translatesAutoresizingMaskIntoConstraints="NO" id="JA0-c3-9dR">
-                                                                            <rect key="frame" x="143" y="68.5" width="33" height="33"/>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LiU-zb-g0b">
+                                                                            <rect key="frame" x="144" y="69" width="33" height="33"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="width" secondItem="JA0-c3-9dR" secondAttribute="height" multiplier="1:1" id="GcP-BZ-AVq"/>
+                                                                                <constraint firstAttribute="width" secondItem="LiU-zb-g0b" secondAttribute="height" multiplier="1:1" id="ZhL-z7-YPw"/>
                                                                             </constraints>
-                                                                        </imageView>
+                                                                            <state key="normal" image="Play-icon"/>
+                                                                            <state key="selected" image="pause"/>
+                                                                        </button>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3W-Y5-osb">
+                                                                            <rect key="frame" x="275" y="15" width="30" height="30"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="height" constant="30" id="7mQ-n4-zeJ"/>
+                                                                                <constraint firstAttribute="width" constant="30" id="v7I-q5-YIZ"/>
+                                                                            </constraints>
+                                                                            <state key="normal" image="mute"/>
+                                                                            <state key="selected" image="unmute"/>
+                                                                        </button>
                                                                     </subviews>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
-                                                                        <constraint firstItem="JA0-c3-9dR" firstAttribute="centerX" secondItem="Wma-Ps-l1B" secondAttribute="centerX" id="QRW-Hg-vbD"/>
-                                                                        <constraint firstItem="JA0-c3-9dR" firstAttribute="centerY" secondItem="Wma-Ps-l1B" secondAttribute="centerY" id="oP6-ti-vmG"/>
+                                                                        <constraint firstItem="LiU-zb-g0b" firstAttribute="centerY" secondItem="Wma-Ps-l1B" secondAttribute="centerY" id="0Tw-tz-YUK"/>
+                                                                        <constraint firstItem="Y3W-Y5-osb" firstAttribute="top" secondItem="Wma-Ps-l1B" secondAttribute="top" constant="15" id="KZA-Gf-yyM"/>
+                                                                        <constraint firstItem="LiU-zb-g0b" firstAttribute="centerX" secondItem="Wma-Ps-l1B" secondAttribute="centerX" id="c6r-wz-poK"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="Y3W-Y5-osb" secondAttribute="trailing" constant="15" id="ofC-NR-rsN"/>
                                                                     </constraints>
                                                                 </view>
                                                             </subviews>
@@ -4215,13 +4228,14 @@
                                             <outlet property="btnComments" destination="oUh-tK-Mgw" id="61u-6j-hGw"/>
                                             <outlet property="btnFullScreen" destination="fDz-WH-sSi" id="j2J-dd-m0Z"/>
                                             <outlet property="btnLike" destination="KDA-j3-5qX" id="K54-Fe-OP7"/>
+                                            <outlet property="btnMuteUnmute" destination="Y3W-Y5-osb" id="pwM-wP-29c"/>
+                                            <outlet property="btnPlayPause" destination="LiU-zb-g0b" id="IOY-is-U1R"/>
                                             <outlet property="btnReport" destination="GA1-oc-Hrl" id="azo-Zo-UiB"/>
                                             <outlet property="btnSave" destination="V9V-Yb-JZQ" id="znS-7L-Y8c"/>
                                             <outlet property="btnShare" destination="sUH-QV-Qu4" id="aUq-Tl-wbs"/>
                                             <outlet property="cellTableView" destination="ibW-Vq-Rnu" id="MVd-mw-Lnl"/>
                                             <outlet property="commentTblHeight" destination="bXQ-yQ-mRZ" id="5RB-9K-N3L"/>
                                             <outlet property="imgAdvType" destination="r82-Kx-85M" id="AOs-Q4-04M"/>
-                                            <outlet property="imgAudioPlay" destination="JA0-c3-9dR" id="mfr-xp-xhG"/>
                                             <outlet property="imgLumineerProfile" destination="ccm-jE-qVh" id="dqy-gC-hLE"/>
                                             <outlet property="lblAdvPostedTime" destination="t3F-6i-1Ob" id="iLX-0T-Coa"/>
                                             <outlet property="lblAdvTitle" destination="m5A-0Z-qKJ" id="qek-qF-TcC"/>
@@ -5593,7 +5607,10 @@
         <image name="Star-Icon" width="23" height="23"/>
         <image name="Star-Icon1" width="23" height="23"/>
         <image name="loginLogo" width="256" height="125"/>
+        <image name="mute" width="20" height="20"/>
         <image name="nazish_passport_size" width="316" height="318"/>
+        <image name="pause" width="33" height="33"/>
+        <image name="unmute" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="pnt-Xu-Aqh"/>

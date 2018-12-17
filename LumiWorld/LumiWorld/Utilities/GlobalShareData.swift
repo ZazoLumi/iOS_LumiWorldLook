@@ -59,9 +59,6 @@ struct Constants {
         static let APIGetAllLumineerContent = "http://lumiimportupload20180622023528.azurewebsites.net/api/GetAllContent"
         static let APIPostLumineerContentComments = "http://lumiimportupload20180622023528.azurewebsites.net/api/PostContentComment"
         static let APIPostLumineerContentLikes = "http://lumiimportupload20180622023528.azurewebsites.net/api/LikeContent"
-
-        
-
    }
 }
 
@@ -453,9 +450,15 @@ class GlobalShareData {
         return aryAdsData
     }
 
-    func getAllContents() -> [[String:AnyObject]]{
+    func getAllContents(isCurrentLumineer:Bool) -> [[String:AnyObject]]{
         let realm = try! Realm()
-        let result  = realm.objects(LumineerContent.self)
+        var result  = realm.objects(LumineerContent.self)
+        if isCurrentLumineer {
+           result  = realm.objects(LumineerContent.self).filter("lumineerId == %d", objCurrentLumineer.id)
+        }
+        else {
+            result  = realm.objects(LumineerContent.self)
+        }
         var aryContentData: [[String:AnyObject]] = []
         if result.count > 0 {
             for objContent in result {

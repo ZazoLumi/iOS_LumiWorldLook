@@ -54,7 +54,7 @@ class LumineerHomeVC: UIViewController,UICollectionViewDelegate,UICollectionView
 
     func setupCotentData() {
         aryContentData = []
-        aryContentData = GlobalShareData.sharedGlobal.getAllContents()
+        aryContentData = GlobalShareData.sharedGlobal.getAllContents(isCurrentLumineer: true)
         delegate?.changeScrollContentSize((aryContentData.count*110/3)+50)
         collectionView.reloadData()
     }

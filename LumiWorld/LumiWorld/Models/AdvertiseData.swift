@@ -69,7 +69,7 @@ class AdvertiseData: Object {
             var urlString: String = ""
             let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.advertiseTimeStamp)
             let lastViewDate = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
-
+            
             if lumineerId != "0" {
                 urlString = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetAllAdsPostedToLumiByALumineer)" + "?lumiMobile=\(cellNumber)" + "&lumineerId=\(lumineerId)" + "&lastViewedTS=\(lastViewDate)"
             }
@@ -83,10 +83,10 @@ class AdvertiseData: Object {
                     guard tempArray.count != 0 else {
                         let realm = try! Realm()
                         var result : Results<AdvertiseData>
-                            result  = realm.objects(AdvertiseData.self)
-                            if result.count > 0 {
-                                completionHandler(result)
-                            }
+                        result  = realm.objects(AdvertiseData.self)
+                        if result.count > 0 {
+                            completionHandler(result)
+                        }
                         return
                     }
                     for index in 0...tempArray.count-1 {
@@ -94,66 +94,66 @@ class AdvertiseData: Object {
                         let realm = try! Realm()
                         let newAdvertiseData = self.getAdvertiseObject(aObject: aObject)
                         let recordExist = realm.objects(AdvertiseData.self).filter("advertiseId = \(newAdvertiseData.advertiseId)")
-                            if recordExist.count == 0 {
-                                try! realm.write {
-                                    realm.add(newAdvertiseData, update: true)
-                                }
-                                if aObject["adFileName"].string != nil, (aObject["adFileName"].string?.count)! > 0 {
-                                   // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-                                    let filePath = newAdvertiseData.adFilePath?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-
-                                    DownloadManager.shared().startFileDownloads(FileDownloadInfo.init(fileTitle: Int32(newAdvertiseData.advertiseId), andDownloadSource: filePath), withCompletionBlock: { (response,url) in
-                                        DispatchQueue.main.async {
-                                            let advData = realm.objects(AdvertiseData.self).filter("advertiseId = \(response)")
-                                            if advData.count > 0 {
-                                                var fileName : String!
-                                                let objCurrentAdv = advData[0] as AdvertiseData
+                        if recordExist.count == 0 {
+                            try! realm.write {
+                                realm.add(newAdvertiseData, update: true)
+                            }
+                            if aObject["adFileName"].string != nil, (aObject["adFileName"].string?.count)! > 0 {
+                                // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                                let filePath = newAdvertiseData.adFilePath?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                                
+                                DownloadManager.shared().startFileDownloads(FileDownloadInfo.init(fileTitle: Int32(newAdvertiseData.advertiseId), andDownloadSource: filePath), withCompletionBlock: { (response,url) in
+                                    DispatchQueue.main.async {
+                                        let advData = realm.objects(AdvertiseData.self).filter("advertiseId = \(response)")
+                                        if advData.count > 0 {
+                                            var fileName : String!
+                                            let objCurrentAdv = advData[0] as AdvertiseData
+                                            if objCurrentAdv.contentType == "Video" {
+                                                var thumbnail1 = url?.thumbnail()
+                                                thumbnail1 = url?.thumbnail(fromTime: 5)
+                                                if thumbnail1 != nil, let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
+                                                    fileName = url?.lastPathComponent
+                                                    fileName = fileName?.deletingPathExtension
+                                                    fileName = fileName?.appendingPathExtension("png")
+                                                    let _ = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: fileName!)
+                                                }
+                                                
+                                            }
+                                            try! realm.write {
                                                 if objCurrentAdv.contentType == "Video" {
-                                                    var thumbnail1 = url?.thumbnail()
-                                                    thumbnail1 = url?.thumbnail(fromTime: 5)
-                                                    if thumbnail1 != nil, let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
-                                                        fileName = url?.lastPathComponent
-                                                        fileName = fileName?.deletingPathExtension
-                                                        fileName = fileName?.appendingPathExtension("png")
-                                                        let _ = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: fileName!)
-                                                    }
-
+                                                    objCurrentAdv.videoThumbFile = fileName
                                                 }
-                                                try! realm.write {
-                                                    if objCurrentAdv.contentType == "Video" {
-                                                        objCurrentAdv.videoThumbFile = fileName
-                                                    }
-                                                    objCurrentAdv.adFilePath = url?.absoluteString.removingPercentEncoding
-                                                    objCurrentAdv.isFileDownloaded = true
-                                                    realm.add(objCurrentAdv, update: true)
-                                                    if index == tempArray.count-1 {
-                                                        print("Download post")
-                                                        NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil) }
-
-                                                }
+                                                objCurrentAdv.adFilePath = url?.absoluteString.removingPercentEncoding
+                                                objCurrentAdv.isFileDownloaded = true
+                                                realm.add(objCurrentAdv, update: true)
+                                                if index == tempArray.count-1 {
+                                                    print("Download post")
+                                                    NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil) }
+                                                
                                             }
                                         }
-
-
-                                    })
-                                }
+                                    }
+                                    
+                                    
+                                })
+                            }
+                        }
+                        else {
+                            if recordExist[0].isFileDownloaded {
+                                newAdvertiseData.isFileDownloaded = true
+                                newAdvertiseData.adFilePath = recordExist[0].adFilePath
+                                newAdvertiseData.adFileName = recordExist[0].adFileName
                             }
                             else {
-                                if recordExist[0].isFileDownloaded {
-                                    newAdvertiseData.isFileDownloaded = true
-                                    newAdvertiseData.adFilePath = recordExist[0].adFilePath
-                                    newAdvertiseData.adFileName = recordExist[0].adFileName
-                                }
-                                else {
-                                    self.downloadFileFromServer(newAdvertiseData: newAdvertiseData)
-                                }
-                                newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
-                                newAdvertiseData.isAdsLiked = recordExist[0].isAdsLiked
-                                newAdvertiseData.contentType = recordExist[0].contentType
-
-                                try! realm.write {
-                                    realm.add(newAdvertiseData, update: true)
-                                }
+                                self.downloadFileFromServer(newAdvertiseData: newAdvertiseData)
+                            }
+                            newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
+                            newAdvertiseData.isAdsLiked = recordExist[0].isAdsLiked
+                            newAdvertiseData.contentType = recordExist[0].contentType
+                            
+                            try! realm.write {
+                                realm.add(newAdvertiseData, update: true)
+                            }
                         }
                     }
                     
