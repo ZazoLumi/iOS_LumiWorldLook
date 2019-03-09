@@ -124,7 +124,7 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
 //                urlOriginalImage = URL(string: filePath!)
             }
             imgPlay.isHidden = true
-            if cellLayout.attachType == "Image" || cellLayout.attachType == "Location" {
+            if (cellLayout.attachType == "Image" || cellLayout.attachType == "Location") && urlOriginalImage != nil{
                 Alamofire.request(urlOriginalImage!).responseImage { response in
                     debugPrint(response)
                     if let image = response.result.value {

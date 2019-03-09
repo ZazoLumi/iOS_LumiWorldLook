@@ -274,7 +274,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                     let scalImg = image?.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
                     cell.imgMessage.image = scalImg
                 }
-                else {
+                else if  urlOriginalImage != nil{
                     Alamofire.request(urlOriginalImage!).responseImage { response in
                         debugPrint(response)
                         if let image = response.result.value {

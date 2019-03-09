@@ -595,6 +595,18 @@ extension Date {
         return timeStamp
     }
     
+    func getFormattedUCTimestamp(key: UserDefaultsKeys) -> String{
+        var timeStamp : String!
+        let olderTimestamp = UserDefaults.standard.getStringValue(key: key) as String
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        let myString = formatter.string(from: Date())
+        UserDefaults.standard.setStringValue(value: myString, key: key)
+        timeStamp = olderTimestamp
+        return timeStamp
+    }
+    
     func getFormattedDate(string: String , formatter:String) -> String{
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = formatter

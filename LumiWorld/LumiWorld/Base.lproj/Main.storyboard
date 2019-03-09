@@ -4103,9 +4103,51 @@
                                                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ibW-Vq-Rnu">
                                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="0.0"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <view key="tableHeaderView" contentMode="scaleToFill" id="8xX-Uu-bNI">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
+                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                        <subviews>
+                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NuN-kX-r5L">
+                                                                                <rect key="frame" x="261" y="6" width="33.5" height="22"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" secondItem="NuN-kX-r5L" secondAttribute="height" multiplier="23:15" id="Tvu-Ua-Ap0"/>
+                                                                                </constraints>
+                                                                                <state key="normal" image="Artboard 134xxhdpi"/>
+                                                                            </button>
+                                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="y0x-yE-Icm">
+                                                                                <rect key="frame" x="15" y="0.0" width="241" height="34"/>
+                                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                                                <userDefinedRuntimeAttributes>
+                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                                        <real key="value" value="1"/>
+                                                                                    </userDefinedRuntimeAttribute>
+                                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                                        <color key="value" red="0.41960784309999999" green="0.77647058820000003" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                    </userDefinedRuntimeAttribute>
+                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                                        <real key="value" value="10"/>
+                                                                                    </userDefinedRuntimeAttribute>
+                                                                                </userDefinedRuntimeAttributes>
+                                                                                <connections>
+                                                                                    <outlet property="delegate" destination="e6X-UW-Flk" id="Tzm-Ee-EOc"/>
+                                                                                </connections>
+                                                                            </textView>
+                                                                        </subviews>
+                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        <constraints>
+                                                                            <constraint firstItem="y0x-yE-Icm" firstAttribute="leading" secondItem="8xX-Uu-bNI" secondAttribute="leading" constant="15" id="5Yx-N2-AOK"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="y0x-yE-Icm" secondAttribute="trailing" constant="64" id="9az-rU-fIP"/>
+                                                                            <constraint firstItem="NuN-kX-r5L" firstAttribute="centerY" secondItem="y0x-yE-Icm" secondAttribute="centerY" id="G5t-PV-knj"/>
+                                                                            <constraint firstItem="y0x-yE-Icm" firstAttribute="top" secondItem="8xX-Uu-bNI" secondAttribute="top" id="hLf-sE-qOA"/>
+                                                                            <constraint firstItem="NuN-kX-r5L" firstAttribute="leading" secondItem="y0x-yE-Icm" secondAttribute="trailing" constant="5" id="hkv-Wn-ufp"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="y0x-yE-Icm" secondAttribute="bottom" id="xkg-3s-7YX"/>
+                                                                        </constraints>
+                                                                    </view>
                                                                     <prototypes>
                                                                         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="advCommentCell" rowHeight="54" id="XAz-Ll-YRm" customClass="advCommentCell" customModule="LumiWorld" customModuleProvider="target">
-                                                                            <rect key="frame" x="0.0" y="28" width="320" height="54"/>
+                                                                            <rect key="frame" x="0.0" y="62" width="320" height="54"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XAz-Ll-YRm" id="U4c-5P-1hF">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="53.5"/>
@@ -4224,6 +4266,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="bottomView" destination="8xX-Uu-bNI" id="gEl-ci-5hl"/>
                                             <outlet property="btnComments" destination="oUh-tK-Mgw" id="61u-6j-hGw"/>
                                             <outlet property="btnFullScreen" destination="fDz-WH-sSi" id="j2J-dd-m0Z"/>
                                             <outlet property="btnLike" destination="KDA-j3-5qX" id="K54-Fe-OP7"/>
@@ -4237,9 +4280,11 @@
                                             <outlet property="imgAdsContent" destination="lBP-R1-gCi" id="FJ9-kQ-jVR"/>
                                             <outlet property="imgAdvType" destination="r82-Kx-85M" id="AOs-Q4-04M"/>
                                             <outlet property="imgLumineerProfile" destination="ccm-jE-qVh" id="dqy-gC-hLE"/>
+                                            <outlet property="inputTV" destination="y0x-yE-Icm" id="mhz-3P-LGx"/>
                                             <outlet property="lblAdvPostedTime" destination="t3F-6i-1Ob" id="iLX-0T-Coa"/>
                                             <outlet property="lblAdvTitle" destination="m5A-0Z-qKJ" id="qek-qF-TcC"/>
                                             <outlet property="lblLumineerName" destination="K2O-6o-DSY" id="vF6-y0-D2C"/>
+                                            <outlet property="submitButton" destination="NuN-kX-r5L" id="hgx-Vm-vbv"/>
                                             <outlet property="viewContainer" destination="v4h-w0-Sb3" id="07Z-JW-zvx"/>
                                         </connections>
                                     </tableViewCell>

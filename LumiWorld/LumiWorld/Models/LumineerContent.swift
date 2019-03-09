@@ -261,6 +261,7 @@ class LumineerContent: Object {
         }
         return newContentData
     }
+    
     func downloadFileFromServer(newAdvertiseData:LumineerContent) {
         // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
         let filePath = newAdvertiseData.adMediaURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
@@ -294,8 +295,6 @@ class LumineerContent: Object {
                     }
                 }
             }
-            
-            
         })
     }
     

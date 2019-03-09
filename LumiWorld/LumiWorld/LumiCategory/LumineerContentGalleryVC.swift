@@ -87,12 +87,19 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
             
         }
         else {
-//            let objLumineer = GlobalShareData.sharedGlobal.objCurrentLumineer
-//            cell.lblLumineerTitle.text = objLumineer?.displayName
-//            let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer?.enterpriseLogo)
-//            cell.imgLumineerProfile.image = imgThumb
+            let realm = try! Realm()
+            cell.lblLumineerTitle.text = objComment.lumineerName
+            let objsLumineer = realm.objects(LumineerList.self).filter("id == %d",Int(objComment.lumineerId))
+            if objsLumineer.count > 0 {
+                let imgThumb = UIImage.decodeBase64(strEncodeData:objsLumineer.first?.enterpriseLogo)
+                cell.imgLumineerProfile.image = imgThumb
+            }
         }
-        cell.lblMessageTime.text = Date().getFormattedDate(string: (objComment.strCreatedDate)!, formatter: "yyyy-MM-dd HH:mm")
+        var strDate = (objComment.strUpdatedDate)!
+        if strDate.contains(".") {
+            strDate = strDate.components(separatedBy: ".").first!
+        }
+        cell.lblMessageTime.text = Date().getFormattedDate(string: strDate, formatter: "yyyy-MM-dd HH:mm")
         cell.lblMessageDetails.text = objComment.commentBody
 
         return cell
@@ -102,8 +109,6 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         inputTV.resignFirstResponder()
     }
-
-
 }
 
 
@@ -136,7 +141,6 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
 //        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
         self.tableView.addSubview(self.refreshControl)
         self.tableView!.tableFooterView = UIView()
-
         // Do any additional setup after loading the view.
     }
     
@@ -286,7 +290,12 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
 
         cell.btnLike.addTarget(self, action: #selector(didTapLikeBtn(_:)), for: .touchUpInside)
         cell.btnLike.tag = indexPath.row + 20000
-
+        let likeCount = Int((objContent?.likeCount)!)
+        if likeCount > 0 {
+            cell.btnLike.setTitle("\(likeCount)", for: .normal)
+            cell.btnLike.setTitle("\(likeCount)", for: .selected)
+        }
+        cell.btnLike.isSelected = (objContent?.isGlrLiked)!
         cell.btnReport.addTarget(self, action: #selector(didTapReportBtn(_:)), for: .touchUpInside)
         cell.btnReport.tag = indexPath.row + 30000
         
@@ -305,7 +314,6 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         if objCellData["isSelected"] as? String == "true" {
             cell.cellTableView.reloadData()
             cell.submitButton.addTarget(self, action: #selector(self.onBtnSendComments(_:)), for: .touchUpInside)
-            
         }
         else {
             cell.aryCommentsData = []
@@ -432,6 +440,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let _ : URL!
         currentCell = tableView.cellForRow(at: indexPath) as? ContentGalleryCell;
         currentCell.btnPlayPause.isSelected = !sender.isSelected
+        if sender.isSelected {objPlayer?.play()}
+        else {objPlayer?.stop()}
     }
     
     @objc func didTapMuteUnmuteBtn(_ sender: UIButton) {

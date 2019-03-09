@@ -51,7 +51,7 @@ class LumineerGalleryData: Object {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             // let cellNumber = param["lumiMobile"]!
-            let originalString = Date().getFormattedTimestamp(key: UserDefaultsKeys.gallaryTimeStamp)
+            let originalString = Date().getFormattedUCTimestamp(key: UserDefaultsKeys.gallaryTimeStamp)
             let lastViewDate = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
             var urlString : String!
             if lastViewDate != "" {
@@ -149,26 +149,40 @@ class LumineerGalleryData: Object {
             newContentData.contentType = aObject["contentFileType"].stringValue
         }
         newContentData.contentFileType = aObject["contentType"].stringValue
-        
+        newContentData.isGlrLiked = false
         var commnets : [JSON] = []
+        var likes : [JSON] = []
+
         if aObject["galleryType"].stringValue == "Content" {
             if aObject["contentComments"].array != nil && (aObject["contentComments"].array?.count)! > 0 {
                 commnets = aObject["contentComments"].array!}
             newContentData.likeCount = aObject["lumiLikeCountContent"].doubleValue
             newContentData.commentCount = aObject["lumiCommentsCountContent"].doubleValue
+            if aObject["contentLikes"].array != nil && (aObject["contentLikes"].array?.count)! > 0 {
+                likes = aObject["contentLikes"].array!}
         }
         else {
             if aObject["lumiAdCommentList"].array != nil && (aObject["lumiAdCommentList"].array?.count)! > 0 {
                 commnets = aObject["lumiAdCommentList"].array!}
             newContentData.likeCount = aObject["lumiAdCLikeCount"].doubleValue
             newContentData.commentCount = aObject["lumiAdCommentsCount"].doubleValue
-
+            if aObject["lumiAdCLikes"].array != nil && (aObject["lumiAdCLikes"].array?.count)! > 0 {
+                likes = aObject["lumiAdCLikes"].array!}
         }
         newContentData.isGlrSaved = false
         newContentData.isGlrLiked = false
         
-        
-        
+        if ((likes.count) > 0) {
+            for lObject in likes {
+                guard let lumiDetails = lObject["lumiDetails"].dictionaryObject else {
+                    continue
+                }
+                if (lumiDetails["cell"] as! String) == GlobalShareData.sharedGlobal.userCellNumber &&  lObject["like"].boolValue{
+                    newContentData.isGlrLiked = true
+                    break
+                }
+            }
+        }
         
         if ((commnets.count) > 0) {
             let realm = try! Realm()
@@ -180,14 +194,16 @@ class LumineerGalleryData: Object {
                 newCtnCommnetsData.isPostedByLumi = cObject["isPostedByLumi"].boolValue
                 newCtnCommnetsData.isPostedByLumineer = cObject["isPostedByLumineer"].boolValue
                 newCtnCommnetsData.contentID = cObject["contentID"].stringValue
-                let lumineerDetails = aObject["lumineerDetails"]
-                newCtnCommnetsData.lumineerId = lumineerDetails["lumineerId"].doubleValue
                 newCtnCommnetsData.strCreatedDate = cObject["createdDate"].stringValue
                 newCtnCommnetsData.strUpdatedDate = cObject["updatedDate"].stringValue
                 let lumiDetails = aObject["lumiDetails"]
                 newCtnCommnetsData.lumiMobile = lumiDetails["cell"].doubleValue
                 newCtnCommnetsData.lumiName = cObject["lumiName"].stringValue
-                newCtnCommnetsData.lumiName = cObject["lumiName"].stringValue
+                if let lumineerDetails = cObject["lumineerDetails"].dictionaryObject  {
+                    
+                newCtnCommnetsData.lumineerId = (lumineerDetails["lumineerId"] as! Double)
+                    newCtnCommnetsData.lumineerName = (lumineerDetails["lumineerName"] as! String)}
+
                 try! realm.write {
                     realm.add(newCtnCommnetsData, update: true)
                     newContentData.glrComments.append(newCtnCommnetsData)

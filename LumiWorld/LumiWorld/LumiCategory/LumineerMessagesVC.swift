@@ -15,7 +15,6 @@ import MBProgressHUD
 
 class SubjectCell: UITableViewCell {
     @IBOutlet weak var imgStatus: UIImageView!
-    
     @IBOutlet weak var lblSubject: UILabel!
     @IBOutlet weak var lblMessage: UILabel!
     @IBOutlet weak var lblDate: UILabel!
@@ -329,7 +328,7 @@ extension LumineerMessagesVC : UITableViewDelegate,UITableViewDataSource {
                 let scalImg = image?.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
                 cell.imgMessage.image = scalImg
             }
-            else {
+            else if urlOriginalImage != nil{
                 Alamofire.request(urlOriginalImage!).responseImage { response in
                     debugPrint(response)
                     
