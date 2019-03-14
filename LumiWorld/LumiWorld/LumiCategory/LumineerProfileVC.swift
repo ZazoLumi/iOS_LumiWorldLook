@@ -360,7 +360,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     func willCollapseLabel(_ label: ExpandableLabel) {
         lblExpandableDescription.shouldCollapse = false
         lblExpandableDescription.numberOfLines = 2
-        calculateCurrentHeight()
+        mainViewHeights.constant = 230
+        //calculateCurrentHeight()
     }
     
     func didCollapseLabel(_ label: ExpandableLabel) {
@@ -733,6 +734,19 @@ extension Date {
         let date1Seconds = self.secondsFromBeginningOfTheDay()
         let date2Seconds = date.secondsFromBeginningOfTheDay()
         return date2Seconds - date1Seconds
+    }
+}
+extension String {
+    var htmlToAttributedString: NSAttributedString? {
+        guard let data = data(using: .utf8) else { return NSAttributedString() }
+        do {
+            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue], documentAttributes: nil)
+        } catch {
+            return NSAttributedString()
+        }
+    }
+    var htmlToString: String {
+        return htmlToAttributedString?.string ?? ""
     }
 }
 

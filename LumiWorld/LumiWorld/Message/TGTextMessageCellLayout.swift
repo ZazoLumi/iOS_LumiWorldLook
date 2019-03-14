@@ -53,7 +53,7 @@ class TGTextMessageCellLayout: TGBaseMessageCellLayout {
     }
     
     private func setupAttributedText() {
-        let text = message.text
+        let text = message.text?.htmlToString
         let attributedText = NSMutableAttributedString(string: text!, attributes: [NSAttributedStringKey.font: Style.textFont, NSAttributedStringKey.foregroundColor: Style.textColor])
         
         if text == "/start" {

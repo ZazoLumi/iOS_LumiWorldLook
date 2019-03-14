@@ -207,7 +207,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         cell.imgRedDot.isHidden = true
         if !isFiltering() && objCellData["type"] as? String == "adv" {
             let objAdv = objCellData["message"] as? AdvertiseData
-            let myStr = underlinedString(string: (objAdv?.contentTitle)! as NSString, term: "")
+            let myStr = underlinedString(string: (objAdv?.contentTitle?.htmlToString)! as NSString, term: "")
             cell.lblMessageDetails.attributedText = myStr
             var msgCatDate = "ADS"
             msgCatDate.append(" | \(Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "yyyy-MM-dd HH:mm"))")
@@ -227,7 +227,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         else {
             cell.imgRedDot.isHidden = false
             let message = objCellData["message"] as? LumiMessage
-            let myStr = underlinedString(string: (message?.newsFeedBody)! as NSString, term: strSearchText)
+            let myStr = underlinedString(string: (message?.newsFeedBody?.htmlToString)! as NSString, term: strSearchText)
             cell.lblMessageDetails.attributedText = myStr
             var msgCatDate = message?.messageCategory
             msgCatDate?.append(" | \(Date().getFormattedDate(string: (message?.newsfeedPostedTime!)!, formatter: "yyyy-MM-dd HH:mm"))")

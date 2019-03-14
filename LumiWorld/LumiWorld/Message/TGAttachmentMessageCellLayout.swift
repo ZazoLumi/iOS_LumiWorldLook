@@ -63,7 +63,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
         guard message.text?.count != nil  else{
             return
         }
-        let text = message.text
+        let text = message.text?.htmlToString
         let attributedText = NSMutableAttributedString(string: text!, attributes: [NSAttributedStringKey.font: Style.textFont, NSAttributedStringKey.foregroundColor: Style.textColor])
         
         if text == "/start" {

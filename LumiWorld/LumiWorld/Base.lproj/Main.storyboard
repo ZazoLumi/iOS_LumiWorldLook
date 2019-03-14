@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lKX-4L-Pcc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lKX-4L-Pcc">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -351,7 +351,7 @@
                         <outlet property="lblCompanyName" destination="T2t-Xi-Bf2" id="59o-Ke-8wS"/>
                         <outlet property="lblExpandableDescription" destination="NKE-91-HRK" id="44y-RA-CG3"/>
                         <outlet property="lblFollowers" destination="voc-XI-V39" id="O1F-NK-h0o"/>
-                        <outlet property="mainViewHeights" destination="DtE-Lu-0ay" id="3XB-m1-d3k"/>
+                        <outlet property="mainViewHeights" destination="7Rn-S6-Ykr" id="PPy-z7-csn"/>
                         <outlet property="ratingVC" destination="QaV-rz-8Lz" id="zAY-XG-e1L"/>
                         <outlet property="scrollContentView" destination="xZd-Ef-11X" id="Clm-tS-24o"/>
                         <outlet property="segmentedControlView" destination="re3-2e-yBT" id="f8U-Wu-kMp"/>
