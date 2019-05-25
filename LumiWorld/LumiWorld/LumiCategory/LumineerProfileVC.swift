@@ -325,7 +325,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         }
         
         //todo \(String(describing: GlobalShareData.sharedGlobal.currentUserDetails.displayName))
-        objLumineer.getLumineerCompanyUnReadMessageCounts(param:["cellNumber":GlobalShareData.sharedGlobal.userCellNumber ,"lumineerName":""]) { (json) in
+        objLumineer.getLumineerCompanyUnReadMessageCounts(param:["cellNumber":GlobalShareData.sharedGlobal.userCellNumber ,"lumineerName":objLumineer.displayName!]) { (json) in
             let strCount = json["unreadCount"]!
             self.btnInboxCount.setTitle("\(strCount) INBOX", for: .normal)
             try! realm.write({
@@ -414,7 +414,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     
     @IBAction func onBtnInboxCountTapped(_ sender: UIButton) {
         // btnInboxCount.isSelected = !sender.isSelected
-        
+        self.tabBarController?.selectedIndex = 1
     }
     @IBAction func onBtnFollowTapped(_ sender: UIButton) {
         if !sender.isSelected {

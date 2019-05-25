@@ -65,11 +65,11 @@ class MessageManager: NSObject{//, NOCClientDelegate {
             let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
             var aryUnreadMessage : [String] = []
             objLumiMessage.getLumiMessage(param: ["cellNumber":GlobalShareData.sharedGlobal.userCellNumber,"startIndex":"0","endIndex":"10000","lastViewDate":escapedString!], nParentId: GlobalShareData.sharedGlobal.objCurrentLumineer.parentid) { (objLumineer) in
-                if objLumineer.lumiMessages.count > 0 && !GlobalShareData.sharedGlobal.objCurrentLumiMessage.isInvalidated {
-                var aryLumiMessage = objLumineer.lumiMessages.filter("messageSubjectId = %ld",GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId)
-                aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "createdTime", ascending: true)
+                if (objLumineer?.lumiMessages.count)! > 0 && !GlobalShareData.sharedGlobal.objCurrentLumiMessage.isInvalidated {
+                    var aryLumiMessage = objLumineer?.lumiMessages.filter("messageSubjectId = %ld",GlobalShareData.sharedGlobal.objCurrentLumiMessage.messageSubjectId)
+                    aryLumiMessage = aryLumiMessage?.sorted(byKeyPath: "createdTime", ascending: true)
                 var date : Date!
-                for (index, obj) in aryLumiMessage.enumerated() {
+                    for (index, obj) in (aryLumiMessage?.enumerated())! {
                     print("Item \(index): \(obj)")
                     //                if obj.value(forKeyPath:"contentType") as! String == "Text" {
                     //

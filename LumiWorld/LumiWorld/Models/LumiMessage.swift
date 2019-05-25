@@ -54,7 +54,7 @@ class LumiMessage : Object {
             return "id"
     }
     
-    func getLumiMessage(param:[String:String],nParentId:Int,completionHandler: @escaping (_ objData: LumineerList) -> Void) {
+    func getLumiMessage(param:[String:String],nParentId:Int,completionHandler: @escaping (_ objData: LumineerList?) -> Void) {
         if Reachability.isConnectedToNetwork(){
             print("Internet Connection Available!")
             let cellNumber = param["cellNumber"]!
@@ -85,7 +85,9 @@ class LumiMessage : Object {
                             result  = realm.objects(LumiCategory.self)
                             if result.count > 0 {
                                 let objCategory = result[0] as LumiCategory
-                                completionHandler(objCategory.lumineerList[0])
+                                if objCategory.lumineerList.count > 0 {
+                                    completionHandler(objCategory.lumineerList[0]) }
+                                completionHandler(nil)
                             }
                         }
                         return
@@ -125,7 +127,7 @@ class LumiMessage : Object {
                             newLumiMessage.isDeletedByLumi = aObject["isDeletedByLumi"].boolValue
                             newLumiMessage.messageSubject = aObject["messageSubject"].string
                             newLumiMessage.imageURL = aObject["imageURL"].string
-                            newLumiMessage.newsFeedBody = aObject["newsFeedBody"].string
+                            newLumiMessage.newsFeedBody = aObject["newsFeedBody"].string?.htmlToString
                             newLumiMessage.newsFeedHeader = aObject["newsFeedHeader"].string
                             newLumiMessage.tags = aObject["tags"].string
                             newLumiMessage.contentType = aObject["contentType"].string

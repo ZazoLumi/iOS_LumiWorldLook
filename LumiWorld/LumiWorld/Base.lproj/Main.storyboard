@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lKX-4L-Pcc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lKX-4L-Pcc">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -234,7 +234,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RCh-tP-Q1t">
-                                        <rect key="frame" x="239" y="38.5" width="58" height="34"/>
+                                        <rect key="frame" x="231" y="38.5" width="66" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="34" id="ieJ-SQ-Atn"/>
                                         </constraints>
@@ -242,7 +242,7 @@
                                         <color key="tintColor" red="0.85490196078431369" green="0.098039215686274508" blue="0.074509803921568626" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <inset key="titleEdgeInsets" minX="-10" minY="20" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="26" minY="-10" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="0 Inbox" image="Artboard 93xxhdpi"/>
+                                        <state key="normal" title="0 INBOX" image="Artboard 93xxhdpi"/>
                                         <state key="selected">
                                             <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>

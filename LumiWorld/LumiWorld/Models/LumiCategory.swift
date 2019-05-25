@@ -300,7 +300,8 @@ class LumineerList : Object {
             print("Internet Connection Available!")
             let cellNumber = param["cellNumber"]!
             let userName = param["lumineerName"]!
-            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerUnReadMessageCounts)" + "?cellNumber=\(cellNumber)" + "&lumineerName=\(userName)"
+            let urlString: String = Constants.APIDetails.APIScheme + "\(Constants.APIDetails.APIGetLumineerUnReadMessageCounts)" + "?cellNumber=\(cellNumber)" + "&lumineerName=\(userName.urlEncoded()!)"
+
             do {
                 AFWrapper.requestGETURL(urlString, success: { (json) in
                     let tempDict = json.dictionary
@@ -456,4 +457,35 @@ func getLocalFormatedCurrentData() -> String
     return updatedString
 }
 
+public extension CharacterSet {
+    
+    public static let urlQueryParameterAllowed = CharacterSet.urlQueryAllowed.subtracting(CharacterSet(charactersIn: "&?"))
+    
+    public static let urlQueryDenied           = CharacterSet.urlQueryAllowed.inverted()
+    public static let urlQueryKeyValueDenied   = CharacterSet.urlQueryParameterAllowed.inverted()
+    public static let urlPathDenied            = CharacterSet.urlPathAllowed.inverted()
+    public static let urlFragmentDenied        = CharacterSet.urlFragmentAllowed.inverted()
+    public static let urlHostDenied            = CharacterSet.urlHostAllowed.inverted()
+    
+    public static let urlDenied                = CharacterSet.urlQueryDenied
+        .union(.urlQueryKeyValueDenied)
+        .union(.urlPathDenied)
+        .union(.urlFragmentDenied)
+        .union(.urlHostDenied)
+    
+    
+    public func inverted() -> CharacterSet {
+        var copy = self
+        copy.invert()
+        return copy
+    }
+}
+
+
+
+public extension String {
+    func urlEncoded(denying deniedCharacters: CharacterSet = .urlDenied) -> String? {
+        return addingPercentEncoding(withAllowedCharacters: deniedCharacters.inverted())
+    }
+}
 

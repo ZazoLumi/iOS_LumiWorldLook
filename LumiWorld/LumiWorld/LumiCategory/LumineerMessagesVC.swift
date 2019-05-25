@@ -81,11 +81,11 @@ class LumineerMessagesVC: UIViewController,UIImagePickerControllerDelegate, UINa
             let distinctTypes = Array(Set(realm.objects(LumiMessage.self).value(forKey: "messageCategory") as! [String]))
             self.aryActivityData = []
             for objUniqueItem in distinctTypes {
-                var aryLumiMessage = objLumineer.lumiMessages.filter("messageCategory = %@",objUniqueItem)
-                aryLumiMessage = aryLumiMessage.sorted(byKeyPath: "id", ascending: false)
+                var aryLumiMessage = objLumineer?.lumiMessages.filter("messageCategory = %@",objUniqueItem)
+                aryLumiMessage = aryLumiMessage?.sorted(byKeyPath: "id", ascending: false)
                 
                 var uniqueObjects : [LumiMessage] = [LumiMessage]()
-                for obj in aryLumiMessage {
+                for obj in aryLumiMessage! {
                     if obj.value(forKeyPath:"messageSubject") != nil {
                         let value = obj.value(forKeyPath:"messageSubject") as! String
                         var isContain = false

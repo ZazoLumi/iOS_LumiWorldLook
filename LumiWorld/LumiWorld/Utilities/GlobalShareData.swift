@@ -562,23 +562,17 @@ class GlobalShareData {
             GlobalShareData.sharedGlobal.deleteExpiredAds()
         }
         
-        dispatchGroup.enter()
         let objContent = LumineerContent()
         
         objContent.getLumineerContents(param:["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
-            dispatchGroup.leave()
         }
         
         let objGallary = LumineerGalleryData()
         
         objGallary.getLumineerGetAllGallaryContents(param:["lumiMobile" :GlobalShareData.sharedGlobal.userCellNumber,"lumineerId":"0"]) { (result) in
-            dispatchGroup.leave()
         }
 
         
-        dispatchGroup.notify(queue: .main) {
-            print("Both functions complete 👍")
-        }
     }
 }
 
