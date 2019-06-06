@@ -2,7 +2,7 @@
 //  ESTabBarController.swift
 //
 //  Created by Vincent Li on 2017/2/8.
-//  Copyright (c) 2013-2017 ESTabBarController (https://github.com/eggswift/ESTabBarController)
+//  Copyright (c) 2013-2018 ESTabBarController (https://github.com/eggswift/ESTabBarController)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -33,14 +33,14 @@ public typealias ESTabBarControllerDidHijackHandler = ((_ tabBarController: UITa
 open class ESTabBarController: UITabBarController, ESTabBarDelegate {
     
     /// 打印异常
-    open static func printError(_ description: String) {
+    public static func printError(_ description: String) {
         #if DEBUG
             print("ERROR: ESTabBarController catch an error '\(description)' \n")
         #endif
     }
     
     /// 当前tabBarController是否存在"More"tab
-    open static func isShowingMore(_ tabBarController: UITabBarController?) -> Bool {
+    public static func isShowingMore(_ tabBarController: UITabBarController?) -> Bool {
         return tabBarController?.moreNavigationController.parent != nil
     }
 
@@ -63,7 +63,7 @@ open class ESTabBarController: UITabBarController, ESTabBarDelegate {
                 ignoreNextSelection = false
                 return
             }
-            guard let tabBar = self.tabBar as? ESTabBar, let items = tabBar.items, let index = viewControllers?.index(of: newValue) else {
+            guard let tabBar = self.tabBar as? ESTabBar, let items = tabBar.items, let index = viewControllers?.firstIndex(of: newValue) else {
                 return
             }
             let value = (ESTabBarController.isShowingMore(self) && index > items.count - 1) ? items.count - 1 : index
@@ -101,7 +101,7 @@ open class ESTabBarController: UITabBarController, ESTabBarDelegate {
 
     // MARK: - UITabBar delegate
     open override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        guard let idx = tabBar.items?.index(of: item) else {
+        guard let idx = tabBar.items?.firstIndex(of: item) else {
             return;
         }
         if idx == tabBar.items!.count - 1, ESTabBarController.isShowingMore(self) {
@@ -130,21 +130,21 @@ open class ESTabBarController: UITabBarController, ESTabBarDelegate {
     
     // MARK: - ESTabBar delegate
     internal func tabBar(_ tabBar: UITabBar, shouldSelect item: UITabBarItem) -> Bool {
-        if let idx = tabBar.items?.index(of: item), let vc = viewControllers?[idx] {
+        if let idx = tabBar.items?.firstIndex(of: item), let vc = viewControllers?[idx] {
             return delegate?.tabBarController?(self, shouldSelect: vc) ?? true
         }
         return true
     }
     
     internal func tabBar(_ tabBar: UITabBar, shouldHijack item: UITabBarItem) -> Bool {
-        if let idx = tabBar.items?.index(of: item), let vc = viewControllers?[idx] {
+        if let idx = tabBar.items?.firstIndex(of: item), let vc = viewControllers?[idx] {
             return shouldHijackHandler?(self, vc, idx) ?? false
         }
         return false
     }
     
     internal func tabBar(_ tabBar: UITabBar, didHijack item: UITabBarItem) {
-        if let idx = tabBar.items?.index(of: item), let vc = viewControllers?[idx] {
+        if let idx = tabBar.items?.firstIndex(of: item), let vc = viewControllers?[idx] {
             didHijackHandler?(self, vc, idx)
         }
     }

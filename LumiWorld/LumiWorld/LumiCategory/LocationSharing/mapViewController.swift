@@ -220,7 +220,7 @@ extension mapViewController : CLLocationManagerDelegate {
             print(address)
             self.strLocationAddress = address
         }
-        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         let region = MKCoordinateRegion(center: location.coordinate, span: span)
         mapView.setRegion(region, animated: true)
     }
@@ -272,8 +272,8 @@ extension mapViewController: HandleMapSearch {
         currentLong =  (placemark.location?.coordinate.longitude)!
 
         mapView.addAnnotation(annotation)
-        let span = MKCoordinateSpanMake(0.05, 0.05)
-        let region = MKCoordinateRegionMake(placemark.coordinate, span)
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
         mapView.setRegion(region, animated: true)
     }
     
@@ -293,7 +293,7 @@ extension mapViewController : MKMapViewDelegate {
         pinView?.canShowCallout = true
         let smallSquare = CGSize(width: 30, height: 30)
         let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: smallSquare))
-        button.setBackgroundImage(UIImage(named: "car"), for: UIControlState())
+        button.setBackgroundImage(UIImage(named: "car"), for: UIControl.State())
         button.addTarget(self, action: #selector(mapViewController.getDirections), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
         

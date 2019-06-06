@@ -69,7 +69,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     func presentDocument(at documentURL: URL) {
         let destinationFilename = documentURL.lastPathComponent
 
-        let alert = UIAlertController(title: "", message: "Send \(destinationFilename) to \(GlobalShareData.sharedGlobal.objCurrentLumineer.name!) ?", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "", message: "Send \(destinationFilename) to \(GlobalShareData.sharedGlobal.objCurrentLumineer.name!) ?", preferredStyle: UIAlertController.Style.alert)
 
         let notNowAction = UIAlertAction(title: "Cancel", style: .default)
         notNowAction.setValue(UIColor.lumiGreen, forKey: "titleTextColor")

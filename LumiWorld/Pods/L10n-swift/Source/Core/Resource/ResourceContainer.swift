@@ -10,76 +10,50 @@ import Foundation
 
 internal class ResourceContainer {
 
-    private let name: String
-    private let bundle: Bundle?
-    private var resource: Resource = EmptyResource()
+    private var resource: Resource
 
-    subscript(keyPath: String) -> String? {
-        return self.resource[keyPath]
+    subscript(keyPath: String, fittingWidth: Int?) -> String? {
+        return self[keyPath].text(for: fittingWidth)
     }
 
-    init(bundle: Bundle?, name: String) {
-        self.name = name
-        self.bundle = bundle
+    subscript(keyPath: String, variants: [Plural], fittingWidth: Int?) -> String? {
+        let resource = self[keyPath]
 
-        self.resource = [
-            self.cleanStringsdict(self.loadDictionary(ofType: "stringsdict")),
-            self.loadDictionary(ofType: "strings"),
-            self.loadDictionary(ofType: "plist"),
-            self.loadJSON(),
-        ].reduce(self.resource) { $0.merging(DictionaryResource($1)) }
+        #if swift(>=4.1)
+            let variants = variants.lazy.compactMap { plural in
+                resource[plural.rawValue].text(for: fittingWidth)
+            }
+        #else
+            let variants = variants.lazy.flatMap { plural in
+                resource[plural.rawValue].text(for: fittingWidth)
+            }
+        #endif
+
+        return variants.first ?? resource.text(for: fittingWidth)
+    }
+
+    private subscript(keyPath: String) -> Resource {
+        return keyPath.components(separatedBy: ".").reduce(self.resource) { resource, key in
+            resource[key]
+        } as Resource
     }
 
     func inject(dictionary: [String: Any]) {
-        self.resource = self.resource.merging(DictionaryResource(self.cleanStringsdict(dictionary)))
+        self.resource = DictionaryResource(dictionary).merging(self.resource)
     }
 
-    private func loadJSON() -> [String: Any] {
-        guard let path = self.bundle?.path(forResource: self.name, ofType: "json"),
-            let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
-            let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
-            let dictionary = json as? [String: Any]
-        else {
-            return [:]
-        }
-        return dictionary
-    }
+    init(bundles: [Bundle], name: String) {
+        let providers: [ResourceProvider] = [
+            StringsdictResourceProvider(),
+            StringsResourceProvider(),
+            PlistResourceProvider(),
+            JsonResourceProvider(),
+        ]
 
-    private func loadDictionary(ofType type: String) -> [String: Any] {
-        guard let path = self.bundle?.path(forResource: self.name, ofType: type),
-            let dictionary = NSDictionary(contentsOfFile: path) as? [String: Any]
-        else {
-            return [:]
-        }
-        return dictionary
-    }
-
-    private func cleanStringsdict(_ dictionary: [String: Any]) -> [String: Any] {
-        var dictionary = dictionary
-        dictionary.keys.forEach {
-            guard let format = dictionary[$0] as? [String: Any] else {
-                return
-            }
-
-            if let key = self.formatKey(for: format), var value = format[key] as? [String: Any] {
-                value.removeValue(forKey: "NSStringFormatSpecTypeKey")
-                value.removeValue(forKey: "NSStringFormatValueTypeKey")
-                dictionary[$0] = value
-            } else {
-                dictionary[$0] = self.cleanStringsdict(format)
+        self.resource = bundles.reduce(EmptyResource()) { result, bundle in
+            providers.reduce(result) { resource, provider in
+                resource.merging(provider.load(name: name, in: bundle))
             }
         }
-        return dictionary
-    }
-
-    private func formatKey(for dictionary: [String: Any]) -> String? {
-        guard let format = dictionary["NSStringLocalizedFormatKey"] as? String,
-            let regularExpression = try? NSRegularExpression(pattern: "@(.+?)@", options: []),
-            let match = regularExpression.matches(in: format, options: [], range: NSRange(location: 0, length: format.count)).first,
-            let range = Range(match.range(at: 1), in: format)
-        else {
-            return nil
-        }
-        return format[range].description
     }
 }

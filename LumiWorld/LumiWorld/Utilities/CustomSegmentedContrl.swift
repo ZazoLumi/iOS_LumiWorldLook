@@ -195,6 +195,6 @@ class CustomSegmentedContrl: UIControl {
 }
 extension String {
     func SizeOf(_ font: UIFont) -> CGSize {
-        return self.size(withAttributes: [NSAttributedStringKey.font: font])
+        return self.size(withAttributes: [NSAttributedString.Key.font: font])
     }
 }

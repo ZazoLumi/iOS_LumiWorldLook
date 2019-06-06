@@ -121,7 +121,7 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
     
     private func createPageViewController() {
         
-        pageController = UIPageViewController.init(transitionStyle: UIPageViewControllerTransitionStyle.scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.horizontal, options: nil)
+        pageController = UIPageViewController.init(transitionStyle: UIPageViewController.TransitionStyle.scroll, navigationOrientation: UIPageViewController.NavigationOrientation.horizontal, options: nil)
         
         pageController.view.backgroundColor = UIColor.clear
         pageController.delegate = self
@@ -165,11 +165,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         arrPageTexts.append(objLumineerAdvertiseVC)
         arrPageTexts.append(objCoomingsoon)
         arrPageTexts.append(objLumineerMessageVC)
-        pageController.setViewControllers([objLumineerHomeVC], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+        pageController.setViewControllers([objLumineerHomeVC], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
         
-        self.addChildViewController(pageController)
+        self.addChild(pageController)
         scrollContentView.addSubview(pageController.view)
-        pageController.didMove(toParentViewController: self)
+        pageController.didMove(toParent: self)
         
     }
     
@@ -236,36 +236,36 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         
         switch sender.selectedSegmentIndex {
         case 0:
-            pageController.setViewControllers([arrPageTexts[0]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+            pageController.setViewControllers([arrPageTexts[0]], direction: UIPageViewController.NavigationDirection.reverse, animated: true, completion: nil)
             currentPage = 0
         case 1:
             if currentPage > 1{
-                pageController.setViewControllers([arrPageTexts[1]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+                pageController.setViewControllers([arrPageTexts[1]], direction: UIPageViewController.NavigationDirection.reverse, animated: true, completion: nil)
                 currentPage = 1
             }else{
-                pageController.setViewControllers([arrPageTexts[1]], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
+                pageController.setViewControllers([arrPageTexts[1]], direction: UIPageViewController.NavigationDirection.forward, animated: true, completion: nil)
                 currentPage = 1
                 
             }
         case 2:
             if currentPage < 2 {
-                pageController.setViewControllers([arrPageTexts[2]], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
+                pageController.setViewControllers([arrPageTexts[2]], direction: UIPageViewController.NavigationDirection.forward, animated: true, completion: nil)
                 currentPage = 2
                 
                 
             }else{
-                pageController.setViewControllers([arrPageTexts[2]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+                pageController.setViewControllers([arrPageTexts[2]], direction: UIPageViewController.NavigationDirection.reverse, animated: true, completion: nil)
                 currentPage = 2
                 
             }
         case 3:
-            pageController.setViewControllers([arrPageTexts[3]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+            pageController.setViewControllers([arrPageTexts[3]], direction: UIPageViewController.NavigationDirection.reverse, animated: true, completion: nil)
             currentPage = 3
         case 4:
-            pageController.setViewControllers([arrPageTexts[4]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+            pageController.setViewControllers([arrPageTexts[4]], direction: UIPageViewController.NavigationDirection.reverse, animated: true, completion: nil)
             currentPage = 4
         case 5:
-            pageController.setViewControllers([arrPageTexts[5]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+            pageController.setViewControllers([arrPageTexts[5]], direction: UIPageViewController.NavigationDirection.reverse, animated: true, completion: nil)
             currentPage = 5
 
         default:
@@ -446,11 +446,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
                 self.view.addBlurEffect()
                 let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
-                self.addChildViewController(self.objAdvertiseVC)
+                self.addChild(self.objAdvertiseVC)
                 self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
                 self.view.addSubview(self.objAdvertiseVC.view)
                 self.objAdvertiseVC
-                    .didMove(toParentViewController: self)
+                    .didMove(toParent: self)
                 break
                 
             }
@@ -476,11 +476,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         //                    self.view.addBlurEffect()
         //                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         //                    objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
-        //                    self.addChildViewController(self.objAdvertiseVC)
+        //                    self.addChild(self.objAdvertiseVC)
         //                    self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
         //                    self.view.addSubview(self.objAdvertiseVC.view)
         //                    self.objAdvertiseVC
-        //                        .didMove(toParentViewController: self)
+        //                        .didMove(toParent: self)
         //                    break
         //                }
         //            }
@@ -536,7 +536,7 @@ struct SectionData {
 }
 extension UIView {
     func addBlurEffect()  {
-        if !UIAccessibilityIsReduceTransparencyEnabled() {
+        if !UIAccessibility.isReduceTransparencyEnabled {
             self.backgroundColor = .clear
             
             let blurEffect = UIBlurEffect(style: .dark)
@@ -569,14 +569,14 @@ extension UIViewController {
 extension String {
     func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
-        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
         
         return ceil(boundingBox.height)
     }
     
     func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
-        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
         
         return ceil(boundingBox.width)
     }

@@ -41,9 +41,9 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         if let size = arrow.image?.size {
             arrow.frame = CGRect(x: 0.0, y: 0.0, width: size.width + 10.0, height: size.height)
         }
-        arrow.contentMode = UIViewContentMode.center
+        arrow.contentMode = UIView.ContentMode.center
         self.textField.leftView = arrow
-        self.textField.leftViewMode = UITextFieldViewMode.always
+        self.textField.leftViewMode = UITextField.ViewMode.always
 
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         tableView.delegate = self
@@ -52,7 +52,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         tableView.isHidden = true
         tableView.cornerRadius = 5
         // Manage tableView visibility via TouchDown in textField
-        textField.addTarget(self, action: #selector(textFieldActive), for: UIControlEvents.touchDown)
+        textField.addTarget(self, action: #selector(textFieldActive), for: UIControl.Event.touchDown)
         let realm = try! Realm()
         if GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
             currentSubject = Array(Set(realm.objects(LumiMessage.self).filter("enterpriseID = %@",GlobalShareData.sharedGlobal.objCurrentLumineer.id).filter("messageCategory = %@",activityType).value(forKey: "messageSubject") as! [String]))
@@ -97,9 +97,9 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
         }, completion: {(finished : Bool) in
             if(finished)
             {
-                self.willMove(toParentViewController: nil)
+                self.willMove(toParent: nil)
                 self.view.removeFromSuperview()
-                self.removeFromParentViewController()
+                self.removeFromParent()
                 self.parent?.view.backgroundColor = UIColor.white
             }
         })
@@ -153,8 +153,8 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                     }
                 }
                 else {
-                    if let data = UIImageJPEGRepresentation(imgAttach.image!, 0.8) {
-                        strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: strImgName)
+                    if let imageData = imgAttach.image?.jpegData(compressionQuality: 0.8) {
+                        strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: imageData as NSData, fileName: strImgName)
                     }
                 }
                 
@@ -454,7 +454,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell!
+        let cell:UITableViewCell = (tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell?)!
         // Set text from the data model
         cell.textLabel?.text = currentSubject[indexPath.row]
         cell.textLabel?.font = textField.font

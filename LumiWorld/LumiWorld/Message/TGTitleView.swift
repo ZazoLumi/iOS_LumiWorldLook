@@ -66,7 +66,7 @@ class TGTitleView: UIView {
         detailLabel.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         detailLabel.setTitleColor(UIColor.lumiGray, for: .normal)
         detailLabel.setImage(UIImage(named: "Asset 3352"), for: .normal)
-        detailLabel.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0)
+        detailLabel.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         addSubview(detailLabel)
 
         updateLayouts()

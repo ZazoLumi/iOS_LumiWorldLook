@@ -26,7 +26,7 @@ class AboutPlusTC: UIViewController {
         
         webView = WKWebView(frame: self.view.frame)
         self.view.addSubview(webView)
-        self.view.sendSubview(toBack: webView)
+        self.view.sendSubviewToBack(webView)
         webView.load(URLRequest(url: urlToDisplay))
         webView.allowsBackForwardNavigationGestures = true
         webView.navigationDelegate = self

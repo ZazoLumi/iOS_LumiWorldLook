@@ -132,10 +132,10 @@ class LumineerMessagesVC: UIViewController,UIImagePickerControllerDelegate, UINa
         GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.messageThread.rawValue
         objPopupSendMessage.activityType = activityType
         self.objPopupSendMessage.view.cornerRadius = 10
-        GlobalShareData.sharedGlobal.objCurretnVC.addChildViewController(self.objPopupSendMessage)
+        GlobalShareData.sharedGlobal.objCurretnVC.addChild(self.objPopupSendMessage)
         self.objPopupSendMessage.view.frame = CGRect(x: 0, y: (UIScreen.main.bounds.height-340)/2, width:self.view.frame.size.width , height:340);
         GlobalShareData.sharedGlobal.objCurretnVC.view.addSubview(self.objPopupSendMessage.view)
-        self.objPopupSendMessage.didMove(toParentViewController: self)
+        self.objPopupSendMessage.didMove(toParent: self)
         GlobalShareData.sharedGlobal.objCurretnVC.view.backgroundColor = .white
 
     }
@@ -186,7 +186,7 @@ class LumineerMessagesVC: UIViewController,UIImagePickerControllerDelegate, UINa
             myPickerController.navigationBar.barTintColor = UIColor.blue // Background color
             myPickerController.navigationBar.tintColor = UIColor.white // Cancel button ~ any UITabBarButton items
             myPickerController.navigationBar.titleTextAttributes = [
-                kCTForegroundColorAttributeName as NSAttributedStringKey : UIColor.white]
+                kCTForegroundColorAttributeName as NSAttributedString.Key : UIColor.white]
             self.present(myPickerController, animated: true, completion: nil) //self.navigationController?.present(myPickerController, animated: true, completion: nil)
         }
     }
@@ -352,7 +352,7 @@ extension LumineerMessagesVC : UITableViewDelegate,UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    internal func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Deleted")
             let sectionData = self.aryActivityData[indexPath.section]["data"] as! [LumiMessage]
@@ -416,7 +416,7 @@ extension LumineerMessagesVC : UITableViewDelegate,UITableViewDataSource {
                 self.viewActivityHeights.constant = CGFloat(self.aryActivityData.count * 46) + 30
                 
                 self.tblActivityData!.beginUpdates()
-                self.tblActivityData!.deleteRows(at: indexesPath, with: UITableViewRowAnimation.fade)
+                self.tblActivityData!.deleteRows(at: indexesPath, with: UITableView.RowAnimation.fade)
                 self.tblActivityData!.endUpdates()
                 calculateCurrentHeight()
                 
@@ -474,7 +474,7 @@ extension LumineerMessagesVC : UITableViewDelegate,UITableViewDataSource {
                 
                 self.expandedSectionHeaderNumber = section
                 self.tblActivityData!.beginUpdates()
-                self.tblActivityData!.insertRows(at: indexesPath, with: UITableViewRowAnimation.fade)
+                self.tblActivityData!.insertRows(at: indexesPath, with: UITableView.RowAnimation.fade)
                 self.tblActivityData!.endUpdates()
                 calculateCurrentHeight()
             }
@@ -486,11 +486,14 @@ extension LumineerMessagesVC : UITableViewDelegate,UITableViewDataSource {
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        var chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         dismiss(animated: true, completion: nil)
     }
+//changes
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+//        var chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+//        dismiss(animated: true, completion: nil)
+//    }
     
     
 }

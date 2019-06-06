@@ -66,7 +66,7 @@ class AGVideoPlayerView: UIView {
         didSet {
             if oldValue == shouldSwitchToFullscreen { return }
             if shouldSwitchToFullscreen {
-                NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange(_:)), name: .UIDeviceOrientationDidChange, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
             } else {
                 NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: nil)
             }
@@ -144,7 +144,7 @@ extension AGVideoPlayerView {
     
     private func addVideoPlayerView() {
         playerController.view.frame = self.bounds
-        playerController.videoGravity = AVLayerVideoGravity.resizeAspect.rawValue
+        playerController.videoGravity = AVLayerVideoGravity(rawValue: AVLayerVideoGravity.resizeAspect.rawValue)
         playerController.showsPlaybackControls = false
         self.insertSubview(playerController.view, at: 0)
     }
@@ -188,7 +188,7 @@ extension AGVideoPlayerView {
         } else {
             displayLink?.frameInterval = 5
         }
-        displayLink?.add(to: RunLoop.current, forMode: .commonModes)
+        displayLink?.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
     }
     
     fileprivate func removeTimer() {
@@ -274,7 +274,7 @@ extension AGVideoPlayerView {
     
     @objc fileprivate func itemDidFinishPlaying() {
         if isPlaying {
-            playerController.player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+            playerController.player?.seek(to: CMTime.zero, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
             //playerController.player?.play()
             self.playbackDelegate?.playerPlaybackWillLoop(playerController)
         }
@@ -286,7 +286,7 @@ extension AGVideoPlayerView {
     fileprivate func addPlayerObservers() {
         playerController.player?.addObserver(self, forKeyPath: "rate", options: .new, context: nil)
         playerController.contentOverlayView?.addObserver(self, forKeyPath: "bounds", options: .new, context: nil)
-        self._timeObserver = playerController.player?.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 100), queue: DispatchQueue.main, using: { [weak self] timeInterval in
+        self._timeObserver = playerController.player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main, using: { [weak self] timeInterval in
             guard let strongSelf = self
                 else {
                     return

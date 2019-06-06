@@ -40,7 +40,6 @@
 		0964E592205FC811007E5924 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0964E558205FC811007E5924 /* Assets.xcassets */; };
 		0964E593205FC811007E5924 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0964E559205FC811007E5924 /* LaunchScreen.storyboard */; };
 		0964E594205FC811007E5924 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0964E55B205FC811007E5924 /* Main.storyboard */; };
-		0964E59C205FC811007E5924 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0964E565205FC811007E5924 /* Info.plist */; };
 		0964E5C2205FC811007E5924 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E590205FC811007E5924 /* ViewController.swift */; };
 		0964E6D42060F8ED001D6F47 /* ChangePasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E6CE2060F8ED001D6F47 /* ChangePasswordVC.swift */; };
 		0964E6D52060F8ED001D6F47 /* CreateAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E6CF2060F8ED001D6F47 /* CreateAccountVC.swift */; };
@@ -63,7 +62,6 @@
 		0964E71B2060F981001D6F47 /* ValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E6ED2060F981001D6F47 /* ValidationError.swift */; };
 		0964E71C2060F981001D6F47 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E6EE2060F981001D6F47 /* Validator.swift */; };
 		0964E71D2060F981001D6F47 /* ValidatorDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E6EF2060F981001D6F47 /* ValidatorDictionary.swift */; };
-		0964E71E2060F981001D6F47 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0964E6F02060F981001D6F47 /* Info.plist */; };
 		0964E71F2060F981001D6F47 /* AlphaNumericRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E6F22060F981001D6F47 /* AlphaNumericRule.swift */; };
 		0964E7202060F981001D6F47 /* AlphaRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E6F32060F981001D6F47 /* AlphaRule.swift */; };
 		0964E7212060F981001D6F47 /* CharacterSetRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E6F42060F981001D6F47 /* CharacterSetRule.swift */; };
@@ -85,19 +83,12 @@
 		0964E7312060F981001D6F47 /* ValidationRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E7042060F981001D6F47 /* ValidationRule.swift */; };
 		0964E7322060F981001D6F47 /* ZipCodeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E7052060F981001D6F47 /* ZipCodeRule.swift */; };
 		0964E7332060F981001D6F47 /* CustomTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E7082060F981001D6F47 /* CustomTableView.swift */; };
-		0964E7342060F981001D6F47 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0964E7092060F981001D6F47 /* Info.plist */; };
 		0964E7352060F981001D6F47 /* NewCustomTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70A2060F981001D6F47 /* NewCustomTableView.swift */; };
 		0964E7362060F981001D6F47 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70B2060F981001D6F47 /* TextFieldTableViewCell.swift */; };
 		0964E7372060F981001D6F47 /* TextFieldTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70C2060F981001D6F47 /* TextFieldTableViewController.swift */; };
 		0964E7382060F981001D6F47 /* LumiCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0964E70E2060F981001D6F47 /* LumiCategoryVC.swift */; };
 		0965F16620A07CE60017CA71 /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0965F16520A07CE60017CA71 /* DocumentBrowserViewController.swift */; };
 		096BBF9F20DCD2C90017EBA8 /* LumiWorldWelcom.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 096BBF9E20DCD2C80017EBA8 /* LumiWorldWelcom.mp4 */; };
-		096BBFB620E0CDD00017EBA8 /* Stevia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFB420E0CDCE0017EBA8 /* Stevia.framework */; };
-		096BBFB720E0CDD00017EBA8 /* Stevia.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFB420E0CDCE0017EBA8 /* Stevia.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		096BBFB820E0CDD00017EBA8 /* YPImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFB520E0CDCF0017EBA8 /* YPImagePicker.framework */; };
-		096BBFB920E0CDD00017EBA8 /* YPImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFB520E0CDCF0017EBA8 /* YPImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		096BBFBB20E0CF680017EBA8 /* PryntTrimmerView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */; };
-		096BBFBC20E0CF680017EBA8 /* PryntTrimmerView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		096C2EF92064E28E0015C0A9 /* GlobalShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */; };
 		096E02C321182A59000F8FF8 /* ScrollableStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096E02C221182A59000F8FF8 /* ScrollableStackView.swift */; };
 		096ED9DF20760D73003CA8F1 /* LumineerProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096ED9DE20760D73003CA8F1 /* LumineerProfileVC.swift */; };
@@ -145,6 +136,10 @@
 		09ECA79A209C8230001570EA /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ECA798209C8230001570EA /* LocationSearchTable.swift */; };
 		09EFBB8D216CC8B5009528E2 /* LumineerContentGalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EFBB8C216CC8B4009528E2 /* LumineerContentGalleryVC.swift */; };
 		09F18F0320C8121D0017914B /* inviteFriendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F18F0220C8121D0017914B /* inviteFriendVC.swift */; };
+		3E83831722A9A4780045861E /* TNSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E83831322A9A4780045861E /* TNSlider.swift */; };
+		3E83831822A9A4780045861E /* TNTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E83831422A9A4780045861E /* TNTrackLayer.swift */; };
+		3E83831922A9A4780045861E /* TNConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E83831522A9A4780045861E /* TNConstants.swift */; };
+		3E83831A22A9A4780045861E /* TNTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E83831622A9A4780045861E /* TNTextLayer.swift */; };
 		67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DBA256AB6D1B59291E9C19 /* Pods_LumiWorld.framework */; };
 		7A3BBA422090867900B96750 /* TGAttachmentMessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3BBA402090867700B96750 /* TGAttachmentMessageCellLayout.swift */; };
 		7A3BBA432090867900B96750 /* TGAttachmentMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3BBA412090867800B96750 /* TGAttachmentMessageCell.swift */; };
@@ -161,9 +156,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				096BBFBC20E0CF680017EBA8 /* PryntTrimmerView.framework in Embed Frameworks */,
-				096BBFB720E0CDD00017EBA8 /* Stevia.framework in Embed Frameworks */,
-				096BBFB920E0CDD00017EBA8 /* YPImagePicker.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,9 +254,6 @@
 		0965F16520A07CE60017CA71 /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
 		096BBF9E20DCD2C80017EBA8 /* LumiWorldWelcom.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LumiWorldWelcom.mp4; sourceTree = "<group>"; };
 		096BBFA020E0C0610017EBA8 /* YPImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YPImagePicker.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/YPImagePicker-cfcfoizzwswlixehvkggwxqthbrj/Build/Products/Debug-iphoneos/YPImagePicker.framework"; sourceTree = "<group>"; };
-		096BBFB420E0CDCE0017EBA8 /* Stevia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stevia.framework; sourceTree = "<group>"; };
-		096BBFB520E0CDCF0017EBA8 /* YPImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YPImagePicker.framework; sourceTree = "<group>"; };
-		096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PryntTrimmerView.framework; sourceTree = "<group>"; };
 		096BBFBD20E0E6FA0017EBA8 /* LumiWorld.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LumiWorld.entitlements; sourceTree = "<group>"; };
 		096C2EF82064E28E0015C0A9 /* GlobalShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShareData.swift; sourceTree = "<group>"; };
 		096E02C221182A59000F8FF8 /* ScrollableStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableStackView.swift; sourceTree = "<group>"; };
@@ -316,6 +305,10 @@
 		09EFBB8C216CC8B4009528E2 /* LumineerContentGalleryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LumineerContentGalleryVC.swift; sourceTree = "<group>"; };
 		09F18F0220C8121D0017914B /* inviteFriendVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = inviteFriendVC.swift; sourceTree = "<group>"; };
 		1ED9069746B80D308CA990E5 /* Pods-LumiWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LumiWorld.release.xcconfig"; path = "Pods/Target Support Files/Pods-LumiWorld/Pods-LumiWorld.release.xcconfig"; sourceTree = "<group>"; };
+		3E83831322A9A4780045861E /* TNSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNSlider.swift; sourceTree = "<group>"; };
+		3E83831422A9A4780045861E /* TNTrackLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNTrackLayer.swift; sourceTree = "<group>"; };
+		3E83831522A9A4780045861E /* TNConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNConstants.swift; sourceTree = "<group>"; };
+		3E83831622A9A4780045861E /* TNTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNTextLayer.swift; sourceTree = "<group>"; };
 		6FEF0ECD00478AAAF31FB7D6 /* Pods-testSVG.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testSVG.debug.xcconfig"; path = "Pods/Target Support Files/Pods-testSVG/Pods-testSVG.debug.xcconfig"; sourceTree = "<group>"; };
 		7A3BBA402090867700B96750 /* TGAttachmentMessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGAttachmentMessageCellLayout.swift; sourceTree = "<group>"; };
 		7A3BBA412090867800B96750 /* TGAttachmentMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGAttachmentMessageCell.swift; sourceTree = "<group>"; };
@@ -333,9 +326,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				096BBFB820E0CDD00017EBA8 /* YPImagePicker.framework in Frameworks */,
-				096BBFB620E0CDD00017EBA8 /* Stevia.framework in Frameworks */,
-				096BBFBB20E0CF680017EBA8 /* PryntTrimmerView.framework in Frameworks */,
 				67D7BA94E7E1A847F7C44881 /* Pods_LumiWorld.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -346,9 +336,6 @@
 		0900543D20591EC700262084 = {
 			isa = PBXGroup;
 			children = (
-				096BBFBA20E0CF660017EBA8 /* PryntTrimmerView.framework */,
-				096BBFB420E0CDCE0017EBA8 /* Stevia.framework */,
-				096BBFB520E0CDCF0017EBA8 /* YPImagePicker.framework */,
 				0964E556205FC811007E5924 /* LumiWorld */,
 				0900544720591EC700262084 /* Products */,
 				B6393628CC4CD6B70DE3677E /* Frameworks */,
@@ -496,6 +483,7 @@
 		0964E6E82060F981001D6F47 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				3E83831222A9A4780045861E /* TNSlider */,
 				0964E7072060F981001D6F47 /* TextFieldTableViewController */,
 				0964E6E92060F981001D6F47 /* SwiftValidator */,
 				0940F95820C952ED00CCF3E1 /* EPContact */,
@@ -661,6 +649,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		3E83831222A9A4780045861E /* TNSlider */ = {
+			isa = PBXGroup;
+			children = (
+				3E83831322A9A4780045861E /* TNSlider.swift */,
+				3E83831422A9A4780045861E /* TNTrackLayer.swift */,
+				3E83831522A9A4780045861E /* TNConstants.swift */,
+				3E83831622A9A4780045861E /* TNTextLayer.swift */,
+			);
+			path = TNSlider;
+			sourceTree = "<group>";
+		};
 		B6393628CC4CD6B70DE3677E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -709,7 +708,7 @@
 					0900544520591EC700262084 = {
 						CreatedOnToolsVersion = 9.1;
 						LastSwiftMigration = 0910;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -744,17 +743,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0964E59C205FC811007E5924 /* Info.plist in Resources */,
 				0940F96220C952EE00CCF3E1 /* EPContactCell.xib in Resources */,
 				0964E594205FC811007E5924 /* Main.storyboard in Resources */,
 				097BFA5F207E3BE0001F935C /* sent.caf in Resources */,
-				0964E7342060F981001D6F47 /* Info.plist in Resources */,
 				097A0BFB2126D909008680F1 /* CustomAds.xib in Resources */,
 				096BBF9F20DCD2C90017EBA8 /* LumiWorldWelcom.mp4 in Resources */,
 				097BFA5E207E3BE0001F935C /* notification.caf in Resources */,
 				0964E592205FC811007E5924 /* Assets.xcassets in Resources */,
 				094400E920BE8FC7005995C3 /* WelcomView.xib in Resources */,
-				0964E71E2060F981001D6F47 /* Info.plist in Resources */,
 				0964E593205FC811007E5924 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -810,12 +806,14 @@
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialTextField/MaterialTextField.framework",
 				"${BUILT_PRODUCTS_DIR}/NoChat/NoChat.framework",
+				"${BUILT_PRODUCTS_DIR}/PryntTrimmerView/PryntTrimmerView.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SCLAlertView/SCLAlertView.framework",
+				"${BUILT_PRODUCTS_DIR}/SteviaLayout/Stevia.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/TNSlider/TNSlider.framework",
+				"${BUILT_PRODUCTS_DIR}/YPImagePicker/YPImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/YYText/YYText.framework",
 				"${BUILT_PRODUCTS_DIR}/Zip/Zip.framework",
 				"${BUILT_PRODUCTS_DIR}/pop/pop.framework",
@@ -832,12 +830,14 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialTextField.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NoChat.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PryntTrimmerView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCLAlertView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stevia.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TNSlider.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YPImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYText.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Zip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/pop.framework",
@@ -855,6 +855,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				096E02C321182A59000F8FF8 /* ScrollableStackView.swift in Sources */,
+				3E83831822A9A4780045861E /* TNTrackLayer.swift in Sources */,
 				094400EB20BE8FE9005995C3 /* WelcomView.swift in Sources */,
 				097BF9DA207DF866001F935C /* NoCopyPasteUITextField.swift in Sources */,
 				09D012C120D92CCF00935B05 /* LumiWorldMessages.swift in Sources */,
@@ -869,6 +870,7 @@
 				0964E72C2060F981001D6F47 /* PasswordRule.swift in Sources */,
 				090A88FD216F74C8000F7798 /* CallLumineerVC.swift in Sources */,
 				0964E71B2060F981001D6F47 /* ValidationError.swift in Sources */,
+				3E83831A22A9A4780045861E /* TNTextLayer.swift in Sources */,
 				0964E591205FC811007E5924 /* AppDelegate.swift in Sources */,
 				0964E72F2060F981001D6F47 /* RequiredRule.swift in Sources */,
 				097B0C25211AD55B001285AF /* MediaZoom.swift in Sources */,
@@ -914,6 +916,7 @@
 				09EAD74720B6C55C00EB37E1 /* LumiSupportVC.swift in Sources */,
 				097BFA51207E3651001F935C /* Chat.swift in Sources */,
 				0964E6D42060F8ED001D6F47 /* ChangePasswordVC.swift in Sources */,
+				3E83831722A9A4780045861E /* TNSlider.swift in Sources */,
 				0964E6D72060F8ED001D6F47 /* LogInVC.swift in Sources */,
 				0964E7362060F981001D6F47 /* TextFieldTableViewCell.swift in Sources */,
 				093F445E206B715900BC9983 /* UserData.swift in Sources */,
@@ -922,6 +925,7 @@
 				09559E04208F2D2D003A824C /* UIAlertAction+Image.swift in Sources */,
 				096ED9E1207653FA003CA8F1 /* ExpandableLabel.swift in Sources */,
 				0964E7372060F981001D6F47 /* TextFieldTableViewController.swift in Sources */,
+				3E83831922A9A4780045861E /* TNConstants.swift in Sources */,
 				0964E7312060F981001D6F47 /* ValidationRule.swift in Sources */,
 				0940F95F20C952EE00CCF3E1 /* EPConstants.swift in Sources */,
 				094809D92154F4E7000D8668 /* LumineerHomeVC.swift in Sources */,
@@ -1121,8 +1125,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = LumiWorld/LumiWorld.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = J323ZHWH83;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1130,13 +1134,13 @@
 				INFOPLIST_FILE = LumiWorld/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworl;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworld.zazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LumiWorld/Utilities/LumiWorld-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1150,8 +1154,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = LumiWorld/LumiWorld.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = J323ZHWH83;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1159,12 +1163,13 @@
 				INFOPLIST_FILE = LumiWorld/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworl;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lumiworld.zazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OBJC_BRIDGING_HEADER = "LumiWorld/Utilities/LumiWorld-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

@@ -59,7 +59,7 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
 
     
     override init(frame: CGRect) {
-        sendButtonWidth = min(150, (NSLocalizedString("Send", comment: "") as NSString).size(withAttributes: [NSAttributedStringKey.font: UIFont.noc_mediumSystemFont(ofSize: 17)]).width + 8)
+        sendButtonWidth = min(150, (NSLocalizedString("Send", comment: "") as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.noc_mediumSystemFont(ofSize: 17)]).width + 8)
         
         backgroundView = UIView()
         backgroundView.backgroundColor = UIColor.white
@@ -248,11 +248,11 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
 
         //self.parentViewController?.navigationController?.pushViewController(objSetAttachment, animated: false)
         
-        self.parentViewController?.addChildViewController(self.objSetAttachment)
+        self.parentViewController?.addChild(self.objSetAttachment)
         self.parentViewController?.view.addSubview(self.objSetAttachment.view)
 
 //        self.objPopupSendMessage.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-340)/2, width:self.view.frame.size.width , height:340);                             self.view.addSubview(self.objPopupSendMessage.view)
-        self.parentViewController?.didMove(toParentViewController: self.parentViewController)
+        self.parentViewController?.didMove(toParent: self.parentViewController)
 
     }
 
@@ -340,7 +340,7 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         }
         
         let str = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        if str.characters.count > 0 {
+        if str.count > 0 {
             if let d = delegate as? TGChatInputTextPanelDelegate {
                 d.inputTextPanel(self, requestSendText: str)
             }
@@ -361,7 +361,7 @@ class TGChatInputTextPanel: NOCChatInputPanel, HPGrowingTextViewDelegate {
         }
         
         if duration > .ulpOfOne {
-            UIView .animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions(rawValue: UInt(animationCurve << 16)), animations: block, completion: nil)
+            UIView .animate(withDuration: duration, delay: 0, options: UIView.AnimationOptions(rawValue: UInt(animationCurve << 16)), animations: block, completion: nil)
         } else {
             block()
         }

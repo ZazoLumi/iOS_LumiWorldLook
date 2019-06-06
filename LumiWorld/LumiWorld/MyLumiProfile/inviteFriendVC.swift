@@ -65,9 +65,9 @@ class inviteFriendVC: UIViewController,FormDataDelegate {
         }, completion: {(finished : Bool) in
             if(finished)
             {
-                self.willMove(toParentViewController: nil)
+                self.willMove(toParent: nil)
                 self.view.removeFromSuperview()
-                self.removeFromParentViewController()
+                self.removeFromParent()
                 self.parent?.view.backgroundColor = UIColor.white
             }
         })

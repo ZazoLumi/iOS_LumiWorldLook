@@ -148,11 +148,11 @@ class LumineerHomeVC: UIViewController,UICollectionViewDelegate,UICollectionView
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
        self.objAdvertiseVC.screenType = .Content
-        GlobalShareData.sharedGlobal.objCurretnVC.addChildViewController(self.objAdvertiseVC)
+        GlobalShareData.sharedGlobal.objCurretnVC.addChild(self.objAdvertiseVC)
         self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
         GlobalShareData.sharedGlobal.objCurretnVC.view.addSubview(self.objAdvertiseVC.view)
         self.objAdvertiseVC
-            .didMove(toParentViewController: self)*/
+            .didMove(toParent: self)*/
     }
 
     /*

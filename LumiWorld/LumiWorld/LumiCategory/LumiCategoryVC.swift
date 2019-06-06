@@ -40,7 +40,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
             #selector(LumiCategoryVC.handleRefresh(_:)),
-                                 for: UIControlEvents.valueChanged)
+                                 for: UIControl.Event.valueChanged)
         refreshControl.tintColor = UIColor.lumiGreen
         
         return refreshControl
@@ -57,7 +57,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
-        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         //Static
         self.tableView.addSubview(self.refreshControl)
@@ -524,7 +524,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                     indexesPath.append(index)
                 }
                 self.tableView!.beginUpdates()
-                self.tableView!.deleteRows(at: indexesPath, with: UITableViewRowAnimation.fade)
+                self.tableView!.deleteRows(at: indexesPath, with: UITableView.RowAnimation.fade)
                 self.tableView!.endUpdates()
                 
             }
@@ -555,7 +555,7 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
                 }
                 self.expandedSectionHeaderNumber = section
                 self.tableView!.beginUpdates()
-                self.tableView!.insertRows(at: indexesPath, with: UITableViewRowAnimation.fade)
+                self.tableView!.insertRows(at: indexesPath, with: UITableView.RowAnimation.fade)
                 self.tableView!.endUpdates()
             }
         } catch {
@@ -927,7 +927,7 @@ extension UIImage {
         }
       var newEncodeData = strEncodeData.replacingOccurrences(of: "data:image/png;base64,", with: "")
         newEncodeData = newEncodeData.replacingOccurrences(of: "data:image/jpeg;base64,", with: "")
-        if let decData = Data(base64Encoded: newEncodeData, options: .ignoreUnknownCharacters), newEncodeData.characters.count > 0 {
+        if let decData = Data(base64Encoded: newEncodeData, options: .ignoreUnknownCharacters), newEncodeData.count > 0 {
             return UIImage(data: decData)!
         }
         return UIImage()

@@ -48,7 +48,7 @@ class FaqVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         self.navigationItem.addBackButtonOnLeft()
         tblData.tableFooterView = UIView() // Removes empty cell separators
         tblData.estimatedRowHeight = 40
-        tblData.rowHeight = UITableViewAutomaticDimension
+        tblData.rowHeight = UITableView.automaticDimension
 
         // Do any additional setup after loading the view.
     }

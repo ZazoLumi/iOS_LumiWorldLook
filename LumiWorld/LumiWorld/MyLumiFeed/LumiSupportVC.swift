@@ -27,7 +27,7 @@ class LumiSupportVC: UIViewController,UITableViewDelegate,UITableViewDataSource 
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
             #selector(LumiSupportVC.handleRefresh(_:)),
-                                 for: UIControlEvents.valueChanged)
+                                 for: UIControl.Event.valueChanged)
         refreshControl.tintColor = UIColor.lumiGreen
         
         return refreshControl
@@ -89,10 +89,10 @@ class LumiSupportVC: UIViewController,UITableViewDelegate,UITableViewDataSource 
         objPopupSendMessage = storyBoard.instantiateViewController(withIdentifier: "PopupSendMessage") as! PopupSendMessage
         GlobalShareData.sharedGlobal.currentScreenValue = currentScreen.supportThread.rawValue
         self.objPopupSendMessage.view.cornerRadius = 10
-        self.addChildViewController(self.objPopupSendMessage)
+        self.addChild(self.objPopupSendMessage)
         self.objPopupSendMessage.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-340)/2, width:self.view.frame.size.width , height:340);
         self.view.addSubview(self.objPopupSendMessage.view)
-        self.objPopupSendMessage.didMove(toParentViewController: self)
+        self.objPopupSendMessage.didMove(toParent: self)
     }
     
     func removeMessgePopup() {
@@ -145,11 +145,7 @@ class LumiSupportVC: UIViewController,UITableViewDelegate,UITableViewDataSource 
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            print("Deleted")
-        }
-    }
+    
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.getLatestLumiSupportMessages()

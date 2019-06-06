@@ -82,7 +82,7 @@ class TGSystemMessageCellLayout: NSObject, NOCChatItemCellLayout {
             return
         }
         let text = message.text
-        let one = NSAttributedString(string: text!, attributes: [NSAttributedStringKey.font: Style.textFont, NSAttributedStringKey.foregroundColor: Style.textColor])
+        let one = NSAttributedString(string: text!, attributes: [NSAttributedString.Key.font: Style.textFont, NSAttributedString.Key.foregroundColor: Style.textColor])
         attributedText = one
     }
     

@@ -64,7 +64,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
             return
         }
         let text = message.text?.htmlToString
-        let attributedText = NSMutableAttributedString(string: text!, attributes: [NSAttributedStringKey.font: Style.textFont, NSAttributedStringKey.foregroundColor: Style.textColor])
+        let attributedText = NSMutableAttributedString(string: text!, attributes: [NSAttributedString.Key.font: Style.textFont, NSAttributedString.Key.foregroundColor: Style.textColor])
         
         if text == "/start" {
             attributedText.yy_setColor(Style.linkColor, range: attributedText.yy_rangeOfAll())
@@ -87,7 +87,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     private func setupAttributedTime() {
         let timeString = Style.timeFormatter.string(from: message.date)
         let timeColor = isOutgoing ? Style.outgoingTimeColor : Style.incomingTimeColor
-        attributedTime = NSAttributedString(string: timeString, attributes: [NSAttributedStringKey.font: Style.timeFont, NSAttributedStringKey.foregroundColor: timeColor])
+        attributedTime = NSAttributedString(string: timeString, attributes: [NSAttributedString.Key.font: Style.timeFont, NSAttributedString.Key.foregroundColor: timeColor])
     }
     
     private func setupAttachmentData() {
@@ -154,7 +154,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
             if let text = attributedText, text.length > 0  {
                 // dynamic font support
                 let dynamicFont = Style.textFont
-                text.yy_setAttribute(NSAttributedStringKey.font.rawValue, value: dynamicFont)
+                text.yy_setAttribute(NSAttributedString.Key.font.rawValue, value: dynamicFont)
                 
                 let textMargin = isOutgoing ? UIEdgeInsets(top: 2, left: 10, bottom: 8, right: 15) : UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 10)
                 var textLabelWidth = bubbleViewWidth - textMargin.left - textMargin.right - hPadding - timeLabelWidth - hPadding/2 - deliveryStatusWidth
@@ -289,7 +289,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
         if let text = attributedText, text.length > 0  {
             // dynamic font support
             let dynamicFont = Style.textFont
-            text.yy_setAttribute(NSAttributedStringKey.font.rawValue, value: dynamicFont)
+            text.yy_setAttribute(NSAttributedString.Key.font.rawValue, value: dynamicFont)
             
             let textMargin = isOutgoing ? UIEdgeInsets(top: 2, left: 10, bottom: 8, right: 15) : UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 10)
             var textLabelWidth = bubbleViewWidth - textMargin.left - textMargin.right - hPadding - timeLabelWidth - hPadding/2 - deliveryStatusWidth
@@ -415,7 +415,7 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     
     
     struct Style {
-        static let fullOutgoingBubbleImage = UIImage(named: "TGBubbleOutgoingFull")?.resizableImage(withCapInsets: UIEdgeInsetsMake(12, 20, 22, 12))
+        static let fullOutgoingBubbleImage = UIImage(named: "TGBubbleOutgoingFull")?.resizableImage(withCapInsets: UIEdgeInsets(top: 12, left: 20, bottom: 22, right: 12))
         static let highlightFullOutgoingBubbleImage = UIImage(named: "TGBubbleOutgoingFullHL")!
         static let partialOutgoingBubbleImage = UIImage(named: "TGBubbleOutgoingPartial")!
         static let highlightPartialOutgoingBubbleImage = UIImage(named: "TGBubbleOutgoingPartialHL")!

@@ -155,7 +155,7 @@ class AFWrapper: NSObject  {
         let token = UserDefaults.standard.string(forKey: "authtoken")
         
         Alamofire.upload(multipartFormData: { (multipartFormData) in
-            multipartFormData.append(UIImageJPEGRepresentation(image, 0.5)!, withName: "file", fileName: "file.png", mimeType: "image/png")
+            multipartFormData.append(image.jpegData(compressionQuality: 0.5)!, withName: "file", fileName: "file.png", mimeType: "image/png")
         }, to:strURL,headers:["Authorization": "Bearer " + token!,
                             "Accept-Language":L10n.shared.language])
         { (result) in
@@ -196,7 +196,7 @@ class AFWrapper: NSObject  {
     }
     class func requestPOSTURLWITHOUTHAUTHPARAM(_ strURL : String, params : [String : AnyObject]?, headers : [String : String]?, image: UIImage, success:@escaping (JSON) -> Void, failure:@escaping (Error) -> Void){
         Alamofire.upload(multipartFormData: { (multipartFormData) in
-            multipartFormData.append(UIImageJPEGRepresentation(image, 0.5)!, withName: "file", fileName: "file.png", mimeType: "image/png")
+            multipartFormData.append(image.jpegData(compressionQuality: 0.5)!, withName: "file", fileName: "file.png", mimeType: "image/png")
             for (key, value) in params! {
                 multipartFormData.append("\(value)".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!, withName: key)
             }
@@ -240,7 +240,7 @@ class AFWrapper: NSObject  {
         
         let token = UserDefaults.standard.string(forKey: "authtoken")
         Alamofire.upload(multipartFormData: { (multipartFormData) in
-            multipartFormData.append(UIImageJPEGRepresentation(image, 0.5)!, withName: "file", fileName: "file.png", mimeType: "image/png")
+            multipartFormData.append(image.jpegData(compressionQuality: 0.5)!, withName: "file", fileName: "file.png", mimeType: "image/png")
             for (key, value) in params! {
                 multipartFormData.append("\(value)".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!, withName: key)
             }
@@ -285,12 +285,12 @@ class AFWrapper: NSObject  {
         let token = UserDefaults.standard.string(forKey: "authtoken")
         Alamofire.upload(multipartFormData: { (multipartFormData) in
             multipartFormData.append(Url, withName: "", fileName: "video.mp4", mimeType: "video/mp4")
-            multipartFormData.append(UIImageJPEGRepresentation(image, 0.5)!, withName: "file", fileName: "file.png", mimeType: "image/png")
+            multipartFormData.append(image.jpegData(compressionQuality: 0.5)!, withName: "file", fileName: "file.png", mimeType: "image/png")
             // here you can upload any type of video
             //multipartFormData.append(self.selectedVideoURL!, withName: "File1")
           //  multipartFormData.append(("VIDEO".data(using: String.Encoding.utf8, allowLossyConversion: false))!, withName: "Type")
             
-           // multipartFormData.append(UIImageJPEGRepresentation(image, 0.5)!, withName: "file", fileName: "file.png", mimeType: "image/png")
+           // multipartFormData.append(image.jpegData(compressionQuality, 0.5)!, withName: "file", fileName: "file.png", mimeType: "image/png")
             for (key, value) in params! {
                 multipartFormData.append("\(value)".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!, withName: key)
             }

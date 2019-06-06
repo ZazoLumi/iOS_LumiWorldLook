@@ -157,14 +157,14 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     //  %< ------------------------ The converted code is limited to 1 KB ------------------------ %<
     
     override func viewWillAppear(_ animated: Bool) {
-        IQKeyboardManager.sharedManager().enableAutoToolbar = false
+        IQKeyboardManager.shared.enableAutoToolbar = false
         DispatchQueue.main.async {
             MBProgressHUD.hide(for: (self.navigationController?.view)!, animated: true)}
         GlobalShareData.sharedGlobal.objCurretnVC = self
         loadMessages()
     }
     override func viewWillDisappear(_ animated: Bool) {
-        IQKeyboardManager.sharedManager().enableAutoToolbar = true
+        IQKeyboardManager.shared.enableAutoToolbar = true
     }
     
     @objc func loadAttachmentPreview(notification: NSNotification) {
@@ -174,7 +174,7 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
             quickLookController.dataSource = self
             previewUrl = url
             if QLPreviewController.canPreview(url as QLPreviewItem) {
-                let index = GlobalShareData.sharedGlobal.aryAttachUrls.index(of:  url)
+                let index = GlobalShareData.sharedGlobal.aryAttachUrls.firstIndex(of:  url)
                 quickLookController.currentPreviewItemIndex = index!;
                 navigationController?.pushViewController(quickLookController, animated: true)
                 quickLookController.navigationController?.navigationItem.addBackButtonOnLeft()
@@ -299,7 +299,7 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
         let spacerItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         spacerItem.width = -12
         
-        let rightItem = UIBarButtonItem(customView: avatarButton)
+        _ = UIBarButtonItem(customView: avatarButton)
         
         //navigationItem.rightBarButtonItems = [spacerItem, rightItem]
         navigationItem.addSettingButtonOnRight()
@@ -355,11 +355,11 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     // MARK: Dynamic font support
     
     private func registerContentSizeCategoryDidChangeNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleContentSizeCategoryDidChanged(notification:)), name: .UIContentSizeCategoryDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleContentSizeCategoryDidChanged(notification:)), name: UIContentSizeCategory.didChangeNotification, object: nil)
     }
     
     private func unregisterContentSizeCategoryDidChangeNotification() {
-        NotificationCenter.default.removeObserver(self, name: .UIContentSizeCategoryDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIContentSizeCategory.didChangeNotification, object: nil)
     }
     
     @objc private func handleContentSizeCategoryDidChanged(notification: Notification) {

@@ -42,7 +42,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
             #selector(MyLumiFeedVC.handleRefresh(_:)),
-                                 for: UIControlEvents.valueChanged)
+                                 for: UIControl.Event.valueChanged)
         refreshControl.tintColor = UIColor.lumiGreen
         
         return refreshControl
@@ -53,7 +53,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
-        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         //Static
         self.tableView.addSubview(self.refreshControl)
@@ -66,7 +66,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         self.navigationController?.setToolbarHidden(true, animated: false)
         self.tableView.tableFooterView = UIView()
         self.tableView.estimatedRowHeight = 64
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.getLatestLumiMessages()
         GlobalShareData.sharedGlobal.objCurretnVC = self
         self.navigationItem.title = "MY LUMI FEED"
@@ -317,11 +317,11 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
             self.view.addBlurEffect()
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
-            self.addChildViewController(self.objAdvertiseVC)
+            self.addChild(self.objAdvertiseVC)
             self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
             self.view.addSubview(self.objAdvertiseVC.view)
             self.objAdvertiseVC
-                .didMove(toParentViewController: self)
+                .didMove(toParent: self)
 
         }
         else {
@@ -340,7 +340,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Deleted")
             
@@ -365,9 +365,9 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
     func underlinedString(string: NSString, term: NSString) -> NSAttributedString {
         let output = NSMutableAttributedString(string: string as String)
         let underlineRange = string.range(of: term as String, options: .caseInsensitive)
-        output.addAttribute(kCTUnderlineStyleAttributeName as NSAttributedStringKey, value: NSUnderlineStyle.styleNone.rawValue, range: NSMakeRange(0, string.length))
-        output.addAttribute(kCTUnderlineStyleAttributeName as NSAttributedStringKey, value: NSUnderlineStyle.styleSingle.rawValue, range: underlineRange)
-        output.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.lumiGreen as Any, range: underlineRange)
+        output.addAttribute(kCTUnderlineStyleAttributeName as NSAttributedString.Key, value:0, range: NSMakeRange(0, string.length))
+        output.addAttribute(kCTUnderlineStyleAttributeName as NSAttributedString.Key, value: NSUnderlineStyle.single.rawValue, range: underlineRange)
+        output.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.lumiGreen as Any, range: underlineRange)
         return output
     }
 
@@ -449,11 +449,11 @@ extension NSMutableAttributedString
     func changeWordsColour(terms:[NSString])
     {
         let string = self.string as NSString
-        self.addAttribute(kCTForegroundColorAttributeName as NSAttributedStringKey, value: UIColor.brown, range: NSMakeRange(0, self.length))
+        self.addAttribute(kCTForegroundColorAttributeName as NSAttributedString.Key, value: UIColor.brown, range: NSMakeRange(0, self.length))
         for term in terms
         {
             let underlineRange = string.range(of: term as String)
-            self.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.red, range: underlineRange)
+            self.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: underlineRange)
             
         }
     }

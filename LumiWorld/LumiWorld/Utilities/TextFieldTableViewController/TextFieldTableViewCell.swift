@@ -6,10 +6,10 @@ enum MyError: Error {
 
 open class TextFieldTableViewCell: UITableViewCell {
     open var textFieldLeftLayoutConstraint: NSLayoutConstraint!
-    open let textField = PaddedTextField(frame: .zero)
+    public let textField = PaddedTextField(frame: .zero)
 
     // MARK: - UITableViewCell
-    public override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
 

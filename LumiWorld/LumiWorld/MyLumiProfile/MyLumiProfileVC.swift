@@ -49,7 +49,7 @@ class MyLumiProfileVC: UIViewController {
 
     }
     override func viewWillAppear(_ animated: Bool) {
-        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         setupProfileData()
     }
@@ -112,11 +112,11 @@ class MyLumiProfileVC: UIViewController {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objsuggestALumineer = storyBoard.instantiateViewController(withIdentifier: "suggestALumineer") as! suggestALumineer
-        self.addChildViewController(self.objsuggestALumineer)
+        self.addChild(self.objsuggestALumineer)
         self.objsuggestALumineer.view.frame = CGRect(x: 30, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width-60 , height:440);
         self.view.addSubview(self.objsuggestALumineer.view)
         self.objsuggestALumineer
-            .didMove(toParentViewController: self)
+            .didMove(toParent: self)
     }
     func onBtnShowSaveAdsTapped() {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -129,30 +129,30 @@ class MyLumiProfileVC: UIViewController {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objSendMessageTo = storyBoard.instantiateViewController(withIdentifier: "sendMessageTo") as! sendMessageTo
-        self.addChildViewController(self.objSendMessageTo)
+        self.addChild(self.objSendMessageTo)
         self.objSendMessageTo.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-230)/2, width:self.view.frame.size.width , height:300);
         self.view.addSubview(self.objSendMessageTo.view)
-        self.objSendMessageTo.didMove(toParentViewController: self)
+        self.objSendMessageTo.didMove(toParent: self)
     }
     
      func onBtnSuggestLumineerTapped() {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objSuggestACompany = storyBoard.instantiateViewController(withIdentifier: "suggestCompany") as! suggestCompany
-        self.addChildViewController(self.objSuggestACompany)
+        self.addChild(self.objSuggestACompany)
         self.objSuggestACompany.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width , height:430);
         self.view.addSubview(self.objSuggestACompany.view)
-        self.objSuggestACompany.didMove(toParentViewController: self)
+        self.objSuggestACompany.didMove(toParent: self)
 
     }
      func onBtnInviteFriendsTapped() {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objInviteFriendVC = storyBoard.instantiateViewController(withIdentifier: "inviteFriendVC") as! inviteFriendVC
-        self.addChildViewController(self.objInviteFriendVC)
+        self.addChild(self.objInviteFriendVC)
         self.objInviteFriendVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:450);
         self.view.addSubview(self.objInviteFriendVC.view)
-        self.objInviteFriendVC.didMove(toParentViewController: self)
+        self.objInviteFriendVC.didMove(toParent: self)
     }
     
     func setupBottomScrollableUI() {
@@ -237,9 +237,9 @@ class MyLumiProfileVC: UIViewController {
                 let attributedString = NSMutableAttributedString()
                 attributedString.yy_appendString((objAdv?.contentTitle)!)
                 attributedString.append(NSAttributedString(string: " #\((objAdv?.caption)!)",
-                                                           attributes: [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]))
+                    attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]))
                 attributedString.append(NSAttributedString(string: " \((objAdv?.tag)!)",
-                                                           attributes: [.underlineStyle: NSUnderlineStyle.styleNone.rawValue]))
+                                                           attributes: [.underlineStyle: 0]))
 
             customAdsView.lblAdvTitle.text = attributedString.string
             let imgMsgType : UIImage!
@@ -383,11 +383,11 @@ class MyLumiProfileVC: UIViewController {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
-        self.addChildViewController(self.objAdvertiseVC)
+        self.addChild(self.objAdvertiseVC)
         self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
         self.view.addSubview(self.objAdvertiseVC.view)
         self.objAdvertiseVC
-            .didMove(toParentViewController: self)
+            .didMove(toParent: self)
     }
 
     /*

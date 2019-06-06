@@ -96,3 +96,9 @@ class ChangePasswordVC: UIViewController,FormDataDelegate {
     }
 
 }
+
+extension UIViewController {
+    func backButtonTapped() {
+        self.navigationController?.popViewController()
+    }
+}

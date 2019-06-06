@@ -146,8 +146,8 @@ extension UIViewController:FloatRatingViewDelegate {
 
     }
     func showRatingAlert(currntRating:Double, completion: AlertResponseBlock? = nil) {
-        let alert = UIAlertController(title: "PLEASE RATE US", message: "", preferredStyle: UIAlertControllerStyle.alert)
-        alert.setValue(NSAttributedString(string: "PLEASE RATE US \n \n ", attributes: [NSAttributedStringKey.font : UIFont.init(name: "Helvetica", size: 16) as Any,NSAttributedStringKey.foregroundColor:UIColor(red: 110, green: 187, blue: 171)!]), forKey: "attributedTitle")
+        let alert = UIAlertController(title: "PLEASE RATE US", message: "", preferredStyle: UIAlertController.Style.alert)
+        alert.setValue(NSAttributedString(string: "PLEASE RATE US \n \n ", attributes: [NSAttributedString.Key.font : UIFont.init(name: "Helvetica", size: 16) as Any,NSAttributedString.Key.foregroundColor:UIColor(red: 110, green: 187, blue: 171)!]), forKey: "attributedTitle")
         let floatRatingView = FloatRatingView(frame: CGRect(x: 60, y: 55, width: 160,height:40))
         floatRatingView.backgroundColor = UIColor.clear
          alert.view.addSubview(floatRatingView)
@@ -156,7 +156,7 @@ extension UIViewController:FloatRatingViewDelegate {
         /** Note: With the exception of contentMode, type and delegate,
          all properties can be set directly in Interface Builder **/
         floatRatingView.delegate = self
-        floatRatingView.contentMode = UIViewContentMode.scaleAspectFit
+        floatRatingView.contentMode = UIView.ContentMode.scaleAspectFit
         floatRatingView.type = .wholeRatings
         floatRatingView.rating = 0
         floatRatingView.minRating = 0

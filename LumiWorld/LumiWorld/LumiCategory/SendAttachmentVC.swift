@@ -34,7 +34,7 @@ class SendAttachmentVC: UIViewController,UITextFieldDelegate {
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
-        if !UIAccessibilityIsReduceTransparencyEnabled() {
+        if !UIAccessibility.isReduceTransparencyEnabled {
             view.backgroundColor = .clear
             
             let blurEffect = UIBlurEffect(style: .dark)
@@ -96,9 +96,9 @@ class SendAttachmentVC: UIViewController,UITextFieldDelegate {
         }, completion: {(finished : Bool) in
             if(finished)
             {
-                self.willMove(toParentViewController: nil)
+                self.willMove(toParent: nil)
                 self.view.removeFromSuperview()
-                self.removeFromParentViewController()
+                self.removeFromParent()
             }
         })
     }
@@ -115,7 +115,7 @@ class SendAttachmentVC: UIViewController,UITextFieldDelegate {
 
         
         if imgAttach.image != nil {
-            if let data = UIImageJPEGRepresentation(imgAttach.image!, 0.8) {
+            if let data = imgAttach.image?.compressedData(quality: 0.8) {
                 var strFilePath : String!
                 if activityType == "Video" {
                     do {

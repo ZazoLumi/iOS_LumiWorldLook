@@ -226,7 +226,7 @@ class LumineerGalleryData: Object {
                     if objCurrentAdv.contentType == "video" {
                         var thumbnail1 = url?.thumbnail()
                         thumbnail1 = url?.thumbnail(fromTime: 5)
-                        if let data = UIImageJPEGRepresentation(thumbnail1!, 0.8) {
+                        if let data = thumbnail1?.compressedData(quality: 0.8) {
                             fileName = url?.lastPathComponent
                             fileName = fileName?.deletingPathExtension
                             fileName = fileName?.appendingPathExtension("png")

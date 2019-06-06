@@ -73,9 +73,9 @@ class sendMessageTo: UIViewController,UITableViewDelegate,UITableViewDataSource 
         }, completion: {(finished : Bool) in
             if(finished)
             {
-                self.willMove(toParentViewController: nil)
+                self.willMove(toParent: nil)
                 self.view.removeFromSuperview()
-                self.removeFromParentViewController()
+                self.removeFromParent()
                 self.parent?.view.backgroundColor = UIColor.white
             }
         })
@@ -112,9 +112,9 @@ class sendMessageTo: UIViewController,UITableViewDelegate,UITableViewDataSource 
         self.navigationController?.pushViewController(objLumineerProfileVC, completion: {
             self.parent?.view.backgroundColor = UIColor.white
             self.view.superview?.removeBlurEffect()
-            self.willMove(toParentViewController: nil)
+            self.willMove(toParent: nil)
             self.view.removeFromSuperview()
-            self.removeFromParentViewController()
+            self.removeFromParent()
             self.parent?.view.backgroundColor = UIColor.white
         })
     }

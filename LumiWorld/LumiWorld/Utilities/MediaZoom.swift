@@ -60,7 +60,7 @@ public class MediaZoom: UIView, UIScrollViewDelegate {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(deviceOrientationDidChange(notification:)),
-            name: .UIDeviceOrientationDidChange,
+            name: UIDevice.orientationDidChangeNotification,
             object: nil
         )
         imageView.image = image.image

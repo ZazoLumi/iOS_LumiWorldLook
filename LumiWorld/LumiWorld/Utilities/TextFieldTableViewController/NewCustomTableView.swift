@@ -9,7 +9,7 @@
 import UIKit
 
 class NewCustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate {
-    open let placeholders: [[String]]
+    public let placeholders: [[String]]
     open var texts: [[String]]
     open var images: [[String]]
     var tableView: UITableView!
@@ -26,7 +26,7 @@ class NewCustomTableView: UIView, UITableViewDelegate, UITableViewDataSource,UIT
         
         // setting the delegate object to tableView
         tableView.estimatedRowHeight = 44
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: String(describing: TextFieldTableViewCell.self))
 

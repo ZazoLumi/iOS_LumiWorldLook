@@ -8,10 +8,10 @@ target 'LumiWorld' do
   pod 'RealmSwift'
   pod 'ESTabBarController-swift'
   pod 'pop'
-  pod 'SwifterSwift'
+  pod 'SwifterSwift', '~> 5.0'
   pod 'IQKeyboardManagerSwift'
   pod 'Alamofire'
-  pod 'SwiftyJSON'
+  pod 'SwiftyJSON', '~> 5.0'
   pod 'L10n-swift'
   pod 'SCLAlertView'
   pod 'MBProgressHUD'
@@ -22,9 +22,9 @@ target 'LumiWorld' do
   pod 'ActionSheetPicker-3.0'
   pod 'Zip', '~> 1.1'
   #  pod 'VGPlayer', '~> 0.2.0'
-  pod 'TNSlider'
   pod 'Fabric'
   pod 'Crashlytics'
+  pod 'YPImagePicker','~> 4.0.0'
   # Pods for LumiWorld
 
 end

@@ -8,7 +8,6 @@
 
 import UIKit
 import AVKit
-import TNSlider
 import Alamofire
 import MBProgressHUD
 import IQKeyboardManagerSwift
@@ -101,8 +100,8 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         // Do any additional setup after loading the view.
     }
@@ -118,16 +117,16 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     var keyboardHeight = 0
     @objc func keyboardWillShow(_ n: Notification?) {
-        if let keyboardSize = (n?.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (n?.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = Int(keyboardSize.height)
-            IQKeyboardManager.sharedManager().enableAutoToolbar = false
+            IQKeyboardManager.shared.enableAutoToolbar = false
             print(keyboardHeight)
             textViewDidChange(inputTV)
         }
     }
     @objc func keyboardWillHide(_ n: Notification?) {
         UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
-            IQKeyboardManager.sharedManager().enableAutoToolbar = true
+            IQKeyboardManager.shared.enableAutoToolbar = true
             self.bottomView.frame = CGRect(x: 0, y:Int(Int(self.h) + 44), width:Int(self.w), height: Int(44))
             self.inputTV.frame = CGRect(x: 10, y: 0, width:Int( self.w - 64), height: 44)
             self.submitButton.frame = CGRect(x: Int(self.w - 60), y: Int(0), width: 60, height: 44)
@@ -207,7 +206,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         inputTV.resignFirstResponder()
         btnReport.isSelected = false
         btnComments.isSelected = false
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         
     }
     
@@ -256,7 +255,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                             imageView.image = scalImg
                             self.mediaZoom = MediaZoom(with: imageView, animationTime: 0.5, useBlur: true)
                             self.runTimer()
-                            self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
+                            self.viewAdvContent.bringSubviewToFront(self.viewAdvTimer)
                         }
                     }
                 }
@@ -274,15 +273,15 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                         let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
                         urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                     }
-                    self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
+                    self.viewAdvContent.bringSubviewToFront( self.viewAdvTimer)
                     
                     /*self.player.playerDelegate = self
                      self.player.playbackDelegate = self
                      self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
                      
-                     // self.addChildViewController(self.player)
+                     // self.addChild(self.player)
                      self.viewAdvContent.addSubview(self.player.view)
-                     self.player.didMove(toParentViewController: self)
+                     self.player.didMove(toParent: self)
                      
                      self.player.url = urlOriginalImage
                      
@@ -298,7 +297,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     playerView.shouldSwitchToFullscreen = false
                     self.viewAdvContent.addSubview(self.playerView)
                     playerView.translatesAutoresizingMaskIntoConstraints = false
-                    let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
+                    let attributes: [NSLayoutConstraint.Attribute] = [.top, .bottom, .right, .left]
                     NSLayoutConstraint.activate(attributes.map {
                         NSLayoutConstraint(item: playerView, attribute: $0, relatedBy: .equal, toItem: playerView.superview, attribute: $0, multiplier: 1, constant: 0)
                     })
@@ -359,7 +358,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                                 imageView.image = scalImg
                                 self.mediaZoom = MediaZoom(with: imageView, animationTime: 0.5, useBlur: true)
                                 self.runTimer()
-                                self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
+                                self.viewAdvContent.bringSubviewToFront( self.viewAdvTimer)
                             }
                         }
                     }
@@ -377,15 +376,15 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                             let fileName = GlobalShareData.sharedGlobal.objCurrentContent.contentFileName?.replacingOccurrences(of: " ", with: "-")
                             urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                         }
-                        self.viewAdvContent.bringSubview(toFront: self.viewAdvTimer)
+                        self.viewAdvContent.bringSubviewToFront( self.viewAdvTimer)
                         
                         /*self.player.playerDelegate = self
                          self.player.playbackDelegate = self
                          self.player.view.frame = CGRect(x: 0, y: 0, width:Int(self.view.frame.size.width), height:Int(self.viewAdvContent.frame.size.height));
                          
-                         // self.addChildViewController(self.player)
+                         // self.addChild(self.player)
                          self.viewAdvContent.addSubview(self.player.view)
-                         self.player.didMove(toParentViewController: self)
+                         self.player.didMove(toParent: self)
                          
                          self.player.url = urlOriginalImage
                          
@@ -401,7 +400,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                         playerView.shouldSwitchToFullscreen = false
                         self.viewAdvContent.addSubview(self.playerView)
                         playerView.translatesAutoresizingMaskIntoConstraints = false
-                        let attributes: [NSLayoutAttribute] = [.top, .bottom, .right, .left]
+                        let attributes: [NSLayoutConstraint.Attribute] = [.top, .bottom, .right, .left]
                         NSLayoutConstraint.activate(attributes.map {
                             NSLayoutConstraint(item: playerView, attribute: $0, relatedBy: .equal, toItem: playerView.superview, attribute: $0, multiplier: 1, constant: 0)
                         })
@@ -479,7 +478,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
     }
     func slider(_ slider: TNSlider, displayTextForValue value: Float) -> String {
         let seconds : Int64 = Int64(value)
-        let targetTime:CMTime = CMTimeMake(seconds, 1)
+        let targetTime:CMTime = CMTimeMake(value: seconds, timescale: 1)
         
         self.playerView.playerController.player?.seek(to: targetTime) { (result) in
             //todo self.player.playFromCurrentTime()
@@ -770,9 +769,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         }, completion: {(finished : Bool) in
             if(finished)
             {
-                self.willMove(toParentViewController: nil)
+                self.willMove(toParent: nil)
                 self.view.removeFromSuperview()
-                self.removeFromParentViewController()
+                self.removeFromParent()
                 self.parent?.view.backgroundColor = UIColor.white
             }
         })
@@ -918,7 +917,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         submitButton.isUserInteractionEnabled = true
         bottomView.addSubview(submitButton)
         
-        //self.bottomView.bringSubview(toFront: (self.tabBarController?.view)!)
+        //self.bottomView.bringSubviewToFront( (self.tabBarController?.view)!)
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -964,7 +963,7 @@ extension AdvertiseVC:AGPlayerDelegate {
         }
         // todo self.playerView.playerController.player?.playFromBeginning()
         runTimer()
-        self.viewAdvContent.bringSubview(toFront: viewAdvTimer)
+        self.viewAdvContent.bringSubviewToFront( viewAdvTimer)
         
 
     }

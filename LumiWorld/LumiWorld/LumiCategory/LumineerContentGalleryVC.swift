@@ -126,7 +126,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
             #selector(LumiCategoryVC.handleRefresh(_:)),
-                                 for: UIControlEvents.valueChanged)
+                                 for: UIControl.Event.valueChanged)
         refreshControl.tintColor = UIColor.lumiGreen
         
         return refreshControl
@@ -135,7 +135,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
-        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
 //        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
@@ -161,7 +161,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
 //        inputTV.resignFirstResponder()
         objPlayer?.stop()
         NotificationCenter.default.removeObserver(self)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -248,8 +249,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
             
             cell.btnMuteUnmute.addTarget(self, action: #selector(didTapMuteUnmuteBtn(_:)), for: .touchUpInside)
             cell.btnMuteUnmute.tag = indexPath.row + 70000
-            cell.contentView.bringSubview(toFront: cell.btnMuteUnmute)
-            cell.contentView.bringSubview(toFront: cell.btnPlayPause)
+            cell.contentView.bringSubviewToFront(cell.btnMuteUnmute)
+            cell.contentView.bringSubviewToFront(cell.btnPlayPause)
             let imgThumb = UIImage.decodeBase64(strEncodeData:(objContent?.thumbnail!)! )
             let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgAdsContent.frame.size.width, height: cell.imgAdsContent.frame.size.height))
             cell.imgAdsContent.image = scalImg
@@ -345,8 +346,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                 }
                 playAudioFile(urlOriginalImage: urlOriginalImage)
-                contentCell.viewContainer.bringSubview(toFront: contentCell.btnPlayPause)
-                contentCell.viewContainer.bringSubview(toFront: contentCell.btnMuteUnmute)
+                contentCell.viewContainer.bringSubviewToFront(contentCell.btnPlayPause)
+                contentCell.viewContainer.bringSubviewToFront(contentCell.btnMuteUnmute)
                 contentCell.btnPlayPause.isSelected = true
                 contentCell.btnMuteUnmute.isSelected = false
             }
@@ -540,7 +541,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
 
     func playAudioFile(urlOriginalImage : URL) {
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
             try AVAudioSession.sharedInstance().setActive(true)
             
             // For iOS 11

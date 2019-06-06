@@ -26,7 +26,7 @@ class LumiProfileDetails: UIViewController,FormDataDelegate,UITextFieldDelegate 
         self.navigationItem.addSettingButtonOnRight()
         self.navigationItem.addBackButtonOnLeft()
         self.navigationItem.title = "MY LUMI PROFILE"
-        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         btnCancel.isHidden = true
         btnDone.isHidden = true

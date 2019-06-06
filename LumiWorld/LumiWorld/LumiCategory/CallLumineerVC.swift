@@ -31,7 +31,7 @@ class CallLumineerVC: UIViewController , UITableViewDelegate,UITableViewDataSour
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
             #selector(MyLumiFeedVC.handleRefresh(_:)),
-                                 for: UIControlEvents.valueChanged)
+                                 for: UIControl.Event.valueChanged)
         refreshControl.tintColor = UIColor.lumiGreen
         
         return refreshControl
@@ -41,7 +41,7 @@ class CallLumineerVC: UIViewController , UITableViewDelegate,UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.addSettingButtonOnRight()
-        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
 
         self.tableView.addSubview(self.refreshControl)
@@ -55,7 +55,7 @@ class CallLumineerVC: UIViewController , UITableViewDelegate,UITableViewDataSour
         self.navigationController?.setToolbarHidden(true, animated: false)
         self.tableView.tableFooterView = UIView()
         self.tableView.estimatedRowHeight = 64
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.getLatestLumineers()
         GlobalShareData.sharedGlobal.objCurretnVC = self
         self.navigationItem.title = "MY LUMINEER CALL"

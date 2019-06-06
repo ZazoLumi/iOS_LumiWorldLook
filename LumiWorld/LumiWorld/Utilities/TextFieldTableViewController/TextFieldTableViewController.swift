@@ -1,7 +1,7 @@
 import UIKit
 
 open class TextFieldTableViewController: UITableViewController, UITextFieldDelegate {
-    open let placeholders: [[String]]
+    public let placeholders: [[String]]
     open var texts: [[String]]
     open var images: [[String]]
 
@@ -29,7 +29,7 @@ open class TextFieldTableViewController: UITableViewController, UITextFieldDeleg
     override open func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = 44
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: String(describing: TextFieldTableViewCell.self))
     }

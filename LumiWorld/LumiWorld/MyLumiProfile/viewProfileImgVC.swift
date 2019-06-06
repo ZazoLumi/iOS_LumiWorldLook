@@ -17,7 +17,7 @@ class viewProfileImgVC: UIViewController {
         self.navigationItem.addBackButtonOnLeft()
         self.navigationItem.title = "PROFILE PHOTO"
         // Do any additional setup after loading the view.
-        let rightButton: UIBarButtonItem = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.done, target: self, action: #selector(viewProfileImgVC.editButtonClicked(_:)))
+        let rightButton: UIBarButtonItem = UIBarButtonItem(title: "Edit", style: UIBarButtonItem.Style.done, target: self, action: #selector(viewProfileImgVC.editButtonClicked(_:)))
         self.navigationController?.navigationBar.tintColor = .lumiGray
 
         self.navigationItem.rightBarButtonItem = rightButton

@@ -48,7 +48,7 @@ class CameraHandler: NSObject{
             myPickerController.navigationController?.navigationBar.isHidden = false
             myPickerController.navigationController?.navigationBar.tintColor = UIColor.black
             myPickerController.navigationController?.navigationBar.titleTextAttributes = [
-                kCTForegroundColorAttributeName as NSAttributedStringKey : UIColor.white]
+                kCTForegroundColorAttributeName as NSAttributedString.Key : UIColor.white]
             currentVC?.navigationController?.navigationBar.isHidden = false
 
             currentVC?.present(myPickerController, animated: true, completion: nil)
@@ -81,7 +81,7 @@ class CameraHandler: NSObject{
         //        config.usesFrontCamera = true
         //
         //        /// Adds a Filter step in the photo taking process.  Defaults to true
-        config.showsFilters = true
+        config.showsPhotoFilters = true
         //
         //        /// Enables you to opt out from saving new (or old but filtered) images to the
         //        /// user's photo library. Defaults to true.
@@ -170,7 +170,7 @@ class CameraHandler: NSObject{
 
         picker.didFinishPicking { [unowned picker] items, cancelled in
             if let photo = items.singlePhoto {
-                if let data = UIImageJPEGRepresentation(photo.image, 1.0) {
+                if let data = photo.image.jpegData(compressionQuality: 1.0) {
                     let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName:"temp.png")
                     if !self.checkFileSize(strFilePath: strFilePath) {
                         return
@@ -200,7 +200,7 @@ class CameraHandler: NSObject{
         picker.navigationItem.addBackButtonOnLeft()
         picker.navigationBar.tintColor = UIColor.lumiGreen
         #if swift(>=4.0)
-        picker.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.init(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1.0), NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 16.0)]
+        picker.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.init(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1.0), NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16.0)]
         #elseif swift(>=3.0)
         picker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.init(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1.0), NSFontAttributeName: UIFont.boldSystemFont(ofSize: 16.0)];
         #endif
@@ -223,7 +223,7 @@ class CameraHandler: NSObject{
         if withDeletePhoto {
         let deleteAction = UIAlertAction(title: "Delete Photo", style: .default) { (alert:UIAlertAction!) -> Void in
             let img = UIImage.init(named: "whiteBG")
-            if let data = UIImageJPEGRepresentation(img!, 0.8) {
+            if let data = img?.jpegData(compressionQuality: 0.8) {
                 let path = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName: "whiteBG.png")
                 self.didFinishCapturingImage?(img!, URL.init(string: path))
             }
@@ -295,20 +295,19 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         currentVC.dismiss(animated: true, completion: nil)
     }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let mediaType = info[UIImagePickerControllerMediaType] as! String
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let mediaType = info[UIImagePickerController.InfoKey.mediaType] as! String
         
         if mediaType == kUTTypeImage as String {
-            if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
                 if #available(iOS 11.0, *) {
-                    if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
+                    if let imgUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL{
                         let imgName = imgUrl.lastPathComponent
                         print(imgName)
                         self.didFinishCapturingImage?(image, imgUrl)
                     }
                     else {
-                        if let data = UIImageJPEGRepresentation(image, 1.0) {
+                        if let data = image.jpegData(compressionQuality: 1.0) {
                             let strFilePath = GlobalShareData.sharedGlobal.storeGenericfileinDocumentDirectory(fileContent: data as NSData, fileName:"temp.png")
                             self.didFinishCapturingImage?(image, URL.init(string: strFilePath))
                             
@@ -319,24 +318,25 @@ extension CameraHandler: UIImagePickerControllerDelegate, UINavigationController
                 }
             }
         } else if mediaType == kUTTypeMovie as String {
-            if  let videoURL = info[UIImagePickerControllerMediaURL] as? URL {
+            if  let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL {
                 self.didFinishCapturingVideo?(videoURL,UIImage.init())
             }
         }
-
-//        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-//            if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
-//                 let imgName = imgUrl.lastPathComponent
-//                    print(imgName)
-//                    self.didFinishCapturingImage?(image, imgName)
-//            }
-//            else {
-//                self.didFinishCapturingImage?(image, "test.png")
-//            }
-//        }else{
-//            print("Something went wrong")
-//        }
+        
+        //        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        //            if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
+        //                 let imgName = imgUrl.lastPathComponent
+        //                    print(imgName)
+        //                    self.didFinishCapturingImage?(image, imgName)
+        //            }
+        //            else {
+        //                self.didFinishCapturingImage?(image, "test.png")
+        //            }
+        //        }else{
+        //            print("Something went wrong")
+        //        }
         currentVC.dismiss(animated: true, completion: nil)
+
     }
     
 }

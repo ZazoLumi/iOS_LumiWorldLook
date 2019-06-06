@@ -1,50 +1,58 @@
 PODS:
   - ActionSheetPicker-3.0 (2.3.0)
-  - Alamofire (4.7.0)
-  - AlamofireImage (3.3.0):
-    - Alamofire (~> 4.5)
-  - Crashlytics (3.10.7):
-    - Fabric (~> 1.7.11)
-  - ESTabBarController-swift (2.6.1)
-  - Fabric (1.7.11)
+  - Alamofire (4.8.2)
+  - AlamofireImage (3.5.2):
+    - Alamofire (~> 4.8)
+  - Crashlytics (3.13.1):
+    - Fabric (~> 1.10.1)
+  - ESTabBarController-swift (2.7)
+  - Fabric (1.10.1)
   - HPGrowingTextView (1.1)
-  - IQKeyboardManagerSwift (5.0.8)
-  - L10n-swift (5.1.0):
-    - L10n-swift/Core (= 5.1.0)
-    - L10n-swift/Extension (= 5.1.0)
-    - L10n-swift/IBInspectable (= 5.1.0)
-  - L10n-swift/Core (5.1.0)
-  - L10n-swift/Extension (5.1.0):
+  - IQKeyboardManagerSwift (6.3.0)
+  - L10n-swift (5.4.1):
+    - L10n-swift/Core (= 5.4.1)
+    - L10n-swift/Extension (= 5.4.1)
+    - L10n-swift/IBInspectable (= 5.4.1)
+  - L10n-swift/Core (5.4.1)
+  - L10n-swift/Extension (5.4.1):
     - L10n-swift/Core
-  - L10n-swift/IBInspectable (5.1.0):
+  - L10n-swift/IBInspectable (5.4.1):
     - L10n-swift/Core
   - MaterialTextField (0.2.1)
   - MBProgressHUD (1.1.0)
   - NoChat (0.3.2)
-  - pop (1.0.10)
-  - Realm (3.1.1):
-    - Realm/Headers (= 3.1.1)
-  - Realm/Headers (3.1.1)
-  - RealmSwift (3.1.1):
-    - Realm (= 3.1.1)
+  - pop (1.0.12)
+  - PryntTrimmerView (3.0.0)
+  - Realm (3.16.1):
+    - Realm/Headers (= 3.16.1)
+  - Realm/Headers (3.16.1)
+  - RealmSwift (3.16.1):
+    - Realm (= 3.16.1)
   - SCLAlertView (0.8)
-  - SwifterSwift (4.2.0):
-    - SwifterSwift/AppKit (= 4.2.0)
-    - SwifterSwift/CoreGraphics (= 4.2.0)
-    - SwifterSwift/CoreLocation (= 4.2.0)
-    - SwifterSwift/Foundation (= 4.2.0)
-    - SwifterSwift/MapKit (= 4.2.0)
-    - SwifterSwift/SwiftStdlib (= 4.2.0)
-    - SwifterSwift/UIKit (= 4.2.0)
-  - SwifterSwift/AppKit (4.2.0)
-  - SwifterSwift/CoreGraphics (4.2.0)
-  - SwifterSwift/CoreLocation (4.2.0)
-  - SwifterSwift/Foundation (4.2.0)
-  - SwifterSwift/MapKit (4.2.0)
-  - SwifterSwift/SwiftStdlib (4.2.0)
-  - SwifterSwift/UIKit (4.2.0)
-  - SwiftyJSON (4.0.0)
-  - TNSlider (0.2.1)
+  - SteviaLayout (4.4.4)
+  - SwifterSwift (5.0.0):
+    - SwifterSwift/AppKit (= 5.0.0)
+    - SwifterSwift/CoreGraphics (= 5.0.0)
+    - SwifterSwift/CoreLocation (= 5.0.0)
+    - SwifterSwift/Dispatch (= 5.0.0)
+    - SwifterSwift/Foundation (= 5.0.0)
+    - SwifterSwift/MapKit (= 5.0.0)
+    - SwifterSwift/SpriteKit (= 5.0.0)
+    - SwifterSwift/SwiftStdlib (= 5.0.0)
+    - SwifterSwift/UIKit (= 5.0.0)
+  - SwifterSwift/AppKit (5.0.0)
+  - SwifterSwift/CoreGraphics (5.0.0)
+  - SwifterSwift/CoreLocation (5.0.0)
+  - SwifterSwift/Dispatch (5.0.0)
+  - SwifterSwift/Foundation (5.0.0)
+  - SwifterSwift/MapKit (5.0.0)
+  - SwifterSwift/SpriteKit (5.0.0)
+  - SwifterSwift/SwiftStdlib (5.0.0)
+  - SwifterSwift/UIKit (5.0.0)
+  - SwiftyJSON (5.0.0)
+  - YPImagePicker (4.0.0):
+    - PryntTrimmerView (~> 3.0.0)
+    - SteviaLayout (~> 4.4.1)
   - YYText (1.0.7)
   - Zip (1.1.0)
 
@@ -64,14 +72,14 @@ DEPENDENCIES:
   - pop
   - RealmSwift
   - SCLAlertView
-  - SwifterSwift
-  - SwiftyJSON
-  - TNSlider
+  - SwifterSwift (~> 5.0)
+  - SwiftyJSON (~> 5.0)
+  - YPImagePicker (~> 4.0.0)
   - YYText
   - Zip (~> 1.1)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - ActionSheetPicker-3.0
     - Alamofire
     - AlamofireImage
@@ -85,38 +93,42 @@ SPEC REPOS:
     - MBProgressHUD
     - NoChat
     - pop
+    - PryntTrimmerView
     - Realm
     - RealmSwift
     - SCLAlertView
+    - SteviaLayout
     - SwifterSwift
     - SwiftyJSON
-    - TNSlider
+    - YPImagePicker
     - YYText
     - Zip
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: eef157d75e151f255c5333d26656c7fbfe905a51
-  Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
-  AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
-  Crashlytics: ccaac42660eb9351b9960c0d66106b0bcf99f4fa
-  ESTabBarController-swift: 1e629e60bc6a87c1ea92a5309489b9f8dde15fa2
-  Fabric: f233c9492b3bbc1f04e3882986740f7988a58edb
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
+  Crashlytics: 5aa8e90dcbf2f34898b4f5a0037787531246cca0
+  ESTabBarController-swift: 4fb52ad03d94d0717ef97bc9eb09a5abfdded0a2
+  Fabric: f6f21452846788bb44595d73e9909d79d328e617
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  IQKeyboardManagerSwift: 2e7dc7f98c111458c1ea2b373f893e8cf95e2b97
-  L10n-swift: 9b419297c2b3c1bc7496cb3379308f441d91325d
+  IQKeyboardManagerSwift: a8228c257614af98743b4cd8584637025f36358f
+  L10n-swift: 8d7edb9c113ac4859a27d6417b47a6bc6cdebf7c
   MaterialTextField: f876a39d571eeece872af6a4da421e3bd065fe0b
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   NoChat: aaa980b8b29c0db8c8bd8ecde22e718cc8ad1bf7
-  pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
-  Realm: 42d1c38a5b1bbcc828b48a7ce702cb86fc68adf4
-  RealmSwift: d31937ca6a6ee54acde64ec839523c0a3c04924b
+  pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
+  PryntTrimmerView: 53ac64053c7ce63cb3e27f54090f52da0734891d
+  Realm: 601cacc51d8be3b17a377ef787be0f6ee0e76cf1
+  RealmSwift: 486f2e09d5a8ccff63ed66e48d0846b111deb5e5
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
-  SwifterSwift: 1d101dcfb0c3123226900f3b4d220d57fb60d546
-  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
-  TNSlider: 745753a2e99b9bf66ad05928f3f4856d4cf4845e
+  SteviaLayout: 523469269059f2c6da02820bb2ff28a5fe0780aa
+  SwifterSwift: 96f90594b370802f01647c2b1229c74a84ffafee
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  YPImagePicker: 8039f89ad79281545fa868486f32d9bf5d65ede1
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
   Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: 96c5f46f6b2f612c28db257cd636e9ffbab8eaf2
+PODFILE CHECKSUM: 8320a52ce2173634d974b86d58e9df483d6663b6
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

@@ -20,14 +20,14 @@ class SavedDataVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
 
     override func viewDidLoad() {
         self.navigationItem.addBackButtonOnLeft()
-        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = attributes
         self.tableView!.tableFooterView = UIView()
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setToolbarHidden(true, animated: false)
         self.tableView.estimatedRowHeight = 64
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.getSavedAdvertises()
         GlobalShareData.sharedGlobal.objCurretnVC = self
         self.navigationItem.title = "MY SAVED ADS"
@@ -142,22 +142,22 @@ class SavedDataVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
             }
             self.view.addBlurEffect()
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
-            self.addChildViewController(self.objAdvertiseVC)
+        objAdvertiseVC = (storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC)
+        self.addChild(self.objAdvertiseVC)
             self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
             self.view.addSubview(self.objAdvertiseVC.view)
             self.objAdvertiseVC
-                .didMove(toParentViewController: self)
+                .didMove(toParent: self)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Deleted")
             
             var objCellData : [String : Any]!
                 objCellData = aryActivityData[indexPath.row]
-            let lunmineer = objCellData["lumineer"] as? LumineerList
+            _ = objCellData["lumineer"] as? LumineerList
             
         }
     }
