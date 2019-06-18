@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import Kingfisher
 
 class viewProfileImgVC: UIViewController {
 
@@ -36,13 +37,21 @@ class viewProfileImgVC: UIViewController {
             urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
         }
 
-        Alamofire.request(urlOriginalImage!).responseImage { response in
-            debugPrint(response)
-            if let image = response.result.value {
-                let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:self.imgProfile.frame.size.width, height: self.imgProfile.frame.size.height))
+        imgProfile!.kf.setImage(
+            with: urlOriginalImage,
+            placeholder: nil,
+            options:[
+                .cacheOriginalImage,.transition(.fade(1))
+            ],
+            progressBlock: { receivedSize, totalSize in
+        },
+            completionHandler: { result in
+                print(result)
+                let scalImg = self.imgProfile.image?.kf.resize(to: self.imgProfile.size, for: .aspectFill)
                 self.imgProfile.image = scalImg
-            }
         }
+        )
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -93,9 +93,9 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
     private func setupAttachmentData() {
         if let strUrl = message.attachmentURL {
             attachURL = strUrl
-            let fileName = strUrl.lastPathComponent
-            let url = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName)
-            GlobalShareData.sharedGlobal.aryAttachUrls.append(url)
+            let urlString = strUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+            let url = URL(string: urlString!)
+            GlobalShareData.sharedGlobal.aryAttachUrls.append(url!)
         }
         attachType = message.msgType
         attachTag = message.messageId
@@ -140,9 +140,9 @@ class TGAttachmentMessageCellLayout: TGBaseMessageCellLayout {
         let timeLabelSize = time.noc_sizeThatFits(size: unlimitSize)
         let timeLabelWidth = timeLabelSize.width
         let timeLabelHeight = CGFloat(15)
-        let attachmentMargin = isOutgoing ? UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10) : UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
+        let attachmentMargin = isOutgoing ? UIEdgeInsets(top: 4, left: 4, bottom: 0, right: 8) : UIEdgeInsets(top: 4, left: 8, bottom: 0, right: 4)
         if attachType == "Document" {
-            let attachmentWidth = bubbleViewWidth - attachmentMargin.left - attachmentMargin.right - 60
+            let attachmentWidth = bubbleViewWidth - attachmentMargin.left - attachmentMargin.right - 20
             let deliveryStatusWidth: CGFloat = (isOutgoing && message.deliveryStatus != .Failure) ? 15 : 0
             let deliveryStatusHeight = deliveryStatusWidth
             

@@ -98,7 +98,7 @@ class AdvertiseData: Object {
                             try! realm.write {
                                 realm.add(newAdvertiseData, update: true)
                             }
-                            if aObject["adFileName"].string != nil, (aObject["adFileName"].string?.count)! > 0 {
+                            if aObject["adFileName"].string != nil, (aObject["adFileName"].string?.count)! > 0, aObject["contentType"].string != "Image" {
                                 // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
                                 let filePath = newAdvertiseData.adFilePath?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                                 
@@ -145,7 +145,8 @@ class AdvertiseData: Object {
                                 newAdvertiseData.adFileName = recordExist[0].adFileName
                             }
                             else {
-                                self.downloadFileFromServer(newAdvertiseData: newAdvertiseData)
+                                if newAdvertiseData.contentType != "Image" {
+                                    self.downloadFileFromServer(newAdvertiseData: newAdvertiseData) }
                             }
                             newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
                             newAdvertiseData.isAdsLiked = recordExist[0].isAdsLiked
@@ -196,7 +197,8 @@ class AdvertiseData: Object {
                             newAdvertiseData.adFileName = recordExist[0].adFileName
                         }
                         else {
-                            self.downloadFileFromServer(newAdvertiseData: newAdvertiseData)
+                            if newAdvertiseData.contentType != "Image" {
+                                self.downloadFileFromServer(newAdvertiseData: newAdvertiseData) }
                         }
                         newAdvertiseData.isAdsSaved = recordExist[0].isAdsSaved
                         newAdvertiseData.isAdsLiked = recordExist[0].isAdsLiked

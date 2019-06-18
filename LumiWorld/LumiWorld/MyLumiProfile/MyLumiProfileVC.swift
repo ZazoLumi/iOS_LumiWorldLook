@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import  RealmSwift
 import AVKit
-
+import Kingfisher
 
 class MyLumiProfileVC: UIViewController {
     var url1 : URL?
@@ -76,13 +76,20 @@ class MyLumiProfileVC: UIViewController {
             let fileName = GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.lastPathComponent
             urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
         }
-        Alamofire.request(urlOriginalImage!).responseImage { response in
-            debugPrint(response)
-            if let image = response.result.value {
-                let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
-                self.imgProfilePic.image = scalImg
+            self.imgProfilePic!.kf.setImage(
+                with: urlOriginalImage,
+                placeholder: nil,
+                options:[
+                    .cacheOriginalImage,.transition(.fade(1))
+                ],
+                progressBlock: { receivedSize, totalSize in
+            },
+                completionHandler: { result in
+                    print(result)
+                    let scalImg = self.imgProfilePic.image?.kf.resize(to: self.imgProfilePic.size, for: .aspectFill)
+                    self.imgProfilePic.image = scalImg
             }
-            }
+            )
         }
         let realm = try! Realm()
        // let count = realm.objects(LumineerList.self).filter("status.@count > 0")
@@ -286,12 +293,22 @@ class MyLumiProfileVC: UIViewController {
             
             scrlAdvertiseView.stackView.addArrangedSubview(customAdsView)
             if urlOriginalImage != nil {
-            Alamofire.request(urlOriginalImage!).responseImage { response in
-                debugPrint(response)
-                if let image = response.result.value {
-                    customAdsView.imgAdsContent.image = image
+                let imgView = customAdsView.imgAdsContent!
+                imgView.kf.setImage(
+                    with: urlOriginalImage,
+                    placeholder: nil,
+                    options:[
+                        .cacheOriginalImage,.transition(.fade(1))
+                    ],
+                    progressBlock: { receivedSize, totalSize in
+                },
+                    completionHandler: { result in
+                        print(result)
+//                        let scalImg = imgView.image?.kf.resize(to: imgView.size, for: .aspectFill)
+//                        imgView.image = scalImg
                 }
-                }}
+                )
+            }
             }}
 
         if aryAdsData.count > 0 {

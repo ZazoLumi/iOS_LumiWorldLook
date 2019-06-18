@@ -173,24 +173,7 @@ class CustomSegmentedContrl: UIControl {
         buttons[index].setTitleColor(selectorTextColor, for: .normal)
     }
 
-   
-    
-//    override func sendActions(for controlEvents: UIControlEvents) {
-//
-//        super.sendActions(for: controlEvents)
-//
-//        let  selectorStartPosition = frame.width / CGFloat(buttons.count) * CGFloat(selectedSegmentIndex)
-//
-//        UIView.animate(withDuration: 0.3, animations: {
-//
-//            self.selector.frame.origin.x = selectorStartPosition
-//        })
-//
-//        buttons[selectedSegmentIndex].setTitleColor(selectorTextColor, for: .normal)
-//
-//    }
-    
-    
+
     
 }
 extension String {

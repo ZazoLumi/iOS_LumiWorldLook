@@ -7,11 +7,10 @@
 //
 
 import UIKit
-import AlamofireImage
 import Alamofire
 import Realm
 import RealmSwift
-
+import Kingfisher
 class LumineerCompanyCell: UITableViewCell {
     
     @IBOutlet weak var btnFollowUnfollow: UIButton!
@@ -246,23 +245,40 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
             btnHeaderView?.imageView?.contentMode = .scaleAspectFit
             //displaying image
             let urlOriginalImage = URL.init(string: self.aryCategory[section].originalImage!)
-            Alamofire.request(urlOriginalImage!).responseImage { response in
-                debugPrint(response)
-                
-                if let image = response.result.value {
-                   let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 20, height: 20))
-                    btnHeaderView?.setImage(scalImg, for: .normal)
-                }
+            let imageView = btnHeaderView?.imageView!
+            imageView!.kf.setImage(
+                with: urlOriginalImage,
+                placeholder: nil,
+                options:[
+                    .processor(DownsamplingImageProcessor(size: CGSize(width: 40, height: 40))),
+                    .cacheOriginalImage,.transition(.fade(1))
+                ],
+                progressBlock: { receivedSize, totalSize in
+            },
+                completionHandler: { result in
+                    print(result)
+                  btnHeaderView?.setImage(imageView!.image, for: .normal)
             }
+            )
+            
             let urlSelectedImage = URL.init(string: self.aryCategory[section].visitedImage!)
-            Alamofire.request(urlSelectedImage!).responseImage { response in
-                debugPrint(response)
-                
-                if let image = response.result.value {
-                    let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 20, height: 20))
-                    btnHeaderView?.setImage(scalImg, for: .selected)
-                }
+
+            let imageView1 = UIImageView()
+            imageView1.kf.setImage(
+                with: urlSelectedImage,
+                placeholder: nil,
+                options:[
+                    .processor(DownsamplingImageProcessor(size: CGSize(width: 40, height: 40))),
+                    .cacheOriginalImage,.transition(.fade(1))
+                ],
+                progressBlock: { receivedSize, totalSize in
+            },
+                completionHandler: { result in
+                    print(result)
+                    btnHeaderView?.imageForSelected = imageView1.image
             }
+            )
+
 
 
             header.addSubview(btnHeaderView!)
@@ -305,7 +321,8 @@ class LumiCategoryVC: UIViewController , UITableViewDelegate, UITableViewDataSou
         cell.lblCompanyName.text = objLumineer.displayName
         let imgThumb = UIImage.decodeBase64(strEncodeData:objLumineer.enterpriseLogo)
         let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgCompanyLogo.frame.size.width, height: cell.imgCompanyLogo.frame.size.height))
-        cell.imgCompanyLogo.contentMode = .scaleAspectFit
+
+        cell.imgCompanyLogo.contentMode = .scaleAspectFill
         cell.imgCompanyLogo.image = scalImg
         cell.imgCompanyLogo?.layer.cornerRadius = (scalImg.size.width)/2
         cell.imgCompanyLogo?.clipsToBounds = true;
@@ -615,7 +632,8 @@ extension UINavigationItem {
         if GlobalShareData.sharedGlobal.objCurretnVC != nil &&  GlobalShareData.sharedGlobal.objCurretnVC.isKind(of: TGChatViewController.self) && GlobalShareData.sharedGlobal.currentScreenValue == currentScreen.messageThread.rawValue {
         let btn2 = UIButton(type: .custom)
         let imgThumb = UIImage.decodeBase64(strEncodeData:GlobalShareData.sharedGlobal.objCurrentLumineer.enterpriseLogo)
-        let scalImg = imgThumb.af_imageScaled(to: CGSize(width: 30, height: 30))
+            let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: 30, height: 30))
+
         btn2.frame = CGRect(x: 25, y: 0, width: 30, height: 30)
         btn2.cornerRadius = 15
       //  btn2.borderColor = UIColor.lumiGreen
@@ -673,12 +691,24 @@ extension UINavigationItem {
                 let fileName = GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.lastPathComponent
                 urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
             }
-
-            Alamofire.request(urlOriginalImage!).responseImage { response in
+//                let imageView = imgProfile
+//                imageView.kf.setImage(
+//                    with: urlOriginalImage,
+//                    placeholder: nil,
+//                    options:[
+//                        .processor(DownsamplingImageProcessor(size: imgProfile.size),.sc),
+//                        .cacheOriginalImage,.transition(.fade(1))
+//                    ],
+//                    progressBlock: { receivedSize, totalSize in
+//                },
+//                    completionHandler: { result in
+//                        print(result)
+//                }
+//                )
+                Alamofire.request(urlOriginalImage!).responseData { response in
                 debugPrint(response)
                 if let image = response.result.value {
-                    let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:imgProfile.frame.size.width, height: imgProfile.frame.size.height))
-                    imgProfile.image = scalImg
+                   // imgProfile.image = scalImg
                 }
                 }
             }

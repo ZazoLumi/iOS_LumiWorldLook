@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -59,7 +59,7 @@
                             </subviews>
                         </stackView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ImB-0O-ets">
-                            <rect key="frame" x="10" y="6" width="71" height="22"/>
+                            <rect key="frame" x="10" y="6.5" width="71.5" height="22"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="ImB-0O-ets" secondAttribute="height" multiplier="71:22" id="wXA-2D-lrb"/>
                             </constraints>
@@ -80,7 +80,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="brx-3w-gvh">
                     <rect key="frame" x="0.0" y="35" width="300" height="54"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0aE-Ma-hC1">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0aE-Ma-hC1">
                             <rect key="frame" x="65" y="2" width="230" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="ktl-LN-gF5"/>
@@ -104,7 +104,7 @@
                                 <constraint firstAttribute="height" constant="20" id="mlv-rJ-YVW"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fkz-Uc-7qr">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="fkz-Uc-7qr">
                             <rect key="frame" x="90" y="25.5" width="205" height="17"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                             <color key="textColor" red="0.50980392159999999" green="0.50980392159999999" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
@@ -171,10 +171,10 @@
         </view>
     </objects>
     <resources>
-        <image name="Asset 10" width="71" height="19"/>
-        <image name="Asset 49" width="13" height="13"/>
-        <image name="Asset 50" width="13" height="13"/>
-        <image name="Asset 51" width="13" height="13"/>
+        <image name="Asset 10" width="71.5" height="19.5"/>
+        <image name="Asset 49" width="13" height="13.5"/>
+        <image name="Asset 50" width="13" height="13.5"/>
+        <image name="Asset 51" width="13" height="13.5"/>
         <image name="Asset102" width="15" height="11"/>
         <image name="Play-icon" width="33" height="33"/>
     </resources>

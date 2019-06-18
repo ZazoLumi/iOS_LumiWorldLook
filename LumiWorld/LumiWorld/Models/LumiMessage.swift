@@ -140,7 +140,7 @@ class LumiMessage : Object {
                                     realm.add(newLumiMessage, update: true)
                                     objLumineerMessageList.append(newLumiMessage)
                                 }
-                                if aObject["fileName"].string != nil, (aObject["fileName"].string?.count)! > 0 {
+                                if aObject["fileName"].string != nil, (aObject["fileName"].string?.count)! > 0, newLumiMessage.contentType != "Image" {
                                     DownloadManager.shared().startFileDownloads(FileDownloadInfo.init(fileTitle: Int32(newLumiMessage.id), andDownloadSource: newLumiMessage.fileName), withCompletionBlock: { (response,url) in
                                     DispatchQueue.main.async {
                                         let messages = objLumineerMessageList.filter("id == %d", response)

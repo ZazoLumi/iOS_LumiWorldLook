@@ -92,8 +92,6 @@ class UserData : Object{
             else {
                 GlobalShareData.sharedGlobal.realmManager.saveObjects(objs: newObj)
             }
-            if json["profilePic"].string != nil, ((json["profilePic"].string)?.count)! > 0 {
-                self.downloadNewProfilePic(newObj: newObj)}
             completionHandler(newObj)
             print(json)
         }, failure: { (Error) in
@@ -142,9 +140,6 @@ class UserData : Object{
                     GlobalShareData.sharedGlobal.objCurrentUserDetails = newObj
                     GlobalShareData.sharedGlobal.userCellNumber = newObj.cell
                     
-                    if dict?["profilePic"] as? String != nil, ((dict?["profilePic"] as? String)?.count)! > 0 {
-                        self.downloadNewProfilePic(newObj: newObj)
-                    }
                     completionHandler(newObj)
                 })
             } catch let jsonError {

@@ -127,26 +127,18 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         pageController.delegate = self
         pageController.dataSource = self
         
-//        pageController.view.gestureRecognizers?.forEach({ (gesture) in
-//            pageController.view.removeGestureRecognizer(gesture)
-//        })
         if let scrollView = pageController.view.subviews.filter({$0.isKind(of: UIScrollView.self)}).first as? UIScrollView {
             scrollView.isScrollEnabled = false
         }
-
-        
-//        for svScroll in pageController.view.subviews as! [UIScrollView] {
-//            svScroll.delegate = self
-//        }
         scrollContentView.translatesAutoresizingMaskIntoConstraints = false
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.pageController.view.frame = CGRect(x: 0, y: 5, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - ((self.segmentedControlView.frame.origin.y+self.segmentedControlView.frame.size.height)-50))
+            self.pageController.view.frame = CGRect(x: 0, y: 5, width: UIScreen.main.bounds.width, height: 5000)
         }
         
         // arrPageTexts = [vc1, vc2, vc3]
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        objLumineerHomeVC = storyBoard.instantiateViewController(withIdentifier: "LumineerHomeVC") as! LumineerHomeVC
+        objLumineerHomeVC = storyBoard.instantiateViewController(withIdentifier: "LumineerHomeVC") as? LumineerHomeVC
      
         let objLumineerMessageVC = storyBoard.instantiateViewController(withIdentifier: "LumineerMessagesVC") as! LumineerMessagesVC
         
@@ -173,67 +165,48 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         
     }
     
-    
     private func indexofviewController(viewCOntroller: UIViewController) -> Int {
         if(arrPageTexts .contains(viewCOntroller)) {
-            return arrPageTexts.index(of: viewCOntroller)!
+            return arrPageTexts.firstIndex(of: viewCOntroller)!
         }
-        
         return -1
     }
     
-    
     //MARK: - Pagination Delegate Methods
-    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        
         var index = indexofviewController(viewCOntroller: viewController)
-        
         if(index != -1) {
             index = index - 1
         }
-        
         if(index < 0) {
             return nil
         }
         else {
             return arrPageTexts[index]
         }
-        
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        
         var index = indexofviewController(viewCOntroller: viewController)
-        
         if(index != -1) {
             index = index + 1
         }
-        
         if(index >= arrPageTexts.count) {
             return nil
         }
         else {
             return arrPageTexts[index]
         }
-        
     }
     
     func pageViewController(_ pageViewController1: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
         if(completed) {
-            currentPage = arrPageTexts.index(of: (pageViewController1.viewControllers?.last)!)
-            // self.segmentedControl.selectedSegmentIndex = currentPage
-            
+            currentPage = arrPageTexts.firstIndex(of: (pageViewController1.viewControllers?.last)!)
             self.segmentedControl.updateSegmentedControlSegs(index: currentPage)
-            
         }
-        
     }
     
-    
     @objc func onChangeOfSegment(_ sender: CustomSegmentedContrl) {
-        
         switch sender.selectedSegmentIndex {
         case 0:
             pageController.setViewControllers([arrPageTexts[0]], direction: UIPageViewController.NavigationDirection.reverse, animated: true, completion: nil)
@@ -245,18 +218,14 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             }else{
                 pageController.setViewControllers([arrPageTexts[1]], direction: UIPageViewController.NavigationDirection.forward, animated: true, completion: nil)
                 currentPage = 1
-                
             }
         case 2:
             if currentPage < 2 {
                 pageController.setViewControllers([arrPageTexts[2]], direction: UIPageViewController.NavigationDirection.forward, animated: true, completion: nil)
                 currentPage = 2
-                
-                
             }else{
                 pageController.setViewControllers([arrPageTexts[2]], direction: UIPageViewController.NavigationDirection.reverse, animated: true, completion: nil)
                 currentPage = 2
-                
             }
         case 3:
             pageController.setViewControllers([arrPageTexts[3]], direction: UIPageViewController.NavigationDirection.reverse, animated: true, completion: nil)
@@ -267,25 +236,35 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         case 5:
             pageController.setViewControllers([arrPageTexts[5]], direction: UIPageViewController.NavigationDirection.reverse, animated: true, completion: nil)
             currentPage = 5
-
         default:
             break
         }
-        
-        
     }
 
     func changeScrollContentSize(_ heiht: Int) {
         scrollContentView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: CGFloat(heiht))
+        if currentPage != 0 {
+            let viewCtrl = arrPageTexts[currentPage] as UIViewController
+            viewCtrl.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: viewCtrl.view.frame.size.height)
+        }
+//        self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: CGFloat(heiht))
+     //   self.pageController.view.frame.size = CGSize(width: UIScreen.main.bounds.width, height: CGFloat(heiht))
+
     }
     
     func resetScrollContentOffset() {
         self.scrollContentView.contentOffset = .zero
+        scrollContentView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: self.pageController.view.frame.size.height)
+        
     }
 
     func calculateCurrentHeight() {
         mainViewHeights.constant
             =  (appDelegate.window?.bounds.size.height)! + lblExpandableDescription.frame.size.height
+//        print(scrollContentView.frame)
+//        scrollContentView.frame = CGRect(x: 0, y: 0, width: scrollContentView.frame.size.width, height: scrollContentView.frame.size.height)
+//        print(scrollContentView.frame)
+
     }
     
     func setupLumineerData() {
@@ -309,11 +288,10 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             btnFollowLumineer.isSelected = false
         }
         let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
-        // let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
-        let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
-        
+        let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
+
         self.imgProfilePic.image = scalImg
-        // self.imgProfilePic.contentMode = .scaleAspectFill
+         self.imgProfilePic.contentMode = .scaleAspectFill
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style:.plain, target: nil, action: nil)
         
         
@@ -343,11 +321,9 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         //self.calculateCurrentHeight()
     }
     
-    
     //
     // MARK: ExpandableLabel Delegate
     //
-    
     func willExpandLabel(_ label: ExpandableLabel) {
         lblExpandableDescription.textAlignment = .center
     }
@@ -369,8 +345,6 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         lblExpandableDescription.numberOfLines = 2
         lblExpandableDescription.textAlignment = .center
     }
-    
-    
     
     //
     // MARK: Social media methods
@@ -428,7 +402,8 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
             DispatchQueue.global(qos: .userInitiated).async {
                 objLumiList.setLumineerCompanyFollowUnFollowData(id:GlobalShareData.sharedGlobal.userCellNumber,companyregistrationnumber:companyRegistrationNumber,uniqueID: strUniqueID, status:strStatus , completionHandler: { (List) in
                     let imgThumb = UIImage.decodeBase64(strEncodeData:self.objLumineer.enterpriseLogo)
-                    let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: self.imgProfilePic.frame.size.width-10, height: self.imgProfilePic.frame.size.height-10))
+                    let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: self.imgProfilePic.frame.size.width, height: self.imgProfilePic.frame.size.height))
+
                     self.imgProfilePic.image = scalImg
                     
                 })
@@ -442,10 +417,10 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         for object in aryAdsData {
             let lumineerId = object["lumineerId"] as! Int
             if lumineerId == GlobalShareData.sharedGlobal.objCurrentLumineer.id {
-                GlobalShareData.sharedGlobal.objCurrentAdv = object["message"] as! AdvertiseData
+                GlobalShareData.sharedGlobal.objCurrentAdv = object["message"] as? AdvertiseData
                 self.view.addBlurEffect()
                 let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
+                objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as? AdvertiseVC
                 self.addChild(self.objAdvertiseVC)
                 self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
                 self.view.addSubview(self.objAdvertiseVC.view)
@@ -455,38 +430,6 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
                 
             }
         }
-        //        let realm = try! Realm()
-        //        let result  = realm.objects(AdvertiseData.self).filter("lumineerId = \(GlobalShareData.sharedGlobal.objCurrentLumineer.id)")
-        //        if result.count > 0 {
-        //            let currentDate = Date()
-        //
-        //
-        //            for objAdv in result {
-        //                let creteatedData = objAdv.strAdvertiseDate
-        //                let cDate = Date().getCurrentUpdtedDateFromString(string: creteatedData!, formatter: "yyyy-MM-dd'T'HH:mm:ssZZZ")
-        //                let date1 = currentDate
-        //                let date2 = cDate
-        //                let calendar = Calendar.current
-        //                let dateComponents = calendar.dateComponents([.minute], from: date2, to: date1)
-        //                print("Difference between times since midnight is", dateComponents.minute as Any)
-        //                let allowMinuntes = objAdv.airingAllotment?.components(separatedBy: " ").first?.int
-        //                let diffValue = dateComponents.minute!
-        //                if diffValue > 0 && diffValue <= allowMinuntes! {
-        //                    GlobalShareData.sharedGlobal.objCurrentAdv = objAdv
-        //                    self.view.addBlurEffect()
-        //                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        //                    objAdvertiseVC = storyBoard.instantiateViewController(withIdentifier: "AdvertiseVC") as! AdvertiseVC
-        //                    self.addChild(self.objAdvertiseVC)
-        //                    self.objAdvertiseVC.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width, height:390);
-        //                    self.view.addSubview(self.objAdvertiseVC.view)
-        //                    self.objAdvertiseVC
-        //                        .didMove(toParent: self)
-        //                    break
-        //                }
-        //            }
-        //
-        //
-        //        }
     }
 }
 

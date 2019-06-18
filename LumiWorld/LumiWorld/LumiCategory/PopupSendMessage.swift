@@ -11,7 +11,7 @@ import Realm
 import RealmSwift
 import MBProgressHUD
 import AVKit
-
+import Kingfisher
 class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     var activityType : String!
     var strFileUrl : String!
@@ -268,7 +268,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 self.strFileUrl = url.absoluteString
                 self.isVideoPickup = true
                 DispatchQueue.main.async {
-                    let scalImg = thumbImg.af_imageAspectScaled(toFill: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
+                    let scalImg = thumbImg.kf.resize(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height), for: .aspectFill)
                     self.imgAttach.image = scalImg
                 }
                 /* get your image here */
@@ -295,7 +295,8 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 self.strFileUrl = url.absoluteString
                 self.isVideoPickup = true
                 DispatchQueue.main.async {
-                    let scalImg = thumbImg.af_imageAspectScaled(toFill: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
+                    let scalImg = thumbImg.kf.resize(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height), for: .aspectFill)
+
                     self.imgAttach.image = scalImg
                 }
                 } as ((URL,UIImage) -> Void)
@@ -308,7 +309,8 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
                 objDocumentVC.isFromChat = false
                 self.navigationController?.pushViewController(objDocumentVC, animated: false)
                 objDocumentVC.didFinishCapturingDocument = { (image, strFilePath,destinationFilename) in
-                    let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
+                    let scalImg = image.kf.resize(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height), for: .aspectFill)
+
                     self.imgAttach.image = scalImg
                     self.strFileUrl = strFilePath
                     self.isVideoPickup = true
@@ -329,7 +331,7 @@ class PopupSendMessage: UIViewController,UITextViewDelegate, UITableViewDataSour
             self.navigationController?.pushViewController(objMapViewController, animated: false)
             
             objMapViewController.didFinishCapturingLocations = { (image,lat,long,strFilePath,strLocationAddress) in
-                let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height))
+                let scalImg = image.kf.resize(to: CGSize(width: self.imgAttach.size.width, height: self.imgAttach.size.height), for: .aspectFill)
                 self.imgAttach.image = scalImg
                 self.isVideoPickup = true
                 self.selectedLat = lat

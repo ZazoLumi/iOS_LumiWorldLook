@@ -12,7 +12,7 @@ import Alamofire
 import MBProgressHUD
 import IQKeyboardManagerSwift
 import RealmSwift
-
+import Kingfisher
 enum ScreenType {
     case Advertise
     case Content
@@ -248,16 +248,24 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                         let fileName = GlobalShareData.sharedGlobal.objCurrentAdv.adFileName?.replacingOccurrences(of: " ", with: "-")
                         urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                     }
-                    Alamofire.request(urlOriginalImage).responseImage { response in
-                        debugPrint(response)
-                        if let image = response.result.value {
-                            let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
-                            imageView.image = scalImg
+                    imageView.kf.setImage(
+                        with: urlOriginalImage,
+                        placeholder: nil,
+                        options:[
+                            .cacheOriginalImage,.transition(.fade(1))
+                        ],
+                        progressBlock: { receivedSize, totalSize in
+                    },
+                        completionHandler: { result in
+                            print(result)
                             self.mediaZoom = MediaZoom(with: imageView, animationTime: 0.5, useBlur: true)
                             self.runTimer()
                             self.viewAdvContent.bringSubviewToFront(self.viewAdvTimer)
-                        }
+                            let scalImg = imageView.image?.kf.resize(to: imageView.size, for: .aspectFill)
+                            imageView.image = scalImg
+
                     }
+                    )
                 }
             }
             else if GlobalShareData.sharedGlobal.objCurrentAdv.contentType == "Video" {
@@ -351,16 +359,24 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                             let fileName = GlobalShareData.sharedGlobal.objCurrentContent.contentFileName?.replacingOccurrences(of: " ", with: "-")
                             urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                         }
-                        Alamofire.request(urlOriginalImage).responseImage { response in
-                            debugPrint(response)
-                            if let image = response.result.value {
-                                let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:imageView.frame.size.width, height: imageView.frame.size.height))
-                                imageView.image = scalImg
+                        imageView.kf.setImage(
+                            with: urlOriginalImage,
+                            placeholder: nil,
+                            options:[
+                                .cacheOriginalImage,.transition(.fade(1))
+                            ],
+                            progressBlock: { receivedSize, totalSize in
+                        },
+                            completionHandler: { result in
+                                print(result)
                                 self.mediaZoom = MediaZoom(with: imageView, animationTime: 0.5, useBlur: true)
                                 self.runTimer()
                                 self.viewAdvContent.bringSubviewToFront( self.viewAdvTimer)
-                            }
+                                let scalImg = imageView.image?.kf.resize(to: imageView.size, for: .aspectFill)
+                                imageView.image = scalImg
                         }
+                        )
+                        
                     }
                 }
                 else if GlobalShareData.sharedGlobal.objCurrentContent.contentType == "video" {
@@ -674,18 +690,21 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
                     let fileName = GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.lastPathComponent
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                 }
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    if let image = response.result.value {
-                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:self.imgLumineerProfile.frame.size.width, height: self.imgLumineerProfile.frame.size.height))
+                cell.imgLumineerProfile.kf.setImage(
+                    with: urlOriginalImage,
+                    placeholder: nil,
+                    options:[
+                        .cacheOriginalImage,.transition(.fade(1))
+                    ],
+                    progressBlock: { receivedSize, totalSize in
+                },
+                    completionHandler: { result in
+                        print(result)
+                        let scalImg = cell.imgLumineerProfile.image?.kf.resize(to: cell.imgLumineerProfile.size, for: .aspectFill)
                         cell.imgLumineerProfile.image = scalImg
-                         cell.imgLumineerProfile?.clipsToBounds = true;
-//                        cell.imgLumineerProfile.contentMode = .scaleAspectFit
-//                        cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
-//
-
-                    }
                 }
+                )
+            
             }
             cell.lblLumineerTitle.text = GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName
 

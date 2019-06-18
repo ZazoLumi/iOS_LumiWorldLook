@@ -26,5 +26,6 @@ target 'LumiWorld' do
   pod 'Crashlytics'
   pod 'YPImagePicker','~> 4.0.0'
   # Pods for LumiWorld
+  pod 'Kingfisher'
 
 end

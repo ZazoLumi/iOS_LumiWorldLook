@@ -169,12 +169,12 @@ class TGChatViewController: NOCChatViewController, UINavigationControllerDelegat
     
     @objc func loadAttachmentPreview(notification: NSNotification) {
         if let strUrl = notification.userInfo?["url"] as? String {
-            let fileName = strUrl.lastPathComponent
-            let url = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName)
+            let urlString = strUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+            let url = URL(string: urlString!)
             quickLookController.dataSource = self
             previewUrl = url
-            if QLPreviewController.canPreview(url as QLPreviewItem) {
-                let index = GlobalShareData.sharedGlobal.aryAttachUrls.firstIndex(of:  url)
+            if QLPreviewController.canPreview(url! as QLPreviewItem) {
+                let index = GlobalShareData.sharedGlobal.aryAttachUrls.firstIndex(of:  url!)
                 quickLookController.currentPreviewItemIndex = index!;
                 navigationController?.pushViewController(quickLookController, animated: true)
                 quickLookController.navigationController?.navigationItem.addBackButtonOnLeft()

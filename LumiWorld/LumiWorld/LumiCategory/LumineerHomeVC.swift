@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import RealmSwift
+import Kingfisher
 
 class LumineerContentCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
@@ -46,8 +47,12 @@ class LumineerHomeVC: UIViewController,UICollectionViewDelegate,UICollectionView
     }
     
     override func viewWillAppear(_ animated: Bool) {
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         setupCotentData()
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         delegate?.resetScrollContentOffset()
     }
@@ -55,7 +60,7 @@ class LumineerHomeVC: UIViewController,UICollectionViewDelegate,UICollectionView
     func setupCotentData() {
         aryContentData = []
         aryContentData = GlobalShareData.sharedGlobal.getAllContents(isCurrentLumineer: true)
-        delegate?.changeScrollContentSize((aryContentData.count*110/3)+50)
+        delegate?.changeScrollContentSize((aryContentData.count*110/3)+250)
         collectionView.reloadData()
     }
 
@@ -114,13 +119,16 @@ class LumineerHomeVC: UIViewController,UICollectionViewDelegate,UICollectionView
         if urlOriginalImage != nil {
             Alamofire.request(urlOriginalImage!).responseImage { response in
                 debugPrint(response)
-                
                 if let image = response.result.value {
                     let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: cell.imageView.size.width, height: cell.imageView.size.height))
-                    cell.imageView.image = scalImg
+                    UIView.animate(withDuration: 1.0, animations: {
+                        cell.imageView.image = scalImg
+                    })
+
                 }
             }}
         cell.imageView.contentMode = .scaleAspectFit
+
         cell.backgroundColor = UIColor.clear // make cell more visible in our example project
         
         return cell

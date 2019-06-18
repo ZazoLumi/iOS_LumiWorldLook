@@ -96,7 +96,7 @@ class LumineerContent: Object {
                             try! realm.write {
                                 realm.add(newContentData, update: true)
                             }
-                            if aObject["adMediaURL"].string != nil, (aObject["adMediaURL"].string?.count)! > 0 {
+                            if aObject["adMediaURL"].string != nil, (aObject["adMediaURL"].string?.count)! > 0, newContentData.contentType != "image" {
                                 // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
                                 let filePath = newContentData.adMediaURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                                 
@@ -145,7 +145,8 @@ class LumineerContent: Object {
                                 newContentData.contentFileName = recordExist[0].contentFileName
                             }
                             else {
-                                self.downloadFileFromServer(newAdvertiseData: newContentData)
+                                if newContentData.contentType != "image" {
+                                    self.downloadFileFromServer(newAdvertiseData: newContentData) }
                             }
                             newContentData.isCtsSaved = recordExist[0].isCtsSaved
                             newContentData.isCtsLiked = recordExist[0].isCtsLiked

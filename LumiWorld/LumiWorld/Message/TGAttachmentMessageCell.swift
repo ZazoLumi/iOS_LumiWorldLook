@@ -28,7 +28,7 @@ import YYText
 import Alamofire
 import AVKit
 import MediaPlayer
-
+import Kingfisher
 class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControllerDelegate {
     
     var bubbleImageView = UIImageView()
@@ -104,17 +104,27 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
             }
             
             bubbleImageView.frame = cellLayout.bubbleImageViewFrame
-            bubbleImageView.image = isHighlight ? cellLayout.highlightBubbleImage : cellLayout.bubbleImage
+            
+            let image = isHighlight ? cellLayout.highlightBubbleImage : cellLayout.bubbleImage
+            
+            
+            bubbleImageView.image = image?.resizableImage(withCapInsets:
+                UIEdgeInsets(top: 17, left: 21, bottom: 17, right: 21),
+                                                          resizingMode: .stretch)
+                .withRenderingMode(.alwaysTemplate)
+            bubbleImageView.tintColor = !cellLayout.isOutgoing ? UIColor.init(red: 221, green: 222, blue: 228) : UIColor.init(hexString: "6EBAAA")
+
             
             attachImageView.frame = cellLayout.attachImageViewFrame
             textLabel.frame = cellLayout.textLableFrame
             textLabel.textLayout = cellLayout.textLayout
-            self.attachImageView.cornerRadius = 5
+            self.attachImageView.cornerRadius = 12
             self.attachImageView.contentMode = .scaleAspectFit
             let urlOriginalImage : URL!
             if(cellLayout.attachURL?.hasUrlPrefix())!
             {
-                urlOriginalImage = URL.init(string: cellLayout.attachURL!)
+                let urlString = cellLayout.attachURL!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                urlOriginalImage = URL.init(string: urlString!)
             }
             else {
                 let fileName = cellLayout.attachURL?.lastPathComponent
@@ -125,19 +135,22 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
             }
             imgPlay.isHidden = true
             if (cellLayout.attachType == "Image" || cellLayout.attachType == "Location") && urlOriginalImage != nil{
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    if let image = response.result.value {
-                        if cellLayout.attachImageViewFrame.size.width > 0, cellLayout.attachImageViewFrame.size.height > 0 {
-                           // let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:cellLayout.attachImageViewFrame.size.width , height: cellLayout.attachImageViewFrame.size.height))
-                            self.attachImageView.image = image
-                        }
-                        else {
-
-                            let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
-                            self.attachImageView.image = scalImg }
-                    }
+                self.attachImageView.kf.setImage(
+                    with: urlOriginalImage,
+                    placeholder: nil,
+                    options:[
+                       
+                        .cacheOriginalImage,.transition(.fade(1))
+                    ],
+                    progressBlock: { receivedSize, totalSize in
+                },
+                    completionHandler: { result in
+                        print(result)
+                        let scalImg = self.attachImageView.image?.kf.resize(to: self.attachImageView.size, for: .aspectFill)
+                        self.attachImageView.image = scalImg
                 }
+                )
+    
             }
             else if cellLayout.attachType == "Video" {
                 imgPlay.isHidden = false
@@ -148,14 +161,22 @@ class TGAttachmentMessageCell: TGBaseMessageCell, UIDocumentInteractionControlle
                     do {
                         if let fileName = cellLayout.attachThumbName {
                             let  fileUrl = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName)
-                        Alamofire.request(fileUrl).responseImage { response in
-                            debugPrint(response)
-                            
-                            if let image = response.result.value {
-                                //let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:ceil(self.width * 0.75)-20 , height: 110))
-                                self.attachImageView.image = image
+                            self.attachImageView.kf.setImage(
+                                with: fileUrl,
+                                placeholder: nil,
+                                options:[
+                                    
+                                    .cacheOriginalImage,.transition(.fade(1))
+                                ],
+                                progressBlock: { receivedSize, totalSize in
+                            },
+                                completionHandler: { result in
+                                    print(result)
+                                    let scalImg = self.attachImageView.image?.kf.resize(to: self.attachImageView.size, for: .aspectFill)
+                                    self.attachImageView.image = scalImg
                             }
-                            }
+                            )
+                    
                         }
                     } catch {
                         print(error)

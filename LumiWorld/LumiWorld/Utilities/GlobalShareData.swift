@@ -403,7 +403,7 @@ class GlobalShareData {
     
     func geCurrentLumineersAdvertise() -> [[String:AnyObject]]{
         let realm = try! Realm()
-        let result  = realm.objects(AdvertiseData.self).filter("id == %d",objCurrentLumineer.id)
+        let result  = realm.objects(AdvertiseData.self).filter("lumineerId == %d",objCurrentLumineer.id)
         var aryAdsData: [[String:AnyObject]] = []
         if result.count > 0 {
             for objAdv in result {

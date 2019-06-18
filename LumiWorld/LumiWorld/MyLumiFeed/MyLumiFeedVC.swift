@@ -11,7 +11,7 @@ import UIKit
 import RealmSwift
 import AVKit
 import Alamofire
-
+import Kingfisher
 class lumiFeedCell: UITableViewCell {
     @IBOutlet var imgAerro: UIImageView!
     @IBOutlet var imgLumineerProfile: UIImageView!
@@ -201,6 +201,7 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
         cell.lblLumineerTitle.text = objCellData["title"] as? String
         let imgThumb = UIImage.decodeBase64(strEncodeData:objCellData["profileImg"] as? String)
         let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
+
         cell.imgLumineerProfile.image = scalImg
         cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
         cell.imgLumineerProfile?.clipsToBounds = true;
@@ -250,7 +251,8 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                 var urlOriginalImage : URL!
                 if(message?.fileName?.hasUrlPrefix())!
                 {
-                    urlOriginalImage = URL.init(string: (message?.fileName!)!)
+                    let urlString = message?.fileName!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                    urlOriginalImage = URL.init(string: urlString!)
                 }
                 else {
                     let fileName = message?.fileName?.lastPathComponent
@@ -260,28 +262,43 @@ class MyLumiFeedVC: UIViewController, UITableViewDelegate,UITableViewDataSource{
                 if message?.contentType == "Video" && message?.imageURL != nil{
                     let fileName = message?.imageURL
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-                    Alamofire.request(urlOriginalImage!).responseImage { response in
-                        debugPrint(response)
-                        
-                        if let image = response.result.value {
-                            let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
+                    cell.imgMessage!.kf.setImage(
+                        with: urlOriginalImage,
+                        placeholder: nil,
+                        options:[
+                            
+                            .cacheOriginalImage,.transition(.fade(1))
+                        ],
+                        progressBlock: { receivedSize, totalSize in
+                    },
+                        completionHandler: { result in
+                            print(result)
+                            let scalImg = cell.imgMessage.image?.kf.resize(to: cell.imgMessage.size, for: .aspectFill)
                             cell.imgMessage.image = scalImg
-                        }
                     }
+                    )
+                
                 }
                 else if message?.contentType == "Document" {
                     let image = UIImage.init(named: "docFile")
-                    let scalImg = image?.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
+                    let scalImg = image?.kf.resize(to: CGSize(width: 25, height: 25), for: .aspectFill)
                     cell.imgMessage.image = scalImg
                 }
                 else if  urlOriginalImage != nil{
-                    Alamofire.request(urlOriginalImage!).responseImage { response in
-                        debugPrint(response)
-                        if let image = response.result.value {
-                            let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
+                    cell.imgMessage!.kf.setImage(
+                        with: urlOriginalImage,
+                        placeholder: nil,
+                        options:[
+                            .cacheOriginalImage,.transition(.fade(1))
+                        ],
+                        progressBlock: { receivedSize, totalSize in
+                    },
+                        completionHandler: { result in
+                            print(result)
+                            let scalImg = cell.imgMessage!.image?.kf.resize(to: CGSize(width: 25, height: 25), for: .aspectFill)
                             cell.imgMessage.image = scalImg
-                        }
                     }
+                    )
                 }
             }
         }

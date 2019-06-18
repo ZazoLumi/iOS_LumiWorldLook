@@ -10,6 +10,8 @@ import UIKit
 import RealmSwift
 import Alamofire
 import MBProgressHUD
+import Kingfisher
+
 class LumiProfileDetails: UIViewController,FormDataDelegate,UITextFieldDelegate {
     @IBOutlet weak var btnDone: UIButton!
     @IBOutlet weak var btnCancel: UIButton!
@@ -71,13 +73,23 @@ class LumiProfileDetails: UIViewController,FormDataDelegate,UITextFieldDelegate 
                 GlobalShareData.sharedGlobal.strImagePath = urlOriginalImage.absoluteString
             }
         }
-        Alamofire.request(urlOriginalImage!).responseImage { response in
-            debugPrint(response)
-            if let image = response.result.value {
-                let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:self.btnImgProfilePic.frame.size.width, height: self.btnImgProfilePic.frame.size.height))
+        
+        let imageView = self.btnImgProfilePic.imageView!
+        imageView.kf.setImage(
+            with: urlOriginalImage,
+            placeholder: nil,
+            options:[
+                .cacheOriginalImage,.transition(.fade(1))
+                ],
+            progressBlock: { receivedSize, totalSize in
+        },
+            completionHandler: { result in
+                print(result)
+                let scalImg = self.btnImgProfilePic.imageView!.image!.kf.resize(to: self.btnImgProfilePic.size, for: .aspectFill)
                 self.btnImgProfilePic.setImage(scalImg, for: .normal)
-            }
         }
+        )
+        
     }
     override func viewWillAppear(_ animated: Bool) {
     }

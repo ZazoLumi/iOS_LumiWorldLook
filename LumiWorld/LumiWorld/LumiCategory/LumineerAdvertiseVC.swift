@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import AVKit
 import Alamofire
+import Kingfisher
 
 class AdevertiseCell : UITableViewCell {
     @IBOutlet weak var lblAdvTitle: UILabel!
@@ -33,7 +34,7 @@ class LumineerAdvertiseVC: UIViewController, UITableViewDelegate,UITableViewData
         aryAdvertiseData = []
         self.getLatestLumineersAds()
         self.tableView!.tableFooterView = UIView()
-
+        
         // Do any additional setup after loading the view.
     }
     
@@ -50,7 +51,7 @@ class LumineerAdvertiseVC: UIViewController, UITableViewDelegate,UITableViewData
         // Dispose of any resources that can be recreated.
     }
     @objc func getLatestLumineersAds() {
-        aryAdvertiseData = GlobalShareData.sharedGlobal.getAllAdvertise()
+        aryAdvertiseData = GlobalShareData.sharedGlobal.geCurrentLumineersAdvertise()
         let sorted = aryAdvertiseData.sorted { left, right -> Bool in
             guard let rightKey = right["message"]?.updatedDate else { return true }
             guard let leftKey = left["message"]?.updatedDate else { return true }
@@ -80,6 +81,7 @@ class LumineerAdvertiseVC: UIViewController, UITableViewDelegate,UITableViewData
         cell.lblLumineerName.text = objCellData["title"] as? String
         let imgThumb = UIImage.decodeBase64(strEncodeData:objCellData["profileImg"] as? String)
         let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
+
         cell.imgLumineerProfile.image = scalImg
         cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
         cell.imgLumineerProfile?.clipsToBounds = true;
@@ -132,12 +134,22 @@ class LumineerAdvertiseVC: UIViewController, UITableViewDelegate,UITableViewData
         cell.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "yyyy-MM-dd HH:mm")
         
         if urlOriginalImage != nil {
-            Alamofire.request(urlOriginalImage!).responseImage { response in
-                debugPrint(response)
-                if let image = response.result.value {
-                    cell.imgAdsContent.image = image
-                }
-            }}
+            let imageView = cell.imgAdsContent!
+            imageView.kf.setImage(
+                with: urlOriginalImage,
+                placeholder: nil,
+                options:[
+                    .cacheOriginalImage,.transition(.fade(1))
+                ],
+                progressBlock: { receivedSize, totalSize in
+            },
+                completionHandler: { result in
+                    print(result)
+                    let scalImg = cell.imgAdsContent.image?.kf.resize(to: cell.imgAdsContent.size, for: .aspectFill)
+                    cell.imgAdsContent.image = scalImg
+            }
+            )
+            }
         
         return cell
     }

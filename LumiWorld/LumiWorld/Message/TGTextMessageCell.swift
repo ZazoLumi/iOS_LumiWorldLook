@@ -75,7 +75,14 @@ class TGTextMessageCell: TGBaseMessageCell {
             }
             
             bubbleImageView.frame = cellLayout.bubbleImageViewFrame
-            bubbleImageView.image = isHighlight ? cellLayout.highlightBubbleImage : cellLayout.bubbleImage
+            let image = isHighlight ? cellLayout.highlightBubbleImage : cellLayout.bubbleImage
+                
+            
+            bubbleImageView.image = image?.resizableImage(withCapInsets:
+                UIEdgeInsets(top: 17, left: 21, bottom: 17, right: 21),
+                                                         resizingMode: .stretch)
+                .withRenderingMode(.alwaysTemplate)
+            bubbleImageView.tintColor = !cellLayout.isOutgoing ? UIColor.init(red: 221, green: 222, blue: 228) : UIColor.init(hexString: "6EBAAA")
             textLabel.frame = cellLayout.textLableFrame
             textLabel.textLayout = cellLayout.textLayout
             timeLabel.frame = cellLayout.timeLabelFrame

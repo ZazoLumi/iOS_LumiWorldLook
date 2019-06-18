@@ -12,6 +12,7 @@ import RealmSwift
 import Alamofire
 import AVKit
 import MBProgressHUD
+import Kingfisher
 
 class SubjectCell: UITableViewCell {
     @IBOutlet weak var imgStatus: UIImageView!
@@ -314,29 +315,44 @@ extension LumineerMessagesVC : UITableViewDelegate,UITableViewDataSource {
             if objLumiMessage.contentType == "Video" && objLumiMessage.imageURL != nil {
                 let fileName = objLumiMessage.imageURL
                 urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    
-                    if let image = response.result.value {
-                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
+                cell.imgMessage.kf.setImage(
+                    with: urlOriginalImage,
+                    placeholder: nil,
+                    options:[
+                        .cacheOriginalImage,.transition(.fade(1))
+                    ],
+                    progressBlock: { receivedSize, totalSize in
+                },
+                    completionHandler: { result in
+                        print(result)
+                        let scalImg = cell.imgMessage.image?.kf.resize(to: cell.imgMessage.size, for: .aspectFill)
                         cell.imgMessage.image = scalImg
-                    }
                 }
+                )
+                
             }
             else if objLumiMessage.contentType == "Document" {
                 let image = UIImage.init(named: "docFile")
-                let scalImg = image?.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
+                let scalImg = image?.kf.resize(to: CGSize(width: 25, height: 25), for: .aspectFill)
+
                 cell.imgMessage.image = scalImg
             }
             else if urlOriginalImage != nil{
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    
-                    if let image = response.result.value {
-                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: 25, height: 25))
+                cell.imgMessage.kf.setImage(
+                    with: urlOriginalImage,
+                    placeholder: nil,
+                    options:[
+                        .cacheOriginalImage,.transition(.fade(1))
+                    ],
+                    progressBlock: { receivedSize, totalSize in
+                },
+                    completionHandler: { result in
+                        print(result)
+                        let scalImg = cell.imgMessage.image?.kf.resize(to: cell.imgMessage.size, for: .aspectFill)
                         cell.imgMessage.image = scalImg
-                    }
                 }
+                )
+            
                 
             }
         }

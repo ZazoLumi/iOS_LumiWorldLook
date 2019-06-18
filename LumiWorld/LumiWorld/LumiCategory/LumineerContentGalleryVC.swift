@@ -12,6 +12,7 @@ import AVKit
 import Alamofire
 import MBProgressHUD
 import IQKeyboardManagerSwift
+import Kingfisher
 
 class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataSource,UITextViewDelegate {
     @IBOutlet weak var lblAdvTitle: UILabel!
@@ -70,18 +71,24 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
                     let fileName = GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.lastPathComponent
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                 }
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    if let image = response.result.value {
-                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width:self.imgLumineerProfile.frame.size.width, height: self.imgLumineerProfile.frame.size.height))
-                        cell.imgLumineerProfile.image = scalImg
-                        cell.imgLumineerProfile?.clipsToBounds = true;
-                        //                        cell.imgLumineerProfile.contentMode = .scaleAspectFit
-                        //                        cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
-                        //
-                        
-                    }
+                let imageView = cell.imgLumineerProfile!
+                imageView.kf.setImage(
+                    with: urlOriginalImage,
+                    placeholder: nil,
+                    options:[
+                        .processor(DownsamplingImageProcessor(size: CGSize(width: cell.imgLumineerProfile.frame.size.width, height: cell.imgLumineerProfile.frame.size.height))),
+                        .cacheOriginalImage,.transition(.fade(1))
+                    ],
+                    progressBlock: { receivedSize, totalSize in
+                },
+                    completionHandler: { result in
+                        print(result)
+//                        let scalImg = cell.imgLumineerProfile.image?.kf.resize(to: cell.imgLumineerProfile.size, for: .aspectFill)
+//                        cell.imgLumineerProfile.image = scalImg
+
                 }
+                )
+                
             }
             cell.lblLumineerTitle.text = GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName
             
@@ -217,6 +224,7 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         cell.lblLumineerName.text = objCellData["title"] as? String
         let imgThumb = UIImage.decodeBase64(strEncodeData:objCellData["profileImg"] as? String)
         let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgLumineerProfile.frame.size.width-10, height: cell.imgLumineerProfile.frame.size.height-10))
+
         cell.imgLumineerProfile.image = scalImg
         cell.imgLumineerProfile?.layer.cornerRadius = (scalImg.size.width)/2
         cell.imgLumineerProfile?.clipsToBounds = true;
@@ -252,7 +260,8 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
             cell.contentView.bringSubviewToFront(cell.btnMuteUnmute)
             cell.contentView.bringSubviewToFront(cell.btnPlayPause)
             let imgThumb = UIImage.decodeBase64(strEncodeData:(objContent?.thumbnail!)! )
-            let scalImg = imgThumb.af_imageAspectScaled(toFill: CGSize(width: cell.imgAdsContent.frame.size.width, height: cell.imgAdsContent.frame.size.height))
+            let scalImg = imgThumb.af_imageAspectScaled(toFill: cell.imgAdsContent.size)
+
             cell.imgAdsContent.image = scalImg
 
         }
@@ -269,13 +278,23 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
             }
             imgMsgType = UIImage(named:"Asset106")
             if urlOriginalImage != nil {
-                Alamofire.request(urlOriginalImage!).responseImage { response in
-                    debugPrint(response)
-                    if let image = response.result.value {
-                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: cell.imgAdsContent.size.width, height: cell.imgAdsContent.size.height))
-                        cell.imgAdsContent.image = scalImg
-                    }
-                }}
+                let imageView = cell.imgAdsContent!
+                imageView.kf.setImage(
+                    with: urlOriginalImage,
+                    placeholder: nil,
+                    options:[
+                        .processor(DownsamplingImageProcessor(size: CGSize(width: cell.imgAdsContent.frame.size.width, height: cell.imgAdsContent.frame.size.height))),
+                        .cacheOriginalImage,.transition(.fade(1))
+                    ],
+                    progressBlock: { receivedSize, totalSize in
+                },
+                    completionHandler: { result in
+                        print(result)
+//                        let scalImg = cell.imgAdsContent.image?.kf.resize(to: cell.imgAdsContent.size, for: .aspectFill)
+//                        cell.imgAdsContent.image = scalImg
+                }
+                )
+                }
             cell.imgAdsContent.contentMode = .scaleAspectFit
         }
         cell.imgAdvType.image = imgMsgType

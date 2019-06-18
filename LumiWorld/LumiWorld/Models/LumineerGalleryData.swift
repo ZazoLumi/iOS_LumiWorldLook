@@ -82,8 +82,7 @@ class LumineerGalleryData: Object {
                             try! realm.write {
                                 realm.add(newContentData, update: true)
                             }
-                            if aObject["url"].string != nil, (aObject["url"].string?.count)! > 0 {
-                                // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                            if aObject["url"].string != nil, (aObject["url"].string?.count)! > 0,aObject["contentFileType"].stringValue != "image" {
                                 let filePath = newContentData.adMediaURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                                 
                                 self.downloadFileFromServer(newAdvertiseData: newContentData)
@@ -99,7 +98,8 @@ class LumineerGalleryData: Object {
                                 newContentData.contentFileName = recordExist[0].contentFileName
                             }
                             else {
-                                self.downloadFileFromServer(newAdvertiseData: newContentData)
+                                if newContentData.contentType != "image" {
+                                    self.downloadFileFromServer(newAdvertiseData: newContentData)}
                             }
                             newContentData.isGlrSaved = recordExist[0].isGlrSaved
                             newContentData.isGlrLiked = recordExist[0].isGlrLiked
