@@ -109,9 +109,9 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         // Dispose of any resources that can be recreated.
     }
     func setupSegmentData() {
-        segmentedControl = CustomSegmentedContrl.init(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: segmentedControlView.frame.size.height))
+        segmentedControl = CustomSegmentedContrl.init(frame: CGRect.init(x: 10, y: 0, width: UIScreen.main.bounds.width + 450, height: segmentedControlView.frame.size.height))
         segmentedControl.backgroundColor = .clear
-        segmentedControl.commaSeperatedButtonTitles = "HOME, SHOP,SCHEDULER,ADS,COLLABS,MESSAGE"
+        segmentedControl.commaSeperatedButtonTitles = "HOME,KLEENSLATE, MYWORKPLACE,MESSAGE,ADS,SHOP,SCHEDULER,COLLABS"
         segmentedControl.addTarget(self, action: #selector(onChangeOfSegment(_:)), for: .valueChanged)
         currentPage = 0
         segmentedControlView.addSubview(segmentedControl)
@@ -154,9 +154,11 @@ class LumineerProfileVC: UIViewController,ExpandableLabelDelegate, UIImagePicker
         arrPageTexts.append(objLumineerHomeVC)
         arrPageTexts.append(objCoomingsoon)
         arrPageTexts.append(objCoomingsoon)
+        arrPageTexts.append(objLumineerMessageVC)
         arrPageTexts.append(objLumineerAdvertiseVC)
         arrPageTexts.append(objCoomingsoon)
-        arrPageTexts.append(objLumineerMessageVC)
+        arrPageTexts.append(objCoomingsoon)
+        arrPageTexts.append(objCoomingsoon)
         pageController.setViewControllers([objLumineerHomeVC], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
         
         self.addChild(pageController)
