@@ -113,11 +113,17 @@ class ExampleNavigationController: UINavigationController {
         #endif
         self.navigationBar.tintColor = UIColor.init(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1.0)
         
-        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
-        if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
-            statusBar.backgroundColor = UIColor(red: 180, green: 219, blue: 212)
-            
+        if #available(iOS 13.0, *) {
+            let statusBar = UIView(frame: UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero)
+             statusBar.backgroundColor = UIColor(red: 180, green: 219, blue: 212)
+             UIApplication.shared.keyWindow?.addSubview(statusBar)
+        } else {
+            let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+            if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
+                statusBar.backgroundColor = UIColor(red: 180, green: 219, blue: 212)
+            }
         }
+
 
         UIApplication.shared.statusBarStyle = .lightContent
         

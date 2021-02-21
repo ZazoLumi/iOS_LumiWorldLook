@@ -16,6 +16,9 @@ import Crashlytics
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
 
+    
+    
+    
     var window: UIWindow?
      var backgroundTransferCompletionHandler: (() -> Void)?
     var restrictRotation:UIInterfaceOrientationMask = .portrait
@@ -23,9 +26,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
-        if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
-            statusBar.backgroundColor = .lumiGreen
+        if #available(iOS 13.0, *) {
+            let statusBar = UIView(frame: UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero)
+             statusBar.backgroundColor = .lumiGreen
+             UIApplication.shared.keyWindow?.addSubview(statusBar)
+        } else {
+            let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+            if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
+                statusBar.backgroundColor = .lumiGreen
+            }
         }
         UIApplication.shared.statusBarStyle = .lightContent
         UISearchBar.appearance().tintColor = .lumiGreen
