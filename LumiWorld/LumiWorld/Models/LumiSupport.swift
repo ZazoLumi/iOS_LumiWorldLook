@@ -178,7 +178,7 @@ class LumiSupport : Object {
                                                 }
                                                 objLumiMsg.supportFilePath = url?.absoluteString
                                                 objLumiMsg.isFileDownloaded = true
-                                                realm.add(objLumiMsg, update: true)
+                                                realm.add(objLumiMsg, update: .all)
                                                 if index == tempArray.count-1 {
                                                     print("Download post")
                                                     NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil) }
@@ -221,7 +221,7 @@ class LumiSupport : Object {
                     let objSupport = result[0] as LumiSupport
                     try! realm.write {
                         objSupport.isReadByLumi = true
-                        realm.add(objSupport, update: true)
+                        realm.add(objSupport, update: .all)
                     }
                     
                 }, failure: { (Error) in

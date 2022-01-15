@@ -80,7 +80,7 @@ class LumineerGalleryData: Object {
                         let recordExist = realm.objects(LumineerGalleryData.self).filter("galleryID = '\(newContentData.galleryID!)'")
                         if recordExist.count == 0 {
                             try! realm.write {
-                                realm.add(newContentData, update: true)
+                                realm.add(newContentData, update: .all)
                             }
                             if aObject["url"].string != nil, (aObject["url"].string?.count)! > 0,aObject["contentFileType"].stringValue != "image" {
                                 let filePath = newContentData.adMediaURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
@@ -106,7 +106,7 @@ class LumineerGalleryData: Object {
                             newContentData.contentType = recordExist[0].contentType
                             
                             try! realm.write {
-                                realm.add(newContentData, update: true)
+                                realm.add(newContentData, update: .all)
                             }
                         }
                     }
@@ -205,7 +205,7 @@ class LumineerGalleryData: Object {
                     newCtnCommnetsData.lumineerName = (lumineerDetails["lumineerName"] as! String)}
 
                 try! realm.write {
-                    realm.add(newCtnCommnetsData, update: true)
+                    realm.add(newCtnCommnetsData, update: .all)
                     newContentData.glrComments.append(newCtnCommnetsData)
                 }
             }
@@ -240,8 +240,7 @@ class LumineerGalleryData: Object {
                         }
                         objCurrentAdv.adMediaURL = url?.absoluteString.removingPercentEncoding
                         objCurrentAdv.isFileDownloaded = true
-                        realm.add(objCurrentAdv, update: true)
-                        
+                        realm.add(objCurrentAdv, update: .all)
                     }
                 }
             }

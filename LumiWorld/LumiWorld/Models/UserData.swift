@@ -159,7 +159,7 @@ class UserData : Object{
                     let objUser = data[0] as UserData
                     try! realm.write {
                         objUser.profilePic = url?.absoluteString
-                        realm.add(objUser, update: true)
+                        realm.add(objUser, update: .all)
                     }
                 }
             }

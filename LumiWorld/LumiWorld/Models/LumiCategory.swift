@@ -114,7 +114,7 @@ class LumineerList : Object {
                                 
                                 let lumineerList = objCategory[0].lumineerList
                                 try! realm.write {
-                                    realm.add(newLumineerObj, update: true)
+                                    realm.add(newLumineerObj, update: .all)
                                     lumineerList.append(newLumineerObj)
                                 }
                             }

@@ -39,11 +39,11 @@ class AFWrapper: NSObject  {
         let heder : HTTPHeaders = ["Accept-Language":L10n.shared.language]
           Alamofire.request(strURL, method: .post, parameters: params, headers: heder).responseJSON { (responseObject) -> Void in
             
-            if GlobalShareData.sharedGlobal.isDebug(){
-                debugPrint(#line)
-                debugPrint(#function)
-                debugPrint(responseObject)
-            }
+//            if GlobalShareData.sharedGlobal.isDebug(){
+//                debugPrint(#line)
+//                debugPrint(#function)
+//                debugPrint(responseObject)
+//            }
             
                if responseObject.result.isSuccess {
                     let resJson = JSON(responseObject.result.value!)

@@ -165,7 +165,6 @@ class LumineerMessagesVC: UIViewController,UIImagePickerControllerDelegate, UINa
         }
         btnSupport.isSelected = false
     }
-    
     @IBAction func onBtnAccountsTapped(_ sender: UIButton) {
         //  photoLibrary()
         btnAccount.isSelected = !sender.isSelected
@@ -176,7 +175,6 @@ class LumineerMessagesVC: UIViewController,UIImagePickerControllerDelegate, UINa
         }
         btnAccount.isSelected = false
     }
-    
     func photoLibrary()
     {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
@@ -193,7 +191,6 @@ class LumineerMessagesVC: UIViewController,UIImagePickerControllerDelegate, UINa
             self.present(myPickerController, animated: true, completion: nil) //self.navigationController?.present(myPickerController, animated: true, completion: nil)
         }
     }
-    
     func calculateCurrentHeight() {
         var tableHeight = 0
         if self.aryActivityData != nil, self.expandedSectionHeaderNumber == -1 ,(self.aryActivityData.count)>0{

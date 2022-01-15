@@ -94,7 +94,7 @@ class LumineerContent: Object {
                         let recordExist = realm.objects(LumineerContent.self).filter("contentID = '\(newContentData.contentID!)'")
                         if recordExist.count == 0 {
                             try! realm.write {
-                                realm.add(newContentData, update: true)
+                                realm.add(newContentData, update: .all)
                             }
                             if aObject["adMediaURL"].string != nil, (aObject["adMediaURL"].string?.count)! > 0, newContentData.contentType != "image" {
                                 // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
@@ -123,7 +123,7 @@ class LumineerContent: Object {
                                                 }
                                                 objCurrentAdv.adMediaURL = url?.absoluteString.removingPercentEncoding
                                                 objCurrentAdv.isFileDownloaded = true
-                                                realm.add(objCurrentAdv, update: true)
+                                                realm.add(objCurrentAdv, update: .all)
                                                 if index == tempArray.count-1 {
                                                     print("Download post")
                                                     NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil) }
@@ -153,7 +153,7 @@ class LumineerContent: Object {
                             newContentData.contentType = recordExist[0].contentType
                             
                             try! realm.write {
-                                realm.add(newContentData, update: true)
+                                realm.add(newContentData, update: .all)
                             }
                         }
                     }
@@ -255,7 +255,7 @@ class LumineerContent: Object {
             newCtnCommnetsData.lumiName = cObject["lumiName"].stringValue
             newCtnCommnetsData.lumiName = cObject["lumiName"].stringValue
             try! realm.write {
-                realm.add(newCtnCommnetsData, update: true)
+                realm.add(newCtnCommnetsData, update: .all)
                 newContentData.ctnComments.append(newCtnCommnetsData)
             }
             }
@@ -291,8 +291,7 @@ class LumineerContent: Object {
                         }
                         objCurrentAdv.adMediaURL = url?.absoluteString.removingPercentEncoding
                         objCurrentAdv.isFileDownloaded = true
-                        realm.add(objCurrentAdv, update: true)
-                        
+                        realm.add(objCurrentAdv, update: .all)
                     }
                 }
             }

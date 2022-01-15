@@ -14,8 +14,7 @@ class CustomSegmentedContrl: UIControl {
     var buttons = [UIButton]()
     var selector: UIView!
     var selectedSegmentIndex = 0
-    let scrollView = UIScrollView()
-
+    
     
     
     @IBInspectable var borderWidth1: CGFloat = 0 {
@@ -117,31 +116,18 @@ class CustomSegmentedContrl: UIControl {
         
         // Create a StackView
         
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(scrollView)
-        scrollView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
-
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width + 450, height: self.height)
-        scrollView.isScrollEnabled = true
-        scrollView.isPagingEnabled = true
-        scrollView.bouncesZoom = false
-        scrollView.showsHorizontalScrollIndicator = false
-        let stackView = UIStackView(arrangedSubviews: buttons)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let stackView = UIStackView.init(arrangedSubviews: buttons)
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.distribution = .fillProportionally
-        stackView.spacing = 10.0
-        scrollView.addSubview(stackView)
+        stackView.spacing = 0.0
+        addSubview(stackView)
         
-        stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0.0).isActive = true
-        stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0.0).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0.0).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0.0).isActive = true
-        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        stackView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        stackView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
     }
     
     // Only override draw() if you perform custom drawing.

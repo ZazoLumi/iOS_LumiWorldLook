@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bucket
-   uuid = "11190B75-B263-48FE-9EB4-227CBC5D5D79"
+   uuid = "C79CD3F2-C050-4BF8-9614-979E2BDD36B1"
    type = "0"
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2F665187-EA26-444E-AEAF-F29487527778"
+            uuid = "A75323B5-5C13-4249-977E-4F1812487C51"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -24,7 +24,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C8D7B617-E350-4BF0-B8AE-71EA6564476F"
+            uuid = "32F7E160-E3C9-4021-8664-0F1431B119B3"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -41,7 +41,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BCDD4FD5-8F04-40DC-9D9E-19726F33C541"
+            uuid = "312D78E8-BB03-4B4C-9C42-20B20D690ADF"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -58,7 +58,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9BF7F8F9-673E-490A-B4C9-31D3ED00787E"
+            uuid = "29D7D549-A453-4187-A12C-38E6FACADC8B"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -75,7 +75,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "13263E7B-51DE-4FFE-8BF5-37E273A2CA65"
+            uuid = "E4BDB1EC-836F-4B58-8A95-C55C8A85D3D3"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -92,7 +92,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "ED96D35F-96DC-43B3-A3BC-8BA89E0C7DC6"
+            uuid = "146E35ED-569F-4AF4-8F1D-793CE646B0FD"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -109,7 +109,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F7FA7C5D-EA99-4CC9-B2B9-5E156CCA6CA6"
+            uuid = "EF275CFB-FCB1-4D6D-8291-0FDAD85BCD29"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -126,7 +126,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "51CAE956-8D05-4C99-822B-FE4F6C33AFD4"
+            uuid = "DA0C3F98-6CFC-44B5-A0B1-92876BD11323"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -140,14 +140,14 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "51CAE956-8D05-4C99-822B-FE4F6C33AFD4 - eb6c4b80c266d3f7"
+                  uuid = "DA0C3F98-6CFC-44B5-A0B1-92876BD11323 - bf5036b7572c53b5"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "LumiWorld.LumineerContent.downloadFileFromServer(newAdvertiseData: LumiWorld.LumineerContent) -&gt; ()"
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/APatel/Desktop/Ashish/iOS_LumiWorldLook/LumiWorld/LumiWorld/Models/LumineerContent.swift"
+                  urlString = "file:///Users/apatel/Desktop/LumiWorld/LumiWorld/Models/LumineerContent.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "270"
@@ -155,14 +155,14 @@
                   offsetFromSymbolStart = "578">
                </Location>
                <Location
-                  uuid = "51CAE956-8D05-4C99-822B-FE4F6C33AFD4 - c86d5df59372d3c4"
+                  uuid = "DA0C3F98-6CFC-44B5-A0B1-92876BD11323 - 9c5120c206385386"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 (Swift.Int32, Swift.Optional&lt;Foundation.URL&gt;) -&gt; () in LumiWorld.LumineerContent.downloadFileFromServer(newAdvertiseData: LumiWorld.LumineerContent) -&gt; ()"
                   moduleName = "LumiWorld"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/APatel/Desktop/Ashish/iOS_LumiWorldLook/LumiWorld/LumiWorld/Models/LumineerContent.swift"
+                  urlString = "file:///Users/apatel/Desktop/LumiWorld/LumiWorld/Models/LumineerContent.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "271"
@@ -175,7 +175,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F35FCECB-912A-412D-A4CE-E67AE8EBCAD4"
+            uuid = "E223EA13-17C8-4014-A897-E3BBFB9EF85D"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -192,7 +192,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F841EBA7-85EE-4DD4-A310-E081CF95B56C"
+            uuid = "8ABAAD9B-9730-47FB-B1BA-FC97E8B6BD38"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -209,7 +209,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7D3FE650-04A8-4233-B9FB-2EDB125C90DA"
+            uuid = "F70FF9F2-E20A-4EA2-ACFD-32836BEE8EAD"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -226,7 +226,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CFDB557D-993D-48BE-956C-D1145E941011"
+            uuid = "B063A91A-AD55-4B8E-958E-4E36DAAE2AFC"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -243,7 +243,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "E1EDB7B7-9B0D-4F4F-918B-82CEE86FFBD2"
+            uuid = "8C5B7F72-064A-47F6-802C-E346796C6017"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -260,7 +260,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "00D6BBDF-4466-46D2-8955-C4833BA8E8C6"
+            uuid = "ACAFF4D2-1F1B-4025-BCA0-9BC413960DA9"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -277,16 +277,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9FE4271B-3E9B-44B3-AE02-C207B4FFE5DE"
-            shouldBeEnabled = "Yes"
+            uuid = "747551E0-8363-4EC2-9826-BF77D7DCEB09"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LumiWorld/Utilities/GlobalShareData.swift"
             timestampString = "582577794.420668"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "408"
-            endingLineNumber = "408"
+            startingLineNumber = "407"
+            endingLineNumber = "407"
             landmarkName = "geCurrentLumineersAdvertise()"
             landmarkType = "7">
          </BreakpointContent>
@@ -294,7 +294,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DD909431-5FC6-400E-ACED-FE91A55941D5"
+            uuid = "0F35C6F7-485D-443E-B93C-B86103B4EDAC"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -311,7 +311,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "08F31FCC-C7FD-4AD1-A645-CBE25BFD897E"
+            uuid = "0DF227C0-0CBF-46C8-8D51-415A0468D3B8"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -325,7 +325,7 @@
             landmarkType = "24">
             <Locations>
                <Location
-                  uuid = "08F31FCC-C7FD-4AD1-A645-CBE25BFD897E - 53739518d98e01a8"
+                  uuid = "0DF227C0-0CBF-46C8-8D51-415A0468D3B8 - 53739518d98e01a8"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -341,7 +341,7 @@
                   offsetFromSymbolStart = "2404">
                </Location>
                <Location
-                  uuid = "08F31FCC-C7FD-4AD1-A645-CBE25BFD897E - 53739518d98e01a8"
+                  uuid = "0DF227C0-0CBF-46C8-8D51-415A0468D3B8 - 53739518d98e01a8"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -362,7 +362,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5ABC5155-CEF9-4F77-8BB5-B7E6BE67AA51"
+            uuid = "6452C8E5-BC1B-4D43-8ADA-D65A590571D2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -379,7 +379,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "701CC0B4-712C-48C4-B569-81304873AC0C"
+            uuid = "CA775F5A-BB33-4A40-AEFF-CABB0DC61C40"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -396,7 +396,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5E4BD6C2-51D7-49E2-8A5F-A41E230CCDC0"
+            uuid = "7CFCDEA4-9D8D-444A-9BC3-855B6C43E610"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -411,24 +411,51 @@
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.SwiftErrorBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1FB0B828-C2ED-4BAB-83CE-9A050078342A"
-            shouldBeEnabled = "Yes"
+            uuid = "3926B137-8D4A-4A0A-8281-9D9DD47F913F"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
-            continueAfterRunningActions = "No">
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/LumiCategory/LumineerProfileVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "417"
+            endingLineNumber = "417"
+            landmarkName = "displayAdvertiseContent()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2EA3C734-3243-408F-B6E8-58B3313F7B9C"
+            uuid = "6762C98F-B552-4C27-9727-DB8065F9DFA3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LumiWorld/Utilities/GlobalShareData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "353"
+            endingLineNumber = "353"
+            landmarkName = "getCurrentAdvertise()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1492C4B6-FFEA-436A-92D1-ACC84860D819"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            breakpointStackSelectionBehavior = "1"
-            scope = "1"
-            stopOnStyle = "0">
+            filePath = "LumiWorld/MyLumiProfile/AdvertiseVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "991"
+            endingLineNumber = "991"
+            landmarkName = "playerCurrentTimeDidChange(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

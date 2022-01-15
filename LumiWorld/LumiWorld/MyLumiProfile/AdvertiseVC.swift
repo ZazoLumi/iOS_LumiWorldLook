@@ -850,9 +850,9 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         audioPlayer?.volume = 10
         audioTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(onTimer(timer:)), userInfo: nil, repeats: true)
         
-        fileProgressSlider!.maximum = Float((self.audioPlayer?.duration)!)
-        fileProgressSlider!.continuous = false
-        fileProgressSlider!.tintColor = UIColor.green
+//        fileProgressSlider!.maximum = Float((self.audioPlayer?.duration)!)
+//        fileProgressSlider!.continuous = false
+//        fileProgressSlider!.tintColor = UIColor.green
         hmsFrom(seconds: Int((self.audioPlayer?.duration)!)) { hours, minutes, seconds in
             self.nhours = self.getStringFrom(seconds: hours)
             self.nminutes = self.getStringFrom(seconds: minutes)
@@ -889,7 +889,7 @@ class AdvertiseVC: UIViewController,UITableViewDelegate,UITableViewDataSource,TN
         // Check that we aren't dragging the time slider before updating it
         if !isDraggingTimeSlider {
             print(percentCompleted)
-            fileProgressSlider.value = Float(currentTime)
+           // fileProgressSlider.value = Float(currentTime)
         }
         if percentCompleted == 0.0 {
             audioTimer?.invalidate()
@@ -960,13 +960,13 @@ extension AdvertiseVC:AGPlayerDelegate {
         
         if let duration = playerVC.player?.currentItem?.asset.duration {
             totalSeconds = Int(CMTimeGetSeconds(duration))
-            fileProgressSlider!.maximum = Float(totalSeconds)
+           // fileProgressSlider!.maximum = Float(totalSeconds)
         }
 
         print("totalSeconds\(totalSeconds)")
 
-        fileProgressSlider!.continuous = false
-        fileProgressSlider!.tintColor = UIColor.green
+//        fileProgressSlider!.continuous = false
+//        fileProgressSlider!.tintColor = UIColor.green
         hmsFrom(seconds: totalSeconds) { hours, minutes, seconds in
             self.nhours = self.getStringFrom(seconds: hours)
             self.nminutes = self.getStringFrom(seconds: minutes)
@@ -988,7 +988,7 @@ extension AdvertiseVC:AGPlayerDelegate {
     }
     
     func playerCurrentTimeDidChange(_ playerVC: AVPlayerViewController) {
-        self.fileProgressSlider!.value = Float(CMTimeGetSeconds((playerVC.player?.currentTime())!))
+      //  self.fileProgressSlider!.value = Float(CMTimeGetSeconds((playerVC.player?.currentTime())!))
             //Float(playerVC.player?.currentTime)
         hmsFrom(seconds: Int(CMTimeGetSeconds((playerVC.player?.currentTime())!))) { hours, minutes, seconds in
             let newhours = self.getStringFrom(seconds: hours)

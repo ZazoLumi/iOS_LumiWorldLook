@@ -137,7 +137,7 @@ class LumiMessage : Object {
                             if recordExist.count == 0 {
                                 let objLumineerMessageList = objLumineer.lumiMessages
                                 try! realm.write {
-                                    realm.add(newLumiMessage, update: true)
+                                    realm.add(newLumiMessage, update: .all)
                                     objLumineerMessageList.append(newLumiMessage)
                                 }
                                 if aObject["fileName"].string != nil, (aObject["fileName"].string?.count)! > 0, newLumiMessage.contentType != "Image" {
@@ -164,7 +164,7 @@ class LumiMessage : Object {
                                                     }
                                                 objLumiMsg.fileName = url?.absoluteString.removingPercentEncoding
                                                 objLumiMsg.isFileDownloaded = true
-                                                realm.add(objLumiMsg, update: true)
+                                                realm.add(objLumiMsg, update: .all)
                                                     if index == tempArray.count-1 {
                                                         print("Download post")
                                                         NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil) }
@@ -297,7 +297,7 @@ class LumiMessage : Object {
                     try! realm.write {
                         let objMessage = lumiMessages[0] as LumiMessage
                         objMessage.isReadByLumi = true
-                        realm.add(objMessage, update: true)
+                        realm.add(objMessage, update: .all)
                     }
                    
                 }, failure: { (Error) in

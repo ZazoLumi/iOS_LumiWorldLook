@@ -141,7 +141,7 @@ class LumiProfileDetails: UIViewController,FormDataDelegate,UITextFieldDelegate 
                     self.showCustomAlert(strTitle: "", strDetails: "Profile data is updated successfully.", completion: { (str) in
                         let realm = try! Realm()
                             try! realm.write {
-                                realm.add(objUsr, update: true)
+                                realm.add(objUsr, update: .all)
                             }
                         self.navigationController?.popViewController()
                     })

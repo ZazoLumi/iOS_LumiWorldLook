@@ -29,7 +29,7 @@ class RealmManager {
     func saveObjects(objs: Object) {
         try? realm!.write ({
             // If update = false, adds the object
-            realm?.add(objs, update: false)
+            realm?.add(objs, update: .all)
         })
     }
     
@@ -38,7 +38,7 @@ class RealmManager {
         try? realm!.write ({
             // If update = true, objects that are already in the Realm will be
             // updated instead of added a new.
-            realm?.add(objs, update: true)
+            realm?.add(objs, update: .all)
         })
     }
     

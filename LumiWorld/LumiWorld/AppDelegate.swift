@@ -16,9 +16,6 @@ import Crashlytics
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
 
-    
-    
-    
     var window: UIWindow?
      var backgroundTransferCompletionHandler: (() -> Void)?
     var restrictRotation:UIInterfaceOrientationMask = .portrait
@@ -26,17 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        if #available(iOS 13.0, *) {
-            let statusBar = UIView(frame: UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero)
-             statusBar.backgroundColor = .lumiGreen
-             UIApplication.shared.keyWindow?.addSubview(statusBar)
-        } else {
-            let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
-            if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
-                statusBar.backgroundColor = .lumiGreen
-            }
-        }
-        UIApplication.shared.statusBarStyle = .lightContent
+        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        let statusBar = UIView(frame: window?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero)
+        statusBar.backgroundColor = .lumiGreen
+        window?.addSubview(statusBar)
+
         UISearchBar.appearance().tintColor = .lumiGreen
         IQKeyboardManager.shared.enable = true
 
@@ -56,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         }
         //Register for remote notifications.. If permission above is NOT granted, all notifications are delivered silently to AppDelegate.
         application.registerForRemoteNotifications()
+        self.setupAppearance()
         Fabric.with([Crashlytics.self])
         return true
     }
@@ -104,6 +96,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask
     {
         return self.restrictRotation
+    }
+    
+    func setupAppearance() {
+        if #available(iOS 15, *) {
+            UITableView.appearance().sectionHeaderTopPadding = 0.0
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
     }
 
     //App store submission script

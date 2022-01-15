@@ -96,7 +96,7 @@ class AdvertiseData: Object {
                         let recordExist = realm.objects(AdvertiseData.self).filter("advertiseId = \(newAdvertiseData.advertiseId)")
                         if recordExist.count == 0 {
                             try! realm.write {
-                                realm.add(newAdvertiseData, update: true)
+                                realm.add(newAdvertiseData, update: .all)
                             }
                             if aObject["adFileName"].string != nil, (aObject["adFileName"].string?.count)! > 0, aObject["contentType"].string != "Image" {
                                 // let url = self.appdel.fileName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
@@ -125,7 +125,7 @@ class AdvertiseData: Object {
                                                 }
                                                 objCurrentAdv.adFilePath = url?.absoluteString.removingPercentEncoding
                                                 objCurrentAdv.isFileDownloaded = true
-                                                realm.add(objCurrentAdv, update: true)
+                                                realm.add(objCurrentAdv, update: .all)
                                                 if index == tempArray.count-1 {
                                                     print("Download post")
                                                     NotificationCenter.default.post(name: Notification.Name("attachmentPopupRemoved"), object: nil) }
@@ -153,7 +153,7 @@ class AdvertiseData: Object {
                             newAdvertiseData.contentType = recordExist[0].contentType
                             
                             try! realm.write {
-                                realm.add(newAdvertiseData, update: true)
+                                realm.add(newAdvertiseData, update: .all)
                             }
                         }
                     }
@@ -205,7 +205,7 @@ class AdvertiseData: Object {
                         newAdvertiseData.contentType = recordExist[0].contentType
 
                         try! realm.write {
-                            realm.add(newAdvertiseData, update: true)
+                            realm.add(newAdvertiseData, update: .all)
                         }
                     }
                     completionHandler(true)
@@ -304,7 +304,7 @@ class AdvertiseData: Object {
             newAdvCommnetsData.lumiName = cObject["lumiName"].stringValue
             newAdvCommnetsData.lumiName = cObject["lumiName"].stringValue
             try! realm.write {
-                realm.add(newAdvCommnetsData, update: true)
+                realm.add(newAdvCommnetsData, update: .all)
                 newAdvertiseData.advComments.append(newAdvCommnetsData)
             }
         }
@@ -372,7 +372,7 @@ class AdvertiseData: Object {
                         }
                         objCurrentAdv.adFilePath = url?.absoluteString.removingPercentEncoding
                         objCurrentAdv.isFileDownloaded = true
-                        realm.add(objCurrentAdv, update: true)
+                        realm.add(objCurrentAdv, update: .all)
                        
                     }
                 }
