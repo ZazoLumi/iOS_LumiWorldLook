@@ -12,7 +12,6 @@ import AVKit
 import Alamofire
 import MBProgressHUD
 import IQKeyboardManagerSwift
-import Kingfisher
 
 class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataSource,UITextViewDelegate {
     @IBOutlet weak var lblAdvTitle: UILabel!
@@ -71,23 +70,33 @@ class ContentGalleryCell : UITableViewCell, UITableViewDelegate,UITableViewDataS
                     let fileName = GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.lastPathComponent
                     urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
                 }
-                let imageView = cell.imgLumineerProfile!
-                imageView.kf.setImage(
-                    with: urlOriginalImage,
-                    placeholder: nil,
-                    options:[
-                        .processor(DownsamplingImageProcessor(size: CGSize(width: cell.imgLumineerProfile.frame.size.width, height: cell.imgLumineerProfile.frame.size.height))),
-                        .cacheOriginalImage,.transition(.fade(1))
-                    ],
-                    progressBlock: { receivedSize, totalSize in
-                },
-                    completionHandler: { result in
-                        print(result)
-//                        let scalImg = cell.imgLumineerProfile.image?.kf.resize(to: cell.imgLumineerProfile.size, for: .aspectFill)
-//                        cell.imgLumineerProfile.image = scalImg
+                if urlOriginalImage != nil {
+                    Alamofire.request(urlOriginalImage!).responseImage { response in
+                        debugPrint(response)
+                        if let image = response.result.value {
+                            let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: cell.imgLumineerProfile.size.width, height: cell.imgLumineerProfile.size.height))
+                            UIView.animate(withDuration: 1.0, animations: {
+                                cell.imgLumineerProfile.image = scalImg
+                            })
 
-                }
-                )
+                        }
+                    }}
+//                imageView.kf.setImage(
+//                    with: urlOriginalImage,
+//                    placeholder: nil,
+//                    options:[
+//                        .processor(DownsamplingImageProcessor(size: CGSize(width: cell.imgLumineerProfile.frame.size.width, height: cell.imgLumineerProfile.frame.size.height))),
+//                        .cacheOriginalImage,.transition(.fade(1))
+//                    ],
+//                    progressBlock: { receivedSize, totalSize in
+//                },
+//                    completionHandler: { result in
+//                        print(result)
+////                        let scalImg = cell.imgLumineerProfile.image?.kf.resize(to: cell.imgLumineerProfile.size, for: .aspectFill)
+////                        cell.imgLumineerProfile.image = scalImg
+//
+//                }
+//                )
                 
             }
             cell.lblLumineerTitle.text = GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName
@@ -212,13 +221,13 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
         let objContent = objCellData["message"] as? LumineerGalleryData
 
         if objContent?.contentType == "video" {
-            cell = tableView.dequeueReusableCell(withIdentifier: "ContentVideoCell", for: indexPath) as! ContentGalleryCell
+            cell = tableView.dequeueReusableCell(withIdentifier: "ContentVideoCell", for: indexPath) as? ContentGalleryCell
         }
         else if objContent?.contentType == "image" {
-            cell = tableView.dequeueReusableCell(withIdentifier: "ContentGalleryCell", for: indexPath) as! ContentGalleryCell
+            cell = tableView.dequeueReusableCell(withIdentifier: "ContentGalleryCell", for: indexPath) as? ContentGalleryCell
         }
         else  {
-            cell = tableView.dequeueReusableCell(withIdentifier: "ContentAudioCell", for: indexPath) as! ContentGalleryCell
+            cell = tableView.dequeueReusableCell(withIdentifier: "ContentAudioCell", for: indexPath) as? ContentGalleryCell
         }
         
         cell.lblLumineerName.text = objCellData["title"] as? String
@@ -278,23 +287,34 @@ class LumineerContentGalleryVC: UIViewController, UITableViewDelegate,UITableVie
             }
             imgMsgType = UIImage(named:"Asset106")
             if urlOriginalImage != nil {
-                let imageView = cell.imgAdsContent!
-                imageView.kf.setImage(
-                    with: urlOriginalImage,
-                    placeholder: nil,
-                    options:[
-                        .processor(DownsamplingImageProcessor(size: CGSize(width: cell.imgAdsContent.frame.size.width, height: cell.imgAdsContent.frame.size.height))),
-                        .cacheOriginalImage,.transition(.fade(1))
-                    ],
-                    progressBlock: { receivedSize, totalSize in
-                },
-                    completionHandler: { result in
-                        print(result)
-//                        let scalImg = cell.imgAdsContent.image?.kf.resize(to: cell.imgAdsContent.size, for: .aspectFill)
-//                        cell.imgAdsContent.image = scalImg
-                }
-                )
-                }
+                Alamofire.request(urlOriginalImage!).responseImage { response in
+                    debugPrint(response)
+                    if let image = response.result.value {
+                        let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: cell.imgAdsContent.size.width, height: cell.imgAdsContent.size.height))
+                        UIView.animate(withDuration: 1.0, animations: {
+                            cell.imgAdsContent.image = scalImg
+                        })
+
+                    }
+                }}
+//            if urlOriginalImage != nil {
+//                let imageView = cell.imgAdsContent!
+//                imageView.kf.setImage(
+//                    with: urlOriginalImage,
+//                    placeholder: nil,
+//                    options:[
+//                        .processor(DownsamplingImageProcessor(size: CGSize(width: cell.imgAdsContent.frame.size.width, height: cell.imgAdsContent.frame.size.height))),
+//                        .cacheOriginalImage,.transition(.fade(1))
+//                    ],
+//                    progressBlock: { receivedSize, totalSize in
+//                },
+//                    completionHandler: { result in
+//                        print(result)
+////                        let scalImg = cell.imgAdsContent.image?.kf.resize(to: cell.imgAdsContent.size, for: .aspectFill)
+////                        cell.imgAdsContent.image = scalImg
+//                }
+//                )
+//                }
             cell.imgAdsContent.contentMode = .scaleAspectFit
         }
         cell.imgAdvType.image = imgMsgType

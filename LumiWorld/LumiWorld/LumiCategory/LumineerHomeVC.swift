@@ -9,7 +9,6 @@
 import UIKit
 import Alamofire
 import RealmSwift
-import Kingfisher
 
 class LumineerContentCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
