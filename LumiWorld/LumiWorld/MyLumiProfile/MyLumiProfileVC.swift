@@ -20,7 +20,7 @@ class MyLumiProfileVC: UIViewController {
     var objsuggestALumineer : suggestALumineer!
     var objAdvertiseVC : AdvertiseVC!
     fileprivate var documentInteractionController = UIDocumentInteractionController()
-
+    
     
     @IBOutlet weak var scrollable: ScrollableStackView!
     
@@ -44,9 +44,9 @@ class MyLumiProfileVC: UIViewController {
         self.url1 = URL(fileURLWithPath: Bundle.main.path(forResource: "LumiWorldWelcom", ofType: "mp4")!)
         // Do any additional setup after loading the view.
         setupBottomScrollableUI()
-
+        
         //playVideo()
-
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         let attributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
@@ -61,7 +61,7 @@ class MyLumiProfileVC: UIViewController {
         clearScrollContent()
         playerView.showsCustomControls = false
         //playerView.playerController.player?.pause()
-       // playerView.isMuted = true //Mute the video.
+        // playerView.isMuted = true //Mute the video.
     }
     
     func setupProfileData() {
@@ -69,13 +69,13 @@ class MyLumiProfileVC: UIViewController {
         lblDisplayName.text = GlobalShareData.sharedGlobal.objCurrentUserDetails.displayName
         let urlOriginalImage : URL!
         if GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic != nil {
-        if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())! {
-            urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic!)
-        }
-        else {
-            let fileName = GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.lastPathComponent
-            urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-        }
+            if(GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.hasUrlPrefix())! {
+                urlOriginalImage = URL.init(string: GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic!)
+            }
+            else {
+                let fileName = GlobalShareData.sharedGlobal.objCurrentUserDetails.profilePic?.lastPathComponent
+                urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+            }
             self.imgProfilePic!.kf.setImage(
                 with: urlOriginalImage,
                 placeholder: nil,
@@ -83,17 +83,17 @@ class MyLumiProfileVC: UIViewController {
                     .cacheOriginalImage,.transition(.fade(1))
                 ],
                 progressBlock: { receivedSize, totalSize in
-            },
+                },
                 completionHandler: { result in
                     print(result)
                     let scalImg = self.imgProfilePic.image?.kf.resize(to: self.imgProfilePic.size, for: .aspectFill)
                     self.imgProfilePic.image = scalImg
-            }
+                }
             )
         }
         let realm = try! Realm()
-       // let count = realm.objects(LumineerList.self).filter("status.@count > 0")
-       let follows = realm.objects(LumineerList.self).filter("status == 1")
+        // let count = realm.objects(LumineerList.self).filter("status.@count > 0")
+        let follows = realm.objects(LumineerList.self).filter("status == 1")
         self.lblFCount.text = "\(follows.count)"
         let conversation = realm.objects(LumiMessage.self)
         self.lblCCount.text = "\(conversation.count)"
@@ -103,7 +103,7 @@ class MyLumiProfileVC: UIViewController {
         self.imgProfilePic.addGestureRecognizer(tapGestureRecognizer)
         self.imgProfilePic.isUserInteractionEnabled = true
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -130,9 +130,9 @@ class MyLumiProfileVC: UIViewController {
         let objFaqVC = storyBoard.instantiateViewController(withIdentifier: "SavedDataVC") as! SavedDataVC
         GlobalShareData.sharedGlobal.objCurretnVC.navigationController?.pushViewController(objFaqVC, animated: true)
     }
-
     
-     func onBtnMessageTapped() {
+    
+    func onBtnMessageTapped() {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objSendMessageTo = storyBoard.instantiateViewController(withIdentifier: "sendMessageTo") as! sendMessageTo
@@ -142,7 +142,7 @@ class MyLumiProfileVC: UIViewController {
         self.objSendMessageTo.didMove(toParent: self)
     }
     
-     func onBtnSuggestLumineerTapped() {
+    func onBtnSuggestLumineerTapped() {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objSuggestACompany = storyBoard.instantiateViewController(withIdentifier: "suggestCompany") as! suggestCompany
@@ -150,9 +150,9 @@ class MyLumiProfileVC: UIViewController {
         self.objSuggestACompany.view.frame = CGRect(x: 0, y: (self.view.frame.size.height-380)/2, width:self.view.frame.size.width , height:430);
         self.view.addSubview(self.objSuggestACompany.view)
         self.objSuggestACompany.didMove(toParent: self)
-
+        
     }
-     func onBtnInviteFriendsTapped() {
+    func onBtnInviteFriendsTapped() {
         self.view.addBlurEffect()
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         objInviteFriendVC = storyBoard.instantiateViewController(withIdentifier: "inviteFriendVC") as! inviteFriendVC
@@ -201,7 +201,7 @@ class MyLumiProfileVC: UIViewController {
         }
         self.aryAdsData.removeAll()
         self.aryAdsData.append(contentsOf: sorted)
-
+        
         for i in 0 ..< aryAdsData.count + 1{
             if i == aryAdsData.count {
                 let width = CGFloat(aryAdsData.count>0 ? 40 : 20)
@@ -216,108 +216,102 @@ class MyLumiProfileVC: UIViewController {
                 playerView.isMuted = true
                 scrlAdvertiseView.stackView.addArrangedSubview(playerView)
                 playerView.translatesAutoresizingMaskIntoConstraints = false
-
+                
             }
             else {
-            let objectData = aryAdsData[i]
-            let customAdsView = CustomAds.init(frame: CGRect(x: 0, y: 0, width: 280 , height: UIScreen.main.bounds.size.height))
-            customAdsView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-40).isActive = true
-            customAdsView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-240).isActive = true
-            customAdsView.translatesAutoresizingMaskIntoConstraints = true
-            customAdsView.btnSaveAds.addTarget(self, action:#selector(onBtnSaveAdsTapped(_:)), for: .touchUpInside)
+                let objectData = aryAdsData[i]
+                let customAdsView = CustomAds.init(frame: CGRect(x: 0, y: 0, width: 280 , height: UIScreen.main.bounds.size.height))
+                customAdsView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width-40).isActive = true
+                customAdsView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height-240).isActive = true
+                customAdsView.translatesAutoresizingMaskIntoConstraints = true
+                customAdsView.btnSaveAds.addTarget(self, action:#selector(onBtnSaveAdsTapped(_:)), for: .touchUpInside)
                 customAdsView.btnSaveAds.tag = 50000 + i
                 customAdsView.btnSared.addTarget(self, action:#selector(onBtnSaredAdsTapped(_:)), for: .touchUpInside)
                 customAdsView.btnSared.tag = 50000 + i
-
-            customAdsView.tag = 50000 + i
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleAdsViewTap(recognizer:)))
-            customAdsView.addGestureRecognizer(tapGestureRecognizer)
-            customAdsView.isUserInteractionEnabled = true
-
-            let objAdv = objectData["message"] as? AdvertiseData
-
-            customAdsView.lblLumineerName.text = objectData["title"] as? String
-            let strBaseDataLogo = objectData["profileImg"] as? String
-            let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
-            customAdsView.imgLumineerProfile.image = imgThumb
+                
+                customAdsView.tag = 50000 + i
+                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleAdsViewTap(recognizer:)))
+                customAdsView.addGestureRecognizer(tapGestureRecognizer)
+                customAdsView.isUserInteractionEnabled = true
+                
+                let objAdv = objectData["message"] as? AdvertiseData
+                
+                customAdsView.lblLumineerName.text = objectData["title"] as? String
+                let strBaseDataLogo = objectData["profileImg"] as? String
+                let imgThumb = UIImage.decodeBase64(strEncodeData:strBaseDataLogo)
+                customAdsView.imgLumineerProfile.image = imgThumb
                 
                 let attributedString = NSMutableAttributedString()
                 attributedString.yy_appendString((objAdv?.contentTitle)!)
                 attributedString.append(NSAttributedString(string: " #\((objAdv?.caption)!)",
-                    attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]))
+                                                           attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]))
                 attributedString.append(NSAttributedString(string: " \((objAdv?.tag)!)",
                                                            attributes: [.underlineStyle: 0]))
-
-            customAdsView.lblAdvTitle.text = attributedString.string
-            let imgMsgType : UIImage!
-            var urlOriginalImage : URL? = nil
-
-            if objAdv?.contentType == "Video" {
-                customAdsView.imgPlayIcon.isHidden = false
-                if objAdv?.adFilePath != nil {
-                    if(objAdv?.adFilePath?.hasUrlPrefix())!
-                    {
-                        urlOriginalImage = URL.init(string: (objAdv?.adFilePath!)!)
+                
+                customAdsView.lblAdvTitle.text = attributedString.string
+                let imgMsgType : UIImage!
+                var urlOriginalImage : URL? = nil
+                
+                if objAdv?.contentType == "Video" {
+                    customAdsView.imgPlayIcon.isHidden = false
+                    if objAdv?.adFilePath != nil {
+                        if(objAdv?.adFilePath?.hasUrlPrefix())!
+                        {
+                            urlOriginalImage = URL.init(string: (objAdv?.adFilePath!)!)
+                        }
+                        else {
+                            var fileName = objAdv?.adFileName?.replacingOccurrences(of: " ", with: "-")
+                            _ = fileName?.pathExtension
+                            let pathPrefix = fileName?.deletingPathExtension
+                            fileName = "\(pathPrefix!).png"
+                            urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                        }
                     }
-                    else {
-                        var fileName = objAdv?.adFileName?.replacingOccurrences(of: " ", with: "-")
-                        _ = fileName?.pathExtension
-                        let pathPrefix = fileName?.deletingPathExtension
-                        fileName = "\(pathPrefix!).png"
-                        urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-                    }
+                    imgMsgType = UIImage(named:"Asset102")
                 }
-                imgMsgType = UIImage(named:"Asset102")
-            }
-            else if objAdv?.contentType == "Audio" {
-                customAdsView.imgPlayIcon.isHidden = false
-                imgMsgType = UIImage(named:"Asset104")
-            }
-            else {
-                customAdsView.imgPlayIcon.isHidden = true
-                if objAdv?.adFilePath != nil {
-                    if(objAdv?.adFilePath?.hasUrlPrefix())!
-                    {
-                        urlOriginalImage = URL.init(string: (objAdv?.adFilePath!)!)
-                    }
-                    else {
-                        let fileName = objAdv?.adFileName?.replacingOccurrences(of: " ", with: "-")
-                        urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
-                    }
+                else if objAdv?.contentType == "Audio" {
+                    customAdsView.imgPlayIcon.isHidden = false
+                    imgMsgType = UIImage(named:"Asset104")
                 }
-                imgMsgType = UIImage(named:"Asset106")
-            customAdsView.imgAdvType.image = imgMsgType
-            }
-            customAdsView.imgAdsContent.contentMode = .scaleAspectFit
-            customAdsView.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "yyyy-MM-dd HH:mm")
-            
-            scrlAdvertiseView.stackView.addArrangedSubview(customAdsView)
-            if urlOriginalImage != nil {
-                let imgView = customAdsView.imgAdsContent!
-                imgView.kf.setImage(
-                    with: urlOriginalImage,
-                    placeholder: nil,
-                    options:[
-                        .cacheOriginalImage,.transition(.fade(1))
-                    ],
-                    progressBlock: { receivedSize, totalSize in
-                },
-                    completionHandler: { result in
-                        print(result)
-//                        let scalImg = imgView.image?.kf.resize(to: imgView.size, for: .aspectFill)
-//                        imgView.image = scalImg
+                else {
+                    customAdsView.imgPlayIcon.isHidden = true
+                    if objAdv?.adFilePath != nil {
+                        if(objAdv?.adFilePath?.hasUrlPrefix())!
+                        {
+                            urlOriginalImage = URL.init(string: (objAdv?.adFilePath!)!)
+                        }
+                        else {
+                            let fileName = objAdv?.adFileName?.replacingOccurrences(of: " ", with: "-")
+                            urlOriginalImage = GlobalShareData.sharedGlobal.applicationDocumentsDirectory.appendingPathComponent(fileName!)
+                        }
+                    }
+                    imgMsgType = UIImage(named:"Asset106")
+                    customAdsView.imgAdvType.image = imgMsgType
                 }
-                )
-            }
+                customAdsView.imgAdsContent.contentMode = .scaleAspectFit
+                customAdsView.lblAdvPostedTime.text = Date().getFormattedDate(string: (objAdv?.strAdvertiseDate!)!, formatter: "yyyy-MM-dd HH:mm")
+                
+                scrlAdvertiseView.stackView.addArrangedSubview(customAdsView)
+                if urlOriginalImage != nil {
+                    Alamofire.request(urlOriginalImage!).responseImage { response in
+                        debugPrint(response)
+                        if let image = response.result.value {
+                            let scalImg = image.af_imageAspectScaled(toFill: CGSize(width: customAdsView.imgAdsContent.size.width, height: customAdsView.imgAdsContent.size.height))
+                            UIView.animate(withDuration: 1.0, animations: {
+                                customAdsView.imgAdsContent.image = scalImg
+                            })
+                            
+                        }
+                    }}
             }}
-
+        
         if aryAdsData.count > 0 {
             numberOfPages = aryAdsData.count + 1
-           timerScroll = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
-            }
+            timerScroll = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
+        }
     }
-
-
+    
+    
     @objc func actionBttomMenuTapped(_ sender: UIButton){
         let tag = sender.tag
         
@@ -350,7 +344,7 @@ class MyLumiProfileVC: UIViewController {
     }
     @objc func moveToNextPage (){
         let pageWidth:CGFloat =  UIScreen.main.bounds.size.width-40
-
+        
         if currentPage == numberOfPages {
             currentPage = 0
             playerView.playerController.player?.play()
@@ -358,10 +352,10 @@ class MyLumiProfileVC: UIViewController {
         }
         else {
             let maxWidth:CGFloat = self.scrlAdvertiseView.scrollView.contentSize.width
-                var contentOffset:CGFloat = self.scrlAdvertiseView.scrollView.contentOffset.x + 20
-                if currentPage % 2 != 0  {
-                    contentOffset += 2
-                }
+            var contentOffset:CGFloat = self.scrlAdvertiseView.scrollView.contentOffset.x + 20
+            if currentPage % 2 != 0  {
+                contentOffset += 2
+            }
             var slideToX =  (maxWidth / CGFloat(numberOfPages)) + contentOffset
             
             if  contentOffset + pageWidth == maxWidth
@@ -369,17 +363,17 @@ class MyLumiProfileVC: UIViewController {
                 slideToX = 0
             }
             self.scrlAdvertiseView.scrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width:pageWidth, height:self.scrlAdvertiseView.scrollView.frame.height), animated: true)
-                currentPage += 1
-//            if currentPage == numberOfPages {
-//                GlobalShareData.sharedGlobal.isVideoPlaying = true
-//
-//            }
-//            else {
-//                GlobalShareData.sharedGlobal.isVideoPlaying = false
-//            }
+            currentPage += 1
+            //            if currentPage == numberOfPages {
+            //                GlobalShareData.sharedGlobal.isVideoPlaying = true
+            //
+            //            }
+            //            else {
+            //                GlobalShareData.sharedGlobal.isVideoPlaying = false
+            //            }
         }
     }
-
+    
     @objc func handleAdsViewTap(recognizer : UITapGestureRecognizer)
     {
         let tag = recognizer.view!.tag - 50000
@@ -406,16 +400,16 @@ class MyLumiProfileVC: UIViewController {
         self.objAdvertiseVC
             .didMove(toParent: self)
     }
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
     @objc func onBtnSaveAdsTapped(_ sender: UIButton){
         let index = sender.tag - 50000
         guard index < aryAdsData.count else {
@@ -450,13 +444,13 @@ class MyLumiProfileVC: UIViewController {
             documentInteractionController.presentPreview(animated: true)
         }
     }
-
-
+    
+    
 }
 
 extension MyLumiProfileVC: UIScrollViewDelegate {
-//    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-//        var contentOffset:CGFloat = self.scrlAdvertiseView.scrollView.contentOffset.x
-//        currentPage = Int(contentOffset / CGFloat(numberOfPages))
-//    }
+    //    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    //        var contentOffset:CGFloat = self.scrlAdvertiseView.scrollView.contentOffset.x
+    //        currentPage = Int(contentOffset / CGFloat(numberOfPages))
+    //    }
 }
